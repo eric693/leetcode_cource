@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LeetCode 學習平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 50px 30px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><rect width="100" height="100" fill="none"/><circle cx="50" cy="50" r="40" fill="rgba(255,255,255,0.05)"/></svg>');
+            opacity: 0.3;
+        }
+
+        header > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        header h1 {
+            font-size: 3em;
+            margin-bottom: 15px;
+            font-weight: 800;
+            letter-spacing: -1px;
+        }
+
+        header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .filter-section {
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .filter-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: all 0.3s;
+            font-weight: 600;
+        }
+
+        .filter-btn.all {
+            background: #6c757d;
+            color: white;
+        }
+
+        .filter-btn.easy {
+            background: #28a745;
+            color: white;
+        }
+
+        .filter-btn.medium {
+            background: #ffc107;
+            color: #333;
+        }
+
+        .filter-btn.hard {
+            background: #dc3545;
+            color: white;
+        }
+
+        .filter-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .filter-btn.active {
+            box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.2);
+        }
+
+        .problems-list {
+            padding: 30px;
+        }
+
+        .problem-card {
+            background: white;
+            border: none;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 20px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .problem-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+        }
+
+        .problem-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .problem-title {
+            font-size: 1.3em;
+            font-weight: 700;
+            color: #333;
+        }
+
+        .difficulty-badge {
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.9em;
+        }
+
+        .difficulty-badge.easy {
+            background: #28a745;
+            color: white;
+        }
+
+        .difficulty-badge.medium {
+            background: #ffc107;
+            color: #333;
+        }
+
+        .difficulty-badge.hard {
+            background: #dc3545;
+            color: white;
+        }
+
+        .problem-description {
+            color: #666;
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+
+        .problem-tags {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .tag {
+            background: #e9ecef;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.85em;
+            color: #495057;
+        }
+
+        footer {
+            background: linear-gradient(135deg, #434343 0%, #000000 100%);
+            color: white;
+            text-align: center;
+            padding: 30px;
+            margin-top: 50px;
+            border-radius: 0 0 15px 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎯 LeetCode 學習平台</h1>
+            <p>精選題目 | Python & C++ 詳解 | 語法高亮</p>
+        </header>
+
+        <div class="filter-section">
+            <div class="filter-buttons">
+                <button class="filter-btn all active" onclick="filterProblems('all')">全部題目</button>
+                <button class="filter-btn easy" onclick="filterProblems('easy')">Easy</button>
+                <button class="filter-btn medium" onclick="filterProblems('medium')">Medium</button>
+                <button class="filter-btn hard" onclick="filterProblems('hard')">Hard</button>
+            </div>
+        </div>
+
+        <div class="problems-list" id="problemsList">
+            <!-- Easy Problems -->
+            <div class="problem-card" data-difficulty="easy" onclick="location.href='problems/two-sum.html'">
+                <div class="problem-header">
+                    <div class="problem-title">1. Two Sum</div>
+                    <div class="difficulty-badge easy">Easy</div>
+                </div>
+                <div class="problem-description">
+                    給定一個整數陣列和目標值,找出陣列中兩個數字相加等於目標值的索引位置。
+                </div>
+                <div class="problem-tags">
+                    <span class="tag">Array</span>
+                    <span class="tag">Hash Table</span>
+                </div>
+            </div>
+
+            <div class="problem-card" data-difficulty="easy" onclick="location.href='problems/reverse-string.html'">
+                <div class="problem-header">
+                    <div class="problem-title">344. Reverse String</div>
+                    <div class="difficulty-badge easy">Easy</div>
+                </div>
+                <div class="problem-description">
+                    反轉字串陣列,要求 in-place 操作,使用 O(1) 額外空間。
+                </div>
+                <div class="problem-tags">
+                    <span class="tag">Two Pointers</span>
+                    <span class="tag">String</span>
+                </div>
+            </div>
+
+            <div class="problem-card" data-difficulty="easy" onclick="location.href='problems/merge-sorted-array.html'">
+                <div class="problem-header">
+                    <div class="problem-title">88. Merge Sorted Array</div>
+                    <div class="difficulty-badge easy">Easy</div>
+                </div>
+                <div class="problem-description">
+                    合併兩個已排序的陣列到第一個陣列中,保持排序順序。
+                </div>
+                <div class="problem-tags">
+                    <span class="tag">Array</span>
+                    <span class="tag">Two Pointers</span>
+                    <span class="tag">Sorting</span>
+                </div>
+            </div>
+
+            <!-- Medium Problems -->
+            <div class="problem-card" data-difficulty="medium" onclick="location.href='problems/longest-substring.html'">
+                <div class="problem-header">
+                    <div class="problem-title">3. Longest Substring Without Repeating Characters</div>
+                    <div class="difficulty-badge medium">Medium</div>
+                </div>
+                <div class="problem-description">
+                    找出字串中最長不含重複字符的子字串長度。
+                </div>
+                <div class="problem-tags">
+                    <span class="tag">Hash Table</span>
+                    <span class="tag">String</span>
+                    <span class="tag">Sliding Window</span>
+                </div>
+            </div>
+
+            <div class="problem-card" data-difficulty="medium" onclick="location.href='problems/add-two-numbers.html'">
+                <div class="problem-header">
+                    <div class="problem-title">2. Add Two Numbers</div>
+                    <div class="difficulty-badge medium">Medium</div>
+                </div>
+                <div class="problem-description">
+                    兩個非空鏈表代表兩個非負整數,數字以逆序方式存儲,計算兩數之和並以鏈表形式返回。
+                </div>
+                <div class="problem-tags">
+                    <span class="tag">Linked List</span>
+                    <span class="tag">Math</span>
+                    <span class="tag">Recursion</span>
+                </div>
+            </div>
+
+            <div class="problem-card" data-difficulty="medium" onclick="location.href='problems/container-with-most-water.html'">
+                <div class="problem-header">
+                    <div class="problem-title">11. Container With Most Water</div>
+                    <div class="difficulty-badge medium">Medium</div>
+                </div>
+                <div class="problem-description">
+                    給定 n 個非負整數,每個代表一個垂直線的高度,找出兩條線能與 x 軸組成的容器可以容納最多的水。
+                </div>
+                <div class="problem-tags">
+                    <span class="tag">Array</span>
+                    <span class="tag">Two Pointers</span>
+                    <span class="tag">Greedy</span>
+                </div>
+            </div>
+
+            <!-- Hard Problems -->
+            <div class="problem-card" data-difficulty="hard" onclick="location.href='problems/median-of-two-sorted-arrays.html'">
+                <div class="problem-header">
+                    <div class="problem-title">4. Median of Two Sorted Arrays</div>
+                    <div class="difficulty-badge hard">Hard</div>
+                </div>
+                <div class="problem-description">
+                    找出兩個已排序陣列的中位數,時間複雜度要求 O(log(m+n))。
+                </div>
+                <div class="problem-tags">
+                    <span class="tag">Array</span>
+                    <span class="tag">Binary Search</span>
+                    <span class="tag">Divide and Conquer</span>
+                </div>
+            </div>
+
+            <div class="problem-card" data-difficulty="hard" onclick="location.href='problems/trapping-rain-water.html'">
+                <div class="problem-header">
+                    <div class="problem-title">42. Trapping Rain Water</div>
+                    <div class="difficulty-badge hard">Hard</div>
+                </div>
+                <div class="problem-description">
+                    給定 n 個非負整數表示高度圖,計算下雨後能接多少雨水。
+                </div>
+                <div class="problem-tags">
+                    <span class="tag">Array</span>
+                    <span class="tag">Two Pointers</span>
+                    <span class="tag">Dynamic Programming</span>
+                    <span class="tag">Stack</span>
+                </div>
+            </div>
+
+            <div class="problem-card" data-difficulty="hard" onclick="location.href='problems/merge-k-sorted-lists.html'">
+                <div class="problem-header">
+                    <div class="problem-title">23. Merge k Sorted Lists</div>
+                    <div class="difficulty-badge hard">Hard</div>
+                </div>
+                <div class="problem-description">
+                    合併 k 個已排序的鏈表,返回合併後的有序鏈表。
+                </div>
+                <div class="problem-tags">
+                    <span class="tag">Linked List</span>
+                    <span class="tag">Divide and Conquer</span>
+                    <span class="tag">Heap</span>
+                    <span class="tag">Merge Sort</span>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>💻 LeetCode 學習平台 | 專注於演算法與資料結構</p>
+            <p style="margin-top: 10px; opacity: 0.8;">© 2024 All Rights Reserved</p>
+        </footer>
+    </div>
+
+    <script>
+        function filterProblems(difficulty) {
+            const cards = document.querySelectorAll('.problem-card');
+            const buttons = document.querySelectorAll('.filter-btn');
+            
+            // 更新按鈕狀態
+            buttons.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            // 過濾題目
+            cards.forEach(card => {
+                if (difficulty === 'all' || card.dataset.difficulty === difficulty) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+    </script>
+</body>
+</html>

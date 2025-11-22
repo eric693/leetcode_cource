@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>344. Reverse String</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); min-height: 100vh; padding: 20px; line-height: 1.7; color: #2d3748; }
+        .container { max-width: 1100px; margin: 0 auto; background: white; border-radius: 20px; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1); overflow: hidden; }
+        .header { background: linear-gradient(135deg, #48bb78 0%, #38a169 100%); color: white; padding: 40px 40px 50px 40px; position: relative; }
+        .header::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 20px; background: white; border-radius: 20px 20px 0 0; }
+        .back-btn { display: inline-flex; color: white; text-decoration: none; margin-bottom: 20px; background: rgba(255, 255, 255, 0.2); padding: 8px 16px; border-radius: 20px; transition: all 0.2s; }
+        .problem-title { font-size: 2.5em; margin-bottom: 15px; font-weight: 800; }
+        .difficulty { display: inline-block; background: rgba(255, 255, 255, 0.25); padding: 10px 24px; border-radius: 25px; font-weight: 600; font-size: 1.1em; }
+        .content { padding: 50px; }
+        .section { margin-bottom: 40px; }
+        .section-title { font-size: 2em; color: #2d3748; margin-bottom: 25px; font-weight: 700; display: flex; align-items: center; gap: 12px; }
+        .section-title::before { content: ''; width: 6px; height: 40px; background: linear-gradient(135deg, #48bb78 0%, #38a169 100%); border-radius: 3px; }
+        .description { line-height: 2; color: #4a5568; font-size: 1.1em; }
+        .example { background: linear-gradient(135deg, #f0fff4 0%, #e6fffa 100%); padding: 25px; border-radius: 12px; margin: 20px 0; border-left: 5px solid #48bb78; }
+        pre { margin: 0; border-radius: 10px; overflow-x: auto; background: #f7fafc !important; padding: 20px !important; border: 1px solid #e2e8f0; }
+        .code-header { background: linear-gradient(135deg, #2d3748 0%, #1a202c 100%); color: white; padding: 15px 25px; border-radius: 12px 12px 0 0; font-weight: 600; }
+        .code-container { margin: 25px 0; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); }
+        .language-tabs { display: flex; gap: 15px; margin-bottom: 30px; }
+        .tab-btn { padding: 12px 30px; border: 2px solid #48bb78; background: white; color: #48bb78; border-radius: 30px; cursor: pointer; font-weight: 600; transition: all 0.3s; font-size: 1.05em; }
+        .tab-btn.active { background: linear-gradient(135deg, #48bb78 0%, #38a169 100%); color: white; transform: translateY(-2px); box-shadow: 0 5px 15px rgba(72, 187, 120, 0.3); }
+        .code-content { display: none; }
+        .code-content.active { display: block; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="../index.html" class="back-btn">← 返回題目列表</a>
+            <div class="problem-title">344. Reverse String</div>
+            <span class="difficulty">Easy</span>
+        </div>
+        <div class="content">
+            <div class="section">
+                <h2 class="section-title">題目描述</h2>
+                <div class="description">
+                    <p>編寫一個函數,反轉一個字串陣列。要求<strong>原地</strong>修改輸入陣列,不使用額外陣列。</p>
+                </div>
+                <div class="example">
+                    <pre><code>輸入: s = ["h","e","l","l","o"]
+輸出: ["o","l","l","e","h"]</code></pre>
+                </div>
+            </div>
+            <div class="section">
+                <h2 class="section-title">程式碼實現</h2>
+                <div class="language-tabs">
+                    <button class="tab-btn active" onclick="showCode('python')">Python</button>
+                    <button class="tab-btn" onclick="showCode('cpp')">C++</button>
+                </div>
+                <div id="python-code" class="code-content active">
+                    <div class="code-container">
+                        <div class="code-header">Python - 雙指標解法</div>
+                        <pre><code class="language-python">class Solution:
+    def reverseString(self, s: List[str]) -> None:
+        left, right = 0, len(s) - 1
+        
+        while left < right:
+            s[left], s[right] = s[right], s[left]
+            left += 1
+            right -= 1</code></pre>
+                    </div>
+                </div>
+                <div id="cpp-code" class="code-content">
+                    <div class="code-container">
+                        <div class="code-header">C++ - 雙指標解法</div>
+                        <pre><code class="language-cpp">class Solution {
+public:
+    void reverseString(vector&lt;char&gt;& s) {
+        int left = 0, right = s.size() - 1;
+        
+        while (left < right) {
+            swap(s[left], s[right]);
+            left++;
+            right--;
+        }
+    }
+};</code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        hljs.highlightAll();
+        function showCode(lang) {
+            document.querySelectorAll('.code-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+            document.getElementById(lang + '-code').classList.add('active');
+            event.target.classList.add('active');
+        }
+    </script>
+</body>
+</html>

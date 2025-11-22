@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>4. Median of Two Sorted Arrays</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); min-height: 100vh; padding: 20px; line-height: 1.7; color: #2d3748; }
+        .container { max-width: 1100px; margin: 0 auto; background: white; border-radius: 20px; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1); overflow: hidden; }
+        .header { background: linear-gradient(135deg, #f56565 0%, #e53e3e 100%); color: white; padding: 40px 40px 50px 40px; position: relative; }
+        .header::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 20px; background: white; border-radius: 20px 20px 0 0; }
+        .back-btn { display: inline-flex; color: white; text-decoration: none; margin-bottom: 20px; background: rgba(255, 255, 255, 0.2); padding: 8px 16px; border-radius: 20px; transition: all 0.2s; }
+        .back-btn:hover { transform: translateX(-5px); background: rgba(255, 255, 255, 0.3); }
+        .problem-title { font-size: 2.5em; margin-bottom: 15px; font-weight: 800; }
+        .difficulty { display: inline-block; background: rgba(255, 255, 255, 0.25); padding: 10px 24px; border-radius: 25px; font-weight: 600; font-size: 1.1em; }
+        .content { padding: 50px; }
+        .section { margin-bottom: 50px; }
+        .section-title { font-size: 2em; color: #2d3748; margin-bottom: 25px; font-weight: 700; display: flex; align-items: center; gap: 12px; }
+        .section-title::before { content: ''; width: 6px; height: 40px; background: linear-gradient(135deg, #f56565 0%, #e53e3e 100%); border-radius: 3px; }
+        .description { line-height: 2; color: #4a5568; font-size: 1.1em; }
+        .example { background: linear-gradient(135deg, #fff5f5 0%, #fed7d7 100%); padding: 25px; border-radius: 12px; margin: 20px 0; border-left: 5px solid #f56565; }
+        .example-title { font-weight: 700; color: #e53e3e; margin-bottom: 15px; font-size: 1.2em; }
+        pre { margin: 0; border-radius: 10px; overflow-x: auto; background: #f7fafc !important; padding: 20px !important; border: 1px solid #e2e8f0; }
+        .code-header { background: linear-gradient(135deg, #2d3748 0%, #1a202c 100%); color: white; padding: 15px 25px; border-radius: 12px 12px 0 0; font-weight: 600; display: flex; justify-content: space-between; }
+        .code-container { margin: 25px 0; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); }
+        .language-tabs { display: flex; gap: 15px; margin-bottom: 30px; }
+        .tab-btn { padding: 12px 30px; border: 2px solid #f56565; background: white; color: #f56565; border-radius: 30px; cursor: pointer; font-weight: 600; transition: all 0.3s; font-size: 1.05em; }
+        .tab-btn.active { background: linear-gradient(135deg, #f56565 0%, #e53e3e 100%); color: white; transform: translateY(-2px); box-shadow: 0 5px 15px rgba(245, 101, 101, 0.3); }
+        .code-content { display: none; }
+        .code-content.active { display: block; }
+        .approach { background: linear-gradient(135deg, #ebf8ff 0%, #bee3f8 100%); padding: 30px; border-radius: 12px; margin: 20px 0; border-left: 5px solid #4299e1; }
+        .approach-title { font-weight: 700; color: #2c5282; margin-bottom: 15px; font-size: 1.3em; }
+        .warning { background: linear-gradient(135deg, #fffaf0 0%, #feebc8 100%); padding: 20px 25px; border-radius: 10px; margin: 20px 0; border-left: 4px solid #ed8936; }
+        ol, ul { margin-left: 30px; line-height: 2; }
+        li { margin: 12px 0; color: #4a5568; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="../index.html" class="back-btn">← 返回題目列表</a>
+            <div class="problem-title">4. Median of Two Sorted Arrays</div>
+            <span class="difficulty">Hard</span>
+        </div>
+        <div class="content">
+            <div class="section">
+                <h2 class="section-title">題目描述</h2>
+                <div class="description">
+                    <p>給定兩個大小分別為 m 和 n 的正序陣列 nums1 和 nums2。請你找出並返回這兩個正序陣列的<strong>中位數</strong>。</p>
+                    <br>
+                    <p><strong>演算法的時間複雜度應該為 O(log(m+n))。</strong></p>
+                </div>
+                <div class="example">
+                    <div class="example-title">範例 1:</div>
+                    <pre><code>輸入: nums1 = [1,3], nums2 = [2]
+輸出: 2.00000
+解釋: 合併陣列 = [1,2,3],中位數 2</code></pre>
+                </div>
+                <div class="example">
+                    <div class="example-title">範例 2:</div>
+                    <pre><code>輸入: nums1 = [1,2], nums2 = [3,4]
+輸出: 2.50000
+解釋: 合併陣列 = [1,2,3,4],中位數 (2 + 3) / 2 = 2.5</code></pre>
+                </div>
+            </div>
+            <div class="section">
+                <h2 class="section-title">解題思路</h2>
+                <div class="approach">
+                    <div class="approach-title">二分搜尋 (Binary Search)</div>
+                    <p>核心思想是在較短的陣列上進行二分搜尋,找到一個分割點,使得:</p>
+                    <ul>
+                        <li>中位數左邊的元素個數 = 右邊的元素個數</li>
+                        <li>左邊所有元素 ≤ 右邊所有元素</li>
+                    </ul>
+                    <br>
+                    <p><strong>演算法步驟:</strong></p>
+                    <ol>
+                        <li>確保 nums1 是較短的陣列</li>
+                        <li>在 nums1 上進行二分搜尋</li>
+                        <li>計算 nums2 的分割點</li>
+                        <li>檢查分割是否有效</li>
+                        <li>找到正確分割後計算中位數</li>
+                    </ol>
+                </div>
+                <div class="warning">
+                    <strong>⚠️ 關鍵條件:</strong> maxLeft1 ≤ minRight2 且 maxLeft2 ≤ minRight1
+                </div>
+            </div>
+            <div class="section">
+                <h2 class="section-title">程式碼實現</h2>
+                <div class="language-tabs">
+                    <button class="tab-btn active" onclick="showCode('python')">Python</button>
+                    <button class="tab-btn" onclick="showCode('cpp')">C++</button>
+                </div>
+                <div id="python-code" class="code-content active">
+                    <div class="code-container">
+                        <div class="code-header"><span>Python - 二分搜尋解法</span></div>
+                        <pre><code class="language-python">class Solution:
+    def findMedianSortedArrays(self, nums1: List[int], nums2: List[int]) -> float:
+        if len(nums1) > len(nums2):
+            nums1, nums2 = nums2, nums1
+        
+        m, n = len(nums1), len(nums2)
+        left, right = 0, m
+        
+        while left <= right:
+            partition1 = (left + right) // 2
+            partition2 = (m + n + 1) // 2 - partition1
+            
+            maxLeft1 = float('-inf') if partition1 == 0 else nums1[partition1 - 1]
+            minRight1 = float('inf') if partition1 == m else nums1[partition1]
+            
+            maxLeft2 = float('-inf') if partition2 == 0 else nums2[partition2 - 1]
+            minRight2 = float('inf') if partition2 == n else nums2[partition2]
+            
+            if maxLeft1 <= minRight2 and maxLeft2 <= minRight1:
+                if (m + n) % 2 == 0:
+                    return (max(maxLeft1, maxLeft2) + min(minRight1, minRight2)) / 2
+                else:
+                    return max(maxLeft1, maxLeft2)
+            
+            elif maxLeft1 > minRight2:
+                right = partition1 - 1
+            else:
+                left = partition1 + 1
+        
+        return 0.0</code></pre>
+                    </div>
+                </div>
+                <div id="cpp-code" class="code-content">
+                    <div class="code-container">
+                        <div class="code-header"><span>C++ - 二分搜尋解法</span></div>
+                        <pre><code class="language-cpp">#include &lt;vector&gt;
+#include &lt;climits&gt;
+
+class Solution {
+public:
+    double findMedianSortedArrays(std::vector&lt;int&gt;& nums1, std::vector&lt;int&gt;& nums2) {
+        if (nums1.size() > nums2.size()) {
+            return findMedianSortedArrays(nums2, nums1);
+        }
+        
+        int m = nums1.size(), n = nums2.size();
+        int left = 0, right = m;
+        
+        while (left <= right) {
+            int partition1 = (left + right) / 2;
+            int partition2 = (m + n + 1) / 2 - partition1;
+            
+            int maxLeft1 = (partition1 == 0) ? INT_MIN : nums1[partition1 - 1];
+            int minRight1 = (partition1 == m) ? INT_MAX : nums1[partition1];
+            
+            int maxLeft2 = (partition2 == 0) ? INT_MIN : nums2[partition2 - 1];
+            int minRight2 = (partition2 == n) ? INT_MAX : nums2[partition2];
+            
+            if (maxLeft1 <= minRight2 && maxLeft2 <= minRight1) {
+                if ((m + n) % 2 == 0) {
+                    return (std::max(maxLeft1, maxLeft2) + 
+                            std::min(minRight1, minRight2)) / 2.0;
+                } else {
+                    return std::max(maxLeft1, maxLeft2);
+                }
+            } else if (maxLeft1 > minRight2) {
+                right = partition1 - 1;
+            } else {
+                left = partition1 + 1;
+            }
+        }
+        
+        return 0.0;
+    }
+};</code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        hljs.highlightAll();
+        function showCode(lang) {
+            document.querySelectorAll('.code-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+            document.getElementById(lang + '-code').classList.add('active');
+            event.target.classList.add('active');
+        }
+    </script>
+</body>
+</html>
