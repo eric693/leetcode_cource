@@ -8,275 +8,45 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/cpp.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/java.min.js"></script>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-            min-height: 100vh;
-            padding: 20px;
-            line-height: 1.7;
-            color: #2d3748;
-        }
-
-        .container {
-            max-width: 1100px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
-        }
-
-        .header {
-            background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
-            color: white;
-            padding: 40px 40px 50px 40px;
-            position: relative;
-        }
-
-        .header::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 20px;
-            background: white;
-            border-radius: 20px 20px 0 0;
-        }
-
-        .back-btn {
-            display: inline-flex;
-            align-items: center;
-            color: white;
-            text-decoration: none;
-            margin-bottom: 20px;
-            font-size: 1em;
-            transition: transform 0.2s;
-            background: rgba(255, 255, 255, 0.2);
-            padding: 8px 16px;
-            border-radius: 20px;
-            backdrop-filter: blur(10px);
-        }
-
-        .back-btn:hover {
-            transform: translateX(-5px);
-            background: rgba(255, 255, 255, 0.3);
-        }
-
-        .problem-title {
-            font-size: 2.5em;
-            margin-bottom: 15px;
-            font-weight: 800;
-            letter-spacing: -0.5px;
-        }
-
-        .difficulty {
-            display: inline-block;
-            background: rgba(255, 255, 255, 0.25);
-            padding: 10px 24px;
-            border-radius: 25px;
-            font-weight: 600;
-            font-size: 1.1em;
-            backdrop-filter: blur(10px);
-        }
-
-        .content {
-            padding: 50px;
-        }
-
-        .section {
-            margin-bottom: 50px;
-        }
-
-        .section-title {
-            font-size: 2em;
-            color: #2d3748;
-            margin-bottom: 25px;
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .section-title::before {
-            content: '';
-            width: 6px;
-            height: 40px;
-            background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
-            border-radius: 3px;
-        }
-
-        .description {
-            line-height: 2;
-            color: #4a5568;
-            font-size: 1.1em;
-        }
-
-        .example {
-            background: linear-gradient(135deg, #f0fff4 0%, #e6fffa 100%);
-            padding: 25px;
-            border-radius: 12px;
-            margin: 20px 0;
-            border-left: 5px solid #48bb78;
-        }
-
-        .example-title {
-            font-weight: 700;
-            color: #38a169;
-            margin-bottom: 15px;
-            font-size: 1.2em;
-        }
-
-        pre {
-            margin: 0;
-            border-radius: 10px;
-            overflow-x: auto;
-            background: #f7fafc !important;
-            padding: 20px !important;
-            border: 1px solid #e2e8f0;
-        }
-
-        code {
-            font-family: 'Fira Code', 'Monaco', 'Consolas', monospace;
-            font-size: 0.95em;
-        }
-
-        .code-header {
-            background: linear-gradient(135deg, #2d3748 0%, #1a202c 100%);
-            color: white;
-            padding: 15px 25px;
-            border-radius: 12px 12px 0 0;
-            font-weight: 600;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 1.05em;
-        }
-
-        .code-header .badge {
-            background: rgba(255, 255, 255, 0.2);
-            padding: 5px 15px;
-            border-radius: 15px;
-            font-size: 0.9em;
-        }
-
-        .code-container {
-            margin: 25px 0;
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        }
-
-        .language-tabs {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 30px;
-        }
-
-        .tab-btn {
-            padding: 12px 30px;
-            border: 2px solid #48bb78;
-            background: white;
-            color: #48bb78;
-            border-radius: 30px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.3s;
-            font-size: 1.05em;
-        }
-
-        .tab-btn.active {
-            background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
-            color: white;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(72, 187, 120, 0.3);
-        }
-
-        .tab-btn:hover:not(.active) {
-            background: #f0fff4;
-            transform: translateY(-2px);
-        }
-
-        .code-content {
-            display: none;
-        }
-
-        .code-content.active {
-            display: block;
-        }
-
-        .complexity {
-            background: linear-gradient(135deg, #fef5e7 0%, #fdebd0 100%);
-            padding: 25px;
-            border-radius: 12px;
-            margin: 20px 0;
-            border-left: 5px solid #f6ad55;
-        }
-
-        .complexity-item {
-            margin: 12px 0;
-            font-weight: 600;
-            font-size: 1.1em;
-            color: #744210;
-        }
-
-        .approach {
-            background: linear-gradient(135deg, #ebf8ff 0%, #e6fffa 100%);
-            padding: 30px;
-            border-radius: 12px;
-            margin: 20px 0;
-            border-left: 5px solid #4299e1;
-        }
-
-        .approach-title {
-            font-weight: 700;
-            color: #2c5282;
-            margin-bottom: 15px;
-            font-size: 1.3em;
-        }
-
-        ol, ul {
-            margin-left: 30px;
-            line-height: 2;
-        }
-
-        li {
-            margin: 12px 0;
-            color: #4a5568;
-        }
-
-        strong {
-            color: #2d3748;
-            font-weight: 600;
-        }
-
-        .highlight-box {
-            background: #edf2f7;
-            padding: 20px 25px;
-            border-radius: 10px;
-            margin: 20px 0;
-            border-left: 4px solid #4299e1;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f8fafc; min-height: 100vh; padding: 20px; line-height: 1.7; color: #2d3748; }
+        .container { max-width: 1100px; margin: 0 auto; background: white; border-radius: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); overflow: hidden; }
+        .header { background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; padding: 40px; position: relative; }
+        .back-btn { display: inline-flex; color: white; text-decoration: none; margin-bottom: 20px; background: rgba(255,255,255,0.2); padding: 8px 16px; border-radius: 8px; transition: all 0.2s; }
+        .back-btn:hover { background: rgba(255,255,255,0.3); }
+        .problem-title { font-size: 2.2em; margin-bottom: 15px; font-weight: 800; }
+        .difficulty { display: inline-block; background: rgba(255,255,255,0.25); padding: 8px 20px; border-radius: 8px; font-weight: 600; }
+        .content { padding: 40px; }
+        .section { margin-bottom: 40px; }
+        .section-title { font-size: 1.8em; color: #1e293b; margin-bottom: 20px; font-weight: 700; border-left: 4px solid #10b981; padding-left: 16px; }
+        .description { line-height: 1.9; color: #475569; font-size: 1.05em; }
+        .example { background: #f0fdf4; padding: 20px; border-radius: 10px; margin: 15px 0; border-left: 4px solid #10b981; }
+        .example-title { font-weight: 700; color: #059669; margin-bottom: 12px; font-size: 1.1em; }
+        pre { margin: 0; border-radius: 8px; overflow-x: auto; background: #f8fafc !important; padding: 18px !important; border: 1px solid #e2e8f0; }
+        code { font-family: 'Fira Code', 'Consolas', monospace; font-size: 0.92em; }
+        .code-header { background: #1e293b; color: white; padding: 12px 20px; border-radius: 8px 8px 0 0; font-weight: 600; display: flex; justify-content: space-between; align-items: center; }
+        .code-header .badge { background: rgba(255,255,255,0.2); padding: 4px 12px; border-radius: 6px; font-size: 0.85em; }
+        .code-container { margin: 20px 0; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+        .language-tabs { display: flex; gap: 12px; margin-bottom: 25px; }
+        .tab-btn { padding: 10px 24px; border: 2px solid #10b981; background: white; color: #10b981; border-radius: 8px; cursor: pointer; font-weight: 600; transition: all 0.2s; font-size: 1em; }
+        .tab-btn.active { background: #10b981; color: white; }
+        .tab-btn:hover:not(.active) { background: #f0fdf4; }
+        .code-content { display: none; }
+        .code-content.active { display: block; }
+        .complexity { background: #fef3c7; padding: 20px; border-radius: 10px; margin: 15px 0; border-left: 4px solid #f59e0b; }
+        .complexity-item { margin: 10px 0; font-weight: 600; font-size: 1.05em; color: #92400e; }
+        .approach { background: #eff6ff; padding: 25px; border-radius: 10px; margin: 15px 0; border-left: 4px solid #3b82f6; }
+        .approach-title { font-weight: 700; color: #1e40af; margin-bottom: 12px; font-size: 1.2em; }
+        ol, ul { margin-left: 28px; line-height: 1.9; }
+        li { margin: 10px 0; color: #475569; }
+        strong { color: #1e293b; font-weight: 600; }
+        .highlight-box { background: #f1f5f9; padding: 18px 22px; border-radius: 8px; margin: 15px 0; border-left: 3px solid #3b82f6; }
         @media (max-width: 768px) {
-            .content {
-                padding: 30px 25px;
-            }
-            
-            .problem-title {
-                font-size: 2em;
-            }
-            
-            .section-title {
-                font-size: 1.6em;
-            }
+            .content { padding: 25px; }
+            .problem-title { font-size: 1.8em; }
+            .section-title { font-size: 1.5em; }
         }
     </style>
 </head>
@@ -310,12 +80,6 @@
                     <div class="example-title">範例 2:</div>
                     <pre><code>輸入: nums = [3,2,4], target = 6
 輸出: [1,2]</code></pre>
-                </div>
-
-                <div class="example">
-                    <div class="example-title">範例 3:</div>
-                    <pre><code>輸入: nums = [3,3], target = 6
-輸出: [0,1]</code></pre>
                 </div>
             </div>
 
@@ -356,6 +120,7 @@
                 <div class="language-tabs">
                     <button class="tab-btn active" onclick="showCode('python')">Python</button>
                     <button class="tab-btn" onclick="showCode('cpp')">C++</button>
+                    <button class="tab-btn" onclick="showCode('java')">Java</button>
                 </div>
 
                 <div id="python-code" class="code-content active">
@@ -380,25 +145,6 @@
             
             # 將當前數字和索引存入雜湊表
             hash_map[num] = i
-        
-        return []</code></pre>
-                    </div>
-
-                    <div class="code-container">
-                        <div class="code-header">
-                            <span>Python - 暴力解法(參考)</span>
-                        </div>
-                        <pre><code class="language-python">class Solution:
-    def twoSum(self, nums: List[int], target: int) -> List[int]:
-        n = len(nums)
-        
-        # 外層迴圈
-        for i in range(n):
-            # 內層迴圈從 i+1 開始,避免重複使用同一元素
-            for j in range(i + 1, n):
-                # 檢查兩數之和是否等於目標值
-                if nums[i] + nums[j] == target:
-                    return [i, j]
         
         return []</code></pre>
                     </div>
@@ -437,32 +183,39 @@ public:
     }
 };</code></pre>
                     </div>
+                </div>
 
+                <div id="java-code" class="code-content">
                     <div class="code-container">
                         <div class="code-header">
-                            <span>C++ - 暴力解法(參考)</span>
+                            <span>Java - 雜湊表解法</span>
+                            <span class="badge">最優解</span>
                         </div>
-                        <pre><code class="language-cpp">#include &lt;vector&gt;
+                        <pre><code class="language-java">import java.util.HashMap;
+import java.util.Map;
 
 class Solution {
-public:
-    std::vector&lt;int&gt; twoSum(std::vector&lt;int&gt;& nums, int target) {
-        int n = nums.size();
+    public int[] twoSum(int[] nums, int target) {
+        // 建立雜湊表,鍵為數字,值為索引
+        Map&lt;Integer, Integer&gt; hashMap = new HashMap&lt;&gt;();
         
-        // 外層迴圈
-        for (int i = 0; i &lt; n; i++) {
-            // 內層迴圈從 i+1 開始
-            for (int j = i + 1; j &lt; n; j++) {
-                // 檢查兩數之和是否等於目標值
-                if (nums[i] + nums[j] == target) {
-                    return {i, j};
-                }
+        // 遍歷陣列
+        for (int i = 0; i &lt; nums.length; i++) {
+            // 計算補數
+            int complement = target - nums[i];
+            
+            // 如果補數在雜湊表中,找到答案
+            if (hashMap.containsKey(complement)) {
+                return new int[] {hashMap.get(complement), i};
             }
+            
+            // 將當前數字和索引存入雜湊表
+            hashMap.put(nums[i], i);
         }
         
-        return {};
+        return new int[] {};
     }
-};</code></pre>
+}</code></pre>
                     </div>
                 </div>
             </div>
@@ -472,10 +225,10 @@ public:
                 
                 <div class="complexity">
                     <div class="complexity-item">
-                        ⏰ 時間複雜度: O(n) - 只需遍歷陣列一次
+                        時間複雜度: O(n) - 只需遍歷陣列一次
                     </div>
                     <div class="complexity-item">
-                        💾 空間複雜度: O(n) - 雜湊表最多存儲 n 個元素
+                        空間複雜度: O(n) - 雜湊表最多存儲 n 個元素
                     </div>
                 </div>
 
@@ -495,7 +248,7 @@ public:
                     <ol>
                         <li><strong>邊界條件:</strong> 確保陣列至少有兩個元素</li>
                         <li><strong>重複元素:</strong> 注意處理陣列中有重複數字的情況</li>
-                        <li><strong>數據結構選擇:</strong> Python 用 dict,C++ 用 unordered_map</li>
+                        <li><strong>數據結構選擇:</strong> Python 用 dict,C++ 用 unordered_map,Java 用 HashMap</li>
                         <li><strong>一次遍歷:</strong> 可以在查找的同時加入雜湊表,不需要預先建立</li>
                         <li><strong>返回順序:</strong> 題目允許任意順序,但通常返回較小索引在前</li>
                     </ol>

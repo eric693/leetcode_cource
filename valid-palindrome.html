@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <title>125. Valid Palindrome</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, sans-serif; background: #f8fafc; padding: 20px; color: #2d3748; }
+        .container { max-width: 1100px; margin: 0 auto; background: white; border-radius: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        .header { background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; padding: 40px; }
+        .back-btn { color: white; text-decoration: none; background: rgba(255,255,255,0.2); padding: 8px 16px; border-radius: 8px; display: inline-block; margin-bottom: 20px; }
+        .problem-title { font-size: 2.2em; margin-bottom: 15px; font-weight: 800; }
+        .content { padding: 40px; }
+        .section-title { font-size: 1.8em; color: #1e293b; margin-bottom: 20px; font-weight: 700; border-left: 4px solid #10b981; padding-left: 16px; }
+        pre { background: #f8fafc !important; padding: 18px !important; border-radius: 8px; }
+        .tab-btn { padding: 10px 24px; border: 2px solid #10b981; background: white; color: #10b981; border-radius: 8px; cursor: pointer; font-weight: 600; margin-right: 10px; }
+        .tab-btn.active { background: #10b981; color: white; }
+        .code-content { display: none; margin-top: 20px; }
+        .code-content.active { display: block; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="../index.html" class="back-btn">← 返回</a>
+            <div class="problem-title">125. Valid Palindrome</div>
+        </div>
+        <div class="content">
+            <h2 class="section-title">題目描述</h2>
+            <p>判斷給定字串是否為回文,只考慮字母和數字字符,忽略大小寫。</p>
+            <h2 class="section-title" style="margin-top: 30px;">程式碼</h2>
+            <button class="tab-btn active" onclick="showCode('python')">Python</button>
+            <button class="tab-btn" onclick="showCode('java')">Java</button>
+            <div id="python-code" class="code-content active">
+                <pre><code class="language-python">class Solution:
+    def isPalindrome(self, s: str) -> bool:
+        left, right = 0, len(s) - 1
+        
+        while left < right:
+            while left < right and not s[left].isalnum():
+                left += 1
+            while left < right and not s[right].isalnum():
+                right -= 1
+            
+            if s[left].lower() != s[right].lower():
+                return False
+            
+            left += 1
+            right -= 1
+        
+        return True</code></pre>
+            </div>
+            <div id="java-code" class="code-content">
+                <pre><code class="language-java">class Solution {
+    public boolean isPalindrome(String s) {
+        int left = 0, right = s.length() - 1;
+        
+        while (left < right) {
+            while (left < right && !Character.isLetterOrDigit(s.charAt(left))) {
+                left++;
+            }
+            while (left < right && !Character.isLetterOrDigit(s.charAt(right))) {
+                right--;
+            }
+            
+            if (Character.toLowerCase(s.charAt(left)) != 
+                Character.toLowerCase(s.charAt(right))) {
+                return false;
+            }
+            
+            left++;
+            right--;
+        }
+        
+        return true;
+    }
+}</code></pre>
+            </div>
+        </div>
+    </div>
+    <script>
+        hljs.highlightAll();
+        function showCode(lang) {
+            document.querySelectorAll('.code-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+            document.getElementById(lang + '-code').classList.add('active');
+            event.target.classList.add('active');
+        }
+    </script>
+</body>
+</html>

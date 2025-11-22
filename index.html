@@ -4,362 +4,382 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LeetCode 學習平台</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-            min-height: 100vh;
-            padding: 20px;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 15px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-            overflow: hidden;
-        }
-
-        header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 50px 30px;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        header::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><rect width="100" height="100" fill="none"/><circle cx="50" cy="50" r="40" fill="rgba(255,255,255,0.05)"/></svg>');
-            opacity: 0.3;
-        }
-
-        header > * {
-            position: relative;
-            z-index: 1;
-        }
-
-        header h1 {
-            font-size: 3em;
-            margin-bottom: 15px;
-            font-weight: 800;
-            letter-spacing: -1px;
-        }
-
-        header p {
-            font-size: 1.1em;
-            opacity: 0.9;
-        }
-
-        .filter-section {
-            padding: 30px;
-            background: rgba(255, 255, 255, 0.7);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-        }
-
-        .filter-buttons {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-
-        .filter-btn {
-            padding: 10px 20px;
-            border: none;
-            border-radius: 25px;
-            cursor: pointer;
-            font-size: 1em;
-            transition: all 0.3s;
-            font-weight: 600;
-        }
-
-        .filter-btn.all {
-            background: #6c757d;
-            color: white;
-        }
-
-        .filter-btn.easy {
-            background: #28a745;
-            color: white;
-        }
-
-        .filter-btn.medium {
-            background: #ffc107;
-            color: #333;
-        }
-
-        .filter-btn.hard {
-            background: #dc3545;
-            color: white;
-        }
-
-        .filter-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-        }
-
-        .filter-btn.active {
-            box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.2);
-        }
-
-        .problems-list {
-            padding: 30px;
-        }
-
-        .problem-card {
-            background: white;
-            border: none;
-            border-radius: 12px;
-            padding: 25px;
-            margin-bottom: 20px;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            cursor: pointer;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-        }
-
-        .problem-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
-        }
-
-        .problem-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 10px;
-        }
-
-        .problem-title {
-            font-size: 1.3em;
-            font-weight: 700;
-            color: #333;
-        }
-
-        .difficulty-badge {
-            padding: 5px 15px;
-            border-radius: 20px;
-            font-weight: 600;
-            font-size: 0.9em;
-        }
-
-        .difficulty-badge.easy {
-            background: #28a745;
-            color: white;
-        }
-
-        .difficulty-badge.medium {
-            background: #ffc107;
-            color: #333;
-        }
-
-        .difficulty-badge.hard {
-            background: #dc3545;
-            color: white;
-        }
-
-        .problem-description {
-            color: #666;
-            margin-bottom: 15px;
-            line-height: 1.6;
-        }
-
-        .problem-tags {
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-        }
-
-        .tag {
-            background: #e9ecef;
-            padding: 5px 12px;
-            border-radius: 15px;
-            font-size: 0.85em;
-            color: #495057;
-        }
-
-        footer {
-            background: linear-gradient(135deg, #434343 0%, #000000 100%);
-            color: white;
-            text-align: center;
-            padding: 30px;
-            margin-top: 50px;
-            border-radius: 0 0 15px 15px;
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f8fafc; min-height: 100vh; color: #1e293b; }
+        .container { max-width: 1400px; margin: 0 auto; }
+        header { background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%); color: white; padding: 50px 30px; text-align: center; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        header h1 { font-size: 3em; margin-bottom: 15px; font-weight: 800; letter-spacing: -1px; }
+        header p { font-size: 1.2em; opacity: 0.95; }
+        .filter-section { background: white; padding: 25px 30px; border-bottom: 1px solid #e2e8f0; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .filter-label { font-weight: 600; color: #475569; margin-bottom: 12px; font-size: 0.95em; text-transform: uppercase; letter-spacing: 0.5px; }
+        .filter-buttons { display: flex; gap: 10px; flex-wrap: wrap; }
+        .filter-btn { padding: 10px 20px; border: 2px solid #e2e8f0; border-radius: 8px; cursor: pointer; font-size: 0.95em; transition: all 0.2s; font-weight: 600; background: white; color: #475569; }
+        .filter-btn:hover { border-color: #1e40af; color: #1e40af; transform: translateY(-1px); }
+        .filter-btn.active { background: #1e40af; color: white; border-color: #1e40af; }
+        .content { padding: 40px 30px; }
+        .category-section { margin-bottom: 50px; }
+        .category-title { font-size: 1.8em; color: #1e293b; margin-bottom: 20px; font-weight: 700; padding-bottom: 12px; border-bottom: 3px solid #1e40af; }
+        .problems-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 20px; }
+        .problem-card { background: white; border-radius: 12px; padding: 24px; transition: all 0.3s; cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,0.08); border: 2px solid transparent; }
+        .problem-card:hover { transform: translateY(-4px); box-shadow: 0 8px 16px rgba(0,0,0,0.12); border-color: #1e40af; }
+        .problem-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; gap: 12px; }
+        .problem-number { font-size: 0.85em; color: #64748b; font-weight: 600; }
+        .problem-title { font-size: 1.15em; font-weight: 700; color: #1e293b; margin: 5px 0 12px 0; line-height: 1.4; }
+        .difficulty-badge { padding: 4px 12px; border-radius: 6px; font-weight: 600; font-size: 0.85em; white-space: nowrap; }
+        .difficulty-badge.easy { background: #dcfce7; color: #166534; }
+        .difficulty-badge.medium { background: #fef3c7; color: #92400e; }
+        .difficulty-badge.hard { background: #fee2e2; color: #991b1b; }
+        .problem-description { color: #64748b; margin-bottom: 15px; line-height: 1.6; font-size: 0.95em; }
+        .problem-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+        .tag { background: #f1f5f9; padding: 4px 10px; border-radius: 6px; font-size: 0.8em; color: #475569; font-weight: 500; }
+        footer { background: #1e293b; color: white; text-align: center; padding: 30px; margin-top: 60px; }
+        @media (max-width: 768px) {
+            .problems-grid { grid-template-columns: 1fr; }
+            header h1 { font-size: 2em; }
         }
     </style>
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>🎯 LeetCode 學習平台</h1>
-            <p>精選題目 | Python & C++ 詳解 | 語法高亮</p>
+            <h1>LeetCode 學習平台</h1>
+            <p>精選題目 | Python & C++ & Java 詳解</p>
         </header>
 
         <div class="filter-section">
+            <div class="filter-label">難度篩選</div>
             <div class="filter-buttons">
-                <button class="filter-btn all active" onclick="filterProblems('all')">全部題目</button>
-                <button class="filter-btn easy" onclick="filterProblems('easy')">Easy</button>
-                <button class="filter-btn medium" onclick="filterProblems('medium')">Medium</button>
-                <button class="filter-btn hard" onclick="filterProblems('hard')">Hard</button>
+                <button class="filter-btn active" onclick="filterProblems('all')">全部題目</button>
+                <button class="filter-btn" onclick="filterProblems('easy')">Easy</button>
+                <button class="filter-btn" onclick="filterProblems('medium')">Medium</button>
+                <button class="filter-btn" onclick="filterProblems('hard')">Hard</button>
             </div>
         </div>
 
-        <div class="problems-list" id="problemsList">
-            <!-- Easy Problems -->
-            <div class="problem-card" data-difficulty="easy" onclick="location.href='problems/two-sum.html'">
-                <div class="problem-header">
-                    <div class="problem-title">1. Two Sum</div>
-                    <div class="difficulty-badge easy">Easy</div>
-                </div>
-                <div class="problem-description">
-                    給定一個整數陣列和目標值,找出陣列中兩個數字相加等於目標值的索引位置。
-                </div>
-                <div class="problem-tags">
-                    <span class="tag">Array</span>
-                    <span class="tag">Hash Table</span>
+        <div class="content">
+            <!-- Array & Hash Table -->
+            <div class="category-section">
+                <h2 class="category-title">Array & Hash Table</h2>
+                <div class="problems-grid">
+                    <div class="problem-card" data-difficulty="easy" onclick="location.href='problems/two-sum.html'">
+                        <div class="problem-header">
+                            <div class="problem-number">#1</div>
+                            <div class="difficulty-badge easy">Easy</div>
+                        </div>
+                        <div class="problem-title">Two Sum</div>
+                        <div class="problem-description">給定一個整數陣列和目標值,找出陣列中兩個數字相加等於目標值的索引位置。</div>
+                        <div class="problem-tags">
+                            <span class="tag">Array</span>
+                            <span class="tag">Hash Table</span>
+                        </div>
+                    </div>
+
+                    <div class="problem-card" data-difficulty="medium" onclick="location.href='problems/group-anagrams.html'">
+                        <div class="problem-header">
+                            <div class="problem-number">#49</div>
+                            <div class="difficulty-badge medium">Medium</div>
+                        </div>
+                        <div class="problem-title">Group Anagrams</div>
+                        <div class="problem-description">給定一個字串陣列,將字母異位詞(anagram)分組在一起。</div>
+                        <div class="problem-tags">
+                            <span class="tag">Array</span>
+                            <span class="tag">Hash Table</span>
+                            <span class="tag">String</span>
+                        </div>
+                    </div>
+
+                    <div class="problem-card" data-difficulty="medium" onclick="location.href='problems/top-k-frequent.html'">
+                        <div class="problem-header">
+                            <div class="problem-number">#347</div>
+                            <div class="difficulty-badge medium">Medium</div>
+                        </div>
+                        <div class="problem-title">Top K Frequent Elements</div>
+                        <div class="problem-description">給定整數陣列,返回出現頻率最高的 k 個元素。</div>
+                        <div class="problem-tags">
+                            <span class="tag">Array</span>
+                            <span class="tag">Hash Table</span>
+                            <span class="tag">Heap</span>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <div class="problem-card" data-difficulty="easy" onclick="location.href='problems/reverse-string.html'">
-                <div class="problem-header">
-                    <div class="problem-title">344. Reverse String</div>
-                    <div class="difficulty-badge easy">Easy</div>
-                </div>
-                <div class="problem-description">
-                    反轉字串陣列,要求 in-place 操作,使用 O(1) 額外空間。
-                </div>
-                <div class="problem-tags">
-                    <span class="tag">Two Pointers</span>
-                    <span class="tag">String</span>
+            <!-- Two Pointers & Sliding Window -->
+            <div class="category-section">
+                <h2 class="category-title">Two Pointers & Sliding Window</h2>
+                <div class="problems-grid">
+                    <div class="problem-card" data-difficulty="easy" onclick="location.href='problems/valid-palindrome.html'">
+                        <div class="problem-header">
+                            <div class="problem-number">#125</div>
+                            <div class="difficulty-badge easy">Easy</div>
+                        </div>
+                        <div class="problem-title">Valid Palindrome</div>
+                        <div class="problem-description">判斷給定字串是否為回文,只考慮字母和數字字符,忽略大小寫。</div>
+                        <div class="problem-tags">
+                            <span class="tag">Two Pointers</span>
+                            <span class="tag">String</span>
+                        </div>
+                    </div>
+
+                    <div class="problem-card" data-difficulty="medium" onclick="location.href='problems/longest-substring.html'">
+                        <div class="problem-header">
+                            <div class="problem-number">#3</div>
+                            <div class="difficulty-badge medium">Medium</div>
+                        </div>
+                        <div class="problem-title">Longest Substring Without Repeating Characters</div>
+                        <div class="problem-description">找出字串中最長不含重複字符的子字串長度。</div>
+                        <div class="problem-tags">
+                            <span class="tag">Hash Table</span>
+                            <span class="tag">String</span>
+                            <span class="tag">Sliding Window</span>
+                        </div>
+                    </div>
+
+                    <div class="problem-card" data-difficulty="medium" onclick="location.href='problems/container-with-most-water.html'">
+                        <div class="problem-header">
+                            <div class="problem-number">#11</div>
+                            <div class="difficulty-badge medium">Medium</div>
+                        </div>
+                        <div class="problem-title">Container With Most Water</div>
+                        <div class="problem-description">給定 n 個非負整數,找出兩條線能與 x 軸組成的容器可以容納最多的水。</div>
+                        <div class="problem-tags">
+                            <span class="tag">Array</span>
+                            <span class="tag">Two Pointers</span>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <div class="problem-card" data-difficulty="easy" onclick="location.href='problems/merge-sorted-array.html'">
-                <div class="problem-header">
-                    <div class="problem-title">88. Merge Sorted Array</div>
-                    <div class="difficulty-badge easy">Easy</div>
-                </div>
-                <div class="problem-description">
-                    合併兩個已排序的陣列到第一個陣列中,保持排序順序。
-                </div>
-                <div class="problem-tags">
-                    <span class="tag">Array</span>
-                    <span class="tag">Two Pointers</span>
-                    <span class="tag">Sorting</span>
+            <!-- Stack & Queue -->
+            <div class="category-section">
+                <h2 class="category-title">Stack & Queue</h2>
+                <div class="problems-grid">
+                    <div class="problem-card" data-difficulty="easy" onclick="location.href='problems/valid-parentheses.html'">
+                        <div class="problem-header">
+                            <div class="problem-number">#20</div>
+                            <div class="difficulty-badge easy">Easy</div>
+                        </div>
+                        <div class="problem-title">Valid Parentheses</div>
+                        <div class="problem-description">判斷給定字串中的括號是否有效配對。</div>
+                        <div class="problem-tags">
+                            <span class="tag">String</span>
+                            <span class="tag">Stack</span>
+                        </div>
+                    </div>
+
+                    <div class="problem-card" data-difficulty="medium" onclick="location.href='problems/min-stack.html'">
+                        <div class="problem-header">
+                            <div class="problem-number">#155</div>
+                            <div class="difficulty-badge medium">Medium</div>
+                        </div>
+                        <div class="problem-title">Min Stack</div>
+                        <div class="problem-description">設計一個支援 push、pop、top 操作,並能在常數時間內檢索到最小元素的堆疊。</div>
+                        <div class="problem-tags">
+                            <span class="tag">Stack</span>
+                            <span class="tag">Design</span>
+                        </div>
+                    </div>
+
+                    <div class="problem-card" data-difficulty="medium" onclick="location.href='problems/daily-temperatures.html'">
+                        <div class="problem-header">
+                            <div class="problem-number">#739</div>
+                            <div class="difficulty-badge medium">Medium</div>
+                        </div>
+                        <div class="problem-title">Daily Temperatures</div>
+                        <div class="problem-description">給定每日溫度列表,返回需要等待多少天才會有更高的溫度。</div>
+                        <div class="problem-tags">
+                            <span class="tag">Array</span>
+                            <span class="tag">Stack</span>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <!-- Medium Problems -->
-            <div class="problem-card" data-difficulty="medium" onclick="location.href='problems/longest-substring.html'">
-                <div class="problem-header">
-                    <div class="problem-title">3. Longest Substring Without Repeating Characters</div>
-                    <div class="difficulty-badge medium">Medium</div>
-                </div>
-                <div class="problem-description">
-                    找出字串中最長不含重複字符的子字串長度。
-                </div>
-                <div class="problem-tags">
-                    <span class="tag">Hash Table</span>
-                    <span class="tag">String</span>
-                    <span class="tag">Sliding Window</span>
+            <!-- Binary Search -->
+            <div class="category-section">
+                <h2 class="category-title">Binary Search</h2>
+                <div class="problems-grid">
+                    <div class="problem-card" data-difficulty="easy" onclick="location.href='problems/binary-search.html'">
+                        <div class="problem-header">
+                            <div class="problem-number">#704</div>
+                            <div class="difficulty-badge easy">Easy</div>
+                        </div>
+                        <div class="problem-title">Binary Search</div>
+                        <div class="problem-description">在已排序的陣列中使用二分搜尋法找到目標值的索引。</div>
+                        <div class="problem-tags">
+                            <span class="tag">Array</span>
+                            <span class="tag">Binary Search</span>
+                        </div>
+                    </div>
+
+                    <div class="problem-card" data-difficulty="medium" onclick="location.href='problems/search-rotated-array.html'">
+                        <div class="problem-header">
+                            <div class="problem-number">#33</div>
+                            <div class="difficulty-badge medium">Medium</div>
+                        </div>
+                        <div class="problem-title">Search in Rotated Sorted Array</div>
+                        <div class="problem-description">在旋轉過的已排序陣列中搜尋目標值。</div>
+                        <div class="problem-tags">
+                            <span class="tag">Array</span>
+                            <span class="tag">Binary Search</span>
+                        </div>
+                    </div>
+
+                    <div class="problem-card" data-difficulty="hard" onclick="location.href='problems/median-of-two-sorted-arrays.html'">
+                        <div class="problem-header">
+                            <div class="problem-number">#4</div>
+                            <div class="difficulty-badge hard">Hard</div>
+                        </div>
+                        <div class="problem-title">Median of Two Sorted Arrays</div>
+                        <div class="problem-description">找出兩個已排序陣列的中位數,時間複雜度要求 O(log(m+n))。</div>
+                        <div class="problem-tags">
+                            <span class="tag">Array</span>
+                            <span class="tag">Binary Search</span>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <div class="problem-card" data-difficulty="medium" onclick="location.href='problems/add-two-numbers.html'">
-                <div class="problem-header">
-                    <div class="problem-title">2. Add Two Numbers</div>
-                    <div class="difficulty-badge medium">Medium</div>
-                </div>
-                <div class="problem-description">
-                    兩個非空鏈表代表兩個非負整數,數字以逆序方式存儲,計算兩數之和並以鏈表形式返回。
-                </div>
-                <div class="problem-tags">
-                    <span class="tag">Linked List</span>
-                    <span class="tag">Math</span>
-                    <span class="tag">Recursion</span>
+            <!-- Linked List -->
+            <div class="category-section">
+                <h2 class="category-title">Linked List</h2>
+                <div class="problems-grid">
+                    <div class="problem-card" data-difficulty="easy" onclick="location.href='problems/reverse-linked-list.html'">
+                        <div class="problem-header">
+                            <div class="problem-number">#206</div>
+                            <div class="difficulty-badge easy">Easy</div>
+                        </div>
+                        <div class="problem-title">Reverse Linked List</div>
+                        <div class="problem-description">反轉一個單向鏈表。</div>
+                        <div class="problem-tags">
+                            <span class="tag">Linked List</span>
+                            <span class="tag">Recursion</span>
+                        </div>
+                    </div>
+
+                    <div class="problem-card" data-difficulty="medium" onclick="location.href='problems/add-two-numbers.html'">
+                        <div class="problem-header">
+                            <div class="problem-number">#2</div>
+                            <div class="difficulty-badge medium">Medium</div>
+                        </div>
+                        <div class="problem-title">Add Two Numbers</div>
+                        <div class="problem-description">兩個鏈表代表兩個非負整數,數字以逆序存儲,計算兩數之和並以鏈表形式返回。</div>
+                        <div class="problem-tags">
+                            <span class="tag">Linked List</span>
+                            <span class="tag">Math</span>
+                        </div>
+                    </div>
+
+                    <div class="problem-card" data-difficulty="hard" onclick="location.href='problems/merge-k-sorted-lists.html'">
+                        <div class="problem-header">
+                            <div class="problem-number">#23</div>
+                            <div class="difficulty-badge hard">Hard</div>
+                        </div>
+                        <div class="problem-title">Merge k Sorted Lists</div>
+                        <div class="problem-description">合併 k 個已排序的鏈表,返回合併後的有序鏈表。</div>
+                        <div class="problem-tags">
+                            <span class="tag">Linked List</span>
+                            <span class="tag">Heap</span>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <div class="problem-card" data-difficulty="medium" onclick="location.href='problems/container-with-most-water.html'">
-                <div class="problem-header">
-                    <div class="problem-title">11. Container With Most Water</div>
-                    <div class="difficulty-badge medium">Medium</div>
-                </div>
-                <div class="problem-description">
-                    給定 n 個非負整數,每個代表一個垂直線的高度,找出兩條線能與 x 軸組成的容器可以容納最多的水。
-                </div>
-                <div class="problem-tags">
-                    <span class="tag">Array</span>
-                    <span class="tag">Two Pointers</span>
-                    <span class="tag">Greedy</span>
+            <!-- Binary Tree -->
+            <div class="category-section">
+                <h2 class="category-title">Binary Tree</h2>
+                <div class="problems-grid">
+                    <div class="problem-card" data-difficulty="easy" onclick="location.href='problems/invert-binary-tree.html'">
+                        <div class="problem-header">
+                            <div class="problem-number">#226</div>
+                            <div class="difficulty-badge easy">Easy</div>
+                        </div>
+                        <div class="problem-title">Invert Binary Tree</div>
+                        <div class="problem-description">翻轉一棵二元樹。</div>
+                        <div class="problem-tags">
+                            <span class="tag">Tree</span>
+                            <span class="tag">DFS</span>
+                        </div>
+                    </div>
+
+                    <div class="problem-card" data-difficulty="easy" onclick="location.href='problems/max-depth-binary-tree.html'">
+                        <div class="problem-header">
+                            <div class="problem-number">#104</div>
+                            <div class="difficulty-badge easy">Easy</div>
+                        </div>
+                        <div class="problem-title">Maximum Depth of Binary Tree</div>
+                        <div class="problem-description">找出二元樹的最大深度。</div>
+                        <div class="problem-tags">
+                            <span class="tag">Tree</span>
+                            <span class="tag">DFS</span>
+                        </div>
+                    </div>
+
+                    <div class="problem-card" data-difficulty="medium" onclick="location.href='problems/validate-bst.html'">
+                        <div class="problem-header">
+                            <div class="problem-number">#98</div>
+                            <div class="difficulty-badge medium">Medium</div>
+                        </div>
+                        <div class="problem-title">Validate Binary Search Tree</div>
+                        <div class="problem-description">判斷一棵二元樹是否為有效的二元搜尋樹。</div>
+                        <div class="problem-tags">
+                            <span class="tag">Tree</span>
+                            <span class="tag">DFS</span>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <!-- Hard Problems -->
-            <div class="problem-card" data-difficulty="hard" onclick="location.href='problems/median-of-two-sorted-arrays.html'">
-                <div class="problem-header">
-                    <div class="problem-title">4. Median of Two Sorted Arrays</div>
-                    <div class="difficulty-badge hard">Hard</div>
-                </div>
-                <div class="problem-description">
-                    找出兩個已排序陣列的中位數,時間複雜度要求 O(log(m+n))。
-                </div>
-                <div class="problem-tags">
-                    <span class="tag">Array</span>
-                    <span class="tag">Binary Search</span>
-                    <span class="tag">Divide and Conquer</span>
+            <!-- Dynamic Programming -->
+            <div class="category-section">
+                <h2 class="category-title">Dynamic Programming</h2>
+                <div class="problems-grid">
+                    <div class="problem-card" data-difficulty="easy" onclick="location.href='problems/climbing-stairs.html'">
+                        <div class="problem-header">
+                            <div class="problem-number">#70</div>
+                            <div class="difficulty-badge easy">Easy</div>
+                        </div>
+                        <div class="problem-title">Climbing Stairs</div>
+                        <div class="problem-description">爬樓梯問題,每次可以爬 1 或 2 階,求有多少種不同的方法爬到頂部。</div>
+                        <div class="problem-tags">
+                            <span class="tag">Math</span>
+                            <span class="tag">DP</span>
+                        </div>
+                    </div>
+
+                    <div class="problem-card" data-difficulty="medium" onclick="location.href='problems/coin-change.html'">
+                        <div class="problem-header">
+                            <div class="problem-number">#322</div>
+                            <div class="difficulty-badge medium">Medium</div>
+                        </div>
+                        <div class="problem-title">Coin Change</div>
+                        <div class="problem-description">給定不同面額的硬幣和一個總金額,計算湊成總金額所需的最少硬幣個數。</div>
+                        <div class="problem-tags">
+                            <span class="tag">Array</span>
+                            <span class="tag">DP</span>
+                        </div>
+                    </div>
+
+                    <div class="problem-card" data-difficulty="medium" onclick="location.href='problems/longest-increasing-subsequence.html'">
+                        <div class="problem-header">
+                            <div class="problem-number">#300</div>
+                            <div class="difficulty-badge medium">Medium</div>
+                        </div>
+                        <div class="problem-title">Longest Increasing Subsequence</div>
+                        <div class="problem-description">找出給定序列中最長遞增子序列的長度。</div>
+                        <div class="problem-tags">
+                            <span class="tag">Array</span>
+                            <span class="tag">DP</span>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <div class="problem-card" data-difficulty="hard" onclick="location.href='problems/trapping-rain-water.html'">
-                <div class="problem-header">
-                    <div class="problem-title">42. Trapping Rain Water</div>
-                    <div class="difficulty-badge hard">Hard</div>
-                </div>
-                <div class="problem-description">
-                    給定 n 個非負整數表示高度圖,計算下雨後能接多少雨水。
-                </div>
-                <div class="problem-tags">
-                    <span class="tag">Array</span>
-                    <span class="tag">Two Pointers</span>
-                    <span class="tag">Dynamic Programming</span>
-                    <span class="tag">Stack</span>
-                </div>
-            </div>
-
-            <div class="problem-card" data-difficulty="hard" onclick="location.href='problems/merge-k-sorted-lists.html'">
-                <div class="problem-header">
-                    <div class="problem-title">23. Merge k Sorted Lists</div>
-                    <div class="difficulty-badge hard">Hard</div>
-                </div>
-                <div class="problem-description">
-                    合併 k 個已排序的鏈表,返回合併後的有序鏈表。
-                </div>
-                <div class="problem-tags">
-                    <span class="tag">Linked List</span>
-                    <span class="tag">Divide and Conquer</span>
-                    <span class="tag">Heap</span>
-                    <span class="tag">Merge Sort</span>
-                </div>
-            </div>
         </div>
 
         <footer>
-            <p>💻 LeetCode 學習平台 | 專注於演算法與資料結構</p>
+            <p>LeetCode 學習平台 | 專注於演算法與資料結構</p>
             <p style="margin-top: 10px; opacity: 0.8;">© 2024 All Rights Reserved</p>
         </footer>
     </div>
@@ -368,12 +388,8 @@
         function filterProblems(difficulty) {
             const cards = document.querySelectorAll('.problem-card');
             const buttons = document.querySelectorAll('.filter-btn');
-            
-            // 更新按鈕狀態
             buttons.forEach(btn => btn.classList.remove('active'));
             event.target.classList.add('active');
-            
-            // 過濾題目
             cards.forEach(card => {
                 if (difficulty === 'all' || card.dataset.difficulty === difficulty) {
                     card.style.display = 'block';

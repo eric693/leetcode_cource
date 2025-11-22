@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <title>347. Top K Frequent Elements</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, sans-serif; background: #f8fafc; padding: 20px; color: #2d3748; }
+        .container { max-width: 1100px; margin: 0 auto; background: white; border-radius: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        .header { background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: white; padding: 40px; }
+        .back-btn { color: white; text-decoration: none; background: rgba(255,255,255,0.2); padding: 8px 16px; border-radius: 8px; display: inline-block; margin-bottom: 20px; }
+        .problem-title { font-size: 2.2em; margin-bottom: 15px; font-weight: 800; }
+        .difficulty { background: rgba(255,255,255,0.25); padding: 8px 20px; border-radius: 8px; font-weight: 600; display: inline-block; }
+        .content { padding: 40px; }
+        .section { margin-bottom: 35px; }
+        .section-title { font-size: 1.8em; color: #1e293b; margin-bottom: 20px; font-weight: 700; border-left: 4px solid #f59e0b; padding-left: 16px; }
+        pre { background: #f8fafc !important; padding: 18px !important; border-radius: 8px; }
+        .language-tabs { display: flex; gap: 12px; margin-bottom: 20px; }
+        .tab-btn { padding: 10px 24px; border: 2px solid #f59e0b; background: white; color: #f59e0b; border-radius: 8px; cursor: pointer; font-weight: 600; }
+        .tab-btn.active { background: #f59e0b; color: white; }
+        .code-content { display: none; }
+        .code-content.active { display: block; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="../index.html" class="back-btn">← 返回</a>
+            <div class="problem-title">347. Top K Frequent Elements</div>
+            <span class="difficulty">Medium</span>
+        </div>
+        <div class="content">
+            <div class="section">
+                <h2 class="section-title">題目描述</h2>
+                <p>給定整數陣列 nums 和整數 k,返回出現頻率前 k 高的元素。</p>
+            </div>
+            <div class="section">
+                <h2 class="section-title">程式碼</h2>
+                <div class="language-tabs">
+                    <button class="tab-btn active" onclick="showCode('python')">Python</button>
+                    <button class="tab-btn" onclick="showCode('java')">Java</button>
+                </div>
+                <div id="python-code" class="code-content active">
+                    <pre><code class="language-python">from collections import Counter
+import heapq
+
+class Solution:
+    def topKFrequent(self, nums: List[int], k: int) -> List[int]:
+        count = Counter(nums)
+        return heapq.nlargest(k, count.keys(), key=count.get)</code></pre>
+                </div>
+                <div id="java-code" class="code-content">
+                    <pre><code class="language-java">class Solution {
+    public int[] topKFrequent(int[] nums, int k) {
+        Map&lt;Integer, Integer&gt; count = new HashMap&lt;&gt;();
+        for (int num : nums) {
+            count.put(num, count.getOrDefault(num, 0) + 1);
+        }
+        
+        PriorityQueue&lt;Integer&gt; heap = new PriorityQueue&lt;&gt;(
+            (a, b) -> count.get(b) - count.get(a)
+        );
+        heap.addAll(count.keySet());
+        
+        int[] result = new int[k];
+        for (int i = 0; i < k; i++) {
+            result[i] = heap.poll();
+        }
+        return result;
+    }
+}</code></pre>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        hljs.highlightAll();
+        function showCode(lang) {
+            document.querySelectorAll('.code-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+            document.getElementById(lang + '-code').classList.add('active');
+            event.target.classList.add('active');
+        }
+    </script>
+</body>
+</html>
