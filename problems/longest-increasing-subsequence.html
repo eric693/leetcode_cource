@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>300. Longest Increasing Subsequence - LeetCode 學習平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f8fafc; line-height: 1.8; color: #334155; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .header { background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: white; padding: 40px; border-radius: 16px; margin-bottom: 30px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .back-btn { display: inline-block; color: white; text-decoration: none; background: rgba(255,255,255,0.2); padding: 10px 20px; border-radius: 8px; margin-bottom: 20px; transition: all 0.3s; }
+        .back-btn:hover { background: rgba(255,255,255,0.3); }
+        .problem-title { font-size: 2.5em; font-weight: 800; margin-bottom: 15px; }
+        .difficulty { display: inline-block; background: rgba(255,255,255,0.3); padding: 8px 20px; border-radius: 20px; font-weight: 600; font-size: 0.9em; }
+        .content-section { background: white; padding: 40px; border-radius: 16px; margin-bottom: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .section-title { font-size: 1.8em; color: #1e293b; margin-bottom: 25px; font-weight: 700; padding-bottom: 10px; border-bottom: 3px solid #f59e0b; }
+        .description { font-size: 1.1em; line-height: 1.9; color: #475569; margin-bottom: 20px; }
+        .example-box { background: #fffbeb; border-left: 4px solid #f59e0b; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .example-title { font-weight: 700; color: #d97706; margin-bottom: 10px; font-size: 1.1em; }
+        .approach-box { background: #eff6ff; border-left: 4px solid #3b82f6; padding: 25px; border-radius: 8px; margin: 25px 0; }
+        .approach-title { font-weight: 700; color: #1e40af; margin-bottom: 15px; font-size: 1.3em; }
+        .complexity-box { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .complexity-item { margin: 10px 0; font-weight: 600; color: #92400e; }
+        .language-tabs { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+        .tab-btn { padding: 12px 28px; border: 2px solid #f59e0b; background: white; color: #f59e0b; border-radius: 8px; cursor: pointer; font-weight: 600; transition: all 0.3s; font-size: 1em; }
+        .tab-btn:hover { background: #fffbeb; }
+        .tab-btn.active { background: #f59e0b; color: white; }
+        .code-container { display: none; margin-top: 20px; }
+        .code-container.active { display: block; }
+        pre { background: #282c34 !important; padding: 25px !important; border-radius: 12px; overflow-x: auto; margin: 0; }
+        code { font-family: 'Fira Code', 'Consolas', monospace; font-size: 0.95em; line-height: 1.6; }
+        ol, ul { margin-left: 30px; margin-top: 15px; }
+        li { margin: 12px 0; line-height: 1.8; }
+        strong { color: #1e293b; font-weight: 700; }
+        .visual-box { background: #f0f9ff; border: 2px solid #3b82f6; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        
+        @media (max-width: 768px) {
+            .container { padding: 10px; }
+            .header { padding: 25px; }
+            .problem-title { font-size: 1.8em; }
+            .content-section { padding: 25px; }
+            .tab-btn { padding: 10px 20px; font-size: 0.9em; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="../index.html" class="back-btn">← 返回題目列表</a>
+            <div class="problem-title">300. Longest Increasing Subsequence</div>
+            <span class="difficulty">Medium</span>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">題目描述</h2>
+            <div class="description">
+                <p>給定一個整數陣列 <code>nums</code>，找出其中<strong>最長嚴格遞增子序列</strong>的長度。</p>
+                <p style="margin-top: 15px;"><strong>子序列</strong>是由陣列派生而來的序列，刪除（或不刪除）陣列中的元素而不改變其餘元素的順序。例如，[3,6,2,7] 是陣列 [0,3,1,6,2,2,7] 的子序列。</p>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例 1:</div>
+                <pre><code>輸入: nums = [10,9,2,5,3,7,101,18]
+輸出: 4
+解釋: 最長遞增子序列是 [2,3,7,101]，長度為 4</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例 2:</div>
+                <pre><code>輸入: nums = [0,1,0,3,2,3]
+輸出: 4
+解釋: 最長遞增子序列是 [0,1,2,3]，長度為 4</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例 3:</div>
+                <pre><code>輸入: nums = [7,7,7,7,7,7,7]
+輸出: 1
+解釋: 最長遞增子序列只能是單個元素，長度為 1</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">限制條件:</div>
+                <pre><code>1 <= nums.length <= 2500
+-10^4 <= nums[i] <= 10^4</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">進階:</div>
+                <p style="color: #d97706;">你能將演算法的時間複雜度降低到 O(n log n) 嗎？</p>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">解題思路</h2>
+            
+            <div class="approach-box">
+                <div class="approach-title">方法一：動態規劃 O(n²)</div>
+                <p>使用動態規劃記錄以每個位置結尾的最長遞增子序列長度。</p>
+                
+                <p style="margin-top: 15px;"><strong>狀態定義：</strong></p>
+                <p style="background: #f0f9ff; padding: 15px; border-radius: 8px; margin: 15px 0;">
+                    dp[i] = 以 nums[i] 結尾的最長遞增子序列的長度
+                </p>
+                
+                <p style="margin-top: 15px;"><strong>狀態轉移方程：</strong></p>
+                <p style="background: #f0f9ff; padding: 15px; border-radius: 8px; margin: 15px 0; font-weight: 600;">
+                    dp[i] = max(dp[j] + 1) 對所有 j < i 且 nums[j] < nums[i]
+                </p>
+                
+                <p style="margin-top: 15px;"><strong>步驟：</strong></p>
+                <ol>
+                    <li>初始化 dp 陣列，所有值設為 1（每個元素本身是長度為 1 的子序列）</li>
+                    <li>對於每個位置 i：
+                        <ul>
+                            <li>檢查所有 j < i</li>
+                            <li>如果 nums[j] < nums[i]，更新 dp[i] = max(dp[i], dp[j] + 1)</li>
+                        </ul>
+                    </li>
+                    <li>返回 dp 陣列中的最大值</li>
+                </ol>
+                
+                <div class="visual-box">
+                    <p><strong>視覺化範例：nums = [10,9,2,5,3,7,101,18]</strong></p>
+                    <pre style="background: white; padding: 15px; border-radius: 5px; margin-top: 10px;"><code>索引:  0   1  2  3  4  5   6   7
+nums: 10   9  2  5  3  7 101  18
+dp:    1   1  1  2  2  3   4   4
+
+計算過程:
+i=0: dp[0]=1 (10本身)
+i=1: dp[1]=1 (9本身，9<10無法形成遞增)
+i=2: dp[2]=1 (2本身)
+i=3: dp[3]=2 (2→5，因為2<5，dp[2]+1=2)
+i=4: dp[4]=2 (2→3，因為2<3，dp[2]+1=2)
+i=5: dp[5]=3 (2→3→7 或 2→5→7)
+i=6: dp[6]=4 (2→3→7→101 或 2→5→7→101)
+i=7: dp[7]=4 (2→3→7→18 或 2→5→7→18)
+
+答案: max(dp) = 4</code></pre>
+                </div>
+            </div>
+
+            <div class="approach-box">
+                <div class="approach-title">方法二：二分搜尋 + 貪心 O(n log n) ⭐</div>
+                <p>維護一個遞增陣列 tails，其中 tails[i] 表示長度為 i+1 的遞增子序列的最小結尾元素。</p>
+                
+                <p style="margin-top: 15px;"><strong>核心思想：</strong></p>
+                <p>對於相同長度的遞增子序列，結尾元素越小，越有利於後續擴展。因此我們維護每個長度對應的最小結尾元素。</p>
+                
+                <p style="margin-top: 15px;"><strong>步驟：</strong></p>
+                <ol>
+                    <li>創建空陣列 tails</li>
+                    <li>對於 nums 中的每個數字 num：
+                        <ul>
+                            <li>如果 tails 為空或 num > tails[-1]，將 num 添加到 tails 末尾</li>
+                            <li>否則，用二分搜尋找到 tails 中第一個 >= num 的位置，將其替換為 num</li>
+                        </ul>
+                    </li>
+                    <li>返回 tails 的長度</li>
+                </ol>
+                
+                <div class="visual-box">
+                    <p><strong>視覺化範例：nums = [10,9,2,5,3,7,101,18]</strong></p>
+                    <pre style="background: white; padding: 15px; border-radius: 5px; margin-top: 10px;"><code>處理 10: tails = [10]
+處理  9: tails = [9]   (替換10，因為9<10且長度相同)
+處理  2: tails = [2]   (替換9，更小的結尾更好)
+處理  5: tails = [2,5] (5>2，可以擴展)
+處理  3: tails = [2,3] (替換5，因為3<5且長度相同)
+處理  7: tails = [2,3,7] (7>3，可以擴展)
+處理101: tails = [2,3,7,101] (101>7，可以擴展)
+處理 18: tails = [2,3,7,18] (替換101，18<101且長度相同)
+
+答案: tails.length = 4
+
+注意: tails 不一定是實際的 LIS，但長度正確！
+實際 LIS 可能是 [2,3,7,101] 或 [2,5,7,101] 等</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">程式碼實現</h2>
+            
+            <div class="language-tabs">
+                <button class="tab-btn active" onclick="showLanguage('python')">Python</button>
+                <button class="tab-btn" onclick="showLanguage('cpp')">C++</button>
+                <button class="tab-btn" onclick="showLanguage('java')">Java</button>
+            </div>
+
+            <div id="python" class="code-container active">
+                <pre><code class="language-python">class Solution:
+    def lengthOfLIS(self, nums: List[int]) -> int:
+        """
+        方法一：動態規劃 O(n²)
+        時間複雜度: O(n²)
+        空間複雜度: O(n)
+        """
+        if not nums:
+            return 0
+        
+        n = len(nums)
+        # dp[i] 表示以 nums[i] 結尾的最長遞增子序列長度
+        dp = [1] * n
+        
+        for i in range(1, n):
+            for j in range(i):
+                # 如果 nums[j] < nums[i]，可以將 nums[i] 接在以 nums[j] 結尾的序列後
+                if nums[j] < nums[i]:
+                    dp[i] = max(dp[i], dp[j] + 1)
+        
+        return max(dp)
+    
+    def lengthOfLIS_binary(self, nums: List[int]) -> int:
+        """
+        方法二：二分搜尋 + 貪心 O(n log n) ⭐ 推薦
+        時間複雜度: O(n log n)
+        空間複雜度: O(n)
+        """
+        if not nums:
+            return 0
+        
+        # tails[i] 表示長度為 i+1 的遞增子序列的最小結尾元素
+        tails = []
+        
+        for num in nums:
+            # 如果 num 比 tails 中所有元素都大，直接添加
+            if not tails or num > tails[-1]:
+                tails.append(num)
+            else:
+                # 二分搜尋找到第一個 >= num 的位置並替換
+                left, right = 0, len(tails) - 1
+                while left < right:
+                    mid = (left + right) // 2
+                    if tails[mid] < num:
+                        left = mid + 1
+                    else:
+                        right = mid
+                tails[left] = num
+        
+        return len(tails)
+    
+    def lengthOfLIS_bisect(self, nums: List[int]) -> int:
+        """
+        方法三：使用 Python bisect 模組（最簡潔）
+        時間複雜度: O(n log n)
+        空間複雜度: O(n)
+        """
+        from bisect import bisect_left
+        
+        tails = []
+        for num in nums:
+            pos = bisect_left(tails, num)
+            if pos == len(tails):
+                tails.append(num)
+            else:
+                tails[pos] = num
+        
+        return len(tails)</code></pre>
+            </div>
+
+            <div id="cpp" class="code-container">
+                <pre><code class="language-cpp">#include &lt;vector&gt;
+#include &lt;algorithm&gt;
+
+class Solution {
+public:
+    /**
+     * 方法一：動態規劃 O(n²)
+     * 時間複雜度: O(n²)
+     * 空間複雜度: O(n)
+     */
+    int lengthOfLIS(std::vector<int>& nums) {
+        if (nums.empty()) {
+            return 0;
+        }
+        
+        int n = nums.size();
+        // dp[i] 表示以 nums[i] 結尾的最長遞增子序列長度
+        std::vector<int> dp(n, 1);
+        
+        for (int i = 1; i < n; i++) {
+            for (int j = 0; j < i; j++) {
+                // 如果 nums[j] < nums[i]，可以將 nums[i] 接在以 nums[j] 結尾的序列後
+                if (nums[j] < nums[i]) {
+                    dp[i] = std::max(dp[i], dp[j] + 1);
+                }
+            }
+        }
+        
+        return *std::max_element(dp.begin(), dp.end());
+    }
+    
+    /**
+     * 方法二：二分搜尋 + 貪心 O(n log n) ⭐ 推薦
+     * 時間複雜度: O(n log n)
+     * 空間複雜度: O(n)
+     */
+    int lengthOfLIS_binary(std::vector<int>& nums) {
+        if (nums.empty()) {
+            return 0;
+        }
+        
+        // tails[i] 表示長度為 i+1 的遞增子序列的最小結尾元素
+        std::vector<int> tails;
+        
+        for (int num : nums) {
+            // 使用 lower_bound 找到第一個 >= num 的位置
+            auto it = std::lower_bound(tails.begin(), tails.end(), num);
+            
+            if (it == tails.end()) {
+                // num 比所有元素都大，添加到末尾
+                tails.push_back(num);
+            } else {
+                // 替換找到的位置
+                *it = num;
+            }
+        }
+        
+        return tails.size();
+    }
+};</code></pre>
+            </div>
+
+            <div id="java" class="code-container">
+                <pre><code class="language-java">import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+class Solution {
+    /**
+     * 方法一：動態規劃 O(n²)
+     * 時間複雜度: O(n²)
+     * 空間複雜度: O(n)
+     */
+    public int lengthOfLIS(int[] nums) {
+        if (nums == null || nums.length == 0) {
+            return 0;
+        }
+        
+        int n = nums.length;
+        // dp[i] 表示以 nums[i] 結尾的最長遞增子序列長度
+        int[] dp = new int[n];
+        Arrays.fill(dp, 1);
+        
+        for (int i = 1; i < n; i++) {
+            for (int j = 0; j < i; j++) {
+                // 如果 nums[j] < nums[i]，可以將 nums[i] 接在以 nums[j] 結尾的序列後
+                if (nums[j] < nums[i]) {
+                    dp[i] = Math.max(dp[i], dp[j] + 1);
+                }
+            }
+        }
+        
+        int maxLen = 0;
+        for (int len : dp) {
+            maxLen = Math.max(maxLen, len);
+        }
+        return maxLen;
+    }
+    
+    /**
+     * 方法二：二分搜尋 + 貪心 O(n log n) ⭐ 推薦
+     * 時間複雜度: O(n log n)
+     * 空間複雜度: O(n)
+     */
+    public int lengthOfLIS_binary(int[] nums) {
+        if (nums == null || nums.length == 0) {
+            return 0;
+        }
+        
+        // tails[i] 表示長度為 i+1 的遞增子序列的最小結尾元素
+        List<Integer> tails = new ArrayList<>();
+        
+        for (int num : nums) {
+            // 二分搜尋找到第一個 >= num 的位置
+            int pos = binarySearch(tails, num);
+            
+            if (pos == tails.size()) {
+                // num 比所有元素都大，添加到末尾
+                tails.add(num);
+            } else {
+                // 替換找到的位置
+                tails.set(pos, num);
+            }
+        }
+        
+        return tails.size();
+    }
+    
+    // 二分搜尋：找到第一個 >= target 的位置
+    private int binarySearch(List<Integer> tails, int target) {
+        int left = 0, right = tails.size();
+        
+        while (left < right) {
+            int mid = left + (right - left) / 2;
+            if (tails.get(mid) < target) {
+                left = mid + 1;
+            } else {
+                right = mid;
+            }
+        }
+        
+        return left;
+    }
+}</code></pre>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">複雜度分析</h2>
+            <div class="complexity-box">
+                <div class="complexity-item">時間複雜度:</div>
+                <ul style="color: #78716c; margin: 10px 0 10px 30px;">
+                    <li><strong>方法一（動態規劃）：</strong>O(n²) - 需要雙重循環</li>
+                    <li><strong>方法二（二分搜尋）：</strong>O(n log n) - 每個元素進行一次二分搜尋</li>
+                </ul>
+                
+                <div class="complexity-item" style="margin-top: 20px;">空間複雜度: O(n)</div>
+                <p style="color: #78716c; margin: 10px 0;">
+                    兩種方法都需要 O(n) 的額外空間來存儲 dp 陣列或 tails 陣列。
+                </p>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">重點提示</h2>
+            <div class="complexity-box">
+                <ul>
+                    <li><strong>經典 DP 題：</strong>這是動態規劃的經典問題，務必掌握兩種解法</li>
+                    <li><strong>子序列 vs 子陣列：</strong>子序列不要求連續，子陣列要求連續</li>
+                    <li><strong>嚴格遞增：</strong>注意是「嚴格」遞增（不包含相等），所以用 < 而非 ≤</li>
+                    <li><strong>DP 狀態定義：</strong>dp[i] 是以 nums[i] <strong>結尾</strong>的最長遞增子序列長度</li>
+                    <li><strong>二分搜尋優化：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>維護 tails 陣列保持遞增性質</li>
+                            <li>tails 陣列不一定是實際的 LIS，但長度一定正確</li>
+                            <li>使用 lower_bound 找第一個 >= num 的位置</li>
+                        </ul>
+                    </li>
+                    <li><strong>面試建議：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>先說 O(n²) DP 解法（容易理解）</li>
+                            <li>再優化到 O(n log n)（展現進階能力）</li>
+                        </ul>
+                    </li>
+                    <li><strong>擴展問題：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>求 LIS 的具體序列（需要額外記錄路徑）</li>
+                            <li>求最長遞減子序列（反向思考）</li>
+                            <li>求最長連續遞增子序列（子陣列版本）</li>
+                        </ul>
+                    </li>
+                    <li><strong>相似題目：</strong>Increasing Triplet Subsequence (334), Russian Doll Envelopes (354), Number of LIS (673)</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        hljs.highlightAll();
+        
+        function showLanguage(lang) {
+            document.querySelectorAll('.code-container').forEach(container => {
+                container.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.getElementById(lang).classList.add('active');
+            event.target.classList.add('active');
+        }
+    </script>
+</body>
+</html>

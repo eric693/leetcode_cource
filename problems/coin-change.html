@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>322. Coin Change - LeetCode 學習平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f8fafc; line-height: 1.8; color: #334155; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .header { background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: white; padding: 40px; border-radius: 16px; margin-bottom: 30px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .back-btn { display: inline-block; color: white; text-decoration: none; background: rgba(255,255,255,0.2); padding: 10px 20px; border-radius: 8px; margin-bottom: 20px; transition: all 0.3s; }
+        .back-btn:hover { background: rgba(255,255,255,0.3); }
+        .problem-title { font-size: 2.5em; font-weight: 800; margin-bottom: 15px; }
+        .difficulty { display: inline-block; background: rgba(255,255,255,0.3); padding: 8px 20px; border-radius: 20px; font-weight: 600; font-size: 0.9em; }
+        .content-section { background: white; padding: 40px; border-radius: 16px; margin-bottom: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .section-title { font-size: 1.8em; color: #1e293b; margin-bottom: 25px; font-weight: 700; padding-bottom: 10px; border-bottom: 3px solid #f59e0b; }
+        .description { font-size: 1.1em; line-height: 1.9; color: #475569; margin-bottom: 20px; }
+        .example-box { background: #fffbeb; border-left: 4px solid #f59e0b; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .example-title { font-weight: 700; color: #d97706; margin-bottom: 10px; font-size: 1.1em; }
+        .approach-box { background: #eff6ff; border-left: 4px solid #3b82f6; padding: 25px; border-radius: 8px; margin: 25px 0; }
+        .approach-title { font-weight: 700; color: #1e40af; margin-bottom: 15px; font-size: 1.3em; }
+        .complexity-box { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .complexity-item { margin: 10px 0; font-weight: 600; color: #92400e; }
+        .language-tabs { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+        .tab-btn { padding: 12px 28px; border: 2px solid #f59e0b; background: white; color: #f59e0b; border-radius: 8px; cursor: pointer; font-weight: 600; transition: all 0.3s; font-size: 1em; }
+        .tab-btn:hover { background: #fffbeb; }
+        .tab-btn.active { background: #f59e0b; color: white; }
+        .code-container { display: none; margin-top: 20px; }
+        .code-container.active { display: block; }
+        pre { background: #282c34 !important; padding: 25px !important; border-radius: 12px; overflow-x: auto; margin: 0; }
+        code { font-family: 'Fira Code', 'Consolas', monospace; font-size: 0.95em; line-height: 1.6; }
+        ol, ul { margin-left: 30px; margin-top: 15px; }
+        li { margin: 12px 0; line-height: 1.8; }
+        strong { color: #1e293b; font-weight: 700; }
+        .visual-box { background: #f0f9ff; border: 2px solid #3b82f6; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        
+        @media (max-width: 768px) {
+            .container { padding: 10px; }
+            .header { padding: 25px; }
+            .problem-title { font-size: 1.8em; }
+            .content-section { padding: 25px; }
+            .tab-btn { padding: 10px 20px; font-size: 0.9em; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="../index.html" class="back-btn">← 返回題目列表</a>
+            <div class="problem-title">322. Coin Change</div>
+            <span class="difficulty">Medium</span>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">題目描述</h2>
+            <div class="description">
+                <p>給你一個整數陣列 <code>coins</code> 代表不同面額的硬幣，以及一個整數 <code>amount</code> 代表總金額。</p>
+                <p style="margin-top: 15px;">計算並返回可以湊成總金額所需的<strong>最少的硬幣個數</strong>。如果沒有任何一種硬幣組合能組成總金額，返回 <code>-1</code>。</p>
+                <p style="margin-top: 15px;">你可以認為每種硬幣的數量是無限的。</p>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例 1:</div>
+                <pre><code>輸入: coins = [1,2,5], amount = 11
+輸出: 3
+解釋: 11 = 5 + 5 + 1（3 個硬幣）</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例 2:</div>
+                <pre><code>輸入: coins = [2], amount = 3
+輸出: -1
+解釋: 無法用面額為 2 的硬幣湊出 3</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例 3:</div>
+                <pre><code>輸入: coins = [1], amount = 0
+輸出: 0
+解釋: 不需要任何硬幣即可湊出 0</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例 4:</div>
+                <pre><code>輸入: coins = [1,2,5], amount = 100
+輸出: 20
+解釋: 100 = 5×20（20 個硬幣）</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">限制條件:</div>
+                <pre><code>1 <= coins.length <= 12
+1 <= coins[i] <= 2^31 - 1
+0 <= amount <= 10^4</code></pre>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">解題思路</h2>
+            
+            <div class="approach-box">
+                <div class="approach-title">核心思想：完全背包問題</div>
+                <p>這是一個經典的完全背包問題，每種硬幣可以使用無限次。我們要找到湊成總金額的最少硬幣數。</p>
+                
+                <p style="margin-top: 15px;"><strong>狀態定義：</strong></p>
+                <p style="background: #f0f9ff; padding: 15px; border-radius: 8px; margin: 15px 0;">
+                    dp[i] = 湊成金額 i 所需的最少硬幣數
+                </p>
+                
+                <p style="margin-top: 15px;"><strong>狀態轉移方程：</strong></p>
+                <p style="background: #f0f9ff; padding: 15px; border-radius: 8px; margin: 15px 0; font-weight: 600;">
+                    dp[i] = min(dp[i], dp[i - coin] + 1) 對所有可用的 coin
+                </p>
+                
+                <p style="margin-top: 15px;"><strong>初始狀態：</strong></p>
+                <ul>
+                    <li>dp[0] = 0（湊成金額 0 需要 0 個硬幣）</li>
+                    <li>dp[1...amount] = ∞（初始化為不可達）</li>
+                </ul>
+            </div>
+            
+            <div class="approach-box">
+                <div class="approach-title">方法一：動態規劃（自底向上）</div>
+                <p>從金額 0 開始，逐步計算每個金額所需的最少硬幣數。</p>
+                
+                <p style="margin-top: 15px;"><strong>步驟：</strong></p>
+                <ol>
+                    <li>創建 dp 陣列，長度為 amount + 1，初始化為 amount + 1（表示無窮大）</li>
+                    <li>設定 dp[0] = 0（基礎情況）</li>
+                    <li>對於每個金額 i（從 1 到 amount）：
+                        <ul>
+                            <li>嘗試每種硬幣 coin</li>
+                            <li>如果 i >= coin，更新 dp[i] = min(dp[i], dp[i-coin] + 1)</li>
+                        </ul>
+                    </li>
+                    <li>如果 dp[amount] 仍為無窮大，返回 -1，否則返回 dp[amount]</li>
+                </ol>
+                
+                <div class="visual-box">
+                    <p><strong>視覺化範例：coins = [1,2,5], amount = 11</strong></p>
+                    <pre style="background: white; padding: 15px; border-radius: 5px; margin-top: 10px;"><code>初始: dp = [0, ∞, ∞, ∞, ∞, ∞, ∞, ∞, ∞, ∞, ∞, ∞]
+
+計算 dp[1]: 可用硬幣 1 → dp[1] = dp[0] + 1 = 1
+計算 dp[2]: 可用硬幣 1,2 → dp[2] = min(dp[1]+1, dp[0]+1) = 1
+計算 dp[3]: 可用硬幣 1,2 → dp[3] = min(dp[2]+1, dp[1]+1) = 2
+計算 dp[4]: 可用硬幣 1,2 → dp[4] = min(dp[3]+1, dp[2]+1) = 2
+計算 dp[5]: 可用硬幣 1,2,5 → dp[5] = min(dp[4]+1, dp[3]+1, dp[0]+1) = 1
+...
+計算 dp[11]: dp[11] = min(dp[10]+1, dp[9]+1, dp[6]+1) = 3
+
+最終: dp = [0, 1, 1, 2, 2, 1, 2, 2, 3, 3, 2, 3]
+答案: dp[11] = 3（使用 5+5+1）</code></pre>
+                </div>
+            </div>
+
+            <div class="approach-box">
+                <div class="approach-title">方法二：BFS（廣度優先搜尋）</div>
+                <p>將問題視為圖的最短路徑問題，從金額 0 開始，每次加上一個硬幣面額，找到到達 amount 的最短路徑。</p>
+                
+                <p style="margin-top: 15px;"><strong>步驟：</strong></p>
+                <ol>
+                    <li>使用佇列，初始狀態為 (金額=0, 硬幣數=0)</li>
+                    <li>使用 visited 集合避免重複訪問相同金額</li>
+                    <li>對於當前金額，嘗試加上每種硬幣：
+                        <ul>
+                            <li>如果新金額 = amount，返回硬幣數 + 1</li>
+                            <li>如果新金額 < amount 且未訪問過，加入佇列</li>
+                        </ul>
+                    </li>
+                    <li>如果佇列為空仍未找到，返回 -1</li>
+                </ol>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">程式碼實現</h2>
+            
+            <div class="language-tabs">
+                <button class="tab-btn active" onclick="showLanguage('python')">Python</button>
+                <button class="tab-btn" onclick="showLanguage('cpp')">C++</button>
+                <button class="tab-btn" onclick="showLanguage('java')">Java</button>
+            </div>
+
+            <div id="python" class="code-container active">
+                <pre><code class="language-python">class Solution:
+    def coinChange(self, coins: List[int], amount: int) -> int:
+        """
+        方法一：動態規劃（自底向上）
+        時間複雜度: O(amount × n)，n 為硬幣種類數
+        空間複雜度: O(amount)
+        """
+        # dp[i] 表示湊成金額 i 所需的最少硬幣數
+        # 初始化為 amount + 1（表示無窮大，因為最多需要 amount 個面額為 1 的硬幣）
+        dp = [amount + 1] * (amount + 1)
+        dp[0] = 0  # 湊成金額 0 需要 0 個硬幣
+        
+        # 對每個金額計算最少硬幣數
+        for i in range(1, amount + 1):
+            # 嘗試每種硬幣
+            for coin in coins:
+                if i >= coin:
+                    # 選擇使用當前硬幣或不使用
+                    dp[i] = min(dp[i], dp[i - coin] + 1)
+        
+        # 如果 dp[amount] 仍為初始值，表示無法湊成
+        return dp[amount] if dp[amount] != amount + 1 else -1
+    
+    def coinChange_bfs(self, coins: List[int], amount: int) -> int:
+        """
+        方法二：BFS（廣度優先搜尋）
+        時間複雜度: O(amount × n)
+        空間複雜度: O(amount)
+        """
+        if amount == 0:
+            return 0
+        
+        from collections import deque
+        queue = deque([0])  # 從金額 0 開始
+        visited = {0}
+        steps = 0
+        
+        while queue:
+            steps += 1
+            level_size = len(queue)
+            
+            for _ in range(level_size):
+                current_amount = queue.popleft()
+                
+                # 嘗試每種硬幣
+                for coin in coins:
+                    next_amount = current_amount + coin
+                    
+                    # 找到目標金額
+                    if next_amount == amount:
+                        return steps
+                    
+                    # 如果未超過目標且未訪問過，加入佇列
+                    if next_amount < amount and next_amount not in visited:
+                        visited.add(next_amount)
+                        queue.append(next_amount)
+        
+        return -1
+    
+    def coinChange_memo(self, coins: List[int], amount: int) -> int:
+        """
+        方法三：遞迴 + 記憶化（自頂向下）
+        時間複雜度: O(amount × n)
+        空間複雜度: O(amount)
+        """
+        memo = {}
+        
+        def dp(remaining):
+            # 基礎情況
+            if remaining == 0:
+                return 0
+            if remaining < 0:
+                return -1
+            
+            # 檢查快取
+            if remaining in memo:
+                return memo[remaining]
+            
+            # 嘗試每種硬幣
+            min_coins = float('inf')
+            for coin in coins:
+                result = dp(remaining - coin)
+                if result != -1:
+                    min_coins = min(min_coins, result + 1)
+            
+            # 儲存結果
+            memo[remaining] = min_coins if min_coins != float('inf') else -1
+            return memo[remaining]
+        
+        return dp(amount)</code></pre>
+            </div>
+
+            <div id="cpp" class="code-container">
+                <pre><code class="language-cpp">#include &lt;vector&gt;
+#include &lt;queue&gt;
+#include &lt;unordered_set&gt;
+#include &lt;unordered_map&gt;
+#include &lt;algorithm&gt;
+#include &lt;climits&gt;
+
+class Solution {
+public:
+    /**
+     * 方法一：動態規劃（自底向上）
+     * 時間複雜度: O(amount × n)
+     * 空間複雜度: O(amount)
+     */
+    int coinChange(std::vector<int>& coins, int amount) {
+        // dp[i] 表示湊成金額 i 所需的最少硬幣數
+        std::vector<int> dp(amount + 1, amount + 1);
+        dp[0] = 0;  // 湊成金額 0 需要 0 個硬幣
+        
+        // 對每個金額計算最少硬幣數
+        for (int i = 1; i <= amount; i++) {
+            // 嘗試每種硬幣
+            for (int coin : coins) {
+                if (i >= coin) {
+                    dp[i] = std::min(dp[i], dp[i - coin] + 1);
+                }
+            }
+        }
+        
+        // 如果 dp[amount] 仍為初始值，表示無法湊成
+        return dp[amount] > amount ? -1 : dp[amount];
+    }
+    
+    /**
+     * 方法二：BFS（廣度優先搜尋）
+     * 時間複雜度: O(amount × n)
+     * 空間複雜度: O(amount)
+     */
+    int coinChange_bfs(std::vector<int>& coins, int amount) {
+        if (amount == 0) {
+            return 0;
+        }
+        
+        std::queue<int> queue;
+        std::unordered_set<int> visited;
+        queue.push(0);
+        visited.insert(0);
+        int steps = 0;
+        
+        while (!queue.empty()) {
+            steps++;
+            int levelSize = queue.size();
+            
+            for (int i = 0; i < levelSize; i++) {
+                int currentAmount = queue.front();
+                queue.pop();
+                
+                // 嘗試每種硬幣
+                for (int coin : coins) {
+                    int nextAmount = currentAmount + coin;
+                    
+                    // 找到目標金額
+                    if (nextAmount == amount) {
+                        return steps;
+                    }
+                    
+                    // 如果未超過目標且未訪問過，加入佇列
+                    if (nextAmount < amount && visited.find(nextAmount) == visited.end()) {
+                        visited.insert(nextAmount);
+                        queue.push(nextAmount);
+                    }
+                }
+            }
+        }
+        
+        return -1;
+    }
+    
+    /**
+     * 方法三：遞迴 + 記憶化
+     * 時間複雜度: O(amount × n)
+     * 空間複雜度: O(amount)
+     */
+    int coinChange_memo(std::vector<int>& coins, int amount) {
+        std::unordered_map<int, int> memo;
+        return dp(coins, amount, memo);
+    }
+    
+private:
+    int dp(std::vector<int>& coins, int remaining, std::unordered_map<int, int>& memo) {
+        // 基礎情況
+        if (remaining == 0) return 0;
+        if (remaining < 0) return -1;
+        
+        // 檢查快取
+        if (memo.find(remaining) != memo.end()) {
+            return memo[remaining];
+        }
+        
+        // 嘗試每種硬幣
+        int minCoins = INT_MAX;
+        for (int coin : coins) {
+            int result = dp(coins, remaining - coin, memo);
+            if (result != -1) {
+                minCoins = std::min(minCoins, result + 1);
+            }
+        }
+        
+        // 儲存結果
+        memo[remaining] = (minCoins == INT_MAX) ? -1 : minCoins;
+        return memo[remaining];
+    }
+};</code></pre>
+            </div>
+
+            <div id="java" class="code-container">
+                <pre><code class="language-java">import java.util.*;
+
+class Solution {
+    /**
+     * 方法一：動態規劃（自底向上）
+     * 時間複雜度: O(amount × n)
+     * 空間複雜度: O(amount)
+     */
+    public int coinChange(int[] coins, int amount) {
+        // dp[i] 表示湊成金額 i 所需的最少硬幣數
+        int[] dp = new int[amount + 1];
+        Arrays.fill(dp, amount + 1);
+        dp[0] = 0;  // 湊成金額 0 需要 0 個硬幣
+        
+        // 對每個金額計算最少硬幣數
+        for (int i = 1; i <= amount; i++) {
+            // 嘗試每種硬幣
+            for (int coin : coins) {
+                if (i >= coin) {
+                    dp[i] = Math.min(dp[i], dp[i - coin] + 1);
+                }
+            }
+        }
+        
+        // 如果 dp[amount] 仍為初始值，表示無法湊成
+        return dp[amount] > amount ? -1 : dp[amount];
+    }
+    
+    /**
+     * 方法二：BFS（廣度優先搜尋）
+     * 時間複雜度: O(amount × n)
+     * 空間複雜度: O(amount)
+     */
+    public int coinChange_bfs(int[] coins, int amount) {
+        if (amount == 0) {
+            return 0;
+        }
+        
+        Queue<Integer> queue = new LinkedList<>();
+        Set<Integer> visited = new HashSet<>();
+        queue.offer(0);
+        visited.add(0);
+        int steps = 0;
+        
+        while (!queue.isEmpty()) {
+            steps++;
+            int levelSize = queue.size();
+            
+            for (int i = 0; i < levelSize; i++) {
+                int currentAmount = queue.poll();
+                
+                // 嘗試每種硬幣
+                for (int coin : coins) {
+                    int nextAmount = currentAmount + coin;
+                    
+                    // 找到目標金額
+                    if (nextAmount == amount) {
+                        return steps;
+                    }
+                    
+                    // 如果未超過目標且未訪問過，加入佇列
+                    if (nextAmount < amount && !visited.contains(nextAmount)) {
+                        visited.add(nextAmount);
+                        queue.offer(nextAmount);
+                    }
+                }
+            }
+        }
+        
+        return -1;
+    }
+    
+    /**
+     * 方法三：遞迴 + 記憶化
+     * 時間複雜度: O(amount × n)
+     * 空間複雜度: O(amount)
+     */
+    public int coinChange_memo(int[] coins, int amount) {
+        Map<Integer, Integer> memo = new HashMap<>();
+        return dp(coins, amount, memo);
+    }
+    
+    private int dp(int[] coins, int remaining, Map<Integer, Integer> memo) {
+        // 基礎情況
+        if (remaining == 0) return 0;
+        if (remaining < 0) return -1;
+        
+        // 檢查快取
+        if (memo.containsKey(remaining)) {
+            return memo.get(remaining);
+        }
+        
+        // 嘗試每種硬幣
+        int minCoins = Integer.MAX_VALUE;
+        for (int coin : coins) {
+            int result = dp(coins, remaining - coin, memo);
+            if (result != -1) {
+                minCoins = Math.min(minCoins, result + 1);
+            }
+        }
+        
+        // 儲存結果
+        int answer = (minCoins == Integer.MAX_VALUE) ? -1 : minCoins;
+        memo.put(remaining, answer);
+        return answer;
+    }
+}</code></pre>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">複雜度分析</h2>
+            <div class="complexity-box">
+                <div class="complexity-item">時間複雜度: O(amount × n)</div>
+                <p style="color: #78716c; margin: 10px 0;">
+                    其中 n 是硬幣種類數。需要計算 amount 個狀態，每個狀態需要嘗試 n 種硬幣。
+                </p>
+                
+                <div class="complexity-item" style="margin-top: 20px;">空間複雜度:</div>
+                <ul style="color: #78716c; margin: 10px 0 10px 30px;">
+                    <li><strong>動態規劃：</strong>O(amount) - 需要長度為 amount+1 的 dp 陣列</li>
+                    <li><strong>BFS：</strong>O(amount) - 佇列和 visited 集合最多存儲 amount 個狀態</li>
+                    <li><strong>記憶化遞迴：</strong>O(amount) - memo 字典和遞迴堆疊深度</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">重點提示</h2>
+            <div class="complexity-box">
+                <ul>
+                    <li><strong>完全背包問題：</strong>這是經典的完全背包問題（每個物品可以使用無限次）</li>
+                    <li><strong>貪心不適用：</strong>不能使用貪心策略（每次選最大面額），例如 coins=[1,3,4], amount=6，貪心會選 4+1+1=3 個，但最優解是 3+3=2 個</li>
+                    <li><strong>初始化技巧：</strong>使用 amount+1 作為無窮大，而不是 INT_MAX，避免溢出</li>
+                    <li><strong>狀態轉移：</strong>dp[i] = min(dp[i], dp[i-coin] + 1) 表示「使用當前硬幣」或「不使用當前硬幣」的最優選擇</li>
+                    <li><strong>邊界處理：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>amount = 0 時返回 0</li>
+                            <li>無法湊成時返回 -1</li>
+                            <li>確保 i >= coin 才能使用該硬幣</li>
+                        </ul>
+                    </li>
+                    <li><strong>優化方向：</strong>可以先對 coins 排序，從大到小嘗試（剪枝優化）</li>
+                    <li><strong>相似題目：</strong>Coin Change II (518), Perfect Squares (279), Minimum Cost For Tickets (983)</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        hljs.highlightAll();
+        
+        function showLanguage(lang) {
+            document.querySelectorAll('.code-container').forEach(container => {
+                container.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.getElementById(lang).classList.add('active');
+            event.target.classList.add('active');
+        }
+    </script>
+</body>
+</html>

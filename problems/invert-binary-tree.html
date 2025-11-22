@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>226. Invert Binary Tree - LeetCode 學習平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f8fafc; line-height: 1.8; color: #334155; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .header { background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; padding: 40px; border-radius: 16px; margin-bottom: 30px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .back-btn { display: inline-block; color: white; text-decoration: none; background: rgba(255,255,255,0.2); padding: 10px 20px; border-radius: 8px; margin-bottom: 20px; transition: all 0.3s; }
+        .back-btn:hover { background: rgba(255,255,255,0.3); }
+        .problem-title { font-size: 2.5em; font-weight: 800; margin-bottom: 15px; }
+        .difficulty { display: inline-block; background: rgba(255,255,255,0.3); padding: 8px 20px; border-radius: 20px; font-weight: 600; font-size: 0.9em; }
+        .content-section { background: white; padding: 40px; border-radius: 16px; margin-bottom: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .section-title { font-size: 1.8em; color: #1e293b; margin-bottom: 25px; font-weight: 700; padding-bottom: 10px; border-bottom: 3px solid #10b981; }
+        .description { font-size: 1.1em; line-height: 1.9; color: #475569; margin-bottom: 20px; }
+        .example-box { background: #f0fdf4; border-left: 4px solid #10b981; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .example-title { font-weight: 700; color: #059669; margin-bottom: 10px; font-size: 1.1em; }
+        .approach-box { background: #eff6ff; border-left: 4px solid #3b82f6; padding: 25px; border-radius: 8px; margin: 25px 0; }
+        .approach-title { font-weight: 700; color: #1e40af; margin-bottom: 15px; font-size: 1.3em; }
+        .complexity-box { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .complexity-item { margin: 10px 0; font-weight: 600; color: #92400e; }
+        .language-tabs { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+        .tab-btn { padding: 12px 28px; border: 2px solid #10b981; background: white; color: #10b981; border-radius: 8px; cursor: pointer; font-weight: 600; transition: all 0.3s; font-size: 1em; }
+        .tab-btn:hover { background: #f0fdf4; }
+        .tab-btn.active { background: #10b981; color: white; }
+        .code-container { display: none; margin-top: 20px; }
+        .code-container.active { display: block; }
+        pre { background: #282c34 !important; padding: 25px !important; border-radius: 12px; overflow-x: auto; margin: 0; }
+        code { font-family: 'Fira Code', 'Consolas', monospace; font-size: 0.95em; line-height: 1.6; }
+        ol, ul { margin-left: 30px; margin-top: 15px; }
+        li { margin: 12px 0; line-height: 1.8; }
+        strong { color: #1e293b; font-weight: 700; }
+        .visual-box { background: #f0f9ff; border: 2px solid #3b82f6; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        
+        @media (max-width: 768px) {
+            .container { padding: 10px; }
+            .header { padding: 25px; }
+            .problem-title { font-size: 1.8em; }
+            .content-section { padding: 25px; }
+            .tab-btn { padding: 10px 20px; font-size: 0.9em; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="../index.html" class="back-btn">← 返回題目列表</a>
+            <div class="problem-title">226. Invert Binary Tree</div>
+            <span class="difficulty">Easy</span>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">題目描述</h2>
+            <div class="description">
+                <p>給定一個二元樹的根節點 <code>root</code>，翻轉這棵二元樹，並返回其根節點。</p>
+                <p style="margin-top: 15px;">翻轉的意思是將每個節點的左右子樹交換位置，遞迴地對所有節點進行此操作。</p>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例 1:</div>
+                <pre><code>輸入: root = [4,2,7,1,3,6,9]
+輸出: [4,7,2,9,6,3,1]
+
+原始樹:          翻轉後:
+     4              4
+   /   \          /   \
+  2     7        7     2
+ / \   / \      / \   / \
+1   3 6   9    9   6 3   1</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例 2:</div>
+                <pre><code>輸入: root = [2,1,3]
+輸出: [2,3,1]
+
+原始樹:    翻轉後:
+  2          2
+ / \        / \
+1   3      3   1</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例 3:</div>
+                <pre><code>輸入: root = []
+輸出: []</code></pre>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">解題思路</h2>
+            
+            <div class="approach-box">
+                <div class="approach-title">方法一：遞迴解法（DFS）</div>
+                <p>使用深度優先搜尋（DFS）的遞迴方式，對每個節點交換其左右子樹。這是最直觀和簡潔的解法。</p>
+                
+                <p style="margin-top: 15px;"><strong>核心思想：</strong></p>
+                <p>對於每個節點，先遞迴翻轉其左右子樹，然後交換左右子節點的位置。</p>
+                
+                <p style="margin-top: 15px;"><strong>步驟：</strong></p>
+                <ol>
+                    <li>基礎情況：如果節點為空，直接返回 null</li>
+                    <li>遞迴翻轉左子樹</li>
+                    <li>遞迴翻轉右子樹</li>
+                    <li>交換當前節點的左右子節點</li>
+                    <li>返回當前節點</li>
+                </ol>
+                
+                <div class="visual-box">
+                    <p><strong>視覺化範例：[4,2,7,1,3,6,9]</strong></p>
+                    <pre style="background: white; padding: 15px; border-radius: 5px; margin-top: 10px;"><code>步驟 1: 從根節點開始
+     4
+   /   \
+  2     7
+ / \   / \
+1   3 6   9
+
+步驟 2: 遞迴處理左子樹 (2)
+- 交換 2 的左右子節點: 1 ↔ 3
+
+步驟 3: 遞迴處理右子樹 (7)
+- 交換 7 的左右子節點: 6 ↔ 9
+
+步驟 4: 交換根節點的左右子樹
+- 交換 4 的左右子節點: 2 ↔ 7
+
+最終結果:
+     4
+   /   \
+  7     2
+ / \   / \
+9   6 3   1</code></pre>
+                </div>
+            </div>
+
+            <div class="approach-box">
+                <div class="approach-title">方法二：迭代解法（BFS）</div>
+                <p>使用廣度優先搜尋（BFS）配合佇列，逐層處理每個節點並交換其左右子節點。</p>
+                
+                <p style="margin-top: 15px;"><strong>步驟：</strong></p>
+                <ol>
+                    <li>如果根節點為空，返回 null</li>
+                    <li>創建一個佇列，將根節點加入佇列</li>
+                    <li>當佇列不為空時：
+                        <ul>
+                            <li>取出佇列前端的節點</li>
+                            <li>交換該節點的左右子節點</li>
+                            <li>如果左子節點存在，加入佇列</li>
+                            <li>如果右子節點存在，加入佇列</li>
+                        </ul>
+                    </li>
+                    <li>返回根節點</li>
+                </ol>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">程式碼實現</h2>
+            
+            <div class="language-tabs">
+                <button class="tab-btn active" onclick="showLanguage('python')">Python</button>
+                <button class="tab-btn" onclick="showLanguage('cpp')">C++</button>
+                <button class="tab-btn" onclick="showLanguage('java')">Java</button>
+            </div>
+
+            <div id="python" class="code-container active">
+                <pre><code class="language-python"># Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+
+class Solution:
+    def invertTree(self, root: Optional[TreeNode]) -> Optional[TreeNode]:
+        """
+        方法一：遞迴解法（DFS）
+        時間複雜度: O(n) - 需要訪問每個節點一次
+        空間複雜度: O(h) - 遞迴堆疊深度，h 為樹的高度
+        """
+        # 基礎情況：空節點
+        if not root:
+            return None
+        
+        # 遞迴翻轉左右子樹
+        left = self.invertTree(root.left)
+        right = self.invertTree(root.right)
+        
+        # 交換左右子節點
+        root.left = right
+        root.right = left
+        
+        return root
+    
+    def invertTree_iterative(self, root: Optional[TreeNode]) -> Optional[TreeNode]:
+        """
+        方法二：迭代解法（BFS）
+        時間複雜度: O(n)
+        空間複雜度: O(w) - w 為樹的最大寬度
+        """
+        if not root:
+            return None
+        
+        from collections import deque
+        queue = deque([root])
+        
+        while queue:
+            node = queue.popleft()
+            
+            # 交換左右子節點
+            node.left, node.right = node.right, node.left
+            
+            # 將子節點加入佇列
+            if node.left:
+                queue.append(node.left)
+            if node.right:
+                queue.append(node.right)
+        
+        return root</code></pre>
+            </div>
+
+            <div id="cpp" class="code-container">
+                <pre><code class="language-cpp">#include &lt;queue&gt;
+
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+
+class Solution {
+public:
+    /**
+     * 方法一：遞迴解法（DFS）
+     * 時間複雜度: O(n)
+     * 空間複雜度: O(h)
+     */
+    TreeNode* invertTree(TreeNode* root) {
+        // 基礎情況：空節點
+        if (root == nullptr) {
+            return nullptr;
+        }
+        
+        // 遞迴翻轉左右子樹
+        TreeNode* left = invertTree(root->left);
+        TreeNode* right = invertTree(root->right);
+        
+        // 交換左右子節點
+        root->left = right;
+        root->right = left;
+        
+        return root;
+    }
+    
+    /**
+     * 方法二：迭代解法（BFS）
+     * 時間複雜度: O(n)
+     * 空間複雜度: O(w)
+     */
+    TreeNode* invertTree_iterative(TreeNode* root) {
+        if (root == nullptr) {
+            return nullptr;
+        }
+        
+        std::queue<TreeNode*> queue;
+        queue.push(root);
+        
+        while (!queue.empty()) {
+            TreeNode* node = queue.front();
+            queue.pop();
+            
+            // 交換左右子節點
+            TreeNode* temp = node->left;
+            node->left = node->right;
+            node->right = temp;
+            
+            // 將子節點加入佇列
+            if (node->left != nullptr) {
+                queue.push(node->left);
+            }
+            if (node->right != nullptr) {
+                queue.push(node->right);
+            }
+        }
+        
+        return root;
+    }
+};</code></pre>
+            </div>
+
+            <div id="java" class="code-container">
+                <pre><code class="language-java">import java.util.LinkedList;
+import java.util.Queue;
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+
+class Solution {
+    /**
+     * 方法一：遞迴解法（DFS）
+     * 時間複雜度: O(n)
+     * 空間複雜度: O(h)
+     */
+    public TreeNode invertTree(TreeNode root) {
+        // 基礎情況：空節點
+        if (root == null) {
+            return null;
+        }
+        
+        // 遞迴翻轉左右子樹
+        TreeNode left = invertTree(root.left);
+        TreeNode right = invertTree(root.right);
+        
+        // 交換左右子節點
+        root.left = right;
+        root.right = left;
+        
+        return root;
+    }
+    
+    /**
+     * 方法二：迭代解法（BFS）
+     * 時間複雜度: O(n)
+     * 空間複雜度: O(w)
+     */
+    public TreeNode invertTree_iterative(TreeNode root) {
+        if (root == null) {
+            return null;
+        }
+        
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.offer(root);
+        
+        while (!queue.isEmpty()) {
+            TreeNode node = queue.poll();
+            
+            // 交換左右子節點
+            TreeNode temp = node.left;
+            node.left = node.right;
+            node.right = temp;
+            
+            // 將子節點加入佇列
+            if (node.left != null) {
+                queue.offer(node.left);
+            }
+            if (node.right != null) {
+                queue.offer(node.right);
+            }
+        }
+        
+        return root;
+    }
+}</code></pre>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">複雜度分析</h2>
+            <div class="complexity-box">
+                <div class="complexity-item">時間複雜度: O(n)</div>
+                <p style="color: #78716c; margin: 10px 0;">
+                    需要訪問每個節點恰好一次，其中 n 是二元樹的節點數量。
+                </p>
+                
+                <div class="complexity-item" style="margin-top: 20px;">空間複雜度:</div>
+                <ul style="color: #78716c; margin: 10px 0 10px 30px;">
+                    <li><strong>遞迴解法：</strong>O(h)，其中 h 是樹的高度。最壞情況下（完全不平衡的樹）h = n，最好情況下（完全平衡的樹）h = log(n)</li>
+                    <li><strong>迭代解法：</strong>O(w)，其中 w 是樹的最大寬度。最壞情況下 w = n/2（完全二元樹的最底層）</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">重點提示</h2>
+            <div class="complexity-box">
+                <ul>
+                    <li><strong>遞迴基礎：</strong>這是學習二元樹遞迴的經典入門題目</li>
+                    <li><strong>交換時機：</strong>可以在遞迴前或遞迴後交換，結果相同</li>
+                    <li><strong>原地修改：</strong>不需要創建新的樹結構，直接修改原樹即可</li>
+                    <li><strong>DFS vs BFS：</strong>兩種方法都可行，遞迴（DFS）更簡潔，迭代（BFS）更直觀</li>
+                    <li><strong>空節點處理：</strong>記得檢查節點是否為 null，避免空指標錯誤</li>
+                    <li><strong>相似題目：</strong>對稱二元樹（Symmetric Tree）、鏡像二元樹</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        hljs.highlightAll();
+        
+        function showLanguage(lang) {
+            document.querySelectorAll('.code-container').forEach(container => {
+                container.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.getElementById(lang).classList.add('active');
+            event.target.classList.add('active');
+        }
+    </script>
+</body>
+</html>

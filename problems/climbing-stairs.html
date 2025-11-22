@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>70. Climbing Stairs - LeetCode 學習平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f8fafc; line-height: 1.8; color: #334155; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .header { background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; padding: 40px; border-radius: 16px; margin-bottom: 30px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .back-btn { display: inline-block; color: white; text-decoration: none; background: rgba(255,255,255,0.2); padding: 10px 20px; border-radius: 8px; margin-bottom: 20px; transition: all 0.3s; }
+        .back-btn:hover { background: rgba(255,255,255,0.3); }
+        .problem-title { font-size: 2.5em; font-weight: 800; margin-bottom: 15px; }
+        .difficulty { display: inline-block; background: rgba(255,255,255,0.3); padding: 8px 20px; border-radius: 20px; font-weight: 600; font-size: 0.9em; }
+        .content-section { background: white; padding: 40px; border-radius: 16px; margin-bottom: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .section-title { font-size: 1.8em; color: #1e293b; margin-bottom: 25px; font-weight: 700; padding-bottom: 10px; border-bottom: 3px solid #10b981; }
+        .description { font-size: 1.1em; line-height: 1.9; color: #475569; margin-bottom: 20px; }
+        .example-box { background: #f0fdf4; border-left: 4px solid #10b981; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .example-title { font-weight: 700; color: #059669; margin-bottom: 10px; font-size: 1.1em; }
+        .approach-box { background: #eff6ff; border-left: 4px solid #3b82f6; padding: 25px; border-radius: 8px; margin: 25px 0; }
+        .approach-title { font-weight: 700; color: #1e40af; margin-bottom: 15px; font-size: 1.3em; }
+        .complexity-box { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .complexity-item { margin: 10px 0; font-weight: 600; color: #92400e; }
+        .language-tabs { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+        .tab-btn { padding: 12px 28px; border: 2px solid #10b981; background: white; color: #10b981; border-radius: 8px; cursor: pointer; font-weight: 600; transition: all 0.3s; font-size: 1em; }
+        .tab-btn:hover { background: #f0fdf4; }
+        .tab-btn.active { background: #10b981; color: white; }
+        .code-container { display: none; margin-top: 20px; }
+        .code-container.active { display: block; }
+        pre { background: #282c34 !important; padding: 25px !important; border-radius: 12px; overflow-x: auto; margin: 0; }
+        code { font-family: 'Fira Code', 'Consolas', monospace; font-size: 0.95em; line-height: 1.6; }
+        ol, ul { margin-left: 30px; margin-top: 15px; }
+        li { margin: 12px 0; line-height: 1.8; }
+        strong { color: #1e293b; font-weight: 700; }
+        .visual-box { background: #f0f9ff; border: 2px solid #3b82f6; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        
+        @media (max-width: 768px) {
+            .container { padding: 10px; }
+            .header { padding: 25px; }
+            .problem-title { font-size: 1.8em; }
+            .content-section { padding: 25px; }
+            .tab-btn { padding: 10px 20px; font-size: 0.9em; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="../index.html" class="back-btn">← 返回題目列表</a>
+            <div class="problem-title">70. Climbing Stairs</div>
+            <span class="difficulty">Easy</span>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">題目描述</h2>
+            <div class="description">
+                <p>假設你正在爬樓梯。需要 <code>n</code> 階你才能到達樓頂。</p>
+                <p style="margin-top: 15px;">每次你可以爬 <code>1</code> 或 <code>2</code> 個台階。你有多少種不同的方法可以爬到樓頂呢？</p>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例 1:</div>
+                <pre><code>輸入: n = 2
+輸出: 2
+解釋: 有兩種方法可以爬到樓頂。
+1. 1 階 + 1 階
+2. 2 階</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例 2:</div>
+                <pre><code>輸入: n = 3
+輸出: 3
+解釋: 有三種方法可以爬到樓頂。
+1. 1 階 + 1 階 + 1 階
+2. 1 階 + 2 階
+3. 2 階 + 1 階</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例 3:</div>
+                <pre><code>輸入: n = 4
+輸出: 5
+解釋: 有五種方法可以爬到樓頂。
+1. 1+1+1+1
+2. 1+1+2
+3. 1+2+1
+4. 2+1+1
+5. 2+2</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">限制條件:</div>
+                <pre><code>1 <= n <= 45</code></pre>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">解題思路</h2>
+            
+            <div class="approach-box">
+                <div class="approach-title">關鍵觀察：這是斐波那契數列！</div>
+                <p>要到達第 n 階，可以從第 (n-1) 階走 1 步，或從第 (n-2) 階走 2 步。</p>
+                <p style="margin-top: 15px;"><strong>狀態轉移方程：</strong></p>
+                <p style="background: #f0f9ff; padding: 15px; border-radius: 8px; margin: 15px 0; font-weight: 600;">
+                    dp[n] = dp[n-1] + dp[n-2]
+                </p>
+                
+                <div class="visual-box">
+                    <p><strong>視覺化推導（n = 5）：</strong></p>
+                    <pre style="background: white; padding: 15px; border-radius: 5px; margin-top: 10px;"><code>n = 1: 1 種方法 (1)
+n = 2: 2 種方法 (1+1, 2)
+n = 3: 3 種方法 = dp[2] + dp[1] = 2 + 1
+n = 4: 5 種方法 = dp[3] + dp[2] = 3 + 2
+n = 5: 8 種方法 = dp[4] + dp[3] = 5 + 3
+
+數列: 1, 2, 3, 5, 8, 13, 21...（斐波那契數列）</code></pre>
+                </div>
+            </div>
+            
+            <div class="approach-box">
+                <div class="approach-title">方法一：動態規劃（DP 陣列）</div>
+                <p>使用一個陣列儲存每一階的方法數，從底向上計算。</p>
+                
+                <p style="margin-top: 15px;"><strong>步驟：</strong></p>
+                <ol>
+                    <li>創建 dp 陣列，長度為 n+1</li>
+                    <li>初始化基礎情況：
+                        <ul>
+                            <li>dp[1] = 1（到第 1 階只有 1 種方法）</li>
+                            <li>dp[2] = 2（到第 2 階有 2 種方法）</li>
+                        </ul>
+                    </li>
+                    <li>從 i = 3 到 n，計算 dp[i] = dp[i-1] + dp[i-2]</li>
+                    <li>返回 dp[n]</li>
+                </ol>
+            </div>
+
+            <div class="approach-box">
+                <div class="approach-title">方法二：動態規劃（空間優化）</div>
+                <p>觀察到我們只需要前兩個狀態，可以用兩個變數代替整個陣列。</p>
+                
+                <p style="margin-top: 15px;"><strong>優化思路：</strong></p>
+                <p>由於 dp[i] 只依賴於 dp[i-1] 和 dp[i-2]，我們不需要保存整個陣列，只需要兩個變數即可。</p>
+                
+                <p style="margin-top: 15px;"><strong>步驟：</strong></p>
+                <ol>
+                    <li>初始化 prev1 = 2（第 2 階），prev2 = 1（第 1 階）</li>
+                    <li>從 i = 3 到 n：
+                        <ul>
+                            <li>current = prev1 + prev2</li>
+                            <li>更新：prev2 = prev1, prev1 = current</li>
+                        </ul>
+                    </li>
+                    <li>返回 prev1</li>
+                </ol>
+            </div>
+
+            <div class="approach-box">
+                <div class="approach-title">方法三：遞迴 + 記憶化（Memoization）</div>
+                <p>使用遞迴思路，並用字典或陣列快取已計算的結果，避免重複計算。</p>
+                
+                <p style="margin-top: 15px;"><strong>步驟：</strong></p>
+                <ol>
+                    <li>定義遞迴函數 climb(n)：
+                        <ul>
+                            <li>基礎情況：n ≤ 2 時返回 n</li>
+                            <li>如果 n 已在快取中，直接返回</li>
+                            <li>否則計算：climb(n-1) + climb(n-2)</li>
+                            <li>將結果存入快取並返回</li>
+                        </ul>
+                    </li>
+                </ol>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">程式碼實現</h2>
+            
+            <div class="language-tabs">
+                <button class="tab-btn active" onclick="showLanguage('python')">Python</button>
+                <button class="tab-btn" onclick="showLanguage('cpp')">C++</button>
+                <button class="tab-btn" onclick="showLanguage('java')">Java</button>
+            </div>
+
+            <div id="python" class="code-container active">
+                <pre><code class="language-python">class Solution:
+    def climbStairs(self, n: int) -> int:
+        """
+        方法一：動態規劃（DP 陣列）
+        時間複雜度: O(n)
+        空間複雜度: O(n)
+        """
+        if n <= 2:
+            return n
+        
+        # dp[i] 表示到達第 i 階的方法數
+        dp = [0] * (n + 1)
+        dp[1] = 1
+        dp[2] = 2
+        
+        for i in range(3, n + 1):
+            dp[i] = dp[i-1] + dp[i-2]
+        
+        return dp[n]
+    
+    def climbStairs_optimized(self, n: int) -> int:
+        """
+        方法二：動態規劃（空間優化）
+        時間複雜度: O(n)
+        空間複雜度: O(1)
+        """
+        if n <= 2:
+            return n
+        
+        # 只需要保存前兩個狀態
+        prev2 = 1  # dp[1]
+        prev1 = 2  # dp[2]
+        
+        for i in range(3, n + 1):
+            current = prev1 + prev2
+            prev2 = prev1
+            prev1 = current
+        
+        return prev1
+    
+    def climbStairs_memo(self, n: int) -> int:
+        """
+        方法三：遞迴 + 記憶化
+        時間複雜度: O(n)
+        空間複雜度: O(n)
+        """
+        memo = {}
+        
+        def climb(n):
+            if n <= 2:
+                return n
+            
+            if n in memo:
+                return memo[n]
+            
+            memo[n] = climb(n-1) + climb(n-2)
+            return memo[n]
+        
+        return climb(n)
+    
+    def climbStairs_clean(self, n: int) -> int:
+        """
+        方法四：最簡潔寫法（推薦）
+        時間複雜度: O(n)
+        空間複雜度: O(1)
+        """
+        if n <= 2:
+            return n
+        
+        a, b = 1, 2
+        for _ in range(3, n + 1):
+            a, b = b, a + b
+        
+        return b</code></pre>
+            </div>
+
+            <div id="cpp" class="code-container">
+                <pre><code class="language-cpp">#include &lt;vector&gt;
+#include &lt;unordered_map&gt;
+
+class Solution {
+public:
+    /**
+     * 方法一：動態規劃（DP 陣列）
+     * 時間複雜度: O(n)
+     * 空間複雜度: O(n)
+     */
+    int climbStairs(int n) {
+        if (n <= 2) {
+            return n;
+        }
+        
+        // dp[i] 表示到達第 i 階的方法數
+        std::vector<int> dp(n + 1);
+        dp[1] = 1;
+        dp[2] = 2;
+        
+        for (int i = 3; i <= n; i++) {
+            dp[i] = dp[i-1] + dp[i-2];
+        }
+        
+        return dp[n];
+    }
+    
+    /**
+     * 方法二：動態規劃（空間優化）
+     * 時間複雜度: O(n)
+     * 空間複雜度: O(1)
+     */
+    int climbStairs_optimized(int n) {
+        if (n <= 2) {
+            return n;
+        }
+        
+        // 只需要保存前兩個狀態
+        int prev2 = 1;  // dp[1]
+        int prev1 = 2;  // dp[2]
+        
+        for (int i = 3; i <= n; i++) {
+            int current = prev1 + prev2;
+            prev2 = prev1;
+            prev1 = current;
+        }
+        
+        return prev1;
+    }
+    
+    /**
+     * 方法三：遞迴 + 記憶化
+     * 時間複雜度: O(n)
+     * 空間複雜度: O(n)
+     */
+    int climbStairs_memo(int n) {
+        std::unordered_map<int, int> memo;
+        return climb(n, memo);
+    }
+    
+private:
+    int climb(int n, std::unordered_map<int, int>& memo) {
+        if (n <= 2) {
+            return n;
+        }
+        
+        if (memo.find(n) != memo.end()) {
+            return memo[n];
+        }
+        
+        memo[n] = climb(n-1, memo) + climb(n-2, memo);
+        return memo[n];
+    }
+
+public:
+    /**
+     * 方法四：最簡潔寫法（推薦）
+     * 時間複雜度: O(n)
+     * 空間複雜度: O(1)
+     */
+    int climbStairs_clean(int n) {
+        if (n <= 2) {
+            return n;
+        }
+        
+        int a = 1, b = 2;
+        for (int i = 3; i <= n; i++) {
+            int temp = a + b;
+            a = b;
+            b = temp;
+        }
+        
+        return b;
+    }
+};</code></pre>
+            </div>
+
+            <div id="java" class="code-container">
+                <pre><code class="language-java">import java.util.HashMap;
+import java.util.Map;
+
+class Solution {
+    /**
+     * 方法一：動態規劃（DP 陣列）
+     * 時間複雜度: O(n)
+     * 空間複雜度: O(n)
+     */
+    public int climbStairs(int n) {
+        if (n <= 2) {
+            return n;
+        }
+        
+        // dp[i] 表示到達第 i 階的方法數
+        int[] dp = new int[n + 1];
+        dp[1] = 1;
+        dp[2] = 2;
+        
+        for (int i = 3; i <= n; i++) {
+            dp[i] = dp[i-1] + dp[i-2];
+        }
+        
+        return dp[n];
+    }
+    
+    /**
+     * 方法二：動態規劃（空間優化）
+     * 時間複雜度: O(n)
+     * 空間複雜度: O(1)
+     */
+    public int climbStairs_optimized(int n) {
+        if (n <= 2) {
+            return n;
+        }
+        
+        // 只需要保存前兩個狀態
+        int prev2 = 1;  // dp[1]
+        int prev1 = 2;  // dp[2]
+        
+        for (int i = 3; i <= n; i++) {
+            int current = prev1 + prev2;
+            prev2 = prev1;
+            prev1 = current;
+        }
+        
+        return prev1;
+    }
+    
+    /**
+     * 方法三：遞迴 + 記憶化
+     * 時間複雜度: O(n)
+     * 空間複雜度: O(n)
+     */
+    public int climbStairs_memo(int n) {
+        Map<Integer, Integer> memo = new HashMap<>();
+        return climb(n, memo);
+    }
+    
+    private int climb(int n, Map<Integer, Integer> memo) {
+        if (n <= 2) {
+            return n;
+        }
+        
+        if (memo.containsKey(n)) {
+            return memo.get(n);
+        }
+        
+        int result = climb(n-1, memo) + climb(n-2, memo);
+        memo.put(n, result);
+        return result;
+    }
+    
+    /**
+     * 方法四：最簡潔寫法（推薦）
+     * 時間複雜度: O(n)
+     * 空間複雜度: O(1)
+     */
+    public int climbStairs_clean(int n) {
+        if (n <= 2) {
+            return n;
+        }
+        
+        int a = 1, b = 2;
+        for (int i = 3; i <= n; i++) {
+            int temp = a + b;
+            a = b;
+            b = temp;
+        }
+        
+        return b;
+    }
+}</code></pre>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">複雜度分析</h2>
+            <div class="complexity-box">
+                <div class="complexity-item">時間複雜度: O(n)</div>
+                <p style="color: #78716c; margin: 10px 0;">
+                    所有方法都需要計算 n 個狀態，每個狀態的計算都是 O(1)，所以總時間複雜度為 O(n)。
+                </p>
+                
+                <div class="complexity-item" style="margin-top: 20px;">空間複雜度:</div>
+                <ul style="color: #78716c; margin: 10px 0 10px 30px;">
+                    <li><strong>方法一（DP 陣列）：</strong>O(n) - 需要長度為 n+1 的陣列</li>
+                    <li><strong>方法二（空間優化）：</strong>O(1) - 只需要兩個變數</li>
+                    <li><strong>方法三（記憶化）：</strong>O(n) - 需要 HashMap 存儲 n 個狀態，加上遞迴堆疊 O(n)</li>
+                    <li><strong>方法四（最簡潔）：</strong>O(1) - 只需要兩個變數</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">重點提示</h2>
+            <div class="complexity-box">
+                <ul>
+                    <li><strong>動態規劃入門題：</strong>這是學習 DP 最經典的入門題目，務必掌握</li>
+                    <li><strong>斐波那契本質：</strong>這題本質上就是求第 n 個斐波那契數</li>
+                    <li><strong>狀態定義：</strong>dp[i] = 到達第 i 階的方法總數</li>
+                    <li><strong>狀態轉移：</strong>dp[i] = dp[i-1] + dp[i-2]（可以從前一階或前兩階到達）</li>
+                    <li><strong>空間優化：</strong>滾動變數技巧，是 DP 優化的常用手法</li>
+                    <li><strong>避免陷阱：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>不要用純遞迴（會 TLE，時間複雜度 O(2^n)）</li>
+                            <li>記得處理 n=1 和 n=2 的基礎情況</li>
+                        </ul>
+                    </li>
+                    <li><strong>擴展思考：</strong>如果每次可以爬 1, 2, 3 階呢？狀態轉移會變成 dp[i] = dp[i-1] + dp[i-2] + dp[i-3]</li>
+                    <li><strong>相似題目：</strong>Min Cost Climbing Stairs (746), Fibonacci Number (509), House Robber (198)</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        hljs.highlightAll();
+        
+        function showLanguage(lang) {
+            document.querySelectorAll('.code-container').forEach(container => {
+                container.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.getElementById(lang).classList.add('active');
+            event.target.classList.add('active');
+        }
+    </script>
+</body>
+</html>
