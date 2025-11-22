@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>33. Search in Rotated Sorted Array - LeetCode 學習平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f8fafc; line-height: 1.8; color: #334155; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .header { background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: white; padding: 40px; border-radius: 16px; margin-bottom: 30px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .back-btn { display: inline-block; color: white; text-decoration: none; background: rgba(255,255,255,0.2); padding: 10px 20px; border-radius: 8px; margin-bottom: 20px; transition: all 0.3s; }
+        .back-btn:hover { background: rgba(255,255,255,0.3); }
+        .problem-title { font-size: 2.5em; font-weight: 800; margin-bottom: 15px; }
+        .difficulty { display: inline-block; background: rgba(255,255,255,0.3); padding: 8px 20px; border-radius: 20px; font-weight: 600; font-size: 0.9em; }
+        .content-section { background: white; padding: 40px; border-radius: 16px; margin-bottom: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .section-title { font-size: 1.8em; color: #1e293b; margin-bottom: 25px; font-weight: 700; padding-bottom: 10px; border-bottom: 3px solid #f59e0b; }
+        .description { font-size: 1.1em; line-height: 1.9; color: #475569; margin-bottom: 20px; }
+        .example-box { background: #fffbeb; border-left: 4px solid #f59e0b; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .example-title { font-weight: 700; color: #d97706; margin-bottom: 10px; font-size: 1.1em; }
+        .approach-box { background: #eff6ff; border-left: 4px solid #3b82f6; padding: 25px; border-radius: 8px; margin: 25px 0; }
+        .approach-title { font-weight: 700; color: #1e40af; margin-bottom: 15px; font-size: 1.3em; }
+        .complexity-box { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .complexity-item { margin: 10px 0; font-weight: 600; color: #92400e; }
+        .language-tabs { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+        .tab-btn { padding: 12px 28px; border: 2px solid #f59e0b; background: white; color: #f59e0b; border-radius: 8px; cursor: pointer; font-weight: 600; transition: all 0.3s; font-size: 1em; }
+        .tab-btn:hover { background: #fffbeb; }
+        .tab-btn.active { background: #f59e0b; color: white; }
+        .code-container { display: none; margin-top: 20px; }
+        .code-container.active { display: block; }
+        pre { background: #282c34 !important; padding: 25px !important; border-radius: 12px; overflow-x: auto; margin: 0; }
+        code { font-family: 'Fira Code', 'Consolas', monospace; font-size: 0.95em; line-height: 1.6; }
+        ol, ul { margin-left: 30px; margin-top: 15px; }
+        li { margin: 12px 0; line-height: 1.8; }
+        strong { color: #1e293b; font-weight: 700; }
+        .visual-box { background: #f0f9ff; border: 2px solid #3b82f6; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        
+        @media (max-width: 768px) {
+            .container { padding: 10px; }
+            .header { padding: 25px; }
+            .problem-title { font-size: 1.8em; }
+            .content-section { padding: 25px; }
+            .tab-btn { padding: 10px 20px; font-size: 0.9em; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="../index.html" class="back-btn">← 返回題目列表</a>
+            <div class="problem-title">33. Search in Rotated Sorted Array</div>
+            <span class="difficulty">Medium</span>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">題目描述</h2>
+            <div class="description">
+                <p>整數陣列 <code>nums</code> 按升序排列，陣列中的值互不相同。</p>
+                <p style="margin-top: 15px;">在傳遞給函數之前，<code>nums</code> 在預先未知的某個下標 k（0 ≤ k < nums.length）上進行了旋轉，使陣列變為 <code>[nums[k], nums[k+1], ..., nums[n-1], nums[0], nums[1], ..., nums[k-1]]</code>（下標從 0 開始計數）。</p>
+                <p style="margin-top: 15px;">例如，<code>[0,1,2,4,5,6,7]</code> 在下標 3 處經旋轉後可能變為 <code>[4,5,6,7,0,1,2]</code>。</p>
+                <p style="margin-top: 15px;">給你旋轉後的陣列 <code>nums</code> 和一個整數 <code>target</code>，如果 <code>nums</code> 中存在這個目標值 <code>target</code>，則返回它的下標，否則返回 <code>-1</code>。</p>
+                <p style="margin-top: 15px;"><strong>你必須設計一個時間複雜度為 O(log n) 的演算法解決此問題。</strong></p>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例 1:</div>
+                <pre><code>輸入: nums = [4,5,6,7,0,1,2], target = 0
+輸出: 4</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例 2:</div>
+                <pre><code>輸入: nums = [4,5,6,7,0,1,2], target = 3
+輸出: -1</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例 3:</div>
+                <pre><code>輸入: nums = [1], target = 0
+輸出: -1</code></pre>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">解題思路</h2>
+            
+            <div class="approach-box">
+                <div class="approach-title">方法：修改版二分搜尋</div>
+                <p>雖然陣列經過旋轉，但仍然可以使用二分搜尋。關鍵是判斷哪一半是有序的，然後決定在哪一半搜尋。</p>
+                
+                <p style="margin-top: 15px;"><strong>核心思想：</strong></p>
+                <p>旋轉後的陣列可以分為兩部分，至少有一半是有序的。通過比較 nums[left]、nums[mid]、nums[right]，可以判斷哪一半是有序的。</p>
+                
+                <p style="margin-top: 15px;"><strong>關鍵觀察：</strong></p>
+                <ul>
+                    <li>如果 nums[left] ≤ nums[mid]，說明左半部分是有序的</li>
+                    <li>否則，右半部分是有序的</li>
+                    <li>在有序的那一半中，可以判斷 target 是否在範圍內</li>
+                </ul>
+                
+                <p style="margin-top: 15px;"><strong>步驟：</strong></p>
+                <ol>
+                    <li>初始化 left = 0，right = n - 1</li>
+                    <li>當 left ≤ right 時：
+                        <ul>
+                            <li>計算 mid = (left + right) // 2</li>
+                            <li>如果 nums[mid] == target，返回 mid</li>
+                            <li>判斷哪一半是有序的：
+                                <ul>
+                                    <li>如果左半部分有序（nums[left] ≤ nums[mid]）：
+                                        <ul>
+                                            <li>如果 target 在左半部分範圍內，right = mid - 1</li>
+                                            <li>否則，left = mid + 1</li>
+                                        </ul>
+                                    </li>
+                                    <li>如果右半部分有序：
+                                        <ul>
+                                            <li>如果 target 在右半部分範圍內，left = mid + 1</li>
+                                            <li>否則，right = mid - 1</li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>返回 -1</li>
+                </ol>
+                
+                <div class="visual-box">
+                    <p><strong>視覺化範例：nums = [4,5,6,7,0,1,2], target = 0</strong></p>
+                    <pre style="background: white; padding: 15px; border-radius: 5px; margin-top: 10px;"><code>步驟 1: left=0, right=6, mid=3
+       [4, 5, 6, 7, 0, 1, 2]
+                   ^
+       左半部分有序 [4,5,6,7]，target=0 不在此範圍
+       搜尋右半部分
+
+步驟 2: left=4, right=6, mid=5
+       [4, 5, 6, 7, 0, 1, 2]
+                      ^
+       右半部分有序 [0,1,2]，target=0 在此範圍
+       搜尋左半部分
+
+步驟 3: left=4, right=4, mid=4
+       [4, 5, 6, 7, 0, 1, 2]
+                   ^
+       nums[4]=0 == target，找到！返回 4</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">程式碼實現</h2>
+            
+            <div class="language-tabs">
+                <button class="tab-btn active" onclick="showLanguage('python')">Python</button>
+                <button class="tab-btn" onclick="showLanguage('cpp')">C++</button>
+                <button class="tab-btn" onclick="showLanguage('java')">Java</button>
+            </div>
+
+            <div id="python" class="code-container active">
+                <pre><code class="language-python">class Solution:
+    def search(self, nums: List[int], target: int) -> int:
+        """
+        修改版二分搜尋
+        時間複雜度: O(log n)
+        空間複雜度: O(1)
+        """
+        left, right = 0, len(nums) - 1
+        
+        while left <= right:
+            mid = (left + right) // 2
+            
+            # 找到目標值
+            if nums[mid] == target:
+                return mid
+            
+            # 判斷哪一半是有序的
+            # 左半部分有序
+            if nums[left] <= nums[mid]:
+                # target 在左半部分的範圍內
+                if nums[left] <= target < nums[mid]:
+                    right = mid - 1
+                else:
+                    left = mid + 1
+            
+            # 右半部分有序
+            else:
+                # target 在右半部分的範圍內
+                if nums[mid] < target <= nums[right]:
+                    left = mid + 1
+                else:
+                    right = mid - 1
+        
+        return -1</code></pre>
+            </div>
+
+            <div id="cpp" class="code-container">
+                <pre><code class="language-cpp">#include &lt;vector&gt;
+
+class Solution {
+public:
+    /**
+     * 修改版二分搜尋
+     * 時間複雜度: O(log n)
+     * 空間複雜度: O(1)
+     */
+    int search(std::vector&lt;int&gt;& nums, int target) {
+        int left = 0, right = nums.size() - 1;
+        
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+            
+            // 找到目標值
+            if (nums[mid] == target) {
+                return mid;
+            }
+            
+            // 左半部分有序
+            if (nums[left] <= nums[mid]) {
+                // target 在左半部分的範圍內
+                if (nums[left] <= target && target < nums[mid]) {
+                    right = mid - 1;
+                } else {
+                    left = mid + 1;
+                }
+            }
+            
+            // 右半部分有序
+            else {
+                // target 在右半部分的範圍內
+                if (nums[mid] < target && target <= nums[right]) {
+                    left = mid + 1;
+                } else {
+                    right = mid - 1;
+                }
+            }
+        }
+        
+        return -1;
+    }
+};</code></pre>
+            </div>
+
+            <div id="java" class="code-container">
+                <pre><code class="language-java">class Solution {
+    /**
+     * 修改版二分搜尋
+     * 時間複雜度: O(log n)
+     * 空間複雜度: O(1)
+     */
+    public int search(int[] nums, int target) {
+        int left = 0, right = nums.length - 1;
+        
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+            
+            // 找到目標值
+            if (nums[mid] == target) {
+                return mid;
+            }
+            
+            // 左半部分有序
+            if (nums[left] <= nums[mid]) {
+                // target 在左半部分的範圍內
+                if (nums[left] <= target && target < nums[mid]) {
+                    right = mid - 1;
+                } else {
+                    left = mid + 1;
+                }
+            }
+            
+            // 右半部分有序
+            else {
+                // target 在右半部分的範圍內
+                if (nums[mid] < target && target <= nums[right]) {
+                    left = mid + 1;
+                } else {
+                    right = mid - 1;
+                }
+            }
+        }
+        
+        return -1;
+    }
+}</code></pre>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">複雜度分析</h2>
+            <div class="complexity-box">
+                <div class="complexity-item">時間複雜度: O(log n)</div>
+                <p style="color: #78716c; margin: 10px 0;">
+                    使用二分搜尋，每次將搜尋範圍縮小一半。
+                </p>
+                
+                <div class="complexity-item" style="margin-top: 20px;">空間複雜度: O(1)</div>
+                <p style="color: #78716c; margin: 10px 0;">
+                    只使用了常數額外空間。
+                </p>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">重點提示</h2>
+            <div class="complexity-box">
+                <ul>
+                    <li><strong>關鍵判斷：</strong>通過比較 nums[left] 和 nums[mid] 判斷哪一半有序</li>
+                    <li><strong>注意等號：</strong>nums[left] ≤ nums[mid] 包含等號，處理只有一個元素的情況</li>
+                    <li><strong>範圍判斷：</strong>在有序的那一半中，判斷 target 是否在範圍內</li>
+                    <li><strong>常見錯誤：</strong>忘記處理邊界情況或範圍判斷錯誤</li>
+                    <li><strong>變體題目：</strong>Search in Rotated Sorted Array II（含重複元素）</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        hljs.highlightAll();
+        
+        function showLanguage(lang) {
+            document.querySelectorAll('.code-container').forEach(container => {
+                container.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.getElementById(lang).classList.add('active');
+            event.target.classList.add('active');
+        }
+    </script>
+</body>
+</html>

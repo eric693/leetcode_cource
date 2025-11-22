@@ -2,30 +2,47 @@
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
-    <title>49. Group Anagrams</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>49. Group Anagrams - LeetCode 學習平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: -apple-system, sans-serif; background: #f8fafc; padding: 20px; line-height: 1.7; color: #2d3748; }
-        .container { max-width: 1100px; margin: 0 auto; background: white; border-radius: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); overflow: hidden; }
-        .header { background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: white; padding: 40px; }
-        .back-btn { display: inline-flex; color: white; text-decoration: none; background: rgba(255,255,255,0.2); padding: 8px 16px; border-radius: 8px; margin-bottom: 20px; }
-        .problem-title { font-size: 2.2em; margin-bottom: 15px; font-weight: 800; }
-        .difficulty { background: rgba(255,255,255,0.25); padding: 8px 20px; border-radius: 8px; font-weight: 600; display: inline-block; }
-        .content { padding: 40px; }
-        .section { margin-bottom: 40px; }
-        .section-title { font-size: 1.8em; color: #1e293b; margin-bottom: 20px; font-weight: 700; border-left: 4px solid #f59e0b; padding-left: 16px; }
-        .description { line-height: 1.9; color: #475569; font-size: 1.05em; }
-        .example { background: #fffbeb; padding: 20px; border-radius: 10px; margin: 15px 0; border-left: 4px solid #f59e0b; }
-        pre { background: #f8fafc !important; padding: 18px !important; border-radius: 8px; border: 1px solid #e2e8f0; }
-        .code-header { background: #1e293b; color: white; padding: 12px 20px; border-radius: 8px 8px 0 0; font-weight: 600; }
-        .code-container { margin: 20px 0; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
-        .language-tabs { display: flex; gap: 12px; margin-bottom: 25px; }
-        .tab-btn { padding: 10px 24px; border: 2px solid #f59e0b; background: white; color: #f59e0b; border-radius: 8px; cursor: pointer; font-weight: 600; transition: all 0.2s; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f8fafc; line-height: 1.8; color: #334155; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .header { background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: white; padding: 40px; border-radius: 16px; margin-bottom: 30px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .back-btn { display: inline-block; color: white; text-decoration: none; background: rgba(255,255,255,0.2); padding: 10px 20px; border-radius: 8px; margin-bottom: 20px; transition: all 0.3s; }
+        .back-btn:hover { background: rgba(255,255,255,0.3); }
+        .problem-title { font-size: 2.5em; font-weight: 800; margin-bottom: 15px; }
+        .difficulty { display: inline-block; background: rgba(255,255,255,0.3); padding: 8px 20px; border-radius: 20px; font-weight: 600; font-size: 0.9em; }
+        .content-section { background: white; padding: 40px; border-radius: 16px; margin-bottom: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .section-title { font-size: 1.8em; color: #1e293b; margin-bottom: 25px; font-weight: 700; padding-bottom: 10px; border-bottom: 3px solid #f59e0b; }
+        .description { font-size: 1.1em; line-height: 1.9; color: #475569; margin-bottom: 20px; }
+        .example-box { background: #fffbeb; border-left: 4px solid #f59e0b; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .example-title { font-weight: 700; color: #d97706; margin-bottom: 10px; font-size: 1.1em; }
+        .approach-box { background: #eff6ff; border-left: 4px solid #3b82f6; padding: 25px; border-radius: 8px; margin: 25px 0; }
+        .approach-title { font-weight: 700; color: #1e40af; margin-bottom: 15px; font-size: 1.3em; }
+        .complexity-box { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .complexity-item { margin: 10px 0; font-weight: 600; color: #92400e; }
+        .language-tabs { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+        .tab-btn { padding: 12px 28px; border: 2px solid #f59e0b; background: white; color: #f59e0b; border-radius: 8px; cursor: pointer; font-weight: 600; transition: all 0.3s; font-size: 1em; }
+        .tab-btn:hover { background: #fffbeb; }
         .tab-btn.active { background: #f59e0b; color: white; }
-        .code-content { display: none; }
-        .code-content.active { display: block; }
+        .code-container { display: none; margin-top: 20px; }
+        .code-container.active { display: block; }
+        pre { background: #282c34 !important; padding: 25px !important; border-radius: 12px; overflow-x: auto; margin: 0; }
+        code { font-family: 'Fira Code', 'Consolas', monospace; font-size: 0.95em; line-height: 1.6; }
+        ol, ul { margin-left: 30px; margin-top: 15px; }
+        li { margin: 12px 0; line-height: 1.8; }
+        strong { color: #1e293b; font-weight: 700; }
+        
+        @media (max-width: 768px) {
+            .container { padding: 10px; }
+            .header { padding: 25px; }
+            .problem-title { font-size: 1.8em; }
+            .content-section { padding: 25px; }
+            .tab-btn { padding: 10px 20px; font-size: 0.9em; }
+        }
     </style>
 </head>
 <body>
@@ -35,61 +52,123 @@
             <div class="problem-title">49. Group Anagrams</div>
             <span class="difficulty">Medium</span>
         </div>
-        <div class="content">
-            <div class="section">
-                <h2 class="section-title">題目描述</h2>
-                <div class="description">
-                    <p>給定一個字串陣列,將字母異位詞(anagram)組合在一起。字母異位詞是由重新排列源單詞的字母得到的一個新單詞。</p>
-                </div>
-                <div class="example">
-                    <pre><code>輸入: strs = ["eat","tea","tan","ate","nat","bat"]
-輸出: [["bat"],["nat","tan"],["ate","eat","tea"]]</code></pre>
-                </div>
+
+        <div class="content-section">
+            <h2 class="section-title">題目描述</h2>
+            <div class="description">
+                <p>給定一個字串陣列，將字母異位詞（anagrams）組合在一起。字母異位詞是由重新排列源單詞的字母得到的一個新單詞。</p>
+                <p>所有輸入均為小寫字母，不考慮答案輸出的順序。</p>
             </div>
-            <div class="section">
-                <h2 class="section-title">程式碼實現</h2>
-                <div class="language-tabs">
-                    <button class="tab-btn active" onclick="showCode('python')">Python</button>
-                    <button class="tab-btn" onclick="showCode('cpp')">C++</button>
-                    <button class="tab-btn" onclick="showCode('java')">Java</button>
-                </div>
-                <div id="python-code" class="code-content active">
-                    <div class="code-container">
-                        <div class="code-header">Python</div>
-                        <pre><code class="language-python">from collections import defaultdict
+
+            <div class="example-box">
+                <div class="example-title">範例 1:</div>
+                <pre><code>輸入: strs = ["eat","tea","tan","ate","nat","bat"]
+輸出: [["bat"],["nat","tan"],["ate","eat","tea"]]</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例 2:</div>
+                <pre><code>輸入: strs = [""]
+輸出: [[""]]</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例 3:</div>
+                <pre><code>輸入: strs = ["a"]
+輸出: [["a"]]</code></pre>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">解題思路</h2>
+            
+            <div class="approach-box">
+                <div class="approach-title">方法：雜湊表 + 排序</div>
+                <p>兩個字串是字母異位詞，當且僅當它們的字母重新排列後相同。因此，我們可以將排序後的字串作為雜湊表的鍵。</p>
+                
+                <p style="margin-top: 15px;"><strong>核心思想：</strong></p>
+                <p>相同的字母異位詞在排序後會得到相同的字串，可以用這個排序後的字串作為分組的依據。</p>
+                
+                <p style="margin-top: 15px;"><strong>步驟：</strong></p>
+                <ol>
+                    <li>建立一個雜湊表（HashMap/Dictionary），鍵為排序後的字串，值為屬於該異位詞組的字串列表</li>
+                    <li>遍歷輸入陣列中的每個字串</li>
+                    <li>將當前字串排序，得到排序後的字串作為鍵</li>
+                    <li>將原始字串加入到對應鍵的值列表中</li>
+                    <li>返回雜湊表中所有的值列表</li>
+                </ol>
+                
+                <p style="margin-top: 15px;"><strong>範例說明：</strong></p>
+                <p>對於 ["eat", "tea", "tan", "ate"]：</p>
+                <ul>
+                    <li>"eat" 排序後 → "aet"</li>
+                    <li>"tea" 排序後 → "aet"（與 "eat" 相同）</li>
+                    <li>"tan" 排序後 → "ant"</li>
+                    <li>"ate" 排序後 → "aet"（與 "eat" 相同）</li>
+                </ul>
+                <p>因此 "eat", "tea", "ate" 會被分為一組。</p>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">程式碼實現</h2>
+            
+            <div class="language-tabs">
+                <button class="tab-btn active" onclick="showLanguage('python')">Python</button>
+                <button class="tab-btn" onclick="showLanguage('cpp')">C++</button>
+                <button class="tab-btn" onclick="showLanguage('java')">Java</button>
+            </div>
+
+            <div id="python" class="code-container active">
+                <pre><code class="language-python">from collections import defaultdict
 
 class Solution:
     def groupAnagrams(self, strs: List[str]) -> List[List[str]]:
-        # 使用排序後的字串作為 key
+        """
+        使用排序後的字串作為雜湊表的鍵
+        時間複雜度: O(n * k log k)，n 為字串數量，k 為字串平均長度
+        空間複雜度: O(n * k)
+        """
+        # 使用 defaultdict 自動初始化空列表
         anagram_map = defaultdict(list)
         
         for s in strs:
-            # 排序字串作為 key
+            # 將字串排序作為鍵
             key = ''.join(sorted(s))
+            # 將原始字串加入對應的列表
             anagram_map[key].append(s)
         
+        # 返回所有分組
         return list(anagram_map.values())</code></pre>
-                    </div>
-                </div>
-                <div id="cpp-code" class="code-content">
-                    <div class="code-container">
-                        <div class="code-header">C++</div>
-                        <pre><code class="language-cpp">#include &lt;vector&gt;
+            </div>
+
+            <div id="cpp" class="code-container">
+                <pre><code class="language-cpp">#include &lt;vector&gt;
 #include &lt;unordered_map&gt;
 #include &lt;algorithm&gt;
+#include &lt;string&gt;
 
 class Solution {
 public:
-    vector&lt;vector&lt;string&gt;&gt; groupAnagrams(vector&lt;string&gt;& strs) {
-        unordered_map&lt;string, vector&lt;string&gt;&gt; anagramMap;
+    /**
+     * 使用排序後的字串作為雜湊表的鍵
+     * 時間複雜度: O(n * k log k)
+     * 空間複雜度: O(n * k)
+     */
+    std::vector&lt;std::vector&lt;std::string&gt;&gt; groupAnagrams(std::vector&lt;std::string&gt;& strs) {
+        std::unordered_map&lt;std::string, std::vector&lt;std::string&gt;&gt; anagramMap;
         
-        for (string s : strs) {
-            string key = s;
-            sort(key.begin(), key.end());
+        for (const std::string& s : strs) {
+            // 複製字串並排序作為鍵
+            std::string key = s;
+            std::sort(key.begin(), key.end());
+            
+            // 將原始字串加入對應的列表
             anagramMap[key].push_back(s);
         }
         
-        vector&lt;vector&lt;string&gt;&gt; result;
+        // 收集所有分組
+        std::vector&lt;std::vector&lt;std::string&gt;&gt; result;
         for (auto& pair : anagramMap) {
             result.push_back(pair.second);
         }
@@ -97,42 +176,83 @@ public:
         return result;
     }
 };</code></pre>
-                    </div>
-                </div>
-                <div id="java-code" class="code-content">
-                    <div class="code-container">
-                        <div class="code-header">Java</div>
-                        <pre><code class="language-java">import java.util.*;
+            </div>
+
+            <div id="java" class="code-container">
+                <pre><code class="language-java">import java.util.*;
 
 class Solution {
+    /**
+     * 使用排序後的字串作為雜湊表的鍵
+     * 時間複雜度: O(n * k log k)
+     * 空間複雜度: O(n * k)
+     */
     public List&lt;List&lt;String&gt;&gt; groupAnagrams(String[] strs) {
         Map&lt;String, List&lt;String&gt;&gt; map = new HashMap&lt;&gt;();
         
         for (String s : strs) {
+            // 將字串轉為字元陣列並排序
             char[] chars = s.toCharArray();
             Arrays.sort(chars);
             String key = new String(chars);
             
+            // 如果鍵不存在，建立新的列表
             if (!map.containsKey(key)) {
                 map.put(key, new ArrayList&lt;&gt;());
             }
+            
+            // 將原始字串加入對應的列表
             map.get(key).add(s);
         }
         
+        // 返回所有分組
         return new ArrayList&lt;&gt;(map.values());
     }
 }</code></pre>
-                    </div>
-                </div>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">複雜度分析</h2>
+            <div class="complexity-box">
+                <div class="complexity-item">時間複雜度: O(n * k log k)</div>
+                <p style="color: #78716c; margin: 10px 0;">
+                    其中 n 是字串的數量，k 是字串的平均長度。
+                    對每個字串進行排序需要 O(k log k) 的時間，總共需要排序 n 個字串。
+                </p>
+                
+                <div class="complexity-item" style="margin-top: 20px;">空間複雜度: O(n * k)</div>
+                <p style="color: #78716c; margin: 10px 0;">
+                    需要儲存所有 n 個字串，每個字串長度為 k。
+                    雜湊表中的鍵和值都需要空間。
+                </p>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">重點提示</h2>
+            <div class="complexity-box">
+                <ul>
+                    <li><strong>排序作為唯一標識：</strong>字母異位詞排序後會得到相同的字串，這是分組的關鍵</li>
+                    <li><strong>替代方案：</strong>也可以使用字母計數陣列作為鍵，但在實作上較複雜</li>
+                    <li><strong>Python 技巧：</strong>使用 defaultdict(list) 可以自動初始化空列表，簡化程式碼</li>
+                    <li><strong>注意事項：</strong>排序是穩定的操作，不會改變原始字串</li>
+                </ul>
             </div>
         </div>
     </div>
+
     <script>
         hljs.highlightAll();
-        function showCode(lang) {
-            document.querySelectorAll('.code-content').forEach(el => el.classList.remove('active'));
-            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
-            document.getElementById(lang + '-code').classList.add('active');
+        
+        function showLanguage(lang) {
+            document.querySelectorAll('.code-container').forEach(container => {
+                container.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.getElementById(lang).classList.add('active');
             event.target.classList.add('active');
         }
     </script>

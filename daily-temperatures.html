@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>3. Longest Substring Without Repeating Characters - LeetCode 學習平台</title>
+    <title>739. Daily Temperatures - LeetCode 學習平台</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
     <style>
@@ -50,36 +50,37 @@
     <div class="container">
         <div class="header">
             <a href="../index.html" class="back-btn">← 返回題目列表</a>
-            <div class="problem-title">3. Longest Substring Without Repeating Characters</div>
+            <div class="problem-title">739. Daily Temperatures</div>
             <span class="difficulty">Medium</span>
         </div>
 
         <div class="content-section">
             <h2 class="section-title">題目描述</h2>
             <div class="description">
-                <p>給定一個字串 <code>s</code>，請找出其中不含有重複字符的最長子字串的長度。</p>
+                <p>給定一個整數陣列 <code>temperatures</code>，表示每天的溫度，返回一個陣列 <code>answer</code>，其中 <code>answer[i]</code> 是指對於第 <code>i</code> 天，下一個更高溫度出現在幾天後。如果氣溫在這之後都不會升高，請在該位置用 <code>0</code> 來代替。</p>
             </div>
 
             <div class="example-box">
                 <div class="example-title">範例 1:</div>
-                <pre><code>輸入: s = "abcabcbb"
-輸出: 3
-解釋: 因為無重複字符的最長子字串是 "abc"，所以其長度為 3</code></pre>
+                <pre><code>輸入: temperatures = [73,74,75,71,69,72,76,73]
+輸出: [1,1,4,2,1,1,0,0]
+解釋: 
+第 0 天: 73°，下一個更高溫度是第 1 天的 74°，相差 1 天
+第 1 天: 74°，下一個更高溫度是第 2 天的 75°，相差 1 天
+第 2 天: 75°，下一個更高溫度是第 6 天的 76°，相差 4 天
+...</code></pre>
             </div>
 
             <div class="example-box">
                 <div class="example-title">範例 2:</div>
-                <pre><code>輸入: s = "bbbbb"
-輸出: 1
-解釋: 因為無重複字符的最長子字串是 "b"，所以其長度為 1</code></pre>
+                <pre><code>輸入: temperatures = [30,40,50,60]
+輸出: [1,1,1,0]</code></pre>
             </div>
 
             <div class="example-box">
                 <div class="example-title">範例 3:</div>
-                <pre><code>輸入: s = "pwwkew"
-輸出: 3
-解釋: 因為無重複字符的最長子字串是 "wke"，所以其長度為 3
-     請注意，你的答案必須是子字串的長度，"pwke" 是一個子序列，不是子字串</code></pre>
+                <pre><code>輸入: temperatures = [30,60,90]
+輸出: [1,1,0]</code></pre>
             </div>
         </div>
 
@@ -87,39 +88,42 @@
             <h2 class="section-title">解題思路</h2>
             
             <div class="approach-box">
-                <div class="approach-title">方法：滑動視窗（Sliding Window）+ 雜湊表</div>
-                <p>使用滑動視窗維護一個不含重複字符的子字串，同時使用雜湊表記錄每個字符最後出現的位置。</p>
+                <div class="approach-title">方法：單調遞減堆疊</div>
+                <p>使用堆疊維護一個單調遞減的溫度序列。當遇到更高的溫度時，可以一次性處理堆疊中所有較低的溫度。</p>
                 
                 <p style="margin-top: 15px;"><strong>核心思想：</strong></p>
-                <p>維護一個視窗 [left, right]，視窗內的子字串不包含重複字符。當遇到重複字符時，移動 left 指標跳過重複字符。</p>
+                <p>堆疊中存儲索引，並保持對應溫度單調遞減。當遇到更高的溫度時，堆疊中所有較低溫度的「下一個更高溫度」就是當前溫度。</p>
                 
                 <p style="margin-top: 15px;"><strong>步驟：</strong></p>
                 <ol>
-                    <li>初始化 left 指標為 0，max_length 為 0</li>
-                    <li>使用雜湊表 char_index 記錄每個字符最後出現的索引</li>
-                    <li>用 right 指標遍歷字串：
+                    <li>初始化結果陣列 result，全部設為 0</li>
+                    <li>建立一個空堆疊，用於存儲索引</li>
+                    <li>遍歷溫度陣列：
                         <ul>
-                            <li>如果當前字符已在視窗中（char_index[s[right]] >= left）：
+                            <li>當堆疊不為空且當前溫度 > 堆疊頂部索引對應的溫度：
                                 <ul>
-                                    <li>將 left 移動到重複字符的下一個位置</li>
+                                    <li>pop 堆疊頂部索引 prev_index</li>
+                                    <li>計算天數差：result[prev_index] = 當前索引 - prev_index</li>
+                                    <li>重複此過程直到堆疊為空或當前溫度 ≤ 堆疊頂部溫度</li>
                                 </ul>
                             </li>
-                            <li>更新當前字符的索引</li>
-                            <li>更新最大長度：max_length = max(max_length, right - left + 1)</li>
+                            <li>將當前索引 push 到堆疊</li>
                         </ul>
                     </li>
-                    <li>返回 max_length</li>
+                    <li>返回結果陣列</li>
                 </ol>
                 
                 <div class="visual-box">
-                    <p><strong>視覺化範例：s = "abcabcbb"</strong></p>
-                    <pre style="background: white; padding: 15px; border-radius: 5px; margin-top: 10px;"><code>步驟 1: "a"bcabcbb    [left=0, right=0]  長度=1
-步驟 2: "ab"cabcbb   [left=0, right=1]  長度=2
-步驟 3: "abc"abcbb   [left=0, right=2]  長度=3
-步驟 4: a"bca"bcbb   [left=1, right=3]  遇到重複'a'，left移至1，長度=3
-步驟 5: ab"cab"cbb   [left=2, right=4]  遇到重複'b'，left移至2，長度=3
-步驟 6: abc"abc"bb   [left=3, right=5]  遇到重複'c'，left移至3，長度=3
-...最長子字串長度為 3</code></pre>
+                    <p><strong>視覺化範例：temperatures = [73, 74, 75, 71, 69]</strong></p>
+                    <pre style="background: white; padding: 15px; border-radius: 5px; margin-top: 10px;"><code>i=0, T=73  堆疊: [0]               result: [0,0,0,0,0]
+i=1, T=74  73<74, pop(0)          result: [1,0,0,0,0]
+           堆疊: [1]
+i=2, T=75  74<75, pop(1)          result: [1,1,0,0,0]
+           堆疊: [2]
+i=3, T=71  71<75, push(3)         result: [1,1,0,0,0]
+           堆疊: [2,3]
+i=4, T=69  69<71, push(4)         result: [1,1,0,0,0]
+           堆疊: [2,3,4]</code></pre>
                 </div>
             </div>
         </div>
@@ -135,108 +139,89 @@
 
             <div id="python" class="code-container active">
                 <pre><code class="language-python">class Solution:
-    def lengthOfLongestSubstring(self, s: str) -> int:
+    def dailyTemperatures(self, temperatures: List[int]) -> List[int]:
         """
-        滑動視窗 + 雜湊表
+        單調遞減堆疊
         時間複雜度: O(n)
-        空間複雜度: O(min(n, m))，m 是字符集大小
+        空間複雜度: O(n)
         """
-        # 記錄字符最後出現的索引
-        char_index = {}
-        left = 0
-        max_length = 0
+        n = len(temperatures)
+        result = [0] * n
+        stack = []  # 存儲索引
         
-        # right 指標遍歷字串
-        for right, char in enumerate(s):
-            # 如果字符已在當前視窗中
-            if char in char_index and char_index[char] >= left:
-                # 移動 left 到重複字符的下一個位置
-                left = char_index[char] + 1
+        for i in range(n):
+            # 當當前溫度高於堆疊頂部索引對應的溫度
+            while stack and temperatures[i] > temperatures[stack[-1]]:
+                prev_index = stack.pop()
+                result[prev_index] = i - prev_index
             
-            # 更新字符的索引
-            char_index[char] = right
-            
-            # 更新最大長度
-            max_length = max(max_length, right - left + 1)
+            # 將當前索引加入堆疊
+            stack.append(i)
         
-        return max_length</code></pre>
+        return result</code></pre>
             </div>
 
             <div id="cpp" class="code-container">
-                <pre><code class="language-cpp">#include &lt;string&gt;
-#include &lt;unordered_map&gt;
-#include &lt;algorithm&gt;
+                <pre><code class="language-cpp">#include &lt;vector&gt;
+#include &lt;stack&gt;
 
 class Solution {
 public:
     /**
-     * 滑動視窗 + 雜湊表
+     * 單調遞減堆疊
      * 時間複雜度: O(n)
-     * 空間複雜度: O(min(n, m))
+     * 空間複雜度: O(n)
      */
-    int lengthOfLongestSubstring(std::string s) {
-        // 記錄字符最後出現的索引
-        std::unordered_map&lt;char, int&gt; charIndex;
-        int left = 0;
-        int maxLength = 0;
+    std::vector&lt;int&gt; dailyTemperatures(std::vector&lt;int&gt;& temperatures) {
+        int n = temperatures.size();
+        std::vector&lt;int&gt; result(n, 0);
+        std::stack&lt;int&gt; stack;  // 存儲索引
         
-        // right 指標遍歷字串
-        for (int right = 0; right < s.length(); right++) {
-            char c = s[right];
-            
-            // 如果字符已在當前視窗中
-            if (charIndex.find(c) != charIndex.end() && 
-                charIndex[c] >= left) {
-                // 移動 left 到重複字符的下一個位置
-                left = charIndex[c] + 1;
+        for (int i = 0; i < n; i++) {
+            // 當當前溫度高於堆疊頂部索引對應的溫度
+            while (!stack.empty() && 
+                   temperatures[i] > temperatures[stack.top()]) {
+                int prevIndex = stack.top();
+                stack.pop();
+                result[prevIndex] = i - prevIndex;
             }
             
-            // 更新字符的索引
-            charIndex[c] = right;
-            
-            // 更新最大長度
-            maxLength = std::max(maxLength, right - left + 1);
+            // 將當前索引加入堆疊
+            stack.push(i);
         }
         
-        return maxLength;
+        return result;
     }
 };</code></pre>
             </div>
 
             <div id="java" class="code-container">
-                <pre><code class="language-java">import java.util.HashMap;
-import java.util.Map;
+                <pre><code class="language-java">import java.util.Stack;
 
 class Solution {
     /**
-     * 滑動視窗 + 雜湊表
+     * 單調遞減堆疊
      * 時間複雜度: O(n)
-     * 空間複雜度: O(min(n, m))
+     * 空間複雜度: O(n)
      */
-    public int lengthOfLongestSubstring(String s) {
-        // 記錄字符最後出現的索引
-        Map&lt;Character, Integer&gt; charIndex = new HashMap&lt;&gt;();
-        int left = 0;
-        int maxLength = 0;
+    public int[] dailyTemperatures(int[] temperatures) {
+        int n = temperatures.length;
+        int[] result = new int[n];
+        Stack&lt;Integer&gt; stack = new Stack&lt;&gt;();  // 存儲索引
         
-        // right 指標遍歷字串
-        for (int right = 0; right < s.length(); right++) {
-            char c = s.charAt(right);
-            
-            // 如果字符已在當前視窗中
-            if (charIndex.containsKey(c) && charIndex.get(c) >= left) {
-                // 移動 left 到重複字符的下一個位置
-                left = charIndex.get(c) + 1;
+        for (int i = 0; i < n; i++) {
+            // 當當前溫度高於堆疊頂部索引對應的溫度
+            while (!stack.isEmpty() && 
+                   temperatures[i] > temperatures[stack.peek()]) {
+                int prevIndex = stack.pop();
+                result[prevIndex] = i - prevIndex;
             }
             
-            // 更新字符的索引
-            charIndex.put(c, right);
-            
-            // 更新最大長度
-            maxLength = Math.max(maxLength, right - left + 1);
+            // 將當前索引加入堆疊
+            stack.push(i);
         }
         
-        return maxLength;
+        return result;
     }
 }</code></pre>
             </div>
@@ -247,12 +232,12 @@ class Solution {
             <div class="complexity-box">
                 <div class="complexity-item">時間複雜度: O(n)</div>
                 <p style="color: #78716c; margin: 10px 0;">
-                    每個字符最多被訪問兩次（一次被 right 指標，一次被 left 指標），所以時間複雜度是 O(n)。
+                    每個元素最多被 push 和 pop 各一次，所以總時間複雜度是 O(n)。
                 </p>
                 
-                <div class="complexity-item" style="margin-top: 20px;">空間複雜度: O(min(n, m))</div>
+                <div class="complexity-item" style="margin-top: 20px;">空間複雜度: O(n)</div>
                 <p style="color: #78716c; margin: 10px 0;">
-                    雜湊表需要儲存字符和索引，最多儲存字符集大小 m（如 ASCII 128 或 Unicode）或字串長度 n 個字符。
+                    最壞情況下（溫度遞減），堆疊需要存儲所有索引。
                 </p>
             </div>
         </div>
@@ -261,11 +246,11 @@ class Solution {
             <h2 class="section-title">重點提示</h2>
             <div class="complexity-box">
                 <ul>
-                    <li><strong>滑動視窗模式：</strong>這是解決子字串/子陣列問題的經典模式</li>
-                    <li><strong>關鍵判斷：</strong>需要檢查 char_index[char] >= left，確保字符在當前視窗內</li>
-                    <li><strong>視窗更新：</strong>遇到重複字符時，left 跳到重複字符的下一個位置</li>
-                    <li><strong>避免錯誤：</strong>不要忘記更新字符的索引（每次都要更新）</li>
-                    <li><strong>優化技巧：</strong>可以使用陣列代替雜湊表（如果字符集已知且較小）</li>
+                    <li><strong>單調堆疊：</strong>這是一個經典的單調遞減堆疊應用，用於找「下一個更大元素」</li>
+                    <li><strong>為什麼存索引：</strong>需要計算天數差，所以存索引而非溫度值</li>
+                    <li><strong>堆疊維護：</strong>堆疊中的索引對應的溫度始終保持遞減順序</li>
+                    <li><strong>相似題目：</strong>這個模式可以用於解決「下一個更大元素」、「接雨水」等問題</li>
+                    <li><strong>暴力解法：</strong>O(n²) - 對每個元素向後搜索，不推薦</li>
                 </ul>
             </div>
         </div>

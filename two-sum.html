@@ -3,50 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>1. Two Sum - LeetCode</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css">
+    <title>1. Two Sum - LeetCode 學習平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/cpp.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/java.min.js"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f8fafc; min-height: 100vh; padding: 20px; line-height: 1.7; color: #2d3748; }
-        .container { max-width: 1100px; margin: 0 auto; background: white; border-radius: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); overflow: hidden; }
-        .header { background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; padding: 40px; position: relative; }
-        .back-btn { display: inline-flex; color: white; text-decoration: none; margin-bottom: 20px; background: rgba(255,255,255,0.2); padding: 8px 16px; border-radius: 8px; transition: all 0.2s; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f8fafc; line-height: 1.8; color: #334155; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .header { background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; padding: 40px; border-radius: 16px; margin-bottom: 30px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .back-btn { display: inline-block; color: white; text-decoration: none; background: rgba(255,255,255,0.2); padding: 10px 20px; border-radius: 8px; margin-bottom: 20px; transition: all 0.3s; }
         .back-btn:hover { background: rgba(255,255,255,0.3); }
-        .problem-title { font-size: 2.2em; margin-bottom: 15px; font-weight: 800; }
-        .difficulty { display: inline-block; background: rgba(255,255,255,0.25); padding: 8px 20px; border-radius: 8px; font-weight: 600; }
-        .content { padding: 40px; }
-        .section { margin-bottom: 40px; }
-        .section-title { font-size: 1.8em; color: #1e293b; margin-bottom: 20px; font-weight: 700; border-left: 4px solid #10b981; padding-left: 16px; }
-        .description { line-height: 1.9; color: #475569; font-size: 1.05em; }
-        .example { background: #f0fdf4; padding: 20px; border-radius: 10px; margin: 15px 0; border-left: 4px solid #10b981; }
-        .example-title { font-weight: 700; color: #059669; margin-bottom: 12px; font-size: 1.1em; }
-        pre { margin: 0; border-radius: 8px; overflow-x: auto; background: #f8fafc !important; padding: 18px !important; border: 1px solid #e2e8f0; }
-        code { font-family: 'Fira Code', 'Consolas', monospace; font-size: 0.92em; }
-        .code-header { background: #1e293b; color: white; padding: 12px 20px; border-radius: 8px 8px 0 0; font-weight: 600; display: flex; justify-content: space-between; align-items: center; }
-        .code-header .badge { background: rgba(255,255,255,0.2); padding: 4px 12px; border-radius: 6px; font-size: 0.85em; }
-        .code-container { margin: 20px 0; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
-        .language-tabs { display: flex; gap: 12px; margin-bottom: 25px; }
-        .tab-btn { padding: 10px 24px; border: 2px solid #10b981; background: white; color: #10b981; border-radius: 8px; cursor: pointer; font-weight: 600; transition: all 0.2s; font-size: 1em; }
+        .problem-title { font-size: 2.5em; font-weight: 800; margin-bottom: 15px; }
+        .difficulty { display: inline-block; background: rgba(255,255,255,0.3); padding: 8px 20px; border-radius: 20px; font-weight: 600; font-size: 0.9em; }
+        .content-section { background: white; padding: 40px; border-radius: 16px; margin-bottom: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .section-title { font-size: 1.8em; color: #1e293b; margin-bottom: 25px; font-weight: 700; padding-bottom: 10px; border-bottom: 3px solid #10b981; }
+        .description { font-size: 1.1em; line-height: 1.9; color: #475569; margin-bottom: 20px; }
+        .example-box { background: #f0fdf4; border-left: 4px solid #10b981; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .example-title { font-weight: 700; color: #059669; margin-bottom: 10px; font-size: 1.1em; }
+        .approach-box { background: #eff6ff; border-left: 4px solid #3b82f6; padding: 25px; border-radius: 8px; margin: 25px 0; }
+        .approach-title { font-weight: 700; color: #1e40af; margin-bottom: 15px; font-size: 1.3em; }
+        .complexity-box { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .complexity-item { margin: 10px 0; font-weight: 600; color: #92400e; }
+        .language-tabs { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+        .tab-btn { padding: 12px 28px; border: 2px solid #10b981; background: white; color: #10b981; border-radius: 8px; cursor: pointer; font-weight: 600; transition: all 0.3s; font-size: 1em; }
+        .tab-btn:hover { background: #f0fdf4; }
         .tab-btn.active { background: #10b981; color: white; }
-        .tab-btn:hover:not(.active) { background: #f0fdf4; }
-        .code-content { display: none; }
-        .code-content.active { display: block; }
-        .complexity { background: #fef3c7; padding: 20px; border-radius: 10px; margin: 15px 0; border-left: 4px solid #f59e0b; }
-        .complexity-item { margin: 10px 0; font-weight: 600; font-size: 1.05em; color: #92400e; }
-        .approach { background: #eff6ff; padding: 25px; border-radius: 10px; margin: 15px 0; border-left: 4px solid #3b82f6; }
-        .approach-title { font-weight: 700; color: #1e40af; margin-bottom: 12px; font-size: 1.2em; }
-        ol, ul { margin-left: 28px; line-height: 1.9; }
-        li { margin: 10px 0; color: #475569; }
-        strong { color: #1e293b; font-weight: 600; }
-        .highlight-box { background: #f1f5f9; padding: 18px 22px; border-radius: 8px; margin: 15px 0; border-left: 3px solid #3b82f6; }
+        .code-container { display: none; margin-top: 20px; }
+        .code-container.active { display: block; }
+        pre { background: #282c34 !important; padding: 25px !important; border-radius: 12px; overflow-x: auto; margin: 0; }
+        code { font-family: 'Fira Code', 'Consolas', monospace; font-size: 0.95em; line-height: 1.6; }
+        ol, ul { margin-left: 30px; margin-top: 15px; }
+        li { margin: 12px 0; line-height: 1.8; }
+        strong { color: #1e293b; font-weight: 700; }
+        .tips-box { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        
         @media (max-width: 768px) {
-            .content { padding: 25px; }
+            .container { padding: 10px; }
+            .header { padding: 25px; }
             .problem-title { font-size: 1.8em; }
-            .section-title { font-size: 1.5em; }
+            .content-section { padding: 25px; }
+            .tab-btn { padding: 10px 20px; font-size: 0.9em; }
         }
     </style>
 </head>
@@ -58,119 +54,130 @@
             <span class="difficulty">Easy</span>
         </div>
 
-        <div class="content">
-            <div class="section">
-                <h2 class="section-title">題目描述</h2>
-                <div class="description">
-                    <p>給定一個整數陣列 <code>nums</code> 和一個整數目標值 <code>target</code>,請你在該陣列中找出和為目標值 <code>target</code> 的那兩個整數,並返回它們的陣列索引。</p>
-                    <br>
-                    <p><strong>你可以假設每種輸入只會對應一個答案。但是,陣列中同一個元素在答案裡不能重複出現。</strong></p>
-                    <br>
-                    <p>你可以按任意順序返回答案。</p>
-                </div>
+        <div class="content-section">
+            <h2 class="section-title">題目描述</h2>
+            <div class="description">
+                <p>給定一個整數陣列 <code>nums</code> 和一個整數目標值 <code>target</code>，請你在該陣列中找出和為目標值 <code>target</code> 的那兩個整數，並返回它們的陣列索引。</p>
+                <p>你可以假設每種輸入只會對應一個答案。但是，陣列中同一個元素在答案裡不能重複出現。</p>
+                <p>你可以按任意順序返回答案。</p>
+            </div>
 
-                <div class="example">
-                    <div class="example-title">範例 1:</div>
-                    <pre><code>輸入: nums = [2,7,11,15], target = 9
+            <div class="example-box">
+                <div class="example-title">範例 1:</div>
+                <pre><code>輸入: nums = [2,7,11,15], target = 9
 輸出: [0,1]
-解釋: 因為 nums[0] + nums[1] == 9,返回 [0, 1]。</code></pre>
-                </div>
+解釋: 因為 nums[0] + nums[1] == 9，返回 [0, 1]</code></pre>
+            </div>
 
-                <div class="example">
-                    <div class="example-title">範例 2:</div>
-                    <pre><code>輸入: nums = [3,2,4], target = 6
+            <div class="example-box">
+                <div class="example-title">範例 2:</div>
+                <pre><code>輸入: nums = [3,2,4], target = 6
 輸出: [1,2]</code></pre>
-                </div>
             </div>
 
-            <div class="section">
-                <h2 class="section-title">解題思路</h2>
-                
-                <div class="approach">
-                    <div class="approach-title">方法一: 暴力解法 (Brute Force)</div>
-                    <p>使用兩層迴圈遍歷所有可能的組合,檢查是否存在兩數之和等於目標值。</p>
-                    <ul>
-                        <li>時間複雜度: O(n²)</li>
-                        <li>空間複雜度: O(1)</li>
-                    </ul>
-                </div>
+            <div class="example-box">
+                <div class="example-title">範例 3:</div>
+                <pre><code>輸入: nums = [3,3], target = 6
+輸出: [0,1]</code></pre>
+            </div>
+        </div>
 
-                <div class="approach">
-                    <div class="approach-title">方法二: 雜湊表 (Hash Table) - 推薦!</div>
-                    <p>使用雜湊表(字典)來存儲已遍歷過的數字及其索引。對於每個數字,檢查 <code>target - 當前數字</code> 是否存在於雜湊表中。</p>
-                    <br>
-                    <p><strong>演算法步驟:</strong></p>
-                    <ol>
-                        <li>建立一個空的雜湊表(字典)</li>
-                        <li>遍歷陣列中的每個元素</li>
-                        <li>計算補數: <code>complement = target - nums[i]</code></li>
-                        <li>檢查補數是否在雜湊表中:
-                            <ul>
-                                <li>如果存在,返回兩個索引</li>
-                                <li>如果不存在,將當前數字和索引存入雜湊表</li>
-                            </ul>
-                        </li>
-                    </ol>
-                </div>
+        <div class="content-section">
+            <h2 class="section-title">解題思路</h2>
+            
+            <div class="approach-box">
+                <div class="approach-title">方法一：暴力解法</div>
+                <p>使用兩層迴圈遍歷所有可能的組合，檢查是否存在兩數之和等於目標值。</p>
+                <p style="margin-top: 15px;"><strong>步驟：</strong></p>
+                <ol>
+                    <li>外層迴圈遍歷每個元素</li>
+                    <li>內層迴圈從當前元素的下一個位置開始</li>
+                    <li>檢查兩數之和是否等於目標值</li>
+                    <li>如果相等，返回兩個索引</li>
+                </ol>
+                <p style="margin-top: 15px;"><strong>時間複雜度：</strong>O(n²)</p>
+                <p><strong>空間複雜度：</strong>O(1)</p>
             </div>
 
-            <div class="section">
-                <h2 class="section-title">程式碼實現</h2>
-                
-                <div class="language-tabs">
-                    <button class="tab-btn active" onclick="showCode('python')">Python</button>
-                    <button class="tab-btn" onclick="showCode('cpp')">C++</button>
-                    <button class="tab-btn" onclick="showCode('java')">Java</button>
-                </div>
+            <div class="approach-box">
+                <div class="approach-title">方法二：雜湊表（推薦）</div>
+                <p>使用雜湊表（Hash Table）儲存已遍歷過的數字及其索引。這樣可以在 O(1) 時間內查找補數是否存在。</p>
+                <p style="margin-top: 15px;"><strong>核心思想：</strong></p>
+                <p>對於每個數字 <code>num</code>，我們需要找到 <code>target - num</code> 是否在陣列中已經出現過。</p>
+                <p style="margin-top: 15px;"><strong>步驟：</strong></p>
+                <ol>
+                    <li>建立一個空的雜湊表，用於存儲數字和對應的索引</li>
+                    <li>遍歷陣列中的每個元素 <code>nums[i]</code></li>
+                    <li>計算補數：<code>complement = target - nums[i]</code></li>
+                    <li>檢查補數是否在雜湊表中：
+                        <ul>
+                            <li>如果存在，返回 <code>[hashMap[complement], i]</code></li>
+                            <li>如果不存在，將當前數字和索引存入雜湊表</li>
+                        </ul>
+                    </li>
+                </ol>
+                <p style="margin-top: 15px;"><strong>時間複雜度：</strong>O(n) - 只需遍歷一次陣列</p>
+                <p><strong>空間複雜度：</strong>O(n) - 最壞情況下需要存儲 n 個元素</p>
+            </div>
+        </div>
 
-                <div id="python-code" class="code-content active">
-                    <div class="code-container">
-                        <div class="code-header">
-                            <span>Python - 雜湊表解法</span>
-                            <span class="badge">最優解</span>
-                        </div>
-                        <pre><code class="language-python">class Solution:
+        <div class="content-section">
+            <h2 class="section-title">程式碼實現</h2>
+            
+            <div class="language-tabs">
+                <button class="tab-btn active" onclick="showLanguage('python')">Python</button>
+                <button class="tab-btn" onclick="showLanguage('cpp')">C++</button>
+                <button class="tab-btn" onclick="showLanguage('java')">Java</button>
+            </div>
+
+            <div id="python" class="code-container active">
+                <pre><code class="language-python">class Solution:
     def twoSum(self, nums: List[int], target: int) -> List[int]:
-        # 建立雜湊表,鍵為數字,值為索引
+        """
+        使用雜湊表找出兩數之和
+        時間複雜度: O(n)
+        空間複雜度: O(n)
+        """
+        # 建立雜湊表，鍵為數字，值為索引
         hash_map = {}
         
         # 遍歷陣列
         for i, num in enumerate(nums):
-            # 計算補數
+            # 計算需要的補數
             complement = target - num
             
-            # 如果補數在雜湊表中,找到答案
+            # 如果補數在雜湊表中，找到答案
             if complement in hash_map:
                 return [hash_map[complement], i]
             
             # 將當前數字和索引存入雜湊表
             hash_map[num] = i
         
+        # 題目保證有解，不會執行到這裡
         return []</code></pre>
-                    </div>
-                </div>
+            </div>
 
-                <div id="cpp-code" class="code-content">
-                    <div class="code-container">
-                        <div class="code-header">
-                            <span>C++ - 雜湊表解法</span>
-                            <span class="badge">最優解</span>
-                        </div>
-                        <pre><code class="language-cpp">#include &lt;vector&gt;
+            <div id="cpp" class="code-container">
+                <pre><code class="language-cpp">#include &lt;vector&gt;
 #include &lt;unordered_map&gt;
 
 class Solution {
 public:
+    /**
+     * 使用雜湊表找出兩數之和
+     * 時間複雜度: O(n)
+     * 空間複雜度: O(n)
+     */
     std::vector&lt;int&gt; twoSum(std::vector&lt;int&gt;& nums, int target) {
-        // 建立雜湊表,鍵為數字,值為索引
+        // 建立雜湊表，鍵為數字，值為索引
         std::unordered_map&lt;int, int&gt; hashMap;
         
         // 遍歷陣列
-        for (int i = 0; i &lt; nums.size(); i++) {
+        for (int i = 0; i < nums.size(); i++) {
             // 計算補數
             int complement = target - nums[i];
             
-            // 如果補數在雜湊表中,找到答案
+            // 如果補數在雜湊表中，找到答案
             if (hashMap.find(complement) != hashMap.end()) {
                 return {hashMap[complement], i};
             }
@@ -182,29 +189,28 @@ public:
         return {};
     }
 };</code></pre>
-                    </div>
-                </div>
+            </div>
 
-                <div id="java-code" class="code-content">
-                    <div class="code-container">
-                        <div class="code-header">
-                            <span>Java - 雜湊表解法</span>
-                            <span class="badge">最優解</span>
-                        </div>
-                        <pre><code class="language-java">import java.util.HashMap;
+            <div id="java" class="code-container">
+                <pre><code class="language-java">import java.util.HashMap;
 import java.util.Map;
 
 class Solution {
+    /**
+     * 使用雜湊表找出兩數之和
+     * 時間複雜度: O(n)
+     * 空間複雜度: O(n)
+     */
     public int[] twoSum(int[] nums, int target) {
-        // 建立雜湊表,鍵為數字,值為索引
+        // 建立雜湊表，鍵為數字，值為索引
         Map&lt;Integer, Integer&gt; hashMap = new HashMap&lt;&gt;();
         
         // 遍歷陣列
-        for (int i = 0; i &lt; nums.length; i++) {
+        for (int i = 0; i < nums.length; i++) {
             // 計算補數
             int complement = target - nums[i];
             
-            // 如果補數在雜湊表中,找到答案
+            // 如果補數在雜湊表中，找到答案
             if (hashMap.containsKey(complement)) {
                 return new int[] {hashMap.get(complement), i};
             }
@@ -216,62 +222,51 @@ class Solution {
         return new int[] {};
     }
 }</code></pre>
-                    </div>
-                </div>
             </div>
+        </div>
 
-            <div class="section">
-                <h2 class="section-title">複雜度分析</h2>
+        <div class="content-section">
+            <h2 class="section-title">複雜度分析</h2>
+            <div class="complexity-box">
+                <div class="complexity-item">時間複雜度: O(n)</div>
+                <p style="color: #78716c; margin: 10px 0;">我們只需要遍歷陣列一次。對於每個元素，在雜湊表中查找補數的時間為 O(1)。</p>
                 
-                <div class="complexity">
-                    <div class="complexity-item">
-                        時間複雜度: O(n) - 只需遍歷陣列一次
-                    </div>
-                    <div class="complexity-item">
-                        空間複雜度: O(n) - 雜湊表最多存儲 n 個元素
-                    </div>
-                </div>
-
-                <div class="highlight-box">
-                    <p><strong>為什麼雜湊表解法更優?</strong></p>
-                    <ul>
-                        <li>暴力解法需要 O(n²) 時間,當陣列很大時效率低下</li>
-                        <li>雜湊表提供 O(1) 的查找時間,整體降低到 O(n)</li>
-                        <li>雖然使用了額外空間,但在大多數情況下是值得的權衡</li>
-                    </ul>
-                </div>
+                <div class="complexity-item" style="margin-top: 20px;">空間複雜度: O(n)</div>
+                <p style="color: #78716c; margin: 10px 0;">最壞情況下，雜湊表需要存儲 n 個元素（當答案是最後兩個元素時）。</p>
             </div>
+        </div>
 
-            <div class="section">
-                <h2 class="section-title">重點提示</h2>
-                <div class="description">
-                    <ol>
-                        <li><strong>邊界條件:</strong> 確保陣列至少有兩個元素</li>
-                        <li><strong>重複元素:</strong> 注意處理陣列中有重複數字的情況</li>
-                        <li><strong>數據結構選擇:</strong> Python 用 dict,C++ 用 unordered_map,Java 用 HashMap</li>
-                        <li><strong>一次遍歷:</strong> 可以在查找的同時加入雜湊表,不需要預先建立</li>
-                        <li><strong>返回順序:</strong> 題目允許任意順序,但通常返回較小索引在前</li>
-                    </ol>
-                </div>
+        <div class="content-section">
+            <h2 class="section-title">重點提示</h2>
+            <div class="tips-box">
+                <ul>
+                    <li><strong>雜湊表的優勢：</strong>提供 O(1) 的查找時間，是解決「查找配對」類問題的經典模式</li>
+                    <li><strong>為什麼可以邊遍歷邊查找：</strong>因為我們在找的是兩個不同索引的數字，當前數字的補數一定在之前已經遍歷過的數字中</li>
+                    <li><strong>處理重複數字：</strong>雖然可能有重複數字，但我們使用索引作為答案，確保不會使用同一個位置的數字兩次</li>
+                    <li><strong>數據結構選擇：</strong>Python 使用 dict，C++ 使用 unordered_map，Java 使用 HashMap</li>
+                </ul>
             </div>
         </div>
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', (event) => {
-            hljs.highlightAll();
-        });
-
-        function showCode(language) {
-            document.querySelectorAll('.code-content').forEach(content => {
-                content.classList.remove('active');
+        hljs.highlightAll();
+        
+        function showLanguage(lang) {
+            // 隱藏所有程式碼區塊
+            document.querySelectorAll('.code-container').forEach(container => {
+                container.classList.remove('active');
             });
             
+            // 移除所有按鈕的 active 狀態
             document.querySelectorAll('.tab-btn').forEach(btn => {
                 btn.classList.remove('active');
             });
             
-            document.getElementById(language + '-code').classList.add('active');
+            // 顯示選中的程式碼區塊
+            document.getElementById(lang).classList.add('active');
+            
+            // 設定選中按鈕的 active 狀態
             event.target.classList.add('active');
         }
     </script>

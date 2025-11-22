@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>20. Valid Parentheses - LeetCode 學習平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f8fafc; line-height: 1.8; color: #334155; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .header { background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; padding: 40px; border-radius: 16px; margin-bottom: 30px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .back-btn { display: inline-block; color: white; text-decoration: none; background: rgba(255,255,255,0.2); padding: 10px 20px; border-radius: 8px; margin-bottom: 20px; transition: all 0.3s; }
+        .back-btn:hover { background: rgba(255,255,255,0.3); }
+        .problem-title { font-size: 2.5em; font-weight: 800; margin-bottom: 15px; }
+        .difficulty { display: inline-block; background: rgba(255,255,255,0.3); padding: 8px 20px; border-radius: 20px; font-weight: 600; font-size: 0.9em; }
+        .content-section { background: white; padding: 40px; border-radius: 16px; margin-bottom: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .section-title { font-size: 1.8em; color: #1e293b; margin-bottom: 25px; font-weight: 700; padding-bottom: 10px; border-bottom: 3px solid #10b981; }
+        .description { font-size: 1.1em; line-height: 1.9; color: #475569; margin-bottom: 20px; }
+        .example-box { background: #f0fdf4; border-left: 4px solid #10b981; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .example-title { font-weight: 700; color: #059669; margin-bottom: 10px; font-size: 1.1em; }
+        .approach-box { background: #eff6ff; border-left: 4px solid #3b82f6; padding: 25px; border-radius: 8px; margin: 25px 0; }
+        .approach-title { font-weight: 700; color: #1e40af; margin-bottom: 15px; font-size: 1.3em; }
+        .complexity-box { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .complexity-item { margin: 10px 0; font-weight: 600; color: #92400e; }
+        .language-tabs { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+        .tab-btn { padding: 12px 28px; border: 2px solid #10b981; background: white; color: #10b981; border-radius: 8px; cursor: pointer; font-weight: 600; transition: all 0.3s; font-size: 1em; }
+        .tab-btn:hover { background: #f0fdf4; }
+        .tab-btn.active { background: #10b981; color: white; }
+        .code-container { display: none; margin-top: 20px; }
+        .code-container.active { display: block; }
+        pre { background: #282c34 !important; padding: 25px !important; border-radius: 12px; overflow-x: auto; margin: 0; }
+        code { font-family: 'Fira Code', 'Consolas', monospace; font-size: 0.95em; line-height: 1.6; }
+        ol, ul { margin-left: 30px; margin-top: 15px; }
+        li { margin: 12px 0; line-height: 1.8; }
+        strong { color: #1e293b; font-weight: 700; }
+        .visual-box { background: #f0f9ff; border: 2px solid #3b82f6; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        
+        @media (max-width: 768px) {
+            .container { padding: 10px; }
+            .header { padding: 25px; }
+            .problem-title { font-size: 1.8em; }
+            .content-section { padding: 25px; }
+            .tab-btn { padding: 10px 20px; font-size: 0.9em; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="../index.html" class="back-btn">← 返回題目列表</a>
+            <div class="problem-title">20. Valid Parentheses</div>
+            <span class="difficulty">Easy</span>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">題目描述</h2>
+            <div class="description">
+                <p>給定一個只包括 <code>'('</code>、<code>')'</code>、<code>'{'</code>、<code>'}'</code>、<code>'['</code>、<code>']'</code> 的字串 <code>s</code>，判斷字串是否有效。</p>
+                <p style="margin-top: 15px;"><strong>有效字串需滿足：</strong></p>
+                <ol>
+                    <li>左括號必須用相同類型的右括號閉合</li>
+                    <li>左括號必須以正確的順序閉合</li>
+                    <li>每個右括號都有一個對應的相同類型的左括號</li>
+                </ol>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例 1:</div>
+                <pre><code>輸入: s = "()"
+輸出: true</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例 2:</div>
+                <pre><code>輸入: s = "()[]{}"
+輸出: true</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例 3:</div>
+                <pre><code>輸入: s = "(]"
+輸出: false</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例 4:</div>
+                <pre><code>輸入: s = "([)]"
+輸出: false
+解釋: 括號順序不正確</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例 5:</div>
+                <pre><code>輸入: s = "{[]}"
+輸出: true</code></pre>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">解題思路</h2>
+            
+            <div class="approach-box">
+                <div class="approach-title">方法：堆疊（Stack）</div>
+                <p>使用堆疊來追蹤左括號，當遇到右括號時檢查堆疊頂部是否有對應的左括號。</p>
+                
+                <p style="margin-top: 15px;"><strong>核心思想：</strong></p>
+                <p>堆疊的「後進先出」特性完美符合括號配對的需求。最近的左括號應該最先被配對。</p>
+                
+                <p style="margin-top: 15px;"><strong>步驟：</strong></p>
+                <ol>
+                    <li>建立一個空堆疊和一個映射表（右括號 → 左括號）</li>
+                    <li>遍歷字串中的每個字符：
+                        <ul>
+                            <li>如果是左括號 <code>(</code>、<code>{</code>、<code>[</code>，push 到堆疊</li>
+                            <li>如果是右括號：
+                                <ul>
+                                    <li>檢查堆疊是否為空（沒有對應的左括號）</li>
+                                    <li>pop 堆疊頂部元素</li>
+                                    <li>檢查 pop 出的左括號是否與當前右括號匹配</li>
+                                    <li>如果不匹配，返回 false</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>遍歷結束後，檢查堆疊是否為空（所有左括號都被配對）</li>
+                </ol>
+                
+                <div class="visual-box">
+                    <p><strong>視覺化範例：s = "([{}])"</strong></p>
+                    <pre style="background: white; padding: 15px; border-radius: 5px; margin-top: 10px;"><code>字符 '('  → push '('     堆疊: ['(']
+字符 '['  → push '['     堆疊: ['(', '[']
+字符 '{'  → push '{'     堆疊: ['(', '[', '{']
+字符 '}'  → pop '{'，匹配 堆疊: ['(', '[']
+字符 ']'  → pop '['，匹配 堆疊: ['(']
+字符 ')'  → pop '('，匹配 堆疊: []
+堆疊為空 → 返回 true</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">程式碼實現</h2>
+            
+            <div class="language-tabs">
+                <button class="tab-btn active" onclick="showLanguage('python')">Python</button>
+                <button class="tab-btn" onclick="showLanguage('cpp')">C++</button>
+                <button class="tab-btn" onclick="showLanguage('java')">Java</button>
+            </div>
+
+            <div id="python" class="code-container active">
+                <pre><code class="language-python">class Solution:
+    def isValid(self, s: str) -> bool:
+        """
+        使用堆疊檢查括號是否有效
+        時間複雜度: O(n)
+        空間複雜度: O(n)
+        """
+        # 建立堆疊
+        stack = []
+        
+        # 建立右括號到左括號的映射
+        mapping = {')': '(', '}': '{', ']': '['}
+        
+        # 遍歷字串
+        for char in s:
+            # 如果是右括號
+            if char in mapping:
+                # 取出堆疊頂部元素（如果堆疊為空，使用 '#' 作為佔位符）
+                top_element = stack.pop() if stack else '#'
+                
+                # 檢查是否匹配
+                if mapping[char] != top_element:
+                    return False
+            else:
+                # 如果是左括號，push 到堆疊
+                stack.append(char)
+        
+        # 檢查堆疊是否為空（所有括號都已配對）
+        return not stack</code></pre>
+            </div>
+
+            <div id="cpp" class="code-container">
+                <pre><code class="language-cpp">#include &lt;string&gt;
+#include &lt;stack&gt;
+#include &lt;unordered_map&gt;
+
+class Solution {
+public:
+    /**
+     * 使用堆疊檢查括號是否有效
+     * 時間複雜度: O(n)
+     * 空間複雜度: O(n)
+     */
+    bool isValid(std::string s) {
+        // 建立堆疊
+        std::stack&lt;char&gt; stack;
+        
+        // 建立右括號到左括號的映射
+        std::unordered_map&lt;char, char&gt; mapping = {
+            {')', '('},
+            {'}', '{'},
+            {']', '['}
+        };
+        
+        // 遍歷字串
+        for (char c : s) {
+            // 如果是右括號
+            if (mapping.count(c)) {
+                // 檢查堆疊是否為空
+                if (stack.empty()) {
+                    return false;
+                }
+                
+                // 取出堆疊頂部元素
+                char top = stack.top();
+                stack.pop();
+                
+                // 檢查是否匹配
+                if (mapping[c] != top) {
+                    return false;
+                }
+            } else {
+                // 如果是左括號，push 到堆疊
+                stack.push(c);
+            }
+        }
+        
+        // 檢查堆疊是否為空
+        return stack.empty();
+    }
+};</code></pre>
+            </div>
+
+            <div id="java" class="code-container">
+                <pre><code class="language-java">import java.util.Stack;
+import java.util.HashMap;
+import java.util.Map;
+
+class Solution {
+    /**
+     * 使用堆疊檢查括號是否有效
+     * 時間複雜度: O(n)
+     * 空間複雜度: O(n)
+     */
+    public boolean isValid(String s) {
+        // 建立堆疊
+        Stack&lt;Character&gt; stack = new Stack&lt;&gt;();
+        
+        // 建立右括號到左括號的映射
+        Map&lt;Character, Character&gt; mapping = new HashMap&lt;&gt;();
+        mapping.put(')', '(');
+        mapping.put('}', '{');
+        mapping.put(']', '[');
+        
+        // 遍歷字串
+        for (char c : s.toCharArray()) {
+            // 如果是右括號
+            if (mapping.containsKey(c)) {
+                // 取出堆疊頂部元素（如果堆疊為空，使用 '#'）
+                char top = stack.isEmpty() ? '#' : stack.pop();
+                
+                // 檢查是否匹配
+                if (mapping.get(c) != top) {
+                    return false;
+                }
+            } else {
+                // 如果是左括號，push 到堆疊
+                stack.push(c);
+            }
+        }
+        
+        // 檢查堆疊是否為空
+        return stack.isEmpty();
+    }
+}</code></pre>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">複雜度分析</h2>
+            <div class="complexity-box">
+                <div class="complexity-item">時間複雜度: O(n)</div>
+                <p style="color: #78716c; margin: 10px 0;">
+                    需要遍歷字串中的每個字符一次，其中 n 是字串的長度。
+                </p>
+                
+                <div class="complexity-item" style="margin-top: 20px;">空間複雜度: O(n)</div>
+                <p style="color: #78716c; margin: 10px 0;">
+                    最壞情況下（全是左括號），堆疊需要存儲所有字符。
+                </p>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">重點提示</h2>
+            <div class="complexity-box">
+                <ul>
+                    <li><strong>堆疊特性：</strong>後進先出（LIFO）完美符合括號配對的需求</li>
+                    <li><strong>映射表：</strong>使用雜湊表存儲括號對應關係，使程式碼更清晰</li>
+                    <li><strong>邊界條件：</strong>
+                        <ul>
+                            <li>遇到右括號時堆疊為空 → false</li>
+                            <li>遍歷結束後堆疊不為空 → false</li>
+                        </ul>
+                    </li>
+                    <li><strong>常見錯誤：</strong>忘記最後檢查堆疊是否為空</li>
+                    <li><strong>擴展：</strong>這個模式可以用於檢查任何需要配對的符號</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        hljs.highlightAll();
+        
+        function showLanguage(lang) {
+            document.querySelectorAll('.code-container').forEach(container => {
+                container.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.getElementById(lang).classList.add('active');
+            event.target.classList.add('active');
+        }
+    </script>
+</body>
+</html>

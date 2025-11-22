@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>155. Min Stack - LeetCode 學習平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f8fafc; line-height: 1.8; color: #334155; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .header { background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: white; padding: 40px; border-radius: 16px; margin-bottom: 30px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .back-btn { display: inline-block; color: white; text-decoration: none; background: rgba(255,255,255,0.2); padding: 10px 20px; border-radius: 8px; margin-bottom: 20px; transition: all 0.3s; }
+        .back-btn:hover { background: rgba(255,255,255,0.3); }
+        .problem-title { font-size: 2.5em; font-weight: 800; margin-bottom: 15px; }
+        .difficulty { display: inline-block; background: rgba(255,255,255,0.3); padding: 8px 20px; border-radius: 20px; font-weight: 600; font-size: 0.9em; }
+        .content-section { background: white; padding: 40px; border-radius: 16px; margin-bottom: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .section-title { font-size: 1.8em; color: #1e293b; margin-bottom: 25px; font-weight: 700; padding-bottom: 10px; border-bottom: 3px solid #f59e0b; }
+        .description { font-size: 1.1em; line-height: 1.9; color: #475569; margin-bottom: 20px; }
+        .example-box { background: #fffbeb; border-left: 4px solid #f59e0b; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .example-title { font-weight: 700; color: #d97706; margin-bottom: 10px; font-size: 1.1em; }
+        .approach-box { background: #eff6ff; border-left: 4px solid #3b82f6; padding: 25px; border-radius: 8px; margin: 25px 0; }
+        .approach-title { font-weight: 700; color: #1e40af; margin-bottom: 15px; font-size: 1.3em; }
+        .complexity-box { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .complexity-item { margin: 10px 0; font-weight: 600; color: #92400e; }
+        .language-tabs { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+        .tab-btn { padding: 12px 28px; border: 2px solid #f59e0b; background: white; color: #f59e0b; border-radius: 8px; cursor: pointer; font-weight: 600; transition: all 0.3s; font-size: 1em; }
+        .tab-btn:hover { background: #fffbeb; }
+        .tab-btn.active { background: #f59e0b; color: white; }
+        .code-container { display: none; margin-top: 20px; }
+        .code-container.active { display: block; }
+        pre { background: #282c34 !important; padding: 25px !important; border-radius: 12px; overflow-x: auto; margin: 0; }
+        code { font-family: 'Fira Code', 'Consolas', monospace; font-size: 0.95em; line-height: 1.6; }
+        ol, ul { margin-left: 30px; margin-top: 15px; }
+        li { margin: 12px 0; line-height: 1.8; }
+        strong { color: #1e293b; font-weight: 700; }
+        .visual-box { background: #f0f9ff; border: 2px solid #3b82f6; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        
+        @media (max-width: 768px) {
+            .container { padding: 10px; }
+            .header { padding: 25px; }
+            .problem-title { font-size: 1.8em; }
+            .content-section { padding: 25px; }
+            .tab-btn { padding: 10px 20px; font-size: 0.9em; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="../index.html" class="back-btn">← 返回題目列表</a>
+            <div class="problem-title">155. Min Stack</div>
+            <span class="difficulty">Medium</span>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">題目描述</h2>
+            <div class="description">
+                <p>設計一個支援 push、pop、top 操作，並能在常數時間內檢索到最小元素的堆疊。</p>
+                <p style="margin-top: 15px;"><strong>實現 MinStack 類別：</strong></p>
+                <ul>
+                    <li><code>MinStack()</code> 初始化堆疊物件</li>
+                    <li><code>void push(int val)</code> 將元素 val 推入堆疊</li>
+                    <li><code>void pop()</code> 刪除堆疊頂部的元素</li>
+                    <li><code>int top()</code> 獲取堆疊頂部的元素</li>
+                    <li><code>int getMin()</code> 獲取堆疊中的最小元素</li>
+                </ul>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例：</div>
+                <pre><code>輸入:
+["MinStack","push","push","push","getMin","pop","top","getMin"]
+[[],[-2],[0],[-3],[],[],[],[]]
+
+輸出:
+[null,null,null,null,-3,null,0,-2]
+
+解釋:
+MinStack minStack = new MinStack();
+minStack.push(-2);
+minStack.push(0);
+minStack.push(-3);
+minStack.getMin(); // 返回 -3
+minStack.pop();
+minStack.top();    // 返回 0
+minStack.getMin(); // 返回 -2</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">限制條件：</div>
+                <ul>
+                    <li>-2<sup>31</sup> ≤ val ≤ 2<sup>31</sup> - 1</li>
+                    <li>pop、top 和 getMin 操作總是在非空堆疊上調用</li>
+                    <li>push、pop、top 和 getMin 最多被調用 3 × 10<sup>4</sup> 次</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">解題思路</h2>
+            
+            <div class="approach-box">
+                <div class="approach-title">方法：雙堆疊</div>
+                <p>使用兩個堆疊：一個存儲所有元素（主堆疊），另一個存儲當前的最小值（最小值堆疊）。</p>
+                
+                <p style="margin-top: 15px;"><strong>核心思想：</strong></p>
+                <p>維護一個額外的堆疊來追蹤每個狀態下的最小值。每次 push 時，同時在最小值堆疊中記錄當前的最小值。</p>
+                
+                <p style="margin-top: 15px;"><strong>關鍵操作：</strong></p>
+                <ul>
+                    <li><strong>push(val)：</strong>
+                        <ul>
+                            <li>將 val push 到主堆疊</li>
+                            <li>如果最小值堆疊為空，或 val ≤ 當前最小值，將 val push 到最小值堆疊</li>
+                        </ul>
+                    </li>
+                    <li><strong>pop()：</strong>
+                        <ul>
+                            <li>從主堆疊 pop 元素</li>
+                            <li>如果 pop 的元素等於最小值堆疊的頂部，也從最小值堆疊 pop</li>
+                        </ul>
+                    </li>
+                    <li><strong>getMin()：</strong>
+                        <ul>
+                            <li>直接返回最小值堆疊的頂部元素</li>
+                        </ul>
+                    </li>
+                </ul>
+                
+                <div class="visual-box">
+                    <p><strong>視覺化範例：</strong></p>
+                    <pre style="background: white; padding: 15px; border-radius: 5px; margin-top: 10px;"><code>操作           主堆疊        最小值堆疊    getMin()
+push(-2)      [-2]         [-2]         -2
+push(0)       [-2, 0]      [-2]         -2
+push(-3)      [-2, 0, -3]  [-2, -3]     -3
+pop()         [-2, 0]      [-2]         -2
+top()         [-2, 0]      [-2]         0</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">程式碼實現</h2>
+            
+            <div class="language-tabs">
+                <button class="tab-btn active" onclick="showLanguage('python')">Python</button>
+                <button class="tab-btn" onclick="showLanguage('cpp')">C++</button>
+                <button class="tab-btn" onclick="showLanguage('java')">Java</button>
+            </div>
+
+            <div id="python" class="code-container active">
+                <pre><code class="language-python">class MinStack:
+    """
+    雙堆疊實現 Min Stack
+    所有操作的時間複雜度: O(1)
+    空間複雜度: O(n)
+    """
+    
+    def __init__(self):
+        """初始化堆疊"""
+        self.stack = []      # 主堆疊
+        self.min_stack = []  # 最小值堆疊
+    
+    def push(self, val: int) -> None:
+        """將元素推入堆疊"""
+        # 推入主堆疊
+        self.stack.append(val)
+        
+        # 如果最小值堆疊為空，或新值 ≤ 當前最小值
+        if not self.min_stack or val <= self.min_stack[-1]:
+            self.min_stack.append(val)
+    
+    def pop(self) -> None:
+        """刪除堆疊頂部元素"""
+        # 從主堆疊 pop
+        if self.stack:
+            top = self.stack.pop()
+            # 如果 pop 的元素是當前最小值，也從最小值堆疊 pop
+            if top == self.min_stack[-1]:
+                self.min_stack.pop()
+    
+    def top(self) -> int:
+        """獲取堆疊頂部元素"""
+        return self.stack[-1] if self.stack else None
+    
+    def getMin(self) -> int:
+        """獲取堆疊中的最小元素"""
+        return self.min_stack[-1] if self.min_stack else None</code></pre>
+            </div>
+
+            <div id="cpp" class="code-container">
+                <pre><code class="language-cpp">#include &lt;stack&gt;
+
+class MinStack {
+private:
+    std::stack&lt;int&gt; stack;     // 主堆疊
+    std::stack&lt;int&gt; minStack;  // 最小值堆疊
+    
+public:
+    /**
+     * 雙堆疊實現 Min Stack
+     * 所有操作的時間複雜度: O(1)
+     * 空間複雜度: O(n)
+     */
+    
+    MinStack() {
+        // 建構函數
+    }
+    
+    void push(int val) {
+        // 推入主堆疊
+        stack.push(val);
+        
+        // 如果最小值堆疊為空，或新值 ≤ 當前最小值
+        if (minStack.empty() || val <= minStack.top()) {
+            minStack.push(val);
+        }
+    }
+    
+    void pop() {
+        if (!stack.empty()) {
+            int top = stack.top();
+            stack.pop();
+            
+            // 如果 pop 的元素是當前最小值
+            if (top == minStack.top()) {
+                minStack.pop();
+            }
+        }
+    }
+    
+    int top() {
+        return stack.top();
+    }
+    
+    int getMin() {
+        return minStack.top();
+    }
+};</code></pre>
+            </div>
+
+            <div id="java" class="code-container">
+                <pre><code class="language-java">import java.util.Stack;
+
+class MinStack {
+    private Stack&lt;Integer&gt; stack;     // 主堆疊
+    private Stack&lt;Integer&gt; minStack;  // 最小值堆疊
+    
+    /**
+     * 雙堆疊實現 Min Stack
+     * 所有操作的時間複雜度: O(1)
+     * 空間複雜度: O(n)
+     */
+    
+    public MinStack() {
+        stack = new Stack&lt;&gt;();
+        minStack = new Stack&lt;&gt;();
+    }
+    
+    public void push(int val) {
+        // 推入主堆疊
+        stack.push(val);
+        
+        // 如果最小值堆疊為空，或新值 ≤ 當前最小值
+        if (minStack.isEmpty() || val <= minStack.peek()) {
+            minStack.push(val);
+        }
+    }
+    
+    public void pop() {
+        if (!stack.isEmpty()) {
+            // 注意：使用 equals 比較 Integer 物件
+            if (stack.peek().equals(minStack.peek())) {
+                minStack.pop();
+            }
+            stack.pop();
+        }
+    }
+    
+    public int top() {
+        return stack.peek();
+    }
+    
+    public int getMin() {
+        return minStack.peek();
+    }
+}</code></pre>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">複雜度分析</h2>
+            <div class="complexity-box">
+                <div class="complexity-item">時間複雜度: O(1)</div>
+                <p style="color: #78716c; margin: 10px 0;">
+                    所有操作（push、pop、top、getMin）都是常數時間。
+                </p>
+                
+                <div class="complexity-item" style="margin-top: 20px;">空間複雜度: O(n)</div>
+                <p style="color: #78716c; margin: 10px 0;">
+                    需要額外的最小值堆疊，最壞情況下存儲 n 個元素（所有元素遞減）。
+                </p>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">重點提示</h2>
+            <div class="complexity-box">
+                <ul>
+                    <li><strong>為什麼需要兩個堆疊：</strong>單一堆疊無法在 O(1) 時間內追蹤最小值</li>
+                    <li><strong>最小值堆疊的作用：</strong>記錄每個狀態下的最小值</li>
+                    <li><strong>關鍵判斷：</strong>push 時使用 <code>val &lt;= minStack.top()</code>（注意等號）</li>
+                    <li><strong>Java 注意事項：</strong>比較 Integer 物件時使用 equals()，不是 ==</li>
+                    <li><strong>空間優化：</strong>可以只在最小值改變時才 push，但需要記錄重複次數</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        hljs.highlightAll();
+        
+        function showLanguage(lang) {
+            document.querySelectorAll('.code-container').forEach(container => {
+                container.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.getElementById(lang).classList.add('active');
+            event.target.classList.add('active');
+        }
+    </script>
+</body>
+</html>

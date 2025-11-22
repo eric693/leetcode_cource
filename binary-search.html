@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>125. Valid Palindrome - LeetCode 學習平台</title>
+    <title>704. Binary Search - LeetCode 學習平台</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
     <style>
@@ -35,6 +35,7 @@
         ol, ul { margin-left: 30px; margin-top: 15px; }
         li { margin: 12px 0; line-height: 1.8; }
         strong { color: #1e293b; font-weight: 700; }
+        .visual-box { background: #f0f9ff; border: 2px solid #3b82f6; padding: 20px; border-radius: 8px; margin: 20px 0; }
         
         @media (max-width: 768px) {
             .container { padding: 10px; }
@@ -49,36 +50,38 @@
     <div class="container">
         <div class="header">
             <a href="../index.html" class="back-btn">← 返回題目列表</a>
-            <div class="problem-title">125. Valid Palindrome</div>
+            <div class="problem-title">704. Binary Search</div>
             <span class="difficulty">Easy</span>
         </div>
 
         <div class="content-section">
             <h2 class="section-title">題目描述</h2>
             <div class="description">
-                <p>給定一個字串 <code>s</code>，判斷它是否為回文字串（palindrome）。只考慮字母和數字字符，忽略字母的大小寫。</p>
-                <p style="margin-top: 15px;">回文字串是指正著讀和反著讀都一樣的字串。</p>
+                <p>給定一個 n 個元素有序的（升序）整數陣列 <code>nums</code> 和一個目標值 <code>target</code>，寫一個函數搜尋 <code>nums</code> 中的 <code>target</code>，如果目標值存在返回下標，否則返回 <code>-1</code>。</p>
             </div>
 
             <div class="example-box">
                 <div class="example-title">範例 1:</div>
-                <pre><code>輸入: s = "A man, a plan, a canal: Panama"
-輸出: true
-解釋: "amanaplanacanalpanama" 是回文</code></pre>
+                <pre><code>輸入: nums = [-1,0,3,5,9,12], target = 9
+輸出: 4
+解釋: 9 出現在 nums 中並且下標為 4</code></pre>
             </div>
 
             <div class="example-box">
                 <div class="example-title">範例 2:</div>
-                <pre><code>輸入: s = "race a car"
-輸出: false
-解釋: "raceacar" 不是回文</code></pre>
+                <pre><code>輸入: nums = [-1,0,3,5,9,12], target = 2
+輸出: -1
+解釋: 2 不存在 nums 中因此返回 -1</code></pre>
             </div>
 
             <div class="example-box">
-                <div class="example-title">範例 3:</div>
-                <pre><code>輸入: s = " "
-輸出: true
-解釋: 空字串（移除非字母數字字符後）被視為回文</code></pre>
+                <div class="example-title">限制條件：</div>
+                <ul>
+                    <li>1 ≤ nums.length ≤ 10<sup>4</sup></li>
+                    <li>-10<sup>4</sup> < nums[i], target < 10<sup>4</sup></li>
+                    <li>nums 中的所有整數互不相同</li>
+                    <li>nums 按升序排列</li>
+                </ul>
             </div>
         </div>
 
@@ -86,35 +89,44 @@
             <h2 class="section-title">解題思路</h2>
             
             <div class="approach-box">
-                <div class="approach-title">方法：雙指標（Two Pointers）</div>
-                <p>使用兩個指標，一個從字串開頭開始，一個從字串結尾開始，向中間移動並比較字符。</p>
+                <div class="approach-title">方法：二分搜尋（Binary Search）</div>
+                <p>在有序陣列中搜尋目標值，使用二分搜尋可以在 O(log n) 時間內完成。</p>
                 
                 <p style="margin-top: 15px;"><strong>核心思想：</strong></p>
-                <p>回文字串的特性是從兩端往中間讀取時，對應位置的字符應該相同。使用雙指標可以在 O(n) 時間內完成檢查。</p>
+                <p>每次比較中間元素，根據比較結果將搜尋範圍縮小一半，直到找到目標值或搜尋範圍為空。</p>
                 
                 <p style="margin-top: 15px;"><strong>步驟：</strong></p>
                 <ol>
-                    <li>初始化兩個指標：left 指向字串開頭，right 指向字串結尾</li>
-                    <li>當 left < right 時，循環執行：
+                    <li>初始化左指標 left = 0，右指標 right = n - 1</li>
+                    <li>當 left ≤ right 時，循環執行：
                         <ul>
-                            <li>如果 s[left] 不是字母或數字，left 向右移動</li>
-                            <li>如果 s[right] 不是字母或數字，right 向左移動</li>
-                            <li>比較 s[left] 和 s[right]（忽略大小寫）：
-                                <ul>
-                                    <li>如果不相同，返回 false</li>
-                                    <li>如果相同，left 右移，right 左移</li>
-                                </ul>
-                            </li>
+                            <li>計算中間位置：mid = (left + right) // 2</li>
+                            <li>如果 nums[mid] == target，返回 mid</li>
+                            <li>如果 nums[mid] < target，說明目標在右半部分，left = mid + 1</li>
+                            <li>如果 nums[mid] > target，說明目標在左半部分，right = mid - 1</li>
                         </ul>
                     </li>
-                    <li>如果循環正常結束，返回 true</li>
+                    <li>如果循環結束仍未找到，返回 -1</li>
                 </ol>
                 
-                <p style="margin-top: 15px;"><strong>為什麼使用雙指標：</strong></p>
+                <div class="visual-box">
+                    <p><strong>視覺化範例：nums = [-1,0,3,5,9,12], target = 9</strong></p>
+                    <pre style="background: white; padding: 15px; border-radius: 5px; margin-top: 10px;"><code>步驟 1: left=0, right=5, mid=2
+       [-1, 0, 3, 5, 9, 12]
+                ^
+       nums[2]=3 < 9，搜尋右半部分
+
+步驟 2: left=3, right=5, mid=4
+       [-1, 0, 3, 5, 9, 12]
+                      ^
+       nums[4]=9 == 9，找到！返回 4</code></pre>
+                </div>
+                
+                <p style="margin-top: 15px;"><strong>關鍵技巧：</strong></p>
                 <ul>
-                    <li>只需遍歷字串一次，不需要額外建立新字串</li>
-                    <li>空間複雜度為 O(1)</li>
-                    <li>可以提前終止（遇到不匹配時）</li>
+                    <li>使用 <code>mid = left + (right - left) // 2</code> 避免整數溢位</li>
+                    <li>注意邊界條件：left ≤ right（包含等號）</li>
+                    <li>更新指標時：left = mid + 1 或 right = mid - 1</li>
                 </ul>
             </div>
         </div>
@@ -130,71 +142,69 @@
 
             <div id="python" class="code-container active">
                 <pre><code class="language-python">class Solution:
-    def isPalindrome(self, s: str) -> bool:
+    def search(self, nums: List[int], target: int) -> int:
         """
-        使用雙指標檢查回文
-        時間複雜度: O(n)
+        二分搜尋
+        時間複雜度: O(log n)
         空間複雜度: O(1)
         """
-        # 初始化左右指標
-        left, right = 0, len(s) - 1
+        left, right = 0, len(nums) - 1
         
-        while left < right:
-            # 跳過非字母數字字符（左指標）
-            while left < right and not s[left].isalnum():
-                left += 1
+        while left <= right:
+            # 計算中間位置（避免溢位）
+            mid = left + (right - left) // 2
             
-            # 跳過非字母數字字符（右指標）
-            while left < right and not s[right].isalnum():
-                right -= 1
+            # 找到目標值
+            if nums[mid] == target:
+                return mid
             
-            # 比較字符（忽略大小寫）
-            if s[left].lower() != s[right].lower():
-                return False
+            # 目標在右半部分
+            elif nums[mid] < target:
+                left = mid + 1
             
-            # 移動指標
-            left += 1
-            right -= 1
+            # 目標在左半部分
+            else:
+                right = mid - 1
         
-        return True</code></pre>
+        # 未找到目標值
+        return -1</code></pre>
             </div>
 
             <div id="cpp" class="code-container">
-                <pre><code class="language-cpp">#include &lt;string&gt;
-#include &lt;cctype&gt;
+                <pre><code class="language-cpp">#include &lt;vector&gt;
 
 class Solution {
 public:
     /**
-     * 使用雙指標檢查回文
-     * 時間複雜度: O(n)
+     * 二分搜尋
+     * 時間複雜度: O(log n)
      * 空間複雜度: O(1)
      */
-    bool isPalindrome(std::string s) {
-        int left = 0, right = s.length() - 1;
+    int search(std::vector&lt;int&gt;& nums, int target) {
+        int left = 0, right = nums.size() - 1;
         
-        while (left < right) {
-            // 跳過非字母數字字符（左指標）
-            while (left < right && !isalnum(s[left])) {
-                left++;
+        while (left <= right) {
+            // 計算中間位置（避免溢位）
+            int mid = left + (right - left) / 2;
+            
+            // 找到目標值
+            if (nums[mid] == target) {
+                return mid;
             }
             
-            // 跳過非字母數字字符（右指標）
-            while (left < right && !isalnum(s[right])) {
-                right--;
+            // 目標在右半部分
+            else if (nums[mid] < target) {
+                left = mid + 1;
             }
             
-            // 比較字符（轉換為小寫）
-            if (tolower(s[left]) != tolower(s[right])) {
-                return false;
+            // 目標在左半部分
+            else {
+                right = mid - 1;
             }
-            
-            // 移動指標
-            left++;
-            right--;
         }
         
-        return true;
+        // 未找到目標值
+        return -1;
     }
 };</code></pre>
             </div>
@@ -202,36 +212,35 @@ public:
             <div id="java" class="code-container">
                 <pre><code class="language-java">class Solution {
     /**
-     * 使用雙指標檢查回文
-     * 時間複雜度: O(n)
+     * 二分搜尋
+     * 時間複雜度: O(log n)
      * 空間複雜度: O(1)
      */
-    public boolean isPalindrome(String s) {
-        int left = 0, right = s.length() - 1;
+    public int search(int[] nums, int target) {
+        int left = 0, right = nums.length - 1;
         
-        while (left < right) {
-            // 跳過非字母數字字符（左指標）
-            while (left < right && !Character.isLetterOrDigit(s.charAt(left))) {
-                left++;
+        while (left <= right) {
+            // 計算中間位置（避免溢位）
+            int mid = left + (right - left) / 2;
+            
+            // 找到目標值
+            if (nums[mid] == target) {
+                return mid;
             }
             
-            // 跳過非字母數字字符（右指標）
-            while (left < right && !Character.isLetterOrDigit(s.charAt(right))) {
-                right--;
+            // 目標在右半部分
+            else if (nums[mid] < target) {
+                left = mid + 1;
             }
             
-            // 比較字符（轉換為小寫）
-            if (Character.toLowerCase(s.charAt(left)) != 
-                Character.toLowerCase(s.charAt(right))) {
-                return false;
+            // 目標在左半部分
+            else {
+                right = mid - 1;
             }
-            
-            // 移動指標
-            left++;
-            right--;
         }
         
-        return true;
+        // 未找到目標值
+        return -1;
     }
 }</code></pre>
             </div>
@@ -240,14 +249,14 @@ public:
         <div class="content-section">
             <h2 class="section-title">複雜度分析</h2>
             <div class="complexity-box">
-                <div class="complexity-item">時間複雜度: O(n)</div>
+                <div class="complexity-item">時間複雜度: O(log n)</div>
                 <p style="color: #78716c; margin: 10px 0;">
-                    每個字符最多被訪問一次，其中 n 是字串的長度。
+                    每次比較後搜尋範圍減半，最多需要 log n 次比較。
                 </p>
                 
                 <div class="complexity-item" style="margin-top: 20px;">空間複雜度: O(1)</div>
                 <p style="color: #78716c; margin: 10px 0;">
-                    只使用了常數額外空間（兩個指標變數）。
+                    只使用了常數額外空間（幾個變數）。
                 </p>
             </div>
         </div>
@@ -256,11 +265,17 @@ public:
             <h2 class="section-title">重點提示</h2>
             <div class="complexity-box">
                 <ul>
-                    <li><strong>雙指標模式：</strong>這是處理回文問題的經典模式，適用於陣列和字串</li>
-                    <li><strong>字符判斷：</strong>Python 使用 isalnum()，C++ 使用 isalnum()，Java 使用 Character.isLetterOrDigit()</li>
-                    <li><strong>大小寫轉換：</strong>統一轉換為小寫進行比較，避免大小寫差異</li>
-                    <li><strong>邊界條件：</strong>注意處理空字串和只有非字母數字字符的情況</li>
-                    <li><strong>提前終止：</strong>一旦發現不匹配就可以立即返回 false，不需要繼續檢查</li>
+                    <li><strong>前提條件：</strong>二分搜尋要求陣列必須是有序的</li>
+                    <li><strong>避免溢位：</strong>使用 <code>mid = left + (right - left) / 2</code> 而非 <code>(left + right) / 2</code></li>
+                    <li><strong>邊界條件：</strong>while 條件是 <code>left <= right</code>，包含等號</li>
+                    <li><strong>指標更新：</strong>更新時要 +1 或 -1，否則可能死循環</li>
+                    <li><strong>變體問題：</strong>
+                        <ul>
+                            <li>找第一個等於目標值的位置</li>
+                            <li>找最後一個等於目標值的位置</li>
+                            <li>找第一個大於等於目標值的位置</li>
+                        </ul>
+                    </li>
                 </ul>
             </div>
         </div>

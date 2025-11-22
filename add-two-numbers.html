@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <title>2. Add Two Numbers - LeetCode 學習平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, sans-serif; background: #f8fafc; line-height: 1.8; color: #334155; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .header { background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: white; padding: 40px; border-radius: 16px; margin-bottom: 30px; }
+        .back-btn { color: white; text-decoration: none; background: rgba(255,255,255,0.2); padding: 10px 20px; border-radius: 8px; display: inline-block; margin-bottom: 20px; }
+        .problem-title { font-size: 2.5em; font-weight: 800; margin-bottom: 15px; }
+        .difficulty { background: rgba(255,255,255,0.3); padding: 8px 20px; border-radius: 20px; font-weight: 600; display: inline-block; }
+        .content-section { background: white; padding: 40px; border-radius: 16px; margin-bottom: 25px; }
+        .section-title { font-size: 1.8em; color: #1e293b; margin-bottom: 25px; font-weight: 700; border-bottom: 3px solid #f59e0b; padding-bottom: 10px; }
+        .description { font-size: 1.1em; line-height: 1.9; color: #475569; }
+        .example-box { background: #fffbeb; border-left: 4px solid #f59e0b; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .approach-box { background: #eff6ff; border-left: 4px solid #3b82f6; padding: 25px; border-radius: 8px; margin: 25px 0; }
+        .language-tabs { display: flex; gap: 10px; margin-bottom: 20px; }
+        .tab-btn { padding: 12px 28px; border: 2px solid #f59e0b; background: white; color: #f59e0b; border-radius: 8px; cursor: pointer; font-weight: 600; }
+        .tab-btn.active { background: #f59e0b; color: white; }
+        .code-container { display: none; margin-top: 20px; }
+        .code-container.active { display: block; }
+        pre { background: #282c34 !important; padding: 25px !important; border-radius: 12px; overflow-x: auto; }
+        code { font-family: 'Fira Code', monospace; font-size: 0.95em; }
+        ul, ol { margin-left: 30px; margin-top: 15px; }
+        li { margin: 12px 0; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="../index.html" class="back-btn">← 返回題目列表</a>
+            <div class="problem-title">2. Add Two Numbers</div>
+            <span class="difficulty">Medium</span>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">題目描述</h2>
+            <div class="description">
+                <p>給你兩個非空的鏈表，表示兩個非負的整數。它們每位數字都是按照逆序的方式存儲的，並且每個節點只能存儲一位數字。請你將兩個數相加，並以相同形式返回一個表示和的鏈表。</p>
+            </div>
+
+            <div class="example-box">
+                <strong>範例:</strong>
+                <pre><code>輸入: l1 = [2,4,3], l2 = [5,6,4]
+輸出: [7,0,8]
+解釋: 342 + 465 = 807</code></pre>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">解題思路</h2>
+            
+            <div class="approach-box">
+                <p><strong>方法：模擬加法</strong></p>
+                <p>使用一個虛擬頭節點，遍歷兩個鏈表，逐位相加，處理進位。</p>
+                <p style="margin-top: 15px;"><strong>步驟：</strong></p>
+                <ol>
+                    <li>建立虛擬頭節點 dummy 和當前節點指標 current</li>
+                    <li>初始化進位 carry = 0</li>
+                    <li>當 l1、l2 或 carry 不為空時：
+                        <ul>
+                            <li>計算當前位的和：val1 + val2 + carry</li>
+                            <li>更新進位：carry = sum // 10</li>
+                            <li>建立新節點：sum % 10</li>
+                            <li>移動指標</li>
+                        </ul>
+                    </li>
+                    <li>返回 dummy.next</li>
+                </ol>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">程式碼實現</h2>
+            
+            <div class="language-tabs">
+                <button class="tab-btn active" onclick="showLanguage('python')">Python</button>
+                <button class="tab-btn" onclick="showLanguage('java')">Java</button>
+            </div>
+
+            <div id="python" class="code-container active">
+                <pre><code class="language-python">class Solution:
+    def addTwoNumbers(self, l1: Optional[ListNode], l2: Optional[ListNode]) -> Optional[ListNode]:
+        dummy = ListNode(0)
+        current = dummy
+        carry = 0
+        
+        while l1 or l2 or carry:
+            val1 = l1.val if l1 else 0
+            val2 = l2.val if l2 else 0
+            
+            total = val1 + val2 + carry
+            carry = total // 10
+            current.next = ListNode(total % 10)
+            
+            current = current.next
+            if l1: l1 = l1.next
+            if l2: l2 = l2.next
+        
+        return dummy.next</code></pre>
+            </div>
+
+            <div id="java" class="code-container">
+                <pre><code class="language-java">class Solution {
+    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+        ListNode dummy = new ListNode(0);
+        ListNode current = dummy;
+        int carry = 0;
+        
+        while (l1 != null || l2 != null || carry != 0) {
+            int val1 = (l1 != null) ? l1.val : 0;
+            int val2 = (l2 != null) ? l2.val : 0;
+            
+            int total = val1 + val2 + carry;
+            carry = total / 10;
+            current.next = new ListNode(total % 10);
+            
+            current = current.next;
+            if (l1 != null) l1 = l1.next;
+            if (l2 != null) l2 = l2.next;
+        }
+        
+        return dummy.next;
+    }
+}</code></pre>
+            </div>
+        </div>
+    </div>
+    <script>
+        hljs.highlightAll();
+        function showLanguage(lang) {
+            document.querySelectorAll('.code-container').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+            document.getElementById(lang).classList.add('active');
+            event.target.classList.add('active');
+        }
+    </script>
+</body>
+</html>
