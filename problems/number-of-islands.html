@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>200. Number of Islands - LeetCode 學習平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f8fafc; line-height: 1.8; color: #334155; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .header { background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: white; padding: 40px; border-radius: 16px; margin-bottom: 30px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .back-btn { display: inline-block; color: white; text-decoration: none; background: rgba(255,255,255,0.2); padding: 10px 20px; border-radius: 8px; margin-bottom: 20px; transition: all 0.3s; }
+        .back-btn:hover { background: rgba(255,255,255,0.3); }
+        .problem-title { font-size: 2.5em; font-weight: 800; margin-bottom: 15px; }
+        .difficulty { display: inline-block; background: rgba(255,255,255,0.3); padding: 8px 20px; border-radius: 20px; font-weight: 600; font-size: 0.9em; }
+        .content-section { background: white; padding: 40px; border-radius: 16px; margin-bottom: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .section-title { font-size: 1.8em; color: #1e293b; margin-bottom: 25px; font-weight: 700; padding-bottom: 10px; border-bottom: 3px solid #f59e0b; }
+        .description { font-size: 1.1em; line-height: 1.9; color: #475569; margin-bottom: 20px; }
+        .example-box { background: #fffbeb; border-left: 4px solid #f59e0b; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .example-title { font-weight: 700; color: #d97706; margin-bottom: 10px; font-size: 1.1em; }
+        .approach-box { background: #eff6ff; border-left: 4px solid #3b82f6; padding: 25px; border-radius: 8px; margin: 25px 0; }
+        .approach-title { font-weight: 700; color: #1e40af; margin-bottom: 15px; font-size: 1.3em; }
+        .complexity-box { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .complexity-item { margin: 10px 0; font-weight: 600; color: #92400e; }
+        .language-tabs { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+        .tab-btn { padding: 12px 28px; border: 2px solid #f59e0b; background: white; color: #f59e0b; border-radius: 8px; cursor: pointer; font-weight: 600; transition: all 0.3s; font-size: 1em; }
+        .tab-btn:hover { background: #fffbeb; }
+        .tab-btn.active { background: #f59e0b; color: white; }
+        .code-container { display: none; margin-top: 20px; }
+        .code-container.active { display: block; }
+        pre { background: #282c34 !important; padding: 25px !important; border-radius: 12px; overflow-x: auto; margin: 0; }
+        code { font-family: 'Fira Code', 'Consolas', monospace; font-size: 0.95em; line-height: 1.6; }
+        ol, ul { margin-left: 30px; margin-top: 15px; }
+        li { margin: 12px 0; line-height: 1.8; }
+        strong { color: #1e293b; font-weight: 700; }
+        .visual-box { background: #f0f9ff; border: 2px solid #3b82f6; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        
+        @media (max-width: 768px) {
+            .container { padding: 10px; }
+            .header { padding: 25px; }
+            .problem-title { font-size: 1.8em; }
+            .content-section { padding: 25px; }
+            .tab-btn { padding: 10px 20px; font-size: 0.9em; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="../index.html" class="back-btn">← 返回題目列表</a>
+            <div class="problem-title">200. Number of Islands</div>
+            <span class="difficulty">Medium</span>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">題目描述</h2>
+            <div class="description">
+                <p>給定一個由 <code>'1'</code>（陸地）和 <code>'0'</code>（水）組成的二維網格，計算島嶼的數量。</p>
+                <p style="margin-top: 15px;">島嶼總是被水包圍，並且每座島嶼只能由水平或垂直方向上相鄰的陸地連接形成。</p>
+                <p style="margin-top: 15px;">此外，你可以假設網格的四個邊均被水包圍。</p>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例 1:</div>
+                <pre><code>輸入: grid = [
+  ["1","1","1","1","0"],
+  ["1","1","0","1","0"],
+  ["1","1","0","0","0"],
+  ["0","0","0","0","0"]
+]
+輸出: 1</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例 2:</div>
+                <pre><code>輸入: grid = [
+  ["1","1","0","0","0"],
+  ["1","1","0","0","0"],
+  ["0","0","1","0","0"],
+  ["0","0","0","1","1"]
+]
+輸出: 3</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">限制條件:</div>
+                <pre><code>m == grid.length
+n == grid[i].length
+1 <= m, n <= 300
+grid[i][j] 的值為 '0' 或 '1'</code></pre>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">解題思路</h2>
+            
+            <div class="approach-box">
+                <div class="approach-title">方法一：DFS（深度優先搜尋）推薦</div>
+                <p>遍歷網格，每次遇到陸地 '1' 時，使用 DFS 標記整個島嶼，計數器加 1。</p>
+                
+                <p style="margin-top: 15px;"><strong>核心思想：</strong></p>
+                <p>把相連的陸地視為一個島嶼，使用 DFS 將整個島嶼的陸地都標記為已訪問（改為 '0'），避免重複計算。</p>
+                
+                <p style="margin-top: 15px;"><strong>步驟：</strong></p>
+                <ol>
+                    <li>遍歷整個網格</li>
+                    <li>當遇到 '1'（陸地）時：
+                        <ul>
+                            <li>島嶼計數 +1</li>
+                            <li>調用 DFS 將相連的所有陸地標記為 '0'</li>
+                        </ul>
+                    </li>
+                    <li>DFS 函數：
+                        <ul>
+                            <li>檢查邊界和是否為陸地</li>
+                            <li>將當前位置標記為 '0'</li>
+                            <li>遞迴訪問上下左右四個方向</li>
+                        </ul>
+                    </li>
+                    <li>返回島嶼總數</li>
+                </ol>
+                
+                <div class="visual-box">
+                    <p><strong>視覺化範例：</strong></p>
+                    <pre style="background: white; padding: 15px; border-radius: 5px; margin-top: 10px;"><code>原始網格:
+1 1 0 0 0
+1 1 0 0 0
+0 0 1 0 0
+0 0 0 1 1
+
+步驟1: 發現 (0,0) 是陸地 → 計數=1
+DFS 標記整個島嶼:
+0 0 0 0 0
+0 0 0 0 0
+0 0 1 0 0
+0 0 0 1 1
+
+步驟2: 發現 (2,2) 是陸地 → 計數=2
+DFS 標記:
+0 0 0 0 0
+0 0 0 0 0
+0 0 0 0 0
+0 0 0 1 1
+
+步驟3: 發現 (3,3) 是陸地 → 計數=3
+DFS 標記:
+0 0 0 0 0
+0 0 0 0 0
+0 0 0 0 0
+0 0 0 0 0
+
+答案: 3 個島嶼</code></pre>
+                </div>
+            </div>
+
+            <div class="approach-box">
+                <div class="approach-title">方法二：BFS（廣度優先搜尋）</div>
+                <p>使用佇列進行 BFS，每次發現陸地時將其加入佇列，並標記整個島嶼。</p>
+                
+                <p style="margin-top: 15px;"><strong>步驟：</strong></p>
+                <ol>
+                    <li>遍歷網格，遇到 '1' 時島嶼計數 +1</li>
+                    <li>將當前位置加入佇列</li>
+                    <li>BFS 處理佇列：
+                        <ul>
+                            <li>取出節點，標記為 '0'</li>
+                            <li>將四個方向的陸地加入佇列</li>
+                        </ul>
+                    </li>
+                </ol>
+            </div>
+
+            <div class="approach-box">
+                <div class="approach-title">方法三：Union-Find（並查集）</div>
+                <p>使用並查集數據結構，將相鄰的陸地合併到同一個集合中。</p>
+                <p style="margin-top: 10px; color: #64748b;">適合需要動態連接島嶼的場景，但對這題來說較複雜。</p>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">程式碼實現</h2>
+            
+            <div class="language-tabs">
+                <button class="tab-btn active" onclick="showLanguage('python')">Python</button>
+                <button class="tab-btn" onclick="showLanguage('cpp')">C++</button>
+                <button class="tab-btn" onclick="showLanguage('java')">Java</button>
+            </div>
+
+            <div id="python" class="code-container active">
+                <pre><code class="language-python">class Solution:
+    def numIslands(self, grid: List[List[str]]) -> int:
+        """
+        方法一：DFS（推薦）
+        時間複雜度: O(m × n)
+        空間複雜度: O(m × n) - 遞迴堆疊
+        """
+        if not grid or not grid[0]:
+            return 0
+        
+        rows, cols = len(grid), len(grid[0])
+        count = 0
+        
+        def dfs(r, c):
+            # 邊界檢查和水域檢查
+            if (r < 0 or r >= rows or c < 0 or c >= cols or 
+                grid[r][c] == '0'):
+                return
+            
+            # 標記當前陸地為已訪問
+            grid[r][c] = '0'
+            
+            # 遞迴訪問四個方向
+            dfs(r + 1, c)  # 下
+            dfs(r - 1, c)  # 上
+            dfs(r, c + 1)  # 右
+            dfs(r, c - 1)  # 左
+        
+        # 遍歷整個網格
+        for r in range(rows):
+            for c in range(cols):
+                if grid[r][c] == '1':
+                    count += 1
+                    dfs(r, c)
+        
+        return count
+    
+    def numIslands_bfs(self, grid: List[List[str]]) -> int:
+        """
+        方法二：BFS
+        時間複雜度: O(m × n)
+        空間複雜度: O(min(m, n)) - 佇列大小
+        """
+        if not grid or not grid[0]:
+            return 0
+        
+        from collections import deque
+        rows, cols = len(grid), len(grid[0])
+        count = 0
+        
+        def bfs(r, c):
+            queue = deque([(r, c)])
+            grid[r][c] = '0'  # 標記為已訪問
+            
+            while queue:
+                row, col = queue.popleft()
+                
+                # 檢查四個方向
+                directions = [(1, 0), (-1, 0), (0, 1), (0, -1)]
+                for dr, dc in directions:
+                    nr, nc = row + dr, col + dc
+                    if (0 <= nr < rows and 0 <= nc < cols and 
+                        grid[nr][nc] == '1'):
+                        grid[nr][nc] = '0'
+                        queue.append((nr, nc))
+        
+        # 遍歷整個網格
+        for r in range(rows):
+            for c in range(cols):
+                if grid[r][c] == '1':
+                    count += 1
+                    bfs(r, c)
+        
+        return count</code></pre>
+            </div>
+
+            <div id="cpp" class="code-container">
+                <pre><code class="language-cpp">#include &lt;vector&gt;
+#include &lt;queue&gt;
+
+class Solution {
+public:
+    /**
+     * 方法一：DFS（推薦）
+     * 時間複雜度: O(m × n)
+     * 空間複雜度: O(m × n)
+     */
+    int numIslands(std::vector<std::vector<char>>& grid) {
+        if (grid.empty() || grid[0].empty()) {
+            return 0;
+        }
+        
+        int rows = grid.size();
+        int cols = grid[0].size();
+        int count = 0;
+        
+        for (int r = 0; r < rows; r++) {
+            for (int c = 0; c < cols; c++) {
+                if (grid[r][c] == '1') {
+                    count++;
+                    dfs(grid, r, c);
+                }
+            }
+        }
+        
+        return count;
+    }
+    
+private:
+    void dfs(std::vector<std::vector<char>>& grid, int r, int c) {
+        int rows = grid.size();
+        int cols = grid[0].size();
+        
+        // 邊界檢查和水域檢查
+        if (r < 0 || r >= rows || c < 0 || c >= cols || grid[r][c] == '0') {
+            return;
+        }
+        
+        // 標記當前陸地為已訪問
+        grid[r][c] = '0';
+        
+        // 遞迴訪問四個方向
+        dfs(grid, r + 1, c);  // 下
+        dfs(grid, r - 1, c);  // 上
+        dfs(grid, r, c + 1);  // 右
+        dfs(grid, r, c - 1);  // 左
+    }
+
+public:
+    /**
+     * 方法二：BFS
+     * 時間複雜度: O(m × n)
+     * 空間複雜度: O(min(m, n))
+     */
+    int numIslands_bfs(std::vector<std::vector<char>>& grid) {
+        if (grid.empty() || grid[0].empty()) {
+            return 0;
+        }
+        
+        int rows = grid.size();
+        int cols = grid[0].size();
+        int count = 0;
+        
+        for (int r = 0; r < rows; r++) {
+            for (c = 0; c < cols; c++) {
+                if (grid[r][c] == '1') {
+                    count++;
+                    bfs(grid, r, c);
+                }
+            }
+        }
+        
+        return count;
+    }
+    
+private:
+    void bfs(std::vector<std::vector<char>>& grid, int r, int c) {
+        int rows = grid.size();
+        int cols = grid[0].size();
+        
+        std::queue<std::pair<int, int>> queue;
+        queue.push({r, c});
+        grid[r][c] = '0';
+        
+        int directions[4][2] = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
+        
+        while (!queue.empty()) {
+            auto [row, col] = queue.front();
+            queue.pop();
+            
+            for (auto& dir : directions) {
+                int nr = row + dir[0];
+                int nc = col + dir[1];
+                
+                if (nr >= 0 && nr < rows && nc >= 0 && nc < cols && 
+                    grid[nr][nc] == '1') {
+                    grid[nr][nc] = '0';
+                    queue.push({nr, nc});
+                }
+            }
+        }
+    }
+};</code></pre>
+            </div>
+
+            <div id="java" class="code-container">
+                <pre><code class="language-java">import java.util.LinkedList;
+import java.util.Queue;
+
+class Solution {
+    /**
+     * 方法一：DFS（推薦）
+     * 時間複雜度: O(m × n)
+     * 空間複雜度: O(m × n)
+     */
+    public int numIslands(char[][] grid) {
+        if (grid == null || grid.length == 0) {
+            return 0;
+        }
+        
+        int rows = grid.length;
+        int cols = grid[0].length;
+        int count = 0;
+        
+        for (int r = 0; r < rows; r++) {
+            for (int c = 0; c < cols; c++) {
+                if (grid[r][c] == '1') {
+                    count++;
+                    dfs(grid, r, c);
+                }
+            }
+        }
+        
+        return count;
+    }
+    
+    private void dfs(char[][] grid, int r, int c) {
+        int rows = grid.length;
+        int cols = grid[0].length;
+        
+        // 邊界檢查和水域檢查
+        if (r < 0 || r >= rows || c < 0 || c >= cols || grid[r][c] == '0') {
+            return;
+        }
+        
+        // 標記當前陸地為已訪問
+        grid[r][c] = '0';
+        
+        // 遞迴訪問四個方向
+        dfs(grid, r + 1, c);  // 下
+        dfs(grid, r - 1, c);  // 上
+        dfs(grid, r, c + 1);  // 右
+        dfs(grid, r, c - 1);  // 左
+    }
+    
+    /**
+     * 方法二：BFS
+     * 時間複雜度: O(m × n)
+     * 空間複雜度: O(min(m, n))
+     */
+    public int numIslands_bfs(char[][] grid) {
+        if (grid == null || grid.length == 0) {
+            return 0;
+        }
+        
+        int rows = grid.length;
+        int cols = grid[0].length;
+        int count = 0;
+        
+        for (int r = 0; r < rows; r++) {
+            for (int c = 0; c < cols; c++) {
+                if (grid[r][c] == '1') {
+                    count++;
+                    bfs(grid, r, c);
+                }
+            }
+        }
+        
+        return count;
+    }
+    
+    private void bfs(char[][] grid, int r, int c) {
+        int rows = grid.length;
+        int cols = grid[0].length;
+        
+        Queue<int[]> queue = new LinkedList<>();
+        queue.offer(new int[]{r, c});
+        grid[r][c] = '0';
+        
+        int[][] directions = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
+        
+        while (!queue.isEmpty()) {
+            int[] curr = queue.poll();
+            int row = curr[0], col = curr[1];
+            
+            for (int[] dir : directions) {
+                int nr = row + dir[0];
+                int nc = col + dir[1];
+                
+                if (nr >= 0 && nr < rows && nc >= 0 && nc < cols && 
+                    grid[nr][nc] == '1') {
+                    grid[nr][nc] = '0';
+                    queue.offer(new int[]{nr, nc});
+                }
+            }
+        }
+    }
+}</code></pre>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">複雜度分析</h2>
+            <div class="complexity-box">
+                <div class="complexity-item">時間複雜度: O(m × n)</div>
+                <p style="color: #78716c; margin: 10px 0;">
+                    最壞情況下需要訪問網格中的每個格子一次，其中 m 是行數，n 是列數。
+                </p>
+                
+                <div class="complexity-item" style="margin-top: 20px;">空間複雜度:</div>
+                <ul style="color: #78716c; margin: 10px 0 10px 30px;">
+                    <li><strong>DFS：</strong>O(m × n) - 最壞情況下遞迴深度等於格子總數（整個網格都是陸地）</li>
+                    <li><strong>BFS：</strong>O(min(m, n)) - 佇列中最多存儲對角線長度的節點</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">重點提示</h2>
+            <div class="complexity-box">
+                <ul>
+                    <li><strong>Graph 遍歷經典題：</strong>這是學習 DFS/BFS 的必做題</li>
+                    <li><strong>原地修改：</strong>直接將訪問過的 '1' 改為 '0'，避免使用額外的 visited 陣列</li>
+                    <li><strong>DFS vs BFS：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>DFS：程式碼更簡潔，遞迴實現</li>
+                            <li>BFS：空間效率更高（對於正方形網格）</li>
+                            <li>兩者時間複雜度相同</li>
+                        </ul>
+                    </li>
+                    <li><strong>四個方向遍歷：</strong>可以用方向陣列 [(1,0), (-1,0), (0,1), (0,-1)] 簡化代碼</li>
+                    <li><strong>邊界檢查：</strong>記得檢查是否越界和是否為水域</li>
+                    <li><strong>不修改原陣列：</strong>如果不能修改原陣列，需要使用 visited set</li>
+                    <li><strong>面試技巧：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>說明 DFS/BFS 的選擇理由</li>
+                            <li>討論原地修改 vs visited 陣列的取捨</li>
+                            <li>解釋時間和空間複雜度</li>
+                        </ul>
+                    </li>
+                    <li><strong>變形題：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>找最大島嶼面積（Max Area of Island #695）</li>
+                            <li>島嶼周長（Island Perimeter #463）</li>
+                            <li>被圍繞的區域（Surrounded Regions #130）</li>
+                        </ul>
+                    </li>
+                    <li><strong>相似題目：</strong>Max Area of Island (695), Surrounded Regions (130), Pacific Atlantic Water Flow (417)</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        hljs.highlightAll();
+        
+        function showLanguage(lang) {
+            document.querySelectorAll('.code-container').forEach(container => {
+                container.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.getElementById(lang).classList.add('active');
+            event.target.classList.add('active');
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>15. 3Sum - LeetCode 學習平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f8fafc; line-height: 1.8; color: #334155; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .header { background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: white; padding: 40px; border-radius: 16px; margin-bottom: 30px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .back-btn { display: inline-block; color: white; text-decoration: none; background: rgba(255,255,255,0.2); padding: 10px 20px; border-radius: 8px; margin-bottom: 20px; transition: all 0.3s; }
+        .back-btn:hover { background: rgba(255,255,255,0.3); }
+        .problem-title { font-size: 2.5em; font-weight: 800; margin-bottom: 15px; }
+        .difficulty { display: inline-block; background: rgba(255,255,255,0.3); padding: 8px 20px; border-radius: 20px; font-weight: 600; font-size: 0.9em; }
+        .content-section { background: white; padding: 40px; border-radius: 16px; margin-bottom: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .section-title { font-size: 1.8em; color: #1e293b; margin-bottom: 25px; font-weight: 700; padding-bottom: 10px; border-bottom: 3px solid #f59e0b; }
+        .description { font-size: 1.1em; line-height: 1.9; color: #475569; margin-bottom: 20px; }
+        .example-box { background: #fffbeb; border-left: 4px solid #f59e0b; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .example-title { font-weight: 700; color: #d97706; margin-bottom: 10px; font-size: 1.1em; }
+        .approach-box { background: #eff6ff; border-left: 4px solid #3b82f6; padding: 25px; border-radius: 8px; margin: 25px 0; }
+        .approach-title { font-weight: 700; color: #1e40af; margin-bottom: 15px; font-size: 1.3em; }
+        .complexity-box { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .complexity-item { margin: 10px 0; font-weight: 600; color: #92400e; }
+        .language-tabs { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+        .tab-btn { padding: 12px 28px; border: 2px solid #f59e0b; background: white; color: #f59e0b; border-radius: 8px; cursor: pointer; font-weight: 600; transition: all 0.3s; font-size: 1em; }
+        .tab-btn:hover { background: #fffbeb; }
+        .tab-btn.active { background: #f59e0b; color: white; }
+        .code-container { display: none; margin-top: 20px; }
+        .code-container.active { display: block; }
+        pre { background: #282c34 !important; padding: 25px !important; border-radius: 12px; overflow-x: auto; margin: 0; }
+        code { font-family: 'Fira Code', 'Consolas', monospace; font-size: 0.95em; line-height: 1.6; }
+        ol, ul { margin-left: 30px; margin-top: 15px; }
+        li { margin: 12px 0; line-height: 1.8; }
+        strong { color: #1e293b; font-weight: 700; }
+        .visual-box { background: #f0f9ff; border: 2px solid #3b82f6; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .warning-box { background: #fef2f2; border-left: 4px solid #ef4444; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        
+        @media (max-width: 768px) {
+            .container { padding: 10px; }
+            .header { padding: 25px; }
+            .problem-title { font-size: 1.8em; }
+            .content-section { padding: 25px; }
+            .tab-btn { padding: 10px 20px; font-size: 0.9em; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="../index.html" class="back-btn">← 返回題目列表</a>
+            <div class="problem-title">15. 3Sum</div>
+            <span class="difficulty">Medium</span>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">題目描述</h2>
+            <div class="description">
+                <p>給定一個整數陣列 <code>nums</code>，返回所有和為 0 的三元組 <code>[nums[i], nums[j], nums[k]]</code>，且滿足 <code>i != j</code>、<code>i != k</code> 且 <code>j != k</code>。</p>
+                <p style="margin-top: 15px;"><strong>注意：</strong>答案中不可以包含重複的三元組。</p>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例 1:</div>
+                <pre><code>輸入: nums = [-1,0,1,2,-1,-4]
+輸出: [[-1,-1,2],[-1,0,1]]
+解釋:
+nums[0] + nums[1] + nums[2] = (-1) + 0 + 1 = 0
+nums[1] + nums[2] + nums[4] = 0 + 1 + (-1) = 0
+nums[0] + nums[3] + nums[4] = (-1) + 2 + (-1) = 0
+去重後的不同三元組是 [-1,0,1] 和 [-1,-1,2]
+注意，輸出的順序和三元組的順序並不重要</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例 2:</div>
+                <pre><code>輸入: nums = [0,1,1]
+輸出: []
+解釋: 唯一可能的三元組和不為 0</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例 3:</div>
+                <pre><code>輸入: nums = [0,0,0]
+輸出: [[0,0,0]]
+解釋: 唯一可能的三元組和為 0</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">限制條件:</div>
+                <pre><code>3 <= nums.length <= 3000
+-10^5 <= nums[i] <= 10^5</code></pre>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">解題思路</h2>
+            
+            <div class="warning-box">
+                <p style="color: #991b1b; font-weight: 600; margin-bottom: 10px;">⚠️ 關鍵難點</p>
+                <p style="color: #7f1d1d;">本題的難點在於<strong>去重</strong>！必須避免產生重複的三元組。</p>
+            </div>
+            
+            <div class="approach-box">
+                <div class="approach-title">方法：排序 + 雙指標</div>
+                <p>先排序陣列，然後固定一個數，用雙指標找另外兩個數。</p>
+                
+                <p style="margin-top: 15px;"><strong>核心思想：</strong></p>
+                <p>3Sum 可以轉換為 2Sum：固定第一個數 nums[i]，問題變成在剩餘陣列中找兩個數，使得和為 -nums[i]。</p>
+                
+                <p style="margin-top: 15px;"><strong>步驟：</strong></p>
+                <ol>
+                    <li>將陣列排序</li>
+                    <li>遍歷陣列，固定第一個數 nums[i]：
+                        <ul>
+                            <li>如果 nums[i] > 0，後面的數都大於 0，不可能和為 0，直接 break</li>
+                            <li>使用雙指標在 i+1 到 n-1 範圍內找另外兩個數</li>
+                            <li>左指標 left = i+1，右指標 right = n-1</li>
+                            <li>計算三數之和：
+                                <ul>
+                                    <li>如果 sum = 0，記錄結果，移動兩個指標並跳過重複元素</li>
+                                    <li>如果 sum < 0，left++（需要更大的數）</li>
+                                    <li>如果 sum > 0，right--（需要更小的數）</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>跳過重複的第一個數</li>
+                </ol>
+                
+                <div class="visual-box">
+                    <p><strong>視覺化範例：nums = [-1,0,1,2,-1,-4]</strong></p>
+                    <pre style="background: white; padding: 15px; border-radius: 5px; margin-top: 10px;"><code>排序後: [-4, -1, -1, 0, 1, 2]
+
+i=0, nums[i]=-4, target=4
+     left=1(-1), right=5(2): -1+2=1 < 4, left++
+     left=2(-1), right=5(2): -1+2=1 < 4, left++
+     left=3(0), right=5(2): 0+2=2 < 4, left++
+     left=4(1), right=5(2): 1+2=3 < 4, left++
+     沒找到
+
+i=1, nums[i]=-1, target=1
+     left=2(-1), right=5(2): -1+2=1 = 1 ✓
+     找到: [-1, -1, 2]
+     跳過重複的 -1
+
+i=2, nums[i]=-1 (重複,跳過)
+
+i=3, nums[i]=0, target=0
+     left=4(1), right=5(2): 1+2=3 > 0, right--
+     沒找到更多
+
+i=4, nums[i]=1, target=-1
+     left=5(2), right=5: left >= right, 結束
+
+答案: [[-1,-1,2], [-1,0,1]]</code></pre>
+                </div>
+            </div>
+
+            <div class="approach-box">
+                <div class="approach-title">去重策略（重要！）</div>
+                <ol>
+                    <li><strong>第一個數去重：</strong>
+                        <pre style="background: #f0f9ff; padding: 10px; border-radius: 5px; margin: 10px 0;"><code>if i > 0 and nums[i] == nums[i-1]:
+    continue</code></pre>
+                    </li>
+                    <li><strong>第二個數去重：</strong>
+                        <pre style="background: #f0f9ff; padding: 10px; border-radius: 5px; margin: 10px 0;"><code>while left < right and nums[left] == nums[left+1]:
+    left += 1</code></pre>
+                    </li>
+                    <li><strong>第三個數去重：</strong>
+                        <pre style="background: #f0f9ff; padding: 10px; border-radius: 5px; margin: 10px 0;"><code>while left < right and nums[right] == nums[right-1]:
+    right -= 1</code></pre>
+                    </li>
+                </ol>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">程式碼實現</h2>
+            
+            <div class="language-tabs">
+                <button class="tab-btn active" onclick="showLanguage('python')">Python</button>
+                <button class="tab-btn" onclick="showLanguage('cpp')">C++</button>
+                <button class="tab-btn" onclick="showLanguage('java')">Java</button>
+            </div>
+
+            <div id="python" class="code-container active">
+                <pre><code class="language-python">class Solution:
+    def threeSum(self, nums: List[int]) -> List[List[int]]:
+        """
+        排序 + 雙指標
+        時間複雜度: O(n²)
+        空間複雜度: O(log n) 到 O(n)，取決於排序算法
+        """
+        nums.sort()
+        result = []
+        n = len(nums)
+        
+        for i in range(n - 2):
+            # 如果第一個數已經大於 0，後面不可能找到和為 0 的三元組
+            if nums[i] > 0:
+                break
+            
+            # 跳過重複的第一個數
+            if i > 0 and nums[i] == nums[i-1]:
+                continue
+            
+            # 雙指標找另外兩個數
+            left, right = i + 1, n - 1
+            
+            while left < right:
+                total = nums[i] + nums[left] + nums[right]
+                
+                if total == 0:
+                    # 找到一個解
+                    result.append([nums[i], nums[left], nums[right]])
+                    
+                    # 跳過重複的第二個數
+                    while left < right and nums[left] == nums[left + 1]:
+                        left += 1
+                    # 跳過重複的第三個數
+                    while left < right and nums[right] == nums[right - 1]:
+                        right -= 1
+                    
+                    # 移動指標繼續尋找
+                    left += 1
+                    right -= 1
+                    
+                elif total < 0:
+                    # 和太小，需要更大的數
+                    left += 1
+                else:
+                    # 和太大，需要更小的數
+                    right -= 1
+        
+        return result</code></pre>
+            </div>
+
+            <div id="cpp" class="code-container">
+                <pre><code class="language-cpp">#include &lt;vector&gt;
+#include &lt;algorithm&gt;
+
+class Solution {
+public:
+    /**
+     * 排序 + 雙指標
+     * 時間複雜度: O(n²)
+     * 空間複雜度: O(log n) 到 O(n)
+     */
+    std::vector<std::vector<int>> threeSum(std::vector<int>& nums) {
+        std::sort(nums.begin(), nums.end());
+        std::vector<std::vector<int>> result;
+        int n = nums.size();
+        
+        for (int i = 0; i < n - 2; i++) {
+            // 如果第一個數已經大於 0，後面不可能找到和為 0 的三元組
+            if (nums[i] > 0) {
+                break;
+            }
+            
+            // 跳過重複的第一個數
+            if (i > 0 && nums[i] == nums[i-1]) {
+                continue;
+            }
+            
+            // 雙指標找另外兩個數
+            int left = i + 1, right = n - 1;
+            
+            while (left < right) {
+                int total = nums[i] + nums[left] + nums[right];
+                
+                if (total == 0) {
+                    // 找到一個解
+                    result.push_back({nums[i], nums[left], nums[right]});
+                    
+                    // 跳過重複的第二個數
+                    while (left < right && nums[left] == nums[left + 1]) {
+                        left++;
+                    }
+                    // 跳過重複的第三個數
+                    while (left < right && nums[right] == nums[right - 1]) {
+                        right--;
+                    }
+                    
+                    // 移動指標繼續尋找
+                    left++;
+                    right--;
+                    
+                } else if (total < 0) {
+                    // 和太小，需要更大的數
+                    left++;
+                } else {
+                    // 和太大，需要更小的數
+                    right--;
+                }
+            }
+        }
+        
+        return result;
+    }
+};</code></pre>
+            </div>
+
+            <div id="java" class="code-container">
+                <pre><code class="language-java">import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+class Solution {
+    /**
+     * 排序 + 雙指標
+     * 時間複雜度: O(n²)
+     * 空間複雜度: O(log n) 到 O(n)
+     */
+    public List<List<Integer>> threeSum(int[] nums) {
+        Arrays.sort(nums);
+        List<List<Integer>> result = new ArrayList<>();
+        int n = nums.length;
+        
+        for (int i = 0; i < n - 2; i++) {
+            // 如果第一個數已經大於 0，後面不可能找到和為 0 的三元組
+            if (nums[i] > 0) {
+                break;
+            }
+            
+            // 跳過重複的第一個數
+            if (i > 0 && nums[i] == nums[i-1]) {
+                continue;
+            }
+            
+            // 雙指標找另外兩個數
+            int left = i + 1, right = n - 1;
+            
+            while (left < right) {
+                int total = nums[i] + nums[left] + nums[right];
+                
+                if (total == 0) {
+                    // 找到一個解
+                    result.add(Arrays.asList(nums[i], nums[left], nums[right]));
+                    
+                    // 跳過重複的第二個數
+                    while (left < right && nums[left] == nums[left + 1]) {
+                        left++;
+                    }
+                    // 跳過重複的第三個數
+                    while (left < right && nums[right] == nums[right - 1]) {
+                        right--;
+                    }
+                    
+                    // 移動指標繼續尋找
+                    left++;
+                    right--;
+                    
+                } else if (total < 0) {
+                    // 和太小，需要更大的數
+                    left++;
+                } else {
+                    // 和太大，需要更小的數
+                    right--;
+                }
+            }
+        }
+        
+        return result;
+    }
+}</code></pre>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">複雜度分析</h2>
+            <div class="complexity-box">
+                <div class="complexity-item">時間複雜度: O(n²)</div>
+                <p style="color: #78716c; margin: 10px 0;">
+                    排序需要 O(n log n)，外層循環 O(n)，內層雙指標 O(n)，總時間複雜度為 O(n²)。
+                </p>
+                
+                <div class="complexity-item" style="margin-top: 20px;">空間複雜度: O(log n) 到 O(n)</div>
+                <p style="color: #78716c; margin: 10px 0;">
+                    取決於排序算法使用的空間。如果不計算結果陣列，空間複雜度為 O(log n)（快速排序）到 O(n)（歸併排序）。
+                </p>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">重點提示</h2>
+            <div class="complexity-box">
+                <ul>
+                    <li><strong>去重是關鍵：</strong>必須正確處理重複元素，避免產生重複的三元組</li>
+                    <li><strong>排序的作用：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>讓相同元素相鄰，便於去重</li>
+                            <li>使用雙指標策略</li>
+                            <li>提前剪枝（nums[i] > 0 可以 break）</li>
+                        </ul>
+                    </li>
+                    <li><strong>雙指標移動規則：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>sum < 0 → left++（需要更大的數）</li>
+                            <li>sum > 0 → right--（需要更小的數）</li>
+                            <li>sum = 0 → 記錄結果，同時移動兩個指標</li>
+                        </ul>
+                    </li>
+                    <li><strong>邊界情況：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>陣列長度 < 3 → 返回空</li>
+                            <li>所有元素相同 → 檢查是否為 [0,0,0]</li>
+                            <li>沒有解 → 返回空陣列</li>
+                        </ul>
+                    </li>
+                    <li><strong>為什麼不用 HashSet：</strong>雙指標在已排序陣列上更高效，且去重更簡單</li>
+                    <li><strong>面試技巧：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>先確認可以修改原陣列（排序）</li>
+                            <li>解釋 3Sum 轉換為 2Sum 的思路</li>
+                            <li>特別強調去重邏輯</li>
+                        </ul>
+                    </li>
+                    <li><strong>擴展問題：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>3Sum Closest (#16) - 找最接近目標值的三數之和</li>
+                            <li>4Sum (#18) - 四個數之和</li>
+                            <li>2Sum (#1) - 兩數之和</li>
+                        </ul>
+                    </li>
+                    <li><strong>相似題目：</strong>Two Sum (1), 3Sum Closest (16), 4Sum (18)</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        hljs.highlightAll();
+        
+        function showLanguage(lang) {
+            document.querySelectorAll('.code-container').forEach(container => {
+                container.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.getElementById(lang).classList.add('active');
+            event.target.classList.add('active');
+        }
+    </script>
+</body>
+</html>
