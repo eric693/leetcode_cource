@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>121. Best Time to Buy and Sell Stock - LeetCode 學習平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f8fafc; line-height: 1.8; color: #334155; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .header { background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; padding: 40px; border-radius: 16px; margin-bottom: 30px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .back-btn { display: inline-block; color: white; text-decoration: none; background: rgba(255,255,255,0.2); padding: 10px 20px; border-radius: 8px; margin-bottom: 20px; transition: all 0.3s; }
+        .back-btn:hover { background: rgba(255,255,255,0.3); }
+        .problem-title { font-size: 2.5em; font-weight: 800; margin-bottom: 15px; }
+        .difficulty { display: inline-block; background: rgba(255,255,255,0.3); padding: 8px 20px; border-radius: 20px; font-weight: 600; font-size: 0.9em; }
+        .content-section { background: white; padding: 40px; border-radius: 16px; margin-bottom: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .section-title { font-size: 1.8em; color: #1e293b; margin-bottom: 25px; font-weight: 700; padding-bottom: 10px; border-bottom: 3px solid #10b981; }
+        .description { font-size: 1.1em; line-height: 1.9; color: #475569; margin-bottom: 20px; }
+        .example-box { background: #f0fdf4; border-left: 4px solid #10b981; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .example-title { font-weight: 700; color: #059669; margin-bottom: 10px; font-size: 1.1em; }
+        .approach-box { background: #eff6ff; border-left: 4px solid #3b82f6; padding: 25px; border-radius: 8px; margin: 25px 0; }
+        .approach-title { font-weight: 700; color: #1e40af; margin-bottom: 15px; font-size: 1.3em; }
+        .complexity-box { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .complexity-item { margin: 10px 0; font-weight: 600; color: #92400e; }
+        .language-tabs { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+        .tab-btn { padding: 12px 28px; border: 2px solid #10b981; background: white; color: #10b981; border-radius: 8px; cursor: pointer; font-weight: 600; transition: all 0.3s; font-size: 1em; }
+        .tab-btn:hover { background: #f0fdf4; }
+        .tab-btn.active { background: #10b981; color: white; }
+        .code-container { display: none; margin-top: 20px; }
+        .code-container.active { display: block; }
+        pre { background: #282c34 !important; padding: 25px !important; border-radius: 12px; overflow-x: auto; margin: 0; }
+        code { font-family: 'Fira Code', 'Consolas', monospace; font-size: 0.95em; line-height: 1.6; }
+        ol, ul { margin-left: 30px; margin-top: 15px; }
+        li { margin: 12px 0; line-height: 1.8; }
+        strong { color: #1e293b; font-weight: 700; }
+        .visual-box { background: #f0f9ff; border: 2px solid #3b82f6; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        
+        @media (max-width: 768px) {
+            .container { padding: 10px; }
+            .header { padding: 25px; }
+            .problem-title { font-size: 1.8em; }
+            .content-section { padding: 25px; }
+            .tab-btn { padding: 10px 20px; font-size: 0.9em; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="../index.html" class="back-btn">← 返回題目列表</a>
+            <div class="problem-title">121. Best Time to Buy and Sell Stock</div>
+            <span class="difficulty">Easy</span>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">題目描述</h2>
+            <div class="description">
+                <p>給定一個陣列 <code>prices</code>，其中 <code>prices[i]</code> 是一支股票第 i 天的價格。</p>
+                <p style="margin-top: 15px;">你想要通過選擇<strong>某一天</strong>購買這支股票，並選擇在<strong>未來的某一天</strong>出售該股票來最大化你的利潤。</p>
+                <p style="margin-top: 15px;">返回你可以從這筆交易中獲取的最大利潤。如果你不能獲取任何利潤，返回 0。</p>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例 1:</div>
+                <pre><code>輸入: prices = [7,1,5,3,6,4]
+輸出: 5
+解釋: 在第 2 天（股票價格 = 1）買入，在第 5 天（股票價格 = 6）賣出
+最大利潤 = 6 - 1 = 5
+注意不能在第 2 天買入然後在第 1 天賣出（因為買入必須在賣出之前）</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例 2:</div>
+                <pre><code>輸入: prices = [7,6,4,3,1]
+輸出: 0
+解釋: 在這種情況下，沒有交易完成，最大利潤為 0</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">限制條件:</div>
+                <pre><code>1 <= prices.length <= 10^5
+0 <= prices[i] <= 10^4</code></pre>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">解題思路</h2>
+            
+            <div class="approach-box">
+                <div class="approach-title">方法一：一次遍歷（推薦）</div>
+                <p>維護歷史最低價格，同時計算如果今天賣出的最大利潤。</p>
+                
+                <p style="margin-top: 15px;"><strong>核心思想：</strong></p>
+                <p>遍歷價格陣列，對於每一天：</p>
+                <ul>
+                    <li>如果今天的價格更低，更新最低價格</li>
+                    <li>否則，計算今天賣出的利潤，更新最大利潤</li>
+                </ul>
+                
+                <p style="margin-top: 15px;"><strong>步驟：</strong></p>
+                <ol>
+                    <li>初始化 min_price = ∞，max_profit = 0</li>
+                    <li>遍歷每天的價格：
+                        <ul>
+                            <li>如果 price < min_price，更新 min_price</li>
+                            <li>否則，計算 profit = price - min_price</li>
+                            <li>更新 max_profit = max(max_profit, profit)</li>
+                        </ul>
+                    </li>
+                    <li>返回 max_profit</li>
+                </ol>
+                
+                <div class="visual-box">
+                    <p><strong>視覺化範例：prices = [7,1,5,3,6,4]</strong></p>
+                    <pre style="background: white; padding: 15px; border-radius: 5px; margin-top: 10px;"><code>Day 0: price=7, min_price=7, max_profit=0
+Day 1: price=1, min_price=1, max_profit=0 (更新最低價)
+Day 2: price=5, min_price=1, max_profit=4 (5-1=4)
+Day 3: price=3, min_price=1, max_profit=4 (3-1=2 < 4)
+Day 4: price=6, min_price=1, max_profit=5 (6-1=5) ⭐
+Day 5: price=4, min_price=1, max_profit=5 (4-1=3 < 5)
+
+答案: 5 (在第1天買入,第4天賣出)</code></pre>
+                </div>
+            </div>
+
+            <div class="approach-box">
+                <div class="approach-title">方法二：動態規劃思路</div>
+                <p>將問題視為求最大子陣列和的變形（與 Maximum Subarray 類似）。</p>
+                
+                <p style="margin-top: 15px;"><strong>轉換思路：</strong></p>
+                <p>將價格陣列轉換為相鄰日期的價格差：[0, -6, 4, -2, 3, -2]</p>
+                <p>問題變成：找到價格差陣列的最大子陣列和</p>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">程式碼實現</h2>
+            
+            <div class="language-tabs">
+                <button class="tab-btn active" onclick="showLanguage('python')">Python</button>
+                <button class="tab-btn" onclick="showLanguage('cpp')">C++</button>
+                <button class="tab-btn" onclick="showLanguage('java')">Java</button>
+            </div>
+
+            <div id="python" class="code-container active">
+                <pre><code class="language-python">class Solution:
+    def maxProfit(self, prices: List[int]) -> int:
+        """
+        方法一：一次遍歷（推薦）
+        時間複雜度: O(n)
+        空間複雜度: O(1)
+        """
+        if not prices:
+            return 0
+        
+        min_price = float('inf')  # 歷史最低價格
+        max_profit = 0            # 最大利潤
+        
+        for price in prices:
+            if price < min_price:
+                # 更新最低價格
+                min_price = price
+            else:
+                # 計算今天賣出的利潤
+                profit = price - min_price
+                max_profit = max(max_profit, profit)
+        
+        return max_profit
+    
+    def maxProfit_clean(self, prices: List[int]) -> int:
+        """
+        方法一：簡潔版本
+        時間複雜度: O(n)
+        空間複雜度: O(1)
+        """
+        min_price = float('inf')
+        max_profit = 0
+        
+        for price in prices:
+            min_price = min(min_price, price)
+            max_profit = max(max_profit, price - min_price)
+        
+        return max_profit
+    
+    def maxProfit_dp(self, prices: List[int]) -> int:
+        """
+        方法二：動態規劃（轉換為最大子陣列和）
+        時間複雜度: O(n)
+        空間複雜度: O(1)
+        """
+        max_profit = 0
+        current_profit = 0
+        
+        for i in range(1, len(prices)):
+            # 計算價格變化
+            diff = prices[i] - prices[i-1]
+            # 類似 Kadane's Algorithm
+            current_profit = max(0, current_profit + diff)
+            max_profit = max(max_profit, current_profit)
+        
+        return max_profit</code></pre>
+            </div>
+
+            <div id="cpp" class="code-container">
+                <pre><code class="language-cpp">#include &lt;vector&gt;
+#include &lt;algorithm&gt;
+#include &lt;climits&gt;
+
+class Solution {
+public:
+    /**
+     * 方法一：一次遍歷（推薦）
+     * 時間複雜度: O(n)
+     * 空間複雜度: O(1)
+     */
+    int maxProfit(std::vector<int>& prices) {
+        if (prices.empty()) {
+            return 0;
+        }
+        
+        int minPrice = INT_MAX;  // 歷史最低價格
+        int maxProfit = 0;       // 最大利潤
+        
+        for (int price : prices) {
+            if (price < minPrice) {
+                // 更新最低價格
+                minPrice = price;
+            } else {
+                // 計算今天賣出的利潤
+                int profit = price - minPrice;
+                maxProfit = std::max(maxProfit, profit);
+            }
+        }
+        
+        return maxProfit;
+    }
+    
+    /**
+     * 方法一：簡潔版本
+     * 時間複雜度: O(n)
+     * 空間複雜度: O(1)
+     */
+    int maxProfit_clean(std::vector<int>& prices) {
+        int minPrice = INT_MAX;
+        int maxProfit = 0;
+        
+        for (int price : prices) {
+            minPrice = std::min(minPrice, price);
+            maxProfit = std::max(maxProfit, price - minPrice);
+        }
+        
+        return maxProfit;
+    }
+};</code></pre>
+            </div>
+
+            <div id="java" class="code-container">
+                <pre><code class="language-java">class Solution {
+    /**
+     * 方法一：一次遍歷（推薦）
+     * 時間複雜度: O(n)
+     * 空間複雜度: O(1)
+     */
+    public int maxProfit(int[] prices) {
+        if (prices == null || prices.length == 0) {
+            return 0;
+        }
+        
+        int minPrice = Integer.MAX_VALUE;  // 歷史最低價格
+        int maxProfit = 0;                 // 最大利潤
+        
+        for (int price : prices) {
+            if (price < minPrice) {
+                // 更新最低價格
+                minPrice = price;
+            } else {
+                // 計算今天賣出的利潤
+                int profit = price - minPrice;
+                maxProfit = Math.max(maxProfit, profit);
+            }
+        }
+        
+        return maxProfit;
+    }
+    
+    /**
+     * 方法一：簡潔版本
+     * 時間複雜度: O(n)
+     * 空間複雜度: O(1)
+     */
+    public int maxProfit_clean(int[] prices) {
+        int minPrice = Integer.MAX_VALUE;
+        int maxProfit = 0;
+        
+        for (int price : prices) {
+            minPrice = Math.min(minPrice, price);
+            maxProfit = Math.max(maxProfit, price - minPrice);
+        }
+        
+        return maxProfit;
+    }
+}</code></pre>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">複雜度分析</h2>
+            <div class="complexity-box">
+                <div class="complexity-item">時間複雜度: O(n)</div>
+                <p style="color: #78716c; margin: 10px 0;">
+                    只需要遍歷一次價格陣列，其中 n 是陣列長度。
+                </p>
+                
+                <div class="complexity-item" style="margin-top: 20px;">空間複雜度: O(1)</div>
+                <p style="color: #78716c; margin: 10px 0;">
+                    只使用常數個額外變數（min_price 和 max_profit）。
+                </p>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">重點提示</h2>
+            <div class="complexity-box">
+                <ul>
+                    <li><strong>貪心思想：</strong>始終在歷史最低點買入，在當前價格賣出</li>
+                    <li><strong>只需一次交易：</strong>這題只允許一次買入和一次賣出</li>
+                    <li><strong>時間順序：</strong>必須先買入再賣出，不能在同一天完成</li>
+                    <li><strong>邊界情況：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>價格持續下跌 → 返回 0</li>
+                            <li>只有一天 → 返回 0</li>
+                            <li>所有價格相同 → 返回 0</li>
+                        </ul>
+                    </li>
+                    <li><strong>不要想複雜：</strong>不需要記錄買入賣出的具體日期，只需要最大利潤</li>
+                    <li><strong>面試技巧：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>先確認只能進行一次交易</li>
+                            <li>說明暴力解法 O(n²) 後優化到 O(n)</li>
+                            <li>解釋為什麼要維護歷史最低價</li>
+                        </ul>
+                    </li>
+                    <li><strong>擴展問題：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>Best Time to Buy and Sell Stock II (#122) - 可以多次交易</li>
+                            <li>Best Time to Buy and Sell Stock III (#123) - 最多兩次交易</li>
+                            <li>Best Time to Buy and Sell Stock IV (#188) - 最多 k 次交易</li>
+                        </ul>
+                    </li>
+                    <li><strong>相似題目：</strong>Maximum Subarray (53), Best Time to Buy and Sell Stock II (122)</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        hljs.highlightAll();
+        
+        function showLanguage(lang) {
+            document.querySelectorAll('.code-container').forEach(container => {
+                container.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.getElementById(lang).classList.add('active');
+            event.target.classList.add('active');
+        }
+    </script>
+</body>
+</html>
