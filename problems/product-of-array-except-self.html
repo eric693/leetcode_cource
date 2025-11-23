@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>238. Product of Array Except Self - LeetCode 學習平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f8fafc; line-height: 1.8; color: #334155; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .header { background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: white; padding: 40px; border-radius: 16px; margin-bottom: 30px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .back-btn { display: inline-block; color: white; text-decoration: none; background: rgba(255,255,255,0.2); padding: 10px 20px; border-radius: 8px; margin-bottom: 20px; transition: all 0.3s; }
+        .back-btn:hover { background: rgba(255,255,255,0.3); }
+        .problem-title { font-size: 2.5em; font-weight: 800; margin-bottom: 15px; }
+        .difficulty { display: inline-block; background: rgba(255,255,255,0.3); padding: 8px 20px; border-radius: 20px; font-weight: 600; font-size: 0.9em; }
+        .content-section { background: white; padding: 40px; border-radius: 16px; margin-bottom: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .section-title { font-size: 1.8em; color: #1e293b; margin-bottom: 25px; font-weight: 700; padding-bottom: 10px; border-bottom: 3px solid #f59e0b; }
+        .description { font-size: 1.1em; line-height: 1.9; color: #475569; margin-bottom: 20px; }
+        .example-box { background: #fffbeb; border-left: 4px solid #f59e0b; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .example-title { font-weight: 700; color: #d97706; margin-bottom: 10px; font-size: 1.1em; }
+        .approach-box { background: #eff6ff; border-left: 4px solid #3b82f6; padding: 25px; border-radius: 8px; margin: 25px 0; }
+        .approach-title { font-weight: 700; color: #1e40af; margin-bottom: 15px; font-size: 1.3em; }
+        .complexity-box { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .complexity-item { margin: 10px 0; font-weight: 600; color: #92400e; }
+        .language-tabs { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+        .tab-btn { padding: 12px 28px; border: 2px solid #f59e0b; background: white; color: #f59e0b; border-radius: 8px; cursor: pointer; font-weight: 600; transition: all 0.3s; font-size: 1em; }
+        .tab-btn:hover { background: #fffbeb; }
+        .tab-btn.active { background: #f59e0b; color: white; }
+        .code-container { display: none; margin-top: 20px; }
+        .code-container.active { display: block; }
+        pre { background: #282c34 !important; padding: 25px !important; border-radius: 12px; overflow-x: auto; margin: 0; }
+        code { font-family: 'Fira Code', 'Consolas', monospace; font-size: 0.95em; line-height: 1.6; }
+        ol, ul { margin-left: 30px; margin-top: 15px; }
+        li { margin: 12px 0; line-height: 1.8; }
+        strong { color: #1e293b; font-weight: 700; }
+        .visual-box { background: #f0f9ff; border: 2px solid #3b82f6; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .warning-box { background: #fef2f2; border-left: 4px solid #ef4444; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        
+        @media (max-width: 768px) {
+            .container { padding: 10px; }
+            .header { padding: 25px; }
+            .problem-title { font-size: 1.8em; }
+            .content-section { padding: 25px; }
+            .tab-btn { padding: 10px 20px; font-size: 0.9em; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="../index.html" class="back-btn">← 返回題目列表</a>
+            <div class="problem-title">238. Product of Array Except Self</div>
+            <span class="difficulty">Medium</span>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">題目描述</h2>
+            <div class="description">
+                <p>給定一個整數陣列 <code>nums</code>，返回一個陣列 <code>answer</code>，其中 <code>answer[i]</code> 等於 <code>nums</code> 中除了 <code>nums[i]</code> 之外其餘各元素的乘積。</p>
+                <p style="margin-top: 15px;">題目數據保證陣列 <code>nums</code> 中任意元素的全部前綴元素和後綴元素的乘積都在 32 位整數範圍內。</p>
+            </div>
+
+            <div class="warning-box">
+                <p style="color: #991b1b; font-weight: 600; margin-bottom: 10px;">⚠️ 重要限制</p>
+                <p style="color: #7f1d1d;"><strong>不能使用除法</strong>，並且要求在 <strong>O(n)</strong> 時間複雜度內完成。</p>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例 1:</div>
+                <pre><code>輸入: nums = [1,2,3,4]
+輸出: [24,12,8,6]
+解釋:
+answer[0] = 2 * 3 * 4 = 24
+answer[1] = 1 * 3 * 4 = 12
+answer[2] = 1 * 2 * 4 = 8
+answer[3] = 1 * 2 * 3 = 6</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例 2:</div>
+                <pre><code>輸入: nums = [-1,1,0,-3,3]
+輸出: [0,0,9,0,0]
+解釋:
+answer[0] = 1 * 0 * (-3) * 3 = 0
+answer[1] = (-1) * 0 * (-3) * 3 = 0
+answer[2] = (-1) * 1 * (-3) * 3 = 9
+answer[3] = (-1) * 1 * 0 * 3 = 0
+answer[4] = (-1) * 1 * 0 * (-3) = 0</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">限制條件:</div>
+                <pre><code>2 <= nums.length <= 10^5
+-30 <= nums[i] <= 30
+保證陣列中任意元素的全部前綴元素和後綴元素的乘積都在 32 位整數範圍內</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">進階:</div>
+                <p style="color: #d97706;">你能在 O(1) 的額外空間複雜度內完成這個題目嗎？（輸出陣列不被視為額外空間）</p>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">解題思路</h2>
+            
+            <div class="approach-box">
+                <div class="approach-title">核心概念：左右累積乘積</div>
+                <p>對於位置 i，answer[i] = (i 左邊所有元素的乘積) × (i 右邊所有元素的乘積)</p>
+                
+                <div class="visual-box">
+                    <p><strong>視覺化範例：nums = [1, 2, 3, 4]</strong></p>
+                    <pre style="background: white; padding: 15px; border-radius: 5px; margin-top: 10px;"><code>索引:        0   1   2   3
+數值:        1   2   3   4
+
+左側乘積:    1   1   2   6   (不包含自己)
+右側乘積:   24  12   4   1   (不包含自己)
+
+結果:       24  12   8   6   (左側 × 右側)</code></pre>
+                </div>
+            </div>
+            
+            <div class="approach-box">
+                <div class="approach-title">方法一：使用兩個額外陣列</div>
+                <p>先計算左側乘積陣列，再計算右側乘積陣列，最後相乘。</p>
+                
+                <p style="margin-top: 15px;"><strong>步驟：</strong></p>
+                <ol>
+                    <li>創建 left 陣列，left[i] = nums[0] * ... * nums[i-1]</li>
+                    <li>創建 right 陣列，right[i] = nums[i+1] * ... * nums[n-1]</li>
+                    <li>answer[i] = left[i] * right[i]</li>
+                </ol>
+                
+                <div class="visual-box">
+                    <p><strong>詳細計算過程：</strong></p>
+                    <pre style="background: white; padding: 15px; border-radius: 5px; margin-top: 10px;"><code>nums = [1, 2, 3, 4]
+
+計算 left 陣列（從左到右）:
+left[0] = 1           (左邊沒有元素)
+left[1] = 1           (1)
+left[2] = 1 * 2 = 2   (1 * 2)
+left[3] = 2 * 3 = 6   (1 * 2 * 3)
+
+計算 right 陣列（從右到左）:
+right[3] = 1           (右邊沒有元素)
+right[2] = 4           (4)
+right[1] = 3 * 4 = 12  (3 * 4)
+right[0] = 2*3*4 = 24  (2 * 3 * 4)
+
+計算結果:
+answer[0] = left[0] * right[0] = 1 * 24 = 24
+answer[1] = left[1] * right[1] = 1 * 12 = 12
+answer[2] = left[2] * right[2] = 2 * 4  = 8
+answer[3] = left[3] * right[3] = 6 * 1  = 6</code></pre>
+                </div>
+            </div>
+
+            <div class="approach-box">
+                <div class="approach-title">方法二：空間優化 O(1)（推薦）⭐</div>
+                <p>只使用輸出陣列，不需要額外的 left 和 right 陣列。</p>
+                
+                <p style="margin-top: 15px;"><strong>優化思路：</strong></p>
+                <ol>
+                    <li>第一次遍歷：將左側乘積直接存入 answer</li>
+                    <li>第二次遍歷：用變數累積右側乘積，並乘到 answer 上</li>
+                </ol>
+                
+                <div class="visual-box">
+                    <p><strong>優化過程：</strong></p>
+                    <pre style="background: white; padding: 15px; border-radius: 5px; margin-top: 10px;"><code>nums = [1, 2, 3, 4]
+
+第一步: 計算左側乘積存入 answer
+answer = [1, 1, 2, 6]
+
+第二步: 從右往左，用變數 R 累積右側乘積
+R = 1
+i=3: answer[3] = 6 * 1 = 6,  R = 1 * 4 = 4
+i=2: answer[2] = 2 * 4 = 8,  R = 4 * 3 = 12
+i=1: answer[1] = 1 * 12 = 12, R = 12 * 2 = 24
+i=0: answer[0] = 1 * 24 = 24
+
+最終: answer = [24, 12, 8, 6]</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">程式碼實現</h2>
+            
+            <div class="language-tabs">
+                <button class="tab-btn active" onclick="showLanguage('python')">Python</button>
+                <button class="tab-btn" onclick="showLanguage('cpp')">C++</button>
+                <button class="tab-btn" onclick="showLanguage('java')">Java</button>
+            </div>
+
+            <div id="python" class="code-container active">
+                <pre><code class="language-python">class Solution:
+    def productExceptSelf(self, nums: List[int]) -> List[int]:
+        """
+        方法二：空間優化 O(1)（推薦）
+        時間複雜度: O(n)
+        空間複雜度: O(1) - 不計輸出陣列
+        """
+        n = len(nums)
+        answer = [1] * n
+        
+        # 第一步：計算左側乘積
+        # answer[i] 存儲 nums[0] 到 nums[i-1] 的乘積
+        left = 1
+        for i in range(n):
+            answer[i] = left
+            left *= nums[i]
+        
+        # 第二步：計算右側乘積並乘到 answer 上
+        # right 累積 nums[i+1] 到 nums[n-1] 的乘積
+        right = 1
+        for i in range(n - 1, -1, -1):
+            answer[i] *= right
+            right *= nums[i]
+        
+        return answer
+    
+    def productExceptSelf_twoArrays(self, nums: List[int]) -> List[int]:
+        """
+        方法一：使用兩個額外陣列
+        時間複雜度: O(n)
+        空間複雜度: O(n)
+        """
+        n = len(nums)
+        left = [1] * n
+        right = [1] * n
+        answer = [1] * n
+        
+        # 計算左側乘積
+        for i in range(1, n):
+            left[i] = left[i - 1] * nums[i - 1]
+        
+        # 計算右側乘積
+        for i in range(n - 2, -1, -1):
+            right[i] = right[i + 1] * nums[i + 1]
+        
+        # 計算結果
+        for i in range(n):
+            answer[i] = left[i] * right[i]
+        
+        return answer</code></pre>
+            </div>
+
+            <div id="cpp" class="code-container">
+                <pre><code class="language-cpp">#include &lt;vector&gt;
+
+class Solution {
+public:
+    /**
+     * 方法二：空間優化 O(1)（推薦）
+     * 時間複雜度: O(n)
+     * 空間複雜度: O(1)
+     */
+    std::vector<int> productExceptSelf(std::vector<int>& nums) {
+        int n = nums.size();
+        std::vector<int> answer(n, 1);
+        
+        // 第一步：計算左側乘積
+        int left = 1;
+        for (int i = 0; i < n; i++) {
+            answer[i] = left;
+            left *= nums[i];
+        }
+        
+        // 第二步：計算右側乘積並乘到 answer 上
+        int right = 1;
+        for (int i = n - 1; i >= 0; i--) {
+            answer[i] *= right;
+            right *= nums[i];
+        }
+        
+        return answer;
+    }
+    
+    /**
+     * 方法一：使用兩個額外陣列
+     * 時間複雜度: O(n)
+     * 空間複雜度: O(n)
+     */
+    std::vector<int> productExceptSelf_twoArrays(std::vector<int>& nums) {
+        int n = nums.size();
+        std::vector<int> left(n, 1);
+        std::vector<int> right(n, 1);
+        std::vector<int> answer(n);
+        
+        // 計算左側乘積
+        for (int i = 1; i < n; i++) {
+            left[i] = left[i - 1] * nums[i - 1];
+        }
+        
+        // 計算右側乘積
+        for (int i = n - 2; i >= 0; i--) {
+            right[i] = right[i + 1] * nums[i + 1];
+        }
+        
+        // 計算結果
+        for (int i = 0; i < n; i++) {
+            answer[i] = left[i] * right[i];
+        }
+        
+        return answer;
+    }
+};</code></pre>
+            </div>
+
+            <div id="java" class="code-container">
+                <pre><code class="language-java">class Solution {
+    /**
+     * 方法二：空間優化 O(1)（推薦）
+     * 時間複雜度: O(n)
+     * 空間複雜度: O(1)
+     */
+    public int[] productExceptSelf(int[] nums) {
+        int n = nums.length;
+        int[] answer = new int[n];
+        
+        // 第一步：計算左側乘積
+        int left = 1;
+        for (int i = 0; i < n; i++) {
+            answer[i] = left;
+            left *= nums[i];
+        }
+        
+        // 第二步：計算右側乘積並乘到 answer 上
+        int right = 1;
+        for (int i = n - 1; i >= 0; i--) {
+            answer[i] *= right;
+            right *= nums[i];
+        }
+        
+        return answer;
+    }
+    
+    /**
+     * 方法一：使用兩個額外陣列
+     * 時間複雜度: O(n)
+     * 空間複雜度: O(n)
+     */
+    public int[] productExceptSelf_twoArrays(int[] nums) {
+        int n = nums.length;
+        int[] left = new int[n];
+        int[] right = new int[n];
+        int[] answer = new int[n];
+        
+        // 初始化
+        left[0] = 1;
+        right[n - 1] = 1;
+        
+        // 計算左側乘積
+        for (int i = 1; i < n; i++) {
+            left[i] = left[i - 1] * nums[i - 1];
+        }
+        
+        // 計算右側乘積
+        for (int i = n - 2; i >= 0; i--) {
+            right[i] = right[i + 1] * nums[i + 1];
+        }
+        
+        // 計算結果
+        for (int i = 0; i < n; i++) {
+            answer[i] = left[i] * right[i];
+        }
+        
+        return answer;
+    }
+}</code></pre>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">複雜度分析</h2>
+            <div class="complexity-box">
+                <div class="complexity-item">方法一：兩個額外陣列</div>
+                <ul style="color: #78716c; margin: 10px 0 10px 30px;">
+                    <li><strong>時間複雜度：</strong>O(n) - 遍歷三次陣列</li>
+                    <li><strong>空間複雜度：</strong>O(n) - left 和 right 陣列</li>
+                </ul>
+                
+                <div class="complexity-item" style="margin-top: 20px;">方法二：空間優化（推薦）</div>
+                <ul style="color: #78716c; margin: 10px 0 10px 30px;">
+                    <li><strong>時間複雜度：</strong>O(n) - 遍歷兩次陣列</li>
+                    <li><strong>空間複雜度：</strong>O(1) - 只用常數個變數（不計輸出陣列）</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">重點提示</h2>
+            <div class="complexity-box">
+                <ul>
+                    <li><strong>為什麼不能用除法？</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>陣列中可能有 0，除法會出錯</li>
+                            <li>這是題目的核心考點：設計更巧妙的算法</li>
+                        </ul>
+                    </li>
+                    <li><strong>核心技巧：</strong>拆分成左右兩部分相乘</li>
+                    <li><strong>空間優化：</strong>用變數代替陣列，只遍歷兩次</li>
+                    <li><strong>邊界情況：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>第一個元素：左側乘積為 1</li>
+                            <li>最後一個元素：右側乘積為 1</li>
+                            <li>陣列中有 0：不影響算法</li>
+                        </ul>
+                    </li>
+                    <li><strong>面試技巧：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>先說明核心思路（左右累積乘積）</li>
+                            <li>畫圖展示計算過程</li>
+                            <li>從 O(n) 空間優化到 O(1)</li>
+                        </ul>
+                    </li>
+                    <li><strong>常見錯誤：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>忘記初始化為 1</li>
+                            <li>索引越界</li>
+                            <li>循環方向錯誤</li>
+                        </ul>
+                    </li>
+                    <li><strong>公司頻率：</strong>Amazon ⭐⭐⭐⭐⭐, Google ⭐⭐⭐⭐⭐, Facebook ⭐⭐⭐⭐⭐</li>
+                    <li><strong>相似題目：</strong>Trapping Rain Water (42), Maximum Product Subarray (152)</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        hljs.highlightAll();
+        
+        function showLanguage(lang) {
+            document.querySelectorAll('.code-container').forEach(container => {
+                container.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.getElementById(lang).classList.add('active');
+            event.target.classList.add('active');
+        }
+    </script>
+</body>
+</html>

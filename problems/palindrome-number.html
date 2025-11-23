@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>9. Palindrome Number - LeetCode 學習平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f8fafc; line-height: 1.8; color: #334155; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .header { background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; padding: 40px; border-radius: 16px; margin-bottom: 30px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .back-btn { display: inline-block; color: white; text-decoration: none; background: rgba(255,255,255,0.2); padding: 10px 20px; border-radius: 8px; margin-bottom: 20px; transition: all 0.3s; }
+        .back-btn:hover { background: rgba(255,255,255,0.3); }
+        .problem-title { font-size: 2.5em; font-weight: 800; margin-bottom: 15px; }
+        .difficulty { display: inline-block; background: rgba(255,255,255,0.3); padding: 8px 20px; border-radius: 20px; font-weight: 600; font-size: 0.9em; }
+        .content-section { background: white; padding: 40px; border-radius: 16px; margin-bottom: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .section-title { font-size: 1.8em; color: #1e293b; margin-bottom: 25px; font-weight: 700; padding-bottom: 10px; border-bottom: 3px solid #10b981; }
+        .description { font-size: 1.1em; line-height: 1.9; color: #475569; margin-bottom: 20px; }
+        .example-box { background: #f0fdf4; border-left: 4px solid #10b981; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .example-title { font-weight: 700; color: #059669; margin-bottom: 10px; font-size: 1.1em; }
+        .approach-box { background: #eff6ff; border-left: 4px solid #3b82f6; padding: 25px; border-radius: 8px; margin: 25px 0; }
+        .approach-title { font-weight: 700; color: #1e40af; margin-bottom: 15px; font-size: 1.3em; }
+        .complexity-box { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .complexity-item { margin: 10px 0; font-weight: 600; color: #92400e; }
+        .language-tabs { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+        .tab-btn { padding: 12px 28px; border: 2px solid #10b981; background: white; color: #10b981; border-radius: 8px; cursor: pointer; font-weight: 600; transition: all 0.3s; font-size: 1em; }
+        .tab-btn:hover { background: #f0fdf4; }
+        .tab-btn.active { background: #10b981; color: white; }
+        .code-container { display: none; margin-top: 20px; }
+        .code-container.active { display: block; }
+        pre { background: #282c34 !important; padding: 25px !important; border-radius: 12px; overflow-x: auto; margin: 0; }
+        code { font-family: 'Fira Code', 'Consolas', monospace; font-size: 0.95em; line-height: 1.6; }
+        ol, ul { margin-left: 30px; margin-top: 15px; }
+        li { margin: 12px 0; line-height: 1.8; }
+        strong { color: #1e293b; font-weight: 700; }
+        .visual-box { background: #f0f9ff; border: 2px solid #3b82f6; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        
+        @media (max-width: 768px) {
+            .container { padding: 10px; }
+            .header { padding: 25px; }
+            .problem-title { font-size: 1.8em; }
+            .content-section { padding: 25px; }
+            .tab-btn { padding: 10px 20px; font-size: 0.9em; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="../index.html" class="back-btn">← 返回題目列表</a>
+            <div class="problem-title">9. Palindrome Number</div>
+            <span class="difficulty">Easy</span>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">題目描述</h2>
+            <div class="description">
+                <p>給定一個整數 <code>x</code>，如果 <code>x</code> 是一個回文整數，返回 <code>true</code>；否則，返回 <code>false</code>。</p>
+                <p style="margin-top: 15px;">回文數是指正著讀和反著讀都一樣的整數。例如，<code>121</code> 是回文，而 <code>123</code> 不是。</p>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例 1:</div>
+                <pre><code>輸入: x = 121
+輸出: true
+解釋: 121 從左往右讀是 121，從右往左讀也是 121</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例 2:</div>
+                <pre><code>輸入: x = -121
+輸出: false
+解釋: 從左往右讀是 -121，從右往左讀是 121-，因此它不是回文數</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例 3:</div>
+                <pre><code>輸入: x = 10
+輸出: false
+解釋: 從右往左讀是 01，因此它不是回文數</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">限制條件:</div>
+                <pre><code>-2^31 <= x <= 2^31 - 1</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">進階:</div>
+                <p style="color: #059669;">你能不將整數轉為字串來解決這個問題嗎？</p>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">解題思路</h2>
+            
+            <div class="approach-box">
+                <div class="approach-title">方法一：反轉一半數字（推薦）⭐</div>
+                <p>只反轉數字的後半部分，然後與前半部分比較。</p>
+                
+                <p style="margin-top: 15px;"><strong>核心思想：</strong></p>
+                <p>不需要反轉整個數字，只需反轉一半，然後比較前後兩半是否相等。</p>
+                
+                <p style="margin-top: 15px;"><strong>特殊情況：</strong></p>
+                <ul>
+                    <li>負數：一定不是回文（因為負號在前面）</li>
+                    <li>末尾是 0：除了 0 本身，其他都不是回文（如 10, 100）</li>
+                </ul>
+                
+                <p style="margin-top: 15px;"><strong>步驟：</strong></p>
+                <ol>
+                    <li>排除負數和末尾為 0 的數（除了 0）</li>
+                    <li>反轉後半部分數字</li>
+                    <li>當反轉的數字 >= 原數字時停止</li>
+                    <li>比較：
+                        <ul>
+                            <li>偶數位：x == reversed</li>
+                            <li>奇數位：x == reversed / 10（去掉中間的數字）</li>
+                        </ul>
+                    </li>
+                </ol>
+                
+                <div class="visual-box">
+                    <p><strong>視覺化範例：x = 12321</strong></p>
+                    <pre style="background: white; padding: 15px; border-radius: 5px; margin-top: 10px;"><code>初始: x = 12321, reversed = 0
+
+步驟 1: x=12321, reversed=0
+       取出最後一位: 1
+       x = 1232, reversed = 1
+
+步驟 2: x=1232, reversed=1
+       取出最後一位: 2
+       x = 123, reversed = 12
+
+步驟 3: x=123, reversed=12
+       取出最後一位: 3
+       x = 12, reversed = 123
+
+停止: reversed >= x
+
+比較: x = 12, reversed / 10 = 12
+     12 == 12 → true（回文）
+
+範例 2: x = 1221
+
+步驟 1: x = 122, reversed = 1
+步驟 2: x = 12, reversed = 12
+
+停止: reversed >= x
+比較: x = 12, reversed = 12
+     12 == 12 → true（回文）</code></pre>
+                </div>
+            </div>
+
+            <div class="approach-box">
+                <div class="approach-title">方法二：轉字串比較（簡單但不推薦）</div>
+                <p>將數字轉為字串，然後比較字串與其反轉是否相同。</p>
+                <p style="margin-top: 10px; color: #64748b;">優點：簡單易懂；缺點：使用額外空間，面試官可能不滿意</p>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">程式碼實現</h2>
+            
+            <div class="language-tabs">
+                <button class="tab-btn active" onclick="showLanguage('python')">Python</button>
+                <button class="tab-btn" onclick="showLanguage('cpp')">C++</button>
+                <button class="tab-btn" onclick="showLanguage('java')">Java</button>
+            </div>
+
+            <div id="python" class="code-container active">
+                <pre><code class="language-python">class Solution:
+    def isPalindrome(self, x: int) -> bool:
+        """
+        方法一：反轉一半數字（推薦）
+        時間複雜度: O(log n)
+        空間複雜度: O(1)
+        """
+        # 負數和末尾為 0 的數（除了 0）不是回文
+        if x < 0 or (x % 10 == 0 and x != 0):
+            return False
+        
+        reversed_half = 0
+        
+        # 反轉後半部分
+        while x > reversed_half:
+            reversed_half = reversed_half * 10 + x % 10
+            x //= 10
+        
+        # 偶數位：x == reversed_half
+        # 奇數位：x == reversed_half // 10（去掉中間數字）
+        return x == reversed_half or x == reversed_half // 10
+    
+    def isPalindrome_string(self, x: int) -> bool:
+        """
+        方法二：轉字串（不推薦）
+        時間複雜度: O(log n)
+        空間複雜度: O(log n)
+        """
+        s = str(x)
+        return s == s[::-1]</code></pre>
+            </div>
+
+            <div id="cpp" class="code-container">
+                <pre><code class="language-cpp">class Solution {
+public:
+    /**
+     * 方法一：反轉一半數字（推薦）
+     * 時間複雜度: O(log n)
+     * 空間複雜度: O(1)
+     */
+    bool isPalindrome(int x) {
+        // 負數和末尾為 0 的數（除了 0）不是回文
+        if (x < 0 || (x % 10 == 0 && x != 0)) {
+            return false;
+        }
+        
+        int reversedHalf = 0;
+        
+        // 反轉後半部分
+        while (x > reversedHalf) {
+            reversedHalf = reversedHalf * 10 + x % 10;
+            x /= 10;
+        }
+        
+        // 偶數位：x == reversedHalf
+        // 奇數位：x == reversedHalf / 10
+        return x == reversedHalf || x == reversedHalf / 10;
+    }
+};</code></pre>
+            </div>
+
+            <div id="java" class="code-container">
+                <pre><code class="language-java">class Solution {
+    /**
+     * 方法一：反轉一半數字（推薦）
+     * 時間複雜度: O(log n)
+     * 空間複雜度: O(1)
+     */
+    public boolean isPalindrome(int x) {
+        // 負數和末尾為 0 的數（除了 0）不是回文
+        if (x < 0 || (x % 10 == 0 && x != 0)) {
+            return false;
+        }
+        
+        int reversedHalf = 0;
+        
+        // 反轉後半部分
+        while (x > reversedHalf) {
+            reversedHalf = reversedHalf * 10 + x % 10;
+            x /= 10;
+        }
+        
+        // 偶數位：x == reversedHalf
+        // 奇數位：x == reversedHalf / 10
+        return x == reversedHalf || x == reversedHalf / 10;
+    }
+}</code></pre>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">複雜度分析</h2>
+            <div class="complexity-box">
+                <div class="complexity-item">時間複雜度: O(log n)</div>
+                <p style="color: #78716c; margin: 10px 0;">
+                    需要處理數字的一半位數，其中 n 是輸入的整數。
+                </p>
+                
+                <div class="complexity-item" style="margin-top: 20px;">空間複雜度: O(1)</div>
+                <p style="color: #78716c; margin: 10px 0;">
+                    只使用常數個變數。
+                </p>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">重點提示</h2>
+            <div class="complexity-box">
+                <ul>
+                    <li><strong>數學方法優於字串：</strong>展現對數字運算的理解</li>
+                    <li><strong>只反轉一半：</strong>避免整數溢位問題</li>
+                    <li><strong>特殊情況處理：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>負數 → false</li>
+                            <li>末尾為 0（除了 0）→ false</li>
+                            <li>0 → true</li>
+                        </ul>
+                    </li>
+                    <li><strong>停止條件：</strong>x > reversed（反轉到一半）</li>
+                    <li><strong>奇偶位數：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>偶數位（1221）：x == reversed</li>
+                            <li>奇數位（12321）：x == reversed / 10</li>
+                        </ul>
+                    </li>
+                    <li><strong>面試技巧：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>先說可以轉字串（展現思路）</li>
+                            <li>立即優化到數學方法（展現能力）</li>
+                            <li>解釋為什麼只需反轉一半</li>
+                        </ul>
+                    </li>
+                    <li><strong>常見錯誤：</strong>忘記處理負數和末尾為 0 的情況</li>
+                    <li><strong>相似題目：</strong>Valid Palindrome (125), Reverse Integer (7)</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        hljs.highlightAll();
+        
+        function showLanguage(lang) {
+            document.querySelectorAll('.code-container').forEach(container => {
+                container.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.getElementById(lang).classList.add('active');
+            event.target.classList.add('active');
+        }
+    </script>
+</body>
+</html>

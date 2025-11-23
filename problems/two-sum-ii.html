@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>167. Two Sum II - LeetCode 學習平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f8fafc; line-height: 1.8; color: #334155; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .header { background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; padding: 40px; border-radius: 16px; margin-bottom: 30px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .back-btn { display: inline-block; color: white; text-decoration: none; background: rgba(255,255,255,0.2); padding: 10px 20px; border-radius: 8px; margin-bottom: 20px; transition: all 0.3s; }
+        .back-btn:hover { background: rgba(255,255,255,0.3); }
+        .problem-title { font-size: 2.5em; font-weight: 800; margin-bottom: 15px; }
+        .difficulty { display: inline-block; background: rgba(255,255,255,0.3); padding: 8px 20px; border-radius: 20px; font-weight: 600; font-size: 0.9em; }
+        .content-section { background: white; padding: 40px; border-radius: 16px; margin-bottom: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .section-title { font-size: 1.8em; color: #1e293b; margin-bottom: 25px; font-weight: 700; padding-bottom: 10px; border-bottom: 3px solid #10b981; }
+        .description { font-size: 1.1em; line-height: 1.9; color: #475569; margin-bottom: 20px; }
+        .example-box { background: #f0fdf4; border-left: 4px solid #10b981; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .example-title { font-weight: 700; color: #059669; margin-bottom: 10px; font-size: 1.1em; }
+        .approach-box { background: #eff6ff; border-left: 4px solid #3b82f6; padding: 25px; border-radius: 8px; margin: 25px 0; }
+        .approach-title { font-weight: 700; color: #1e40af; margin-bottom: 15px; font-size: 1.3em; }
+        .complexity-box { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .complexity-item { margin: 10px 0; font-weight: 600; color: #92400e; }
+        .language-tabs { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+        .tab-btn { padding: 12px 28px; border: 2px solid #10b981; background: white; color: #10b981; border-radius: 8px; cursor: pointer; font-weight: 600; transition: all 0.3s; font-size: 1em; }
+        .tab-btn:hover { background: #f0fdf4; }
+        .tab-btn.active { background: #10b981; color: white; }
+        .code-container { display: none; margin-top: 20px; }
+        .code-container.active { display: block; }
+        pre { background: #282c34 !important; padding: 25px !important; border-radius: 12px; overflow-x: auto; margin: 0; }
+        code { font-family: 'Fira Code', 'Consolas', monospace; font-size: 0.95em; line-height: 1.6; }
+        ol, ul { margin-left: 30px; margin-top: 15px; }
+        li { margin: 12px 0; line-height: 1.8; }
+        strong { color: #1e293b; font-weight: 700; }
+        .visual-box { background: #f0f9ff; border: 2px solid #3b82f6; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        
+        @media (max-width: 768px) {
+            .container { padding: 10px; }
+            .header { padding: 25px; }
+            .problem-title { font-size: 1.8em; }
+            .content-section { padding: 25px; }
+            .tab-btn { padding: 10px 20px; font-size: 0.9em; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="../index.html" class="back-btn">← 返回題目列表</a>
+            <div class="problem-title">167. Two Sum II - Input Array Is Sorted</div>
+            <span class="difficulty">Easy</span>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">題目描述</h2>
+            <div class="description">
+                <p>給定一個<strong>已按升序排列</strong>的整數陣列 <code>numbers</code>，找出兩個數使得它們相加之和等於目標數 <code>target</code>。</p>
+                <p style="margin-top: 15px;">函數應該返回這兩個數字的索引值 <code>index1</code> 和 <code>index2</code>，其中 <code>index1</code> 必須小於 <code>index2</code>。</p>
+                <p style="margin-top: 15px;"><strong>注意：</strong>返回的答案（<code>index1</code> 和 <code>index2</code>）不是從零開始的，即第一個元素的索引為 1。</p>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例 1:</div>
+                <pre><code>輸入: numbers = [2,7,11,15], target = 9
+輸出: [1,2]
+解釋: 2 與 7 之和等於目標數 9。因此 index1 = 1, index2 = 2
+返回 [1, 2]</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例 2:</div>
+                <pre><code>輸入: numbers = [2,3,4], target = 6
+輸出: [1,3]
+解釋: 2 與 4 之和等於目標數 6。因此 index1 = 1, index2 = 3
+返回 [1, 3]</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例 3:</div>
+                <pre><code>輸入: numbers = [-1,0], target = -1
+輸出: [1,2]
+解釋: -1 與 0 之和等於目標數 -1。因此 index1 = 1, index2 = 2
+返回 [1, 2]</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">限制條件:</div>
+                <pre><code>2 <= numbers.length <= 3 * 10^4
+-1000 <= numbers[i] <= 1000
+numbers 按升序排列
+-1000 <= target <= 1000
+題目保證有且只有一個有效答案</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">進階:</div>
+                <p style="color: #059669;">你可以只用 <strong>O(1)</strong> 的額外空間來實現嗎？</p>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">解題思路</h2>
+            
+            <div class="approach-box">
+                <div class="approach-title">關鍵差異：與 Two Sum (#1) 的區別</div>
+                <p>Two Sum (#1)：陣列<strong>未排序</strong> → 使用哈希表 O(n) 時間 + O(n) 空間</p>
+                <p>Two Sum II (#167)：陣列<strong>已排序</strong> → 使用雙指標 O(n) 時間 + O(1) 空間 ⭐</p>
+            </div>
+            
+            <div class="approach-box">
+                <div class="approach-title">方法：雙指標（推薦）⭐</div>
+                <p>利用陣列已排序的特性，使用左右雙指標向中間靠攏。</p>
+                
+                <p style="margin-top: 15px;"><strong>核心思想：</strong></p>
+                <ul>
+                    <li>如果當前兩數之和 < target → 需要更大的數 → 左指標右移</li>
+                    <li>如果當前兩數之和 > target → 需要更小的數 → 右指標左移</li>
+                    <li>如果當前兩數之和 = target → 找到答案！</li>
+                </ul>
+                
+                <p style="margin-top: 15px;"><strong>步驟：</strong></p>
+                <ol>
+                    <li>初始化左指標 left = 0，右指標 right = n-1</li>
+                    <li>當 left < right 時：
+                        <ul>
+                            <li>計算 sum = numbers[left] + numbers[right]</li>
+                            <li>如果 sum = target → 返回 [left+1, right+1]（注意索引從 1 開始）</li>
+                            <li>如果 sum < target → left++</li>
+                            <li>如果 sum > target → right--</li>
+                        </ul>
+                    </li>
+                </ol>
+                
+                <div class="visual-box">
+                    <p><strong>視覺化範例：numbers = [2,7,11,15], target = 9</strong></p>
+                    <pre style="background: white; padding: 15px; border-radius: 5px; margin-top: 10px;"><code>索引: 0  1  2   3
+數值: 2  7  11  15
+      ↑           ↑
+    left        right
+
+步驟 1: sum = 2 + 15 = 17 > 9
+       需要更小的數 → right--
+
+索引: 0  1  2   3
+數值: 2  7  11  15
+      ↑      ↑
+    left   right
+
+步驟 2: sum = 2 + 11 = 13 > 9
+       需要更小的數 → right--
+
+索引: 0  1  2   3
+數值: 2  7  11  15
+      ↑  ↑
+    left right
+
+步驟 3: sum = 2 + 7 = 9 = 9 ✓
+       找到答案！返回 [1, 2]</code></pre>
+                </div>
+            </div>
+
+            <div class="approach-box">
+                <div class="approach-title">為什麼雙指標有效？</div>
+                <p><strong>關鍵：陣列已排序</strong></p>
+                <ul>
+                    <li>左指標指向較小的數，右指標指向較大的數</li>
+                    <li>當和太小時，只能增大左邊的數（因為右邊已經是最大的了）</li>
+                    <li>當和太大時，只能減小右邊的數（因為左邊已經是最小的了）</li>
+                    <li>這樣可以保證不會錯過任何可能的組合</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">程式碼實現</h2>
+            
+            <div class="language-tabs">
+                <button class="tab-btn active" onclick="showLanguage('python')">Python</button>
+                <button class="tab-btn" onclick="showLanguage('cpp')">C++</button>
+                <button class="tab-btn" onclick="showLanguage('java')">Java</button>
+            </div>
+
+            <div id="python" class="code-container active">
+                <pre><code class="language-python">class Solution:
+    def twoSum(self, numbers: List[int], target: int) -> List[int]:
+        """
+        方法：雙指標（推薦）
+        時間複雜度: O(n)
+        空間複雜度: O(1)
+        """
+        left = 0
+        right = len(numbers) - 1
+        
+        while left < right:
+            current_sum = numbers[left] + numbers[right]
+            
+            if current_sum == target:
+                # 找到答案，注意索引從 1 開始
+                return [left + 1, right + 1]
+            elif current_sum < target:
+                # 和太小，需要更大的數
+                left += 1
+            else:
+                # 和太大，需要更小的數
+                right -= 1
+        
+        # 題目保證有解，不會到這裡
+        return []
+    
+    def twoSum_hashmap(self, numbers: List[int], target: int) -> List[int]:
+        """
+        方法二：哈希表（不推薦，空間複雜度較高）
+        時間複雜度: O(n)
+        空間複雜度: O(n)
+        """
+        seen = {}
+        
+        for i, num in enumerate(numbers):
+            complement = target - num
+            if complement in seen:
+                return [seen[complement] + 1, i + 1]
+            seen[num] = i
+        
+        return []</code></pre>
+            </div>
+
+            <div id="cpp" class="code-container">
+                <pre><code class="language-cpp">#include &lt;vector&gt;
+
+class Solution {
+public:
+    /**
+     * 方法：雙指標（推薦）
+     * 時間複雜度: O(n)
+     * 空間複雜度: O(1)
+     */
+    std::vector<int> twoSum(std::vector<int>& numbers, int target) {
+        int left = 0;
+        int right = numbers.size() - 1;
+        
+        while (left < right) {
+            int currentSum = numbers[left] + numbers[right];
+            
+            if (currentSum == target) {
+                // 找到答案，注意索引從 1 開始
+                return {left + 1, right + 1};
+            } else if (currentSum < target) {
+                // 和太小，需要更大的數
+                left++;
+            } else {
+                // 和太大，需要更小的數
+                right--;
+            }
+        }
+        
+        // 題目保證有解，不會到這裡
+        return {};
+    }
+};</code></pre>
+            </div>
+
+            <div id="java" class="code-container">
+                <pre><code class="language-java">class Solution {
+    /**
+     * 方法：雙指標（推薦）
+     * 時間複雜度: O(n)
+     * 空間複雜度: O(1)
+     */
+    public int[] twoSum(int[] numbers, int target) {
+        int left = 0;
+        int right = numbers.length - 1;
+        
+        while (left < right) {
+            int currentSum = numbers[left] + numbers[right];
+            
+            if (currentSum == target) {
+                // 找到答案，注意索引從 1 開始
+                return new int[]{left + 1, right + 1};
+            } else if (currentSum < target) {
+                // 和太小，需要更大的數
+                left++;
+            } else {
+                // 和太大，需要更小的數
+                right--;
+            }
+        }
+        
+        // 題目保證有解，不會到這裡
+        return new int[]{};
+    }
+}</code></pre>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">複雜度分析</h2>
+            <div class="complexity-box">
+                <div class="complexity-item">時間複雜度: O(n)</div>
+                <p style="color: #78716c; margin: 10px 0;">
+                    雙指標最多遍歷整個陣列一次，其中 n 是陣列長度。
+                </p>
+                
+                <div class="complexity-item" style="margin-top: 20px;">空間複雜度: O(1)</div>
+                <p style="color: #78716c; margin: 10px 0;">
+                    只使用兩個指標變數，不需要額外空間。
+                </p>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">重點提示</h2>
+            <div class="complexity-box">
+                <ul>
+                    <li><strong>利用排序特性：</strong>這是本題的核心，使用雙指標 O(1) 空間</li>
+                    <li><strong>索引從 1 開始：</strong>別忘了返回時要 +1</li>
+                    <li><strong>保證有解：</strong>題目說有且只有一個答案，不需要處理無解情況</li>
+                    <li><strong>與 Two Sum 對比：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>Two Sum: 未排序 → 哈希表 O(n) 空間</li>
+                            <li>Two Sum II: 已排序 → 雙指標 O(1) 空間 ⭐</li>
+                        </ul>
+                    </li>
+                    <li><strong>雙指標移動邏輯：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>sum < target → left++（需要更大的數）</li>
+                            <li>sum > target → right--（需要更小的數）</li>
+                            <li>sum = target → 找到答案！</li>
+                        </ul>
+                    </li>
+                    <li><strong>為什麼不會錯過答案：</strong>因為排序保證了移動方向的唯一性</li>
+                    <li><strong>面試技巧：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>強調利用"已排序"這個條件</li>
+                            <li>說明為什麼雙指標不會錯過答案</li>
+                            <li>對比 Two Sum 展現對問題的理解</li>
+                        </ul>
+                    </li>
+                    <li><strong>變形題：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>3Sum (#15) - 三數之和</li>
+                            <li>4Sum (#18) - 四數之和</li>
+                            <li>Two Sum (#1) - 原始版本</li>
+                        </ul>
+                    </li>
+                    <li><strong>相似題目：</strong>Two Sum (1), 3Sum (15), Container With Most Water (11)</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        hljs.highlightAll();
+        
+        function showLanguage(lang) {
+            document.querySelectorAll('.code-container').forEach(container => {
+                container.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.getElementById(lang).classList.add('active');
+            event.target.classList.add('active');
+        }
+    </script>
+</body>
+</html>

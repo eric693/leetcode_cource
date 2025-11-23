@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>5. Longest Palindromic Substring - LeetCode 學習平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f8fafc; line-height: 1.8; color: #334155; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .header { background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: white; padding: 40px; border-radius: 16px; margin-bottom: 30px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .back-btn { display: inline-block; color: white; text-decoration: none; background: rgba(255,255,255,0.2); padding: 10px 20px; border-radius: 8px; margin-bottom: 20px; transition: all 0.3s; }
+        .back-btn:hover { background: rgba(255,255,255,0.3); }
+        .problem-title { font-size: 2.5em; font-weight: 800; margin-bottom: 15px; }
+        .difficulty { display: inline-block; background: rgba(255,255,255,0.3); padding: 8px 20px; border-radius: 20px; font-weight: 600; font-size: 0.9em; }
+        .content-section { background: white; padding: 40px; border-radius: 16px; margin-bottom: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .section-title { font-size: 1.8em; color: #1e293b; margin-bottom: 25px; font-weight: 700; padding-bottom: 10px; border-bottom: 3px solid #f59e0b; }
+        .description { font-size: 1.1em; line-height: 1.9; color: #475569; margin-bottom: 20px; }
+        .example-box { background: #fffbeb; border-left: 4px solid #f59e0b; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .example-title { font-weight: 700; color: #d97706; margin-bottom: 10px; font-size: 1.1em; }
+        .approach-box { background: #eff6ff; border-left: 4px solid #3b82f6; padding: 25px; border-radius: 8px; margin: 25px 0; }
+        .approach-title { font-weight: 700; color: #1e40af; margin-bottom: 15px; font-size: 1.3em; }
+        .complexity-box { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .complexity-item { margin: 10px 0; font-weight: 600; color: #92400e; }
+        .language-tabs { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+        .tab-btn { padding: 12px 28px; border: 2px solid #f59e0b; background: white; color: #f59e0b; border-radius: 8px; cursor: pointer; font-weight: 600; transition: all 0.3s; font-size: 1em; }
+        .tab-btn:hover { background: #fffbeb; }
+        .tab-btn.active { background: #f59e0b; color: white; }
+        .code-container { display: none; margin-top: 20px; }
+        .code-container.active { display: block; }
+        pre { background: #282c34 !important; padding: 25px !important; border-radius: 12px; overflow-x: auto; margin: 0; }
+        code { font-family: 'Fira Code', 'Consolas', monospace; font-size: 0.95em; line-height: 1.6; }
+        ol, ul { margin-left: 30px; margin-top: 15px; }
+        li { margin: 12px 0; line-height: 1.8; }
+        strong { color: #1e293b; font-weight: 700; }
+        .visual-box { background: #f0f9ff; border: 2px solid #3b82f6; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        
+        @media (max-width: 768px) {
+            .container { padding: 10px; }
+            .header { padding: 25px; }
+            .problem-title { font-size: 1.8em; }
+            .content-section { padding: 25px; }
+            .tab-btn { padding: 10px 20px; font-size: 0.9em; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="../index.html" class="back-btn">← 返回題目列表</a>
+            <div class="problem-title">5. Longest Palindromic Substring</div>
+            <span class="difficulty">Medium</span>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">題目描述</h2>
+            <div class="description">
+                <p>給定一個字串 <code>s</code>，找出 <code>s</code> 中最長的回文子字串。</p>
+                <p style="margin-top: 15px;"><strong>回文串</strong>是指正著讀和反著讀都一樣的字串，例如 "aba" 或 "abba"。</p>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例 1:</div>
+                <pre><code>輸入: s = "babad"
+輸出: "bab"
+解釋: "aba" 也是有效答案</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例 2:</div>
+                <pre><code>輸入: s = "cbbd"
+輸出: "bb"</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">限制條件:</div>
+                <pre><code>1 <= s.length <= 1000
+s 僅由數字和英文字母組成</code></pre>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">解題思路</h2>
+            
+            <div class="approach-box">
+                <div class="approach-title">方法一：中心擴展法（推薦）⭐</div>
+                <p>從每個可能的中心點向兩邊擴展，找出最長的回文。</p>
+                
+                <p style="margin-top: 15px;"><strong>核心思想：</strong></p>
+                <p>回文有兩種類型：</p>
+                <ul>
+                    <li><strong>奇數長度：</strong>中心是一個字符，如 "aba"</li>
+                    <li><strong>偶數長度：</strong>中心是兩個字符，如 "abba"</li>
+                </ul>
+                
+                <p style="margin-top: 15px;"><strong>步驟：</strong></p>
+                <ol>
+                    <li>遍歷每個位置作為中心點</li>
+                    <li>對每個中心：
+                        <ul>
+                            <li>以單個字符為中心擴展（奇數長度）</li>
+                            <li>以兩個字符為中心擴展（偶數長度）</li>
+                        </ul>
+                    </li>
+                    <li>記錄最長的回文子字串</li>
+                </ol>
+                
+                <div class="visual-box">
+                    <p><strong>視覺化範例：s = "babad"</strong></p>
+                    <pre style="background: white; padding: 15px; border-radius: 5px; margin-top: 10px;"><code>索引: 0 1 2 3 4
+字串: b a b a d
+
+中心 0 (b):
+  奇數: "b" (長度 1)
+  偶數: "" (不匹配)
+
+中心 1 (a):
+  奇數: "bab" (長度 3) ✓ 最長
+  偶數: "" (不匹配)
+
+中心 2 (b):
+  奇數: "aba" (長度 3) ✓ 也是最長
+  偶數: "" (不匹配)
+
+中心 3 (a):
+  奇數: "a" (長度 1)
+  偶數: "" (不匹配)
+
+中心 4 (d):
+  奇數: "d" (長度 1)
+
+答案: "bab" 或 "aba" (長度 3)</code></pre>
+                </div>
+            </div>
+
+            <div class="approach-box">
+                <div class="approach-title">方法二：動態規劃</div>
+                <p>使用 dp[i][j] 表示 s[i:j+1] 是否為回文。</p>
+                
+                <p style="margin-top: 15px;"><strong>狀態轉移方程：</strong></p>
+                <p style="background: #f0f9ff; padding: 15px; border-radius: 8px; margin: 15px 0; font-weight: 600;">
+                    dp[i][j] = (s[i] == s[j]) AND (j - i < 3 OR dp[i+1][j-1])
+                </p>
+                
+                <p style="margin-top: 15px;"><strong>解釋：</strong></p>
+                <ul>
+                    <li>如果 s[i] != s[j]，一定不是回文</li>
+                    <li>如果 s[i] == s[j]：
+                        <ul>
+                            <li>長度 ≤ 3 → 一定是回文</li>
+                            <li>長度 > 3 → 檢查內部是否為回文</li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="approach-box">
+                <div class="approach-title">方法三：Manacher's Algorithm（進階）</div>
+                <p>最優解，O(n) 時間複雜度的專門算法。</p>
+                <p style="margin-top: 10px; color: #64748b;">面試中很少要求，但了解思想有助於加分。</p>
+            </div>
+
+            <div class="approach-box">
+                <div class="approach-title">方法對比</div>
+                <table style="width: 100%; border-collapse: collapse; margin-top: 15px;">
+                    <tr style="background: #f0f9ff;">
+                        <th style="padding: 10px; border: 1px solid #cbd5e1;">方法</th>
+                        <th style="padding: 10px; border: 1px solid #cbd5e1;">時間</th>
+                        <th style="padding: 10px; border: 1px solid #cbd5e1;">空間</th>
+                        <th style="padding: 10px; border: 1px solid #cbd5e1;">推薦度</th>
+                    </tr>
+                    <tr>
+                        <td style="padding: 10px; border: 1px solid #cbd5e1;"><strong>中心擴展</strong></td>
+                        <td style="padding: 10px; border: 1px solid #cbd5e1;">O(n²)</td>
+                        <td style="padding: 10px; border: 1px solid #cbd5e1;">O(1)</td>
+                        <td style="padding: 10px; border: 1px solid #cbd5e1;">⭐⭐⭐⭐⭐</td>
+                    </tr>
+                    <tr style="background: #f8fafc;">
+                        <td style="padding: 10px; border: 1px solid #cbd5e1;"><strong>動態規劃</strong></td>
+                        <td style="padding: 10px; border: 1px solid #cbd5e1;">O(n²)</td>
+                        <td style="padding: 10px; border: 1px solid #cbd5e1;">O(n²)</td>
+                        <td style="padding: 10px; border: 1px solid #cbd5e1;">⭐⭐⭐</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 10px; border: 1px solid #cbd5e1;"><strong>Manacher</strong></td>
+                        <td style="padding: 10px; border: 1px solid #cbd5e1;">O(n)</td>
+                        <td style="padding: 10px; border: 1px solid #cbd5e1;">O(n)</td>
+                        <td style="padding: 10px; border: 1px solid #cbd5e1;">⭐⭐ (太複雜)</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">程式碼實現</h2>
+            
+            <div class="language-tabs">
+                <button class="tab-btn active" onclick="showLanguage('python')">Python</button>
+                <button class="tab-btn" onclick="showLanguage('cpp')">C++</button>
+                <button class="tab-btn" onclick="showLanguage('java')">Java</button>
+            </div>
+
+            <div id="python" class="code-container active">
+                <pre><code class="language-python">class Solution:
+    def longestPalindrome(self, s: str) -> str:
+        """
+        方法一：中心擴展法（推薦）
+        時間複雜度: O(n²)
+        空間複雜度: O(1)
+        """
+        if not s:
+            return ""
+        
+        start = 0
+        max_len = 0
+        
+        def expand_around_center(left: int, right: int) -> int:
+            """從中心向兩邊擴展，返回回文長度"""
+            while left >= 0 and right < len(s) and s[left] == s[right]:
+                left -= 1
+                right += 1
+            return right - left - 1
+        
+        for i in range(len(s)):
+            # 奇數長度回文（中心是一個字符）
+            len1 = expand_around_center(i, i)
+            # 偶數長度回文（中心是兩個字符）
+            len2 = expand_around_center(i, i + 1)
+            
+            # 取較長的回文
+            current_len = max(len1, len2)
+            
+            # 更新最長回文
+            if current_len > max_len:
+                max_len = current_len
+                # 計算起始位置
+                start = i - (current_len - 1) // 2
+        
+        return s[start:start + max_len]
+    
+    def longestPalindrome_dp(self, s: str) -> str:
+        """
+        方法二：動態規劃
+        時間複雜度: O(n²)
+        空間複雜度: O(n²)
+        """
+        n = len(s)
+        if n < 2:
+            return s
+        
+        # dp[i][j] 表示 s[i:j+1] 是否為回文
+        dp = [[False] * n for _ in range(n)]
+        
+        # 單個字符都是回文
+        for i in range(n):
+            dp[i][i] = True
+        
+        start = 0
+        max_len = 1
+        
+        # 按長度遍歷
+        for length in range(2, n + 1):
+            for i in range(n - length + 1):
+                j = i + length - 1
+                
+                if s[i] == s[j]:
+                    if length <= 3:
+                        # 長度 2 或 3，只需首尾相同
+                        dp[i][j] = True
+                    else:
+                        # 長度 > 3，還要內部是回文
+                        dp[i][j] = dp[i + 1][j - 1]
+                
+                # 更新最長回文
+                if dp[i][j] and length > max_len:
+                    start = i
+                    max_len = length
+        
+        return s[start:start + max_len]</code></pre>
+            </div>
+
+            <div id="cpp" class="code-container">
+                <pre><code class="language-cpp">#include &lt;string&gt;
+#include &lt;vector&gt;
+
+class Solution {
+public:
+    /**
+     * 方法一：中心擴展法（推薦）
+     * 時間複雜度: O(n²)
+     * 空間複雜度: O(1)
+     */
+    std::string longestPalindrome(std::string s) {
+        if (s.empty()) {
+            return "";
+        }
+        
+        int start = 0;
+        int maxLen = 0;
+        
+        for (int i = 0; i < s.length(); i++) {
+            // 奇數長度回文
+            int len1 = expandAroundCenter(s, i, i);
+            // 偶數長度回文
+            int len2 = expandAroundCenter(s, i, i + 1);
+            
+            int currentLen = std::max(len1, len2);
+            
+            if (currentLen > maxLen) {
+                maxLen = currentLen;
+                start = i - (currentLen - 1) / 2;
+            }
+        }
+        
+        return s.substr(start, maxLen);
+    }
+    
+private:
+    int expandAroundCenter(const std::string& s, int left, int right) {
+        while (left >= 0 && right < s.length() && s[left] == s[right]) {
+            left--;
+            right++;
+        }
+        return right - left - 1;
+    }
+
+public:
+    /**
+     * 方法二：動態規劃
+     * 時間複雜度: O(n²)
+     * 空間複雜度: O(n²)
+     */
+    std::string longestPalindrome_dp(std::string s) {
+        int n = s.length();
+        if (n < 2) {
+            return s;
+        }
+        
+        std::vector<std::vector<bool>> dp(n, std::vector<bool>(n, false));
+        
+        // 單個字符都是回文
+        for (int i = 0; i < n; i++) {
+            dp[i][i] = true;
+        }
+        
+        int start = 0;
+        int maxLen = 1;
+        
+        // 按長度遍歷
+        for (int length = 2; length <= n; length++) {
+            for (int i = 0; i <= n - length; i++) {
+                int j = i + length - 1;
+                
+                if (s[i] == s[j]) {
+                    if (length <= 3) {
+                        dp[i][j] = true;
+                    } else {
+                        dp[i][j] = dp[i + 1][j - 1];
+                    }
+                }
+                
+                if (dp[i][j] && length > maxLen) {
+                    start = i;
+                    maxLen = length;
+                }
+            }
+        }
+        
+        return s.substr(start, maxLen);
+    }
+};</code></pre>
+            </div>
+
+            <div id="java" class="code-container">
+                <pre><code class="language-java">class Solution {
+    /**
+     * 方法一：中心擴展法（推薦）
+     * 時間複雜度: O(n²)
+     * 空間複雜度: O(1)
+     */
+    public String longestPalindrome(String s) {
+        if (s == null || s.length() == 0) {
+            return "";
+        }
+        
+        int start = 0;
+        int maxLen = 0;
+        
+        for (int i = 0; i < s.length(); i++) {
+            // 奇數長度回文
+            int len1 = expandAroundCenter(s, i, i);
+            // 偶數長度回文
+            int len2 = expandAroundCenter(s, i, i + 1);
+            
+            int currentLen = Math.max(len1, len2);
+            
+            if (currentLen > maxLen) {
+                maxLen = currentLen;
+                start = i - (currentLen - 1) / 2;
+            }
+        }
+        
+        return s.substring(start, start + maxLen);
+    }
+    
+    private int expandAroundCenter(String s, int left, int right) {
+        while (left >= 0 && right < s.length() && s.charAt(left) == s.charAt(right)) {
+            left--;
+            right++;
+        }
+        return right - left - 1;
+    }
+    
+    /**
+     * 方法二：動態規劃
+     * 時間複雜度: O(n²)
+     * 空間複雜度: O(n²)
+     */
+    public String longestPalindrome_dp(String s) {
+        int n = s.length();
+        if (n < 2) {
+            return s;
+        }
+        
+        boolean[][] dp = new boolean[n][n];
+        
+        // 單個字符都是回文
+        for (int i = 0; i < n; i++) {
+            dp[i][i] = true;
+        }
+        
+        int start = 0;
+        int maxLen = 1;
+        
+        // 按長度遍歷
+        for (int length = 2; length <= n; length++) {
+            for (int i = 0; i <= n - length; i++) {
+                int j = i + length - 1;
+                
+                if (s.charAt(i) == s.charAt(j)) {
+                    if (length <= 3) {
+                        dp[i][j] = true;
+                    } else {
+                        dp[i][j] = dp[i + 1][j - 1];
+                    }
+                }
+                
+                if (dp[i][j] && length > maxLen) {
+                    start = i;
+                    maxLen = length;
+                }
+            }
+        }
+        
+        return s.substring(start, start + maxLen);
+    }
+}</code></pre>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">複雜度分析</h2>
+            <div class="complexity-box">
+                <div class="complexity-item">方法一：中心擴展法</div>
+                <ul style="color: #78716c; margin: 10px 0 10px 30px;">
+                    <li><strong>時間複雜度：</strong>O(n²) - n 個中心點，每個最多擴展 n 次</li>
+                    <li><strong>空間複雜度：</strong>O(1) - 只用常數個變數</li>
+                </ul>
+                
+                <div class="complexity-item" style="margin-top: 20px;">方法二：動態規劃</div>
+                <ul style="color: #78716c; margin: 10px 0 10px 30px;">
+                    <li><strong>時間複雜度：</strong>O(n²) - 填充 dp 表</li>
+                    <li><strong>空間複雜度：</strong>O(n²) - dp 陣列</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">重點提示</h2>
+            <div class="complexity-box">
+                <ul>
+                    <li><strong>中心擴展法是面試首選：</strong>代碼簡潔、空間 O(1)</li>
+                    <li><strong>兩種回文：</strong>別忘記奇數和偶數長度都要檢查</li>
+                    <li><strong>起始位置計算：</strong>start = i - (len - 1) // 2</li>
+                    <li><strong>邊界情況：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>空字串 → ""</li>
+                            <li>單個字符 → 該字符</li>
+                            <li>所有字符相同 → 整個字串</li>
+                            <li>無回文（長度>1）→ 任意單個字符</li>
+                        </ul>
+                    </li>
+                    <li><strong>優化技巧：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>提前剪枝：剩餘長度不足以超過當前最長</li>
+                            <li>從中間開始搜尋（可能更快找到長回文）</li>
+                        </ul>
+                    </li>
+                    <li><strong>面試技巧：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>先說中心擴展法（推薦）</li>
+                            <li>提到 DP 解法展現廣度</li>
+                            <li>可以提 Manacher 算法加分</li>
+                        </ul>
+                    </li>
+                    <li><strong>變形題：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>Palindromic Substrings (#647) - 統計所有回文</li>
+                            <li>Valid Palindrome (#125) - 判斷是否回文</li>
+                            <li>Longest Palindromic Subsequence (#516) - 子序列而非子字串</li>
+                        </ul>
+                    </li>
+                    <li><strong>公司頻率：</strong>Amazon ⭐⭐⭐⭐⭐, Microsoft ⭐⭐⭐⭐, Adobe ⭐⭐⭐⭐⭐</li>
+                    <li><strong>相似題目：</strong>Palindromic Substrings (647), Valid Palindrome (125)</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        hljs.highlightAll();
+        
+        function showLanguage(lang) {
+            document.querySelectorAll('.code-container').forEach(container => {
+                container.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.getElementById(lang).classList.add('active');
+            event.target.classList.add('active');
+        }
+    </script>
+</body>
+</html>

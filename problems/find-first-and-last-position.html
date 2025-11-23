@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>34. Find First and Last Position of Element in Sorted Array - LeetCode 學習平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f8fafc; line-height: 1.8; color: #334155; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .header { background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: white; padding: 40px; border-radius: 16px; margin-bottom: 30px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .back-btn { display: inline-block; color: white; text-decoration: none; background: rgba(255,255,255,0.2); padding: 10px 20px; border-radius: 8px; margin-bottom: 20px; transition: all 0.3s; }
+        .back-btn:hover { background: rgba(255,255,255,0.3); }
+        .problem-title { font-size: 2.5em; font-weight: 800; margin-bottom: 15px; }
+        .difficulty { display: inline-block; background: rgba(255,255,255,0.3); padding: 8px 20px; border-radius: 20px; font-weight: 600; font-size: 0.9em; }
+        .content-section { background: white; padding: 40px; border-radius: 16px; margin-bottom: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .section-title { font-size: 1.8em; color: #1e293b; margin-bottom: 25px; font-weight: 700; padding-bottom: 10px; border-bottom: 3px solid #f59e0b; }
+        .description { font-size: 1.1em; line-height: 1.9; color: #475569; margin-bottom: 20px; }
+        .example-box { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .example-title { font-weight: 700; color: #d97706; margin-bottom: 10px; font-size: 1.1em; }
+        .approach-box { background: #eff6ff; border-left: 4px solid #3b82f6; padding: 25px; border-radius: 8px; margin: 25px 0; }
+        .approach-title { font-weight: 700; color: #1e40af; margin-bottom: 15px; font-size: 1.3em; }
+        .complexity-box { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .complexity-item { margin: 10px 0; font-weight: 600; color: #92400e; }
+        .language-tabs { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+        .tab-btn { padding: 12px 28px; border: 2px solid #f59e0b; background: white; color: #f59e0b; border-radius: 8px; cursor: pointer; font-weight: 600; transition: all 0.3s; font-size: 1em; }
+        .tab-btn:hover { background: #fef3c7; }
+        .tab-btn.active { background: #f59e0b; color: white; }
+        .code-container { display: none; margin-top: 20px; }
+        .code-container.active { display: block; }
+        pre { background: #282c34 !important; padding: 25px !important; border-radius: 12px; overflow-x: auto; margin: 0; }
+        code { font-family: 'Fira Code', 'Consolas', monospace; font-size: 0.95em; line-height: 1.6; }
+        ol, ul { margin-left: 30px; margin-top: 15px; }
+        li { margin: 12px 0; line-height: 1.8; }
+        strong { color: #1e293b; font-weight: 700; }
+        .visual-box { background: #f0f9ff; border: 2px solid #3b82f6; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        
+        @media (max-width: 768px) {
+            .container { padding: 10px; }
+            .header { padding: 25px; }
+            .problem-title { font-size: 1.8em; }
+            .content-section { padding: 25px; }
+            .tab-btn { padding: 10px 20px; font-size: 0.9em; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="../index.html" class="back-btn">← 返回題目列表</a>
+            <div class="problem-title">34. Find First and Last Position of Element in Sorted Array</div>
+            <span class="difficulty">Medium</span>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">題目描述</h2>
+            <div class="description">
+                <p>給定一個按照升序排列的整數陣列 <code>nums</code>，和一個目標值 <code>target</code>。找出給定目標值在陣列中的開始位置和結束位置。</p>
+                <p style="margin-top: 15px;">如果陣列中不存在目標值 <code>target</code>，返回 <code>[-1, -1]</code>。</p>
+                <p style="margin-top: 15px;"><strong>進階：</strong>你可以設計並實現時間複雜度為 <code>O(log n)</code> 的演算法解決此問題嗎？</p>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例 1:</div>
+                <pre><code>輸入: nums = [5,7,7,8,8,10], target = 8
+輸出: [3,4]</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例 2:</div>
+                <pre><code>輸入: nums = [5,7,7,8,8,10], target = 6
+輸出: [-1,-1]</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例 3:</div>
+                <pre><code>輸入: nums = [], target = 0
+輸出: [-1,-1]</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">限制條件:</div>
+                <pre><code>0 <= nums.length <= 10^5
+-10^9 <= nums[i] <= 10^9
+nums 是一個非遞減陣列
+-10^9 <= target <= 10^9</code></pre>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">解題思路</h2>
+            
+            <div class="approach-box">
+                <div class="approach-title">方法：兩次二分搜尋（推薦）⭐</div>
+                <p>使用兩次二分搜尋，分別找到目標值的左邊界和右邊界。</p>
+                
+                <p style="margin-top: 15px;"><strong>核心思想：</strong></p>
+                <p>第一次二分搜尋找<strong>最左邊</strong>的 target，第二次找<strong>最右邊</strong>的 target。</p>
+                
+                <p style="margin-top: 15px;"><strong>找左邊界的邏輯：</strong></p>
+                <ul>
+                    <li>當 nums[mid] == target 時，<strong>不要返回</strong>，而是繼續向左搜尋</li>
+                    <li>這樣可以找到最左邊的 target</li>
+                </ul>
+                
+                <p style="margin-top: 15px;"><strong>找右邊界的邏輯：</strong></p>
+                <ul>
+                    <li>當 nums[mid] == target 時，<strong>不要返回</strong>，而是繼續向右搜尋</li>
+                    <li>這樣可以找到最右邊的 target</li>
+                </ul>
+                
+                <div class="visual-box">
+                    <p><strong>視覺化範例：nums = [5,7,7,8,8,10], target = 8</strong></p>
+                    <pre style="background: white; padding: 15px; border-radius: 5px; margin-top: 10px;"><code>陣列: [5, 7, 7, 8, 8, 10]
+索引:  0  1  2  3  4  5
+
+====== 找左邊界 ======
+初始: left=0, right=5
+
+步驟 1: mid=2, nums[2]=7 < 8
+       向右搜尋 → left=3
+
+步驟 2: mid=4, nums[4]=8 == 8
+       找到了，但繼續向左搜尋 → right=3
+
+步驟 3: mid=3, nums[3]=8 == 8
+       繼續向左搜尋 → right=2
+
+步驟 4: left > right，停止
+       左邊界 = 3
+
+====== 找右邊界 ======
+初始: left=0, right=5
+
+步驟 1: mid=2, nums[2]=7 < 8
+       向右搜尋 → left=3
+
+步驟 2: mid=4, nums[4]=8 == 8
+       找到了，但繼續向右搜尋 → left=5
+
+步驟 3: mid=5, nums[5]=10 > 8
+       向左搜尋 → right=4
+
+步驟 4: left > right，停止
+       右邊界 = 4
+
+結果: [3, 4]</code></pre>
+                </div>
+            </div>
+
+            <div class="approach-box">
+                <div class="approach-title">二分搜尋的關鍵修改</div>
+                <p><strong>標準二分搜尋：</strong></p>
+                <pre style="background: #f0f9ff; padding: 15px; border-radius: 8px; margin: 15px 0;"><code>if nums[mid] == target:
+    return mid  # 找到就返回</code></pre>
+                
+                <p style="margin-top: 15px;"><strong>找左邊界：</strong></p>
+                <pre style="background: #f0f9ff; padding: 15px; border-radius: 8px; margin: 15px 0;"><code>if nums[mid] >= target:
+    right = mid - 1  # 繼續向左</code></pre>
+                
+                <p style="margin-top: 15px;"><strong>找右邊界：</strong></p>
+                <pre style="background: #f0f9ff; padding: 15px; border-radius: 8px; margin: 15px 0;"><code>if nums[mid] <= target:
+    left = mid + 1  # 繼續向右</code></pre>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">程式碼實現</h2>
+            
+            <div class="language-tabs">
+                <button class="tab-btn active" onclick="showLanguage('python')">Python</button>
+                <button class="tab-btn" onclick="showLanguage('cpp')">C++</button>
+                <button class="tab-btn" onclick="showLanguage('java')">Java</button>
+            </div>
+
+            <div id="python" class="code-container active">
+                <pre><code class="language-python">class Solution:
+    def searchRange(self, nums: List[int], target: int) -> List[int]:
+        """
+        方法：兩次二分搜尋
+        時間複雜度: O(log n)
+        空間複雜度: O(1)
+        """
+        def findLeft(nums, target):
+            """找左邊界"""
+            left, right = 0, len(nums) - 1
+            result = -1
+            
+            while left <= right:
+                mid = left + (right - left) // 2
+                
+                if nums[mid] == target:
+                    result = mid
+                    right = mid - 1  # 繼續向左搜尋
+                elif nums[mid] < target:
+                    left = mid + 1
+                else:
+                    right = mid - 1
+            
+            return result
+        
+        def findRight(nums, target):
+            """找右邊界"""
+            left, right = 0, len(nums) - 1
+            result = -1
+            
+            while left <= right:
+                mid = left + (right - left) // 2
+                
+                if nums[mid] == target:
+                    result = mid
+                    left = mid + 1  # 繼續向右搜尋
+                elif nums[mid] < target:
+                    left = mid + 1
+                else:
+                    right = mid - 1
+            
+            return result
+        
+        # 空陣列直接返回
+        if not nums:
+            return [-1, -1]
+        
+        left_bound = findLeft(nums, target)
+        
+        # 如果找不到左邊界，說明 target 不存在
+        if left_bound == -1:
+            return [-1, -1]
+        
+        right_bound = findRight(nums, target)
+        
+        return [left_bound, right_bound]</code></pre>
+            </div>
+
+            <div id="cpp" class="code-container">
+                <pre><code class="language-cpp">#include &lt;vector&gt;
+
+class Solution {
+public:
+    /**
+     * 方法：兩次二分搜尋
+     * 時間複雜度: O(log n)
+     * 空間複雜度: O(1)
+     */
+    std::vector<int> searchRange(std::vector<int>& nums, int target) {
+        if (nums.empty()) {
+            return {-1, -1};
+        }
+        
+        int leftBound = findLeft(nums, target);
+        
+        if (leftBound == -1) {
+            return {-1, -1};
+        }
+        
+        int rightBound = findRight(nums, target);
+        
+        return {leftBound, rightBound};
+    }
+    
+private:
+    int findLeft(const std::vector<int>& nums, int target) {
+        int left = 0, right = nums.size() - 1;
+        int result = -1;
+        
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+            
+            if (nums[mid] == target) {
+                result = mid;
+                right = mid - 1;  // 繼續向左搜尋
+            } else if (nums[mid] < target) {
+                left = mid + 1;
+            } else {
+                right = mid - 1;
+            }
+        }
+        
+        return result;
+    }
+    
+    int findRight(const std::vector<int>& nums, int target) {
+        int left = 0, right = nums.size() - 1;
+        int result = -1;
+        
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+            
+            if (nums[mid] == target) {
+                result = mid;
+                left = mid + 1;  // 繼續向右搜尋
+            } else if (nums[mid] < target) {
+                left = mid + 1;
+            } else {
+                right = mid - 1;
+            }
+        }
+        
+        return result;
+    }
+};</code></pre>
+            </div>
+
+            <div id="java" class="code-container">
+                <pre><code class="language-java">class Solution {
+    /**
+     * 方法：兩次二分搜尋
+     * 時間複雜度: O(log n)
+     * 空間複雜度: O(1)
+     */
+    public int[] searchRange(int[] nums, int target) {
+        if (nums.length == 0) {
+            return new int[]{-1, -1};
+        }
+        
+        int leftBound = findLeft(nums, target);
+        
+        if (leftBound == -1) {
+            return new int[]{-1, -1};
+        }
+        
+        int rightBound = findRight(nums, target);
+        
+        return new int[]{leftBound, rightBound};
+    }
+    
+    private int findLeft(int[] nums, int target) {
+        int left = 0, right = nums.length - 1;
+        int result = -1;
+        
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+            
+            if (nums[mid] == target) {
+                result = mid;
+                right = mid - 1;  // 繼續向左搜尋
+            } else if (nums[mid] < target) {
+                left = mid + 1;
+            } else {
+                right = mid - 1;
+            }
+        }
+        
+        return result;
+    }
+    
+    private int findRight(int[] nums, int target) {
+        int left = 0, right = nums.length - 1;
+        int result = -1;
+        
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+            
+            if (nums[mid] == target) {
+                result = mid;
+                left = mid + 1;  // 繼續向右搜尋
+            } else if (nums[mid] < target) {
+                left = mid + 1;
+            } else {
+                right = mid - 1;
+            }
+        }
+        
+        return result;
+    }
+}</code></pre>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">複雜度分析</h2>
+            <div class="complexity-box">
+                <div class="complexity-item">時間複雜度: O(log n)</div>
+                <p style="color: #78716c; margin: 10px 0;">
+                    執行兩次二分搜尋，每次 O(log n)，總共 O(log n)。
+                </p>
+                
+                <div class="complexity-item" style="margin-top: 20px;">空間複雜度: O(1)</div>
+                <p style="color: #78716c; margin: 10px 0;">
+                    只使用常數個變數。
+                </p>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">重點提示</h2>
+            <div class="complexity-box">
+                <ul>
+                    <li><strong>二分搜尋變形：</strong>這是學習二分搜尋邊界問題的經典題</li>
+                    <li><strong>為什麼需要兩次搜尋：</strong>一次找左邊界，一次找右邊界</li>
+                    <li><strong>關鍵差異：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>標準二分：找到就返回</li>
+                            <li>找左邊界：找到後繼續向左</li>
+                            <li>找右邊界：找到後繼續向右</li>
+                        </ul>
+                    </li>
+                    <li><strong>優化技巧：</strong>如果找不到左邊界，直接返回 [-1,-1]</li>
+                    <li><strong>邊界情況：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>空陣列 → [-1,-1]</li>
+                            <li>target 不存在 → [-1,-1]</li>
+                            <li>只有一個 target → [i,i]</li>
+                            <li>全是 target → [0,n-1]</li>
+                        </ul>
+                    </li>
+                    <li><strong>常見錯誤：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>找到就返回（應該繼續搜尋）</li>
+                            <li>邊界條件錯誤（left <= right）</li>
+                            <li>整數溢位（使用 mid = left + (right-left)//2）</li>
+                        </ul>
+                    </li>
+                    <li><strong>面試技巧：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>先說清楚需要兩次二分搜尋</li>
+                            <li>解釋為什麼找到後不能立即返回</li>
+                            <li>畫圖說明左右邊界的搜尋過程</li>
+                        </ul>
+                    </li>
+                    <li><strong>公司頻率：</strong>Google ⭐⭐⭐⭐⭐, Amazon ⭐⭐⭐⭐, Facebook ⭐⭐⭐⭐</li>
+                    <li><strong>相似題目：</strong>Binary Search (704), First Bad Version (278)</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        hljs.highlightAll();
+        
+        function showLanguage(lang) {
+            document.querySelectorAll('.code-container').forEach(container => {
+                container.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.getElementById(lang).classList.add('active');
+            event.target.classList.add('active');
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>141. Linked List Cycle - LeetCode 學習平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f8fafc; line-height: 1.8; color: #334155; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .header { background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; padding: 40px; border-radius: 16px; margin-bottom: 30px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .back-btn { display: inline-block; color: white; text-decoration: none; background: rgba(255,255,255,0.2); padding: 10px 20px; border-radius: 8px; margin-bottom: 20px; transition: all 0.3s; }
+        .back-btn:hover { background: rgba(255,255,255,0.3); }
+        .problem-title { font-size: 2.5em; font-weight: 800; margin-bottom: 15px; }
+        .difficulty { display: inline-block; background: rgba(255,255,255,0.3); padding: 8px 20px; border-radius: 20px; font-weight: 600; font-size: 0.9em; }
+        .content-section { background: white; padding: 40px; border-radius: 16px; margin-bottom: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .section-title { font-size: 1.8em; color: #1e293b; margin-bottom: 25px; font-weight: 700; padding-bottom: 10px; border-bottom: 3px solid #10b981; }
+        .description { font-size: 1.1em; line-height: 1.9; color: #475569; margin-bottom: 20px; }
+        .example-box { background: #f0fdf4; border-left: 4px solid #10b981; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .example-title { font-weight: 700; color: #059669; margin-bottom: 10px; font-size: 1.1em; }
+        .approach-box { background: #eff6ff; border-left: 4px solid #3b82f6; padding: 25px; border-radius: 8px; margin: 25px 0; }
+        .approach-title { font-weight: 700; color: #1e40af; margin-bottom: 15px; font-size: 1.3em; }
+        .complexity-box { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .complexity-item { margin: 10px 0; font-weight: 600; color: #92400e; }
+        .language-tabs { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+        .tab-btn { padding: 12px 28px; border: 2px solid #10b981; background: white; color: #10b981; border-radius: 8px; cursor: pointer; font-weight: 600; transition: all 0.3s; font-size: 1em; }
+        .tab-btn:hover { background: #f0fdf4; }
+        .tab-btn.active { background: #10b981; color: white; }
+        .code-container { display: none; margin-top: 20px; }
+        .code-container.active { display: block; }
+        pre { background: #282c34 !important; padding: 25px !important; border-radius: 12px; overflow-x: auto; margin: 0; }
+        code { font-family: 'Fira Code', 'Consolas', monospace; font-size: 0.95em; line-height: 1.6; }
+        ol, ul { margin-left: 30px; margin-top: 15px; }
+        li { margin: 12px 0; line-height: 1.8; }
+        strong { color: #1e293b; font-weight: 700; }
+        .visual-box { background: #f0f9ff; border: 2px solid #3b82f6; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        
+        @media (max-width: 768px) {
+            .container { padding: 10px; }
+            .header { padding: 25px; }
+            .problem-title { font-size: 1.8em; }
+            .content-section { padding: 25px; }
+            .tab-btn { padding: 10px 20px; font-size: 0.9em; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="../index.html" class="back-btn">← 返回題目列表</a>
+            <div class="problem-title">141. Linked List Cycle</div>
+            <span class="difficulty">Easy</span>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">題目描述</h2>
+            <div class="description">
+                <p>給定一個鏈表的頭節點 <code>head</code>，判斷鏈表中是否有環（cycle）。</p>
+                <p style="margin-top: 15px;">如果鏈表中有某個節點可以通過連續跟蹤 <code>next</code> 指針再次到達，則鏈表中存在環。</p>
+                <p style="margin-top: 15px;">如果鏈表中存在環，則返回 <code>true</code>。否則，返回 <code>false</code>。</p>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例 1:</div>
+                <pre><code>輸入: head = [3,2,0,-4], pos = 1
+輸出: true
+解釋: 鏈表中有一個環，尾節點連接到第二個節點（索引 1）
+
+視覺化:
+3 → 2 → 0 → -4
+    ↑__________|</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例 2:</div>
+                <pre><code>輸入: head = [1,2], pos = 0
+輸出: true
+解釋: 鏈表中有一個環，尾節點連接到第一個節點
+
+視覺化:
+1 → 2
+↑___|</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例 3:</div>
+                <pre><code>輸入: head = [1], pos = -1
+輸出: false
+解釋: 鏈表中沒有環
+
+視覺化:
+1 → null</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">限制條件:</div>
+                <pre><code>鏈表中節點的數目範圍是 [0, 10^4]
+-10^5 <= Node.val <= 10^5
+pos 為 -1 或者鏈表中的一個有效索引</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">進階:</div>
+                <p style="color: #059669;">你能用 <strong>O(1)</strong>（即常數）內存解決此問題嗎？</p>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">解題思路</h2>
+            
+            <div class="approach-box">
+                <div class="approach-title">方法一：哈希表記錄訪問過的節點</div>
+                <p>使用 Set 記錄已經訪問過的節點，如果再次遇到說明有環。</p>
+                
+                <p style="margin-top: 15px;"><strong>步驟：</strong></p>
+                <ol>
+                    <li>創建一個 Set 存儲訪問過的節點</li>
+                    <li>遍歷鏈表，每次將當前節點加入 Set</li>
+                    <li>如果遇到已在 Set 中的節點，返回 true</li>
+                    <li>如果遍歷到 null，返回 false</li>
+                </ol>
+            </div>
+
+            <div class="approach-box">
+                <div class="approach-title">方法二：快慢指標（Floyd's Cycle Detection）⭐</div>
+                <p>使用兩個指標，快指標每次走兩步，慢指標每次走一步。如果有環，兩個指標一定會相遇。</p>
+                
+                <p style="margin-top: 15px;"><strong>核心思想：</strong></p>
+                <p>就像兩個人在環形跑道上跑步，跑得快的人最終會追上跑得慢的人。</p>
+                
+                <p style="margin-top: 15px;"><strong>為什麼一定會相遇？</strong></p>
+                <ul>
+                    <li>假設慢指標進入環時，快指標在環中某個位置</li>
+                    <li>每次移動後，快指標與慢指標的距離減少 1</li>
+                    <li>最終距離變為 0，兩個指標相遇</li>
+                </ul>
+                
+                <p style="margin-top: 15px;"><strong>步驟：</strong></p>
+                <ol>
+                    <li>初始化快慢指標都指向 head</li>
+                    <li>慢指標每次走一步，快指標每次走兩步</li>
+                    <li>如果快指標到達 null，返回 false（無環）</li>
+                    <li>如果快指標與慢指標相遇，返回 true（有環）</li>
+                </ol>
+                
+                <div class="visual-box">
+                    <p><strong>視覺化範例：有環的情況</strong></p>
+                    <pre style="background: white; padding: 15px; border-radius: 5px; margin-top: 10px;"><code>鏈表: 3 → 2 → 0 → -4 → (回到 2)
+
+步驟 0: slow=3, fast=3
+步驟 1: slow=2, fast=0
+步驟 2: slow=0, fast=2
+步驟 3: slow=-4, fast=-4  ✓ 相遇！有環
+
+無環的情況:
+鏈表: 1 → 2 → 3 → null
+
+步驟 0: slow=1, fast=1
+步驟 1: slow=2, fast=3
+步驟 2: slow=3, fast=null  ✓ 快指標到達 null，無環</code></pre>
+                </div>
+            </div>
+
+            <div class="approach-box">
+                <div class="approach-title">為什麼快指標每次走兩步？</div>
+                <ul>
+                    <li>走一步 → 無法和慢指標形成相對速度差</li>
+                    <li>走兩步 → 相對速度差為 1，保證能相遇</li>
+                    <li>走三步或更多 → 可能跳過慢指標，錯過相遇點</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">程式碼實現</h2>
+            
+            <div class="language-tabs">
+                <button class="tab-btn active" onclick="showLanguage('python')">Python</button>
+                <button class="tab-btn" onclick="showLanguage('cpp')">C++</button>
+                <button class="tab-btn" onclick="showLanguage('java')">Java</button>
+            </div>
+
+            <div id="python" class="code-container active">
+                <pre><code class="language-python"># Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.next = None
+
+class Solution:
+    def hasCycle(self, head: Optional[ListNode]) -> bool:
+        """
+        方法二：快慢指標（推薦）
+        時間複雜度: O(n)
+        空間複雜度: O(1)
+        """
+        # 邊界情況：空鏈表或只有一個節點
+        if not head or not head.next:
+            return False
+        
+        # 初始化快慢指標
+        slow = head
+        fast = head
+        
+        # 快指標能走兩步時繼續
+        while fast and fast.next:
+            slow = slow.next        # 慢指標走一步
+            fast = fast.next.next   # 快指標走兩步
+            
+            # 如果相遇，說明有環
+            if slow == fast:
+                return True
+        
+        # 快指標到達 null，無環
+        return False
+    
+    def hasCycle_hashset(self, head: Optional[ListNode]) -> bool:
+        """
+        方法一：哈希表
+        時間複雜度: O(n)
+        空間複雜度: O(n)
+        """
+        visited = set()
+        current = head
+        
+        while current:
+            # 如果節點已經訪問過，說明有環
+            if current in visited:
+                return True
+            
+            # 標記當前節點為已訪問
+            visited.add(current)
+            current = current.next
+        
+        # 遍歷完成，沒有環
+        return False</code></pre>
+            </div>
+
+            <div id="cpp" class="code-container">
+                <pre><code class="language-cpp">/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+
+#include &lt;unordered_set&gt;
+
+class Solution {
+public:
+    /**
+     * 方法二：快慢指標（推薦）
+     * 時間複雜度: O(n)
+     * 空間複雜度: O(1)
+     */
+    bool hasCycle(ListNode *head) {
+        // 邊界情況
+        if (!head || !head->next) {
+            return false;
+        }
+        
+        // 初始化快慢指標
+        ListNode* slow = head;
+        ListNode* fast = head;
+        
+        // 快指標能走兩步時繼續
+        while (fast && fast->next) {
+            slow = slow->next;          // 慢指標走一步
+            fast = fast->next->next;    // 快指標走兩步
+            
+            // 如果相遇，說明有環
+            if (slow == fast) {
+                return true;
+            }
+        }
+        
+        // 快指標到達 null，無環
+        return false;
+    }
+    
+    /**
+     * 方法一：哈希表
+     * 時間複雜度: O(n)
+     * 空間複雜度: O(n)
+     */
+    bool hasCycle_hashset(ListNode *head) {
+        std::unordered_set<ListNode*> visited;
+        ListNode* current = head;
+        
+        while (current) {
+            // 如果節點已經訪問過，說明有環
+            if (visited.find(current) != visited.end()) {
+                return true;
+            }
+            
+            // 標記當前節點為已訪問
+            visited.insert(current);
+            current = current->next;
+        }
+        
+        // 遍歷完成，沒有環
+        return false;
+    }
+};</code></pre>
+            </div>
+
+            <div id="java" class="code-container">
+                <pre><code class="language-java">/**
+ * Definition for singly-linked list.
+ * class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) {
+ *         val = x;
+ *         next = null;
+ *     }
+ * }
+ */
+
+import java.util.HashSet;
+import java.util.Set;
+
+public class Solution {
+    /**
+     * 方法二：快慢指標（推薦）
+     * 時間複雜度: O(n)
+     * 空間複雜度: O(1)
+     */
+    public boolean hasCycle(ListNode head) {
+        // 邊界情況
+        if (head == null || head.next == null) {
+            return false;
+        }
+        
+        // 初始化快慢指標
+        ListNode slow = head;
+        ListNode fast = head;
+        
+        // 快指標能走兩步時繼續
+        while (fast != null && fast.next != null) {
+            slow = slow.next;           // 慢指標走一步
+            fast = fast.next.next;      // 快指標走兩步
+            
+            // 如果相遇，說明有環
+            if (slow == fast) {
+                return true;
+            }
+        }
+        
+        // 快指標到達 null，無環
+        return false;
+    }
+    
+    /**
+     * 方法一：哈希表
+     * 時間複雜度: O(n)
+     * 空間複雜度: O(n)
+     */
+    public boolean hasCycle_hashset(ListNode head) {
+        Set<ListNode> visited = new HashSet<>();
+        ListNode current = head;
+        
+        while (current != null) {
+            // 如果節點已經訪問過，說明有環
+            if (visited.contains(current)) {
+                return true;
+            }
+            
+            // 標記當前節點為已訪問
+            visited.add(current);
+            current = current.next;
+        }
+        
+        // 遍歷完成，沒有環
+        return false;
+    }
+}</code></pre>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">複雜度分析</h2>
+            <div class="complexity-box">
+                <div class="complexity-item">方法一：哈希表</div>
+                <ul style="color: #78716c; margin: 10px 0 10px 30px;">
+                    <li><strong>時間複雜度：</strong>O(n) - 最多訪問每個節點一次</li>
+                    <li><strong>空間複雜度：</strong>O(n) - Set 存儲所有節點</li>
+                </ul>
+                
+                <div class="complexity-item" style="margin-top: 20px;">方法二：快慢指標（推薦）</div>
+                <ul style="color: #78716c; margin: 10px 0 10px 30px;">
+                    <li><strong>時間複雜度：</strong>O(n) - 最壞情況下快指標繞環一圈</li>
+                    <li><strong>空間複雜度：</strong>O(1) - 只用兩個指標</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">重點提示</h2>
+            <div class="complexity-box">
+                <ul>
+                    <li><strong>Floyd's Cycle Detection：</strong>這是經典的快慢指標算法</li>
+                    <li><strong>為什麼叫龜兔賽跑？</strong>慢指標像烏龜，快指標像兔子</li>
+                    <li><strong>最優解：</strong>快慢指標 O(1) 空間</li>
+                    <li><strong>邊界情況：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>空鏈表 → false</li>
+                            <li>只有一個節點 → false</li>
+                            <li>兩個節點成環 → true</li>
+                        </ul>
+                    </li>
+                    <li><strong>循環條件：</strong>while (fast && fast.next) 確保可以走兩步</li>
+                    <li><strong>不能用值比較：</strong>必須比較節點對象本身</li>
+                    <li><strong>面試技巧：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>先說哈希表解法（簡單直觀）</li>
+                            <li>再優化到快慢指標（空間最優）</li>
+                            <li>畫圖演示快慢指標相遇過程</li>
+                        </ul>
+                    </li>
+                    <li><strong>擴展問題：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>Linked List Cycle II (#142) - 找環的起點</li>
+                            <li>Happy Number (#202) - 類似概念</li>
+                        </ul>
+                    </li>
+                    <li><strong>應用場景：</strong>檢測重複、找循環、圖論環檢測</li>
+                    <li><strong>公司頻率：</strong>Amazon ⭐⭐⭐⭐⭐, Microsoft ⭐⭐⭐⭐⭐, Google ⭐⭐⭐⭐</li>
+                    <li><strong>相似題目：</strong>Linked List Cycle II (142), Find the Duplicate Number (287)</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        hljs.highlightAll();
+        
+        function showLanguage(lang) {
+            document.querySelectorAll('.code-container').forEach(container => {
+                container.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.getElementById(lang).classList.add('active');
+            event.target.classList.add('active');
+        }
+    </script>
+</body>
+</html>
