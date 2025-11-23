@@ -2,31 +2,48 @@
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>2. Add Two Numbers - LeetCode 學習平台</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: -apple-system, sans-serif; background: #f8fafc; line-height: 1.8; color: #334155; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f8fafc; line-height: 1.8; color: #334155; }
         .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
-        .header { background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: white; padding: 40px; border-radius: 16px; margin-bottom: 30px; }
-        .back-btn { color: white; text-decoration: none; background: rgba(255,255,255,0.2); padding: 10px 20px; border-radius: 8px; display: inline-block; margin-bottom: 20px; }
+        .header { background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: white; padding: 40px; border-radius: 16px; margin-bottom: 30px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .back-btn { display: inline-block; color: white; text-decoration: none; background: rgba(255,255,255,0.2); padding: 10px 20px; border-radius: 8px; margin-bottom: 20px; transition: all 0.3s; }
+        .back-btn:hover { background: rgba(255,255,255,0.3); }
         .problem-title { font-size: 2.5em; font-weight: 800; margin-bottom: 15px; }
-        .difficulty { background: rgba(255,255,255,0.3); padding: 8px 20px; border-radius: 20px; font-weight: 600; display: inline-block; }
-        .content-section { background: white; padding: 40px; border-radius: 16px; margin-bottom: 25px; }
-        .section-title { font-size: 1.8em; color: #1e293b; margin-bottom: 25px; font-weight: 700; border-bottom: 3px solid #f59e0b; padding-bottom: 10px; }
-        .description { font-size: 1.1em; line-height: 1.9; color: #475569; }
-        .example-box { background: #fffbeb; border-left: 4px solid #f59e0b; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .difficulty { display: inline-block; background: rgba(255,255,255,0.3); padding: 8px 20px; border-radius: 20px; font-weight: 600; font-size: 0.9em; }
+        .content-section { background: white; padding: 40px; border-radius: 16px; margin-bottom: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .section-title { font-size: 1.8em; color: #1e293b; margin-bottom: 25px; font-weight: 700; padding-bottom: 10px; border-bottom: 3px solid #f59e0b; }
+        .description { font-size: 1.1em; line-height: 1.9; color: #475569; margin-bottom: 20px; }
+        .example-box { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .example-title { font-weight: 700; color: #d97706; margin-bottom: 10px; font-size: 1.1em; }
         .approach-box { background: #eff6ff; border-left: 4px solid #3b82f6; padding: 25px; border-radius: 8px; margin: 25px 0; }
-        .language-tabs { display: flex; gap: 10px; margin-bottom: 20px; }
-        .tab-btn { padding: 12px 28px; border: 2px solid #f59e0b; background: white; color: #f59e0b; border-radius: 8px; cursor: pointer; font-weight: 600; }
+        .approach-title { font-weight: 700; color: #1e40af; margin-bottom: 15px; font-size: 1.3em; }
+        .complexity-box { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .complexity-item { margin: 10px 0; font-weight: 600; color: #92400e; }
+        .language-tabs { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+        .tab-btn { padding: 12px 28px; border: 2px solid #f59e0b; background: white; color: #f59e0b; border-radius: 8px; cursor: pointer; font-weight: 600; transition: all 0.3s; font-size: 1em; }
+        .tab-btn:hover { background: #fef3c7; }
         .tab-btn.active { background: #f59e0b; color: white; }
         .code-container { display: none; margin-top: 20px; }
         .code-container.active { display: block; }
-        pre { background: #282c34 !important; padding: 25px !important; border-radius: 12px; overflow-x: auto; }
-        code { font-family: 'Fira Code', monospace; font-size: 0.95em; }
-        ul, ol { margin-left: 30px; margin-top: 15px; }
-        li { margin: 12px 0; }
+        pre { background: #282c34 !important; padding: 25px !important; border-radius: 12px; overflow-x: auto; margin: 0; }
+        code { font-family: 'Fira Code', 'Consolas', monospace; font-size: 0.95em; line-height: 1.6; }
+        ol, ul { margin-left: 30px; margin-top: 15px; }
+        li { margin: 12px 0; line-height: 1.8; }
+        strong { color: #1e293b; font-weight: 700; }
+        .visual-box { background: #f0f9ff; border: 2px solid #3b82f6; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        
+        @media (max-width: 768px) {
+            .container { padding: 10px; }
+            .header { padding: 25px; }
+            .problem-title { font-size: 1.8em; }
+            .content-section { padding: 25px; }
+            .tab-btn { padding: 10px 20px; font-size: 0.9em; }
+        }
     </style>
 </head>
 <body>
@@ -40,14 +57,35 @@
         <div class="content-section">
             <h2 class="section-title">題目描述</h2>
             <div class="description">
-                <p>給你兩個非空的鏈表，表示兩個非負的整數。它們每位數字都是按照逆序的方式存儲的，並且每個節點只能存儲一位數字。請你將兩個數相加，並以相同形式返回一個表示和的鏈表。</p>
+                <p>給你兩個<strong>非空</strong>的鏈表，表示兩個非負的整數。它們每位數字都是按照<strong>逆序</strong>的方式存儲的，並且每個節點只能存儲<strong>一位</strong>數字。</p>
+                <p style="margin-top: 15px;">請你將兩個數相加，並以相同形式返回一個表示和的鏈表。</p>
+                <p style="margin-top: 15px;">你可以假設除了數字 0 之外，這兩個數都不會以 0 開頭。</p>
             </div>
 
             <div class="example-box">
-                <strong>範例:</strong>
+                <div class="example-title">範例 1:</div>
                 <pre><code>輸入: l1 = [2,4,3], l2 = [5,6,4]
 輸出: [7,0,8]
 解釋: 342 + 465 = 807</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例 2:</div>
+                <pre><code>輸入: l1 = [0], l2 = [0]
+輸出: [0]</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例 3:</div>
+                <pre><code>輸入: l1 = [9,9,9,9,9,9,9], l2 = [9,9,9,9]
+輸出: [8,9,9,9,0,0,0,1]</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">限制條件:</div>
+                <pre><code>每個鏈表中的節點數在範圍 [1, 100] 內
+0 <= Node.val <= 9
+題目數據保證列表表示的數字不含前導零</code></pre>
             </div>
         </div>
 
@@ -55,22 +93,66 @@
             <h2 class="section-title">解題思路</h2>
             
             <div class="approach-box">
-                <p><strong>方法：模擬加法</strong></p>
-                <p>使用一個虛擬頭節點，遍歷兩個鏈表，逐位相加，處理進位。</p>
+                <div class="approach-title">方法：模擬加法過程（推薦）⭐</div>
+                <p>就像我們手算加法一樣，從最低位開始，逐位相加，處理進位。</p>
+                
+                <p style="margin-top: 15px;"><strong>核心思想：</strong></p>
+                <p>使用一個虛擬頭節點（dummy node），遍歷兩個鏈表，將對應位置的數字相加，並處理進位。</p>
+                
                 <p style="margin-top: 15px;"><strong>步驟：</strong></p>
                 <ol>
-                    <li>建立虛擬頭節點 dummy 和當前節點指標 current</li>
+                    <li>創建虛擬頭節點 dummy 和當前節點指標 current</li>
                     <li>初始化進位 carry = 0</li>
-                    <li>當 l1、l2 或 carry 不為空時：
+                    <li>當 l1、l2 或 carry 不為 0 時：
                         <ul>
-                            <li>計算當前位的和：val1 + val2 + carry</li>
-                            <li>更新進位：carry = sum // 10</li>
-                            <li>建立新節點：sum % 10</li>
-                            <li>移動指標</li>
+                            <li>取得當前位的值：val1 (l1 的值或 0)、val2 (l2 的值或 0)</li>
+                            <li>計算總和：total = val1 + val2 + carry</li>
+                            <li>更新進位：carry = total / 10</li>
+                            <li>創建新節點：total % 10</li>
+                            <li>移動指標到下一位</li>
                         </ul>
                     </li>
-                    <li>返回 dummy.next</li>
+                    <li>返回 dummy.next（跳過虛擬頭節點）</li>
                 </ol>
+                
+                <div class="visual-box">
+                    <p><strong>視覺化範例：l1 = [2,4,3], l2 = [5,6,4]</strong></p>
+                    <pre style="background: white; padding: 15px; border-radius: 5px; margin-top: 10px;"><code>    2 → 4 → 3    (表示 342)
++   5 → 6 → 4    (表示 465)
+─────────────
+    7 → 0 → 8    (表示 807)
+
+步驟 1: 2 + 5 = 7, carry = 0
+       創建節點 7
+
+步驟 2: 4 + 6 = 10, carry = 1
+       創建節點 0
+
+步驟 3: 3 + 4 + 1(carry) = 8, carry = 0
+       創建節點 8
+
+結果: 7 → 0 → 8</code></pre>
+                </div>
+                
+                <div class="visual-box">
+                    <p><strong>進位示例：l1 = [9,9,9,9,9,9,9], l2 = [9,9,9,9]</strong></p>
+                    <pre style="background: white; padding: 15px; border-radius: 5px; margin-top: 10px;"><code>    9 → 9 → 9 → 9 → 9 → 9 → 9
++   9 → 9 → 9 → 9
+─────────────────────────────
+    8 → 9 → 9 → 9 → 0 → 0 → 0 → 1
+
+注意: 最後還需要處理進位 1</code></pre>
+                </div>
+            </div>
+
+            <div class="approach-box">
+                <div class="approach-title">關鍵技巧</div>
+                <ul>
+                    <li><strong>虛擬頭節點：</strong>簡化邊界處理，避免特殊判斷第一個節點</li>
+                    <li><strong>進位處理：</strong>carry = total / 10，當前位 = total % 10</li>
+                    <li><strong>長度不一：</strong>當某個鏈表結束時，將其值視為 0</li>
+                    <li><strong>最後進位：</strong>循環條件包含 carry，確保最後的進位被處理</li>
+                </ul>
             </div>
         </div>
 
@@ -79,46 +161,133 @@
             
             <div class="language-tabs">
                 <button class="tab-btn active" onclick="showLanguage('python')">Python</button>
+                <button class="tab-btn" onclick="showLanguage('cpp')">C++</button>
                 <button class="tab-btn" onclick="showLanguage('java')">Java</button>
             </div>
 
             <div id="python" class="code-container active">
                 <pre><code class="language-python">class Solution:
     def addTwoNumbers(self, l1: Optional[ListNode], l2: Optional[ListNode]) -> Optional[ListNode]:
+        """
+        方法：模擬加法過程
+        時間複雜度: O(max(m, n))
+        空間複雜度: O(max(m, n))
+        """
+        # 創建虛擬頭節點
         dummy = ListNode(0)
         current = dummy
         carry = 0
         
+        # 當任一鏈表未結束或還有進位時
         while l1 or l2 or carry:
+            # 取得當前位的值
             val1 = l1.val if l1 else 0
             val2 = l2.val if l2 else 0
             
+            # 計算總和
             total = val1 + val2 + carry
+            
+            # 更新進位和當前位
             carry = total // 10
             current.next = ListNode(total % 10)
             
+            # 移動指標
             current = current.next
-            if l1: l1 = l1.next
-            if l2: l2 = l2.next
+            if l1:
+                l1 = l1.next
+            if l2:
+                l2 = l2.next
         
         return dummy.next</code></pre>
             </div>
 
+            <div id="cpp" class="code-container">
+                <pre><code class="language-cpp">/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+
+class Solution {
+public:
+    /**
+     * 方法：模擬加法過程
+     * 時間複雜度: O(max(m, n))
+     * 空間複雜度: O(max(m, n))
+     */
+    ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
+        // 創建虛擬頭節點
+        ListNode* dummy = new ListNode(0);
+        ListNode* current = dummy;
+        int carry = 0;
+        
+        // 當任一鏈表未結束或還有進位時
+        while (l1 != nullptr || l2 != nullptr || carry != 0) {
+            // 取得當前位的值
+            int val1 = (l1 != nullptr) ? l1->val : 0;
+            int val2 = (l2 != nullptr) ? l2->val : 0;
+            
+            // 計算總和
+            int total = val1 + val2 + carry;
+            
+            // 更新進位和當前位
+            carry = total / 10;
+            current->next = new ListNode(total % 10);
+            
+            // 移動指標
+            current = current->next;
+            if (l1 != nullptr) l1 = l1->next;
+            if (l2 != nullptr) l2 = l2->next;
+        }
+        
+        return dummy->next;
+    }
+};</code></pre>
+            </div>
+
             <div id="java" class="code-container">
-                <pre><code class="language-java">class Solution {
+                <pre><code class="language-java">/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+
+class Solution {
+    /**
+     * 方法：模擬加法過程
+     * 時間複雜度: O(max(m, n))
+     * 空間複雜度: O(max(m, n))
+     */
     public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+        // 創建虛擬頭節點
         ListNode dummy = new ListNode(0);
         ListNode current = dummy;
         int carry = 0;
         
+        // 當任一鏈表未結束或還有進位時
         while (l1 != null || l2 != null || carry != 0) {
+            // 取得當前位的值
             int val1 = (l1 != null) ? l1.val : 0;
             int val2 = (l2 != null) ? l2.val : 0;
             
+            // 計算總和
             int total = val1 + val2 + carry;
+            
+            // 更新進位和當前位
             carry = total / 10;
             current.next = new ListNode(total % 10);
             
+            // 移動指標
             current = current.next;
             if (l1 != null) l1 = l1.next;
             if (l2 != null) l2 = l2.next;
@@ -129,12 +298,81 @@
 }</code></pre>
             </div>
         </div>
+
+        <div class="content-section">
+            <h2 class="section-title">複雜度分析</h2>
+            <div class="complexity-box">
+                <div class="complexity-item">時間複雜度: O(max(m, n))</div>
+                <p style="color: #78716c; margin: 10px 0;">
+                    需要遍歷兩個鏈表中較長的那個，其中 m 和 n 分別是兩個鏈表的長度。
+                </p>
+                
+                <div class="complexity-item" style="margin-top: 20px;">空間複雜度: O(max(m, n))</div>
+                <p style="color: #78716c; margin: 10px 0;">
+                    新建的鏈表長度最多為 max(m, n) + 1（可能有最後的進位）。
+                </p>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">重點提示</h2>
+            <div class="complexity-box">
+                <ul>
+                    <li><strong>虛擬頭節點技巧：</strong>避免特殊處理第一個節點，代碼更簡潔</li>
+                    <li><strong>進位處理：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>當前位的值 = (val1 + val2 + carry) % 10</li>
+                            <li>新的進位 = (val1 + val2 + carry) / 10</li>
+                        </ul>
+                    </li>
+                    <li><strong>長度不同處理：</strong>當某個鏈表結束時，將其值視為 0</li>
+                    <li><strong>最後的進位：</strong>循環條件必須包含 carry，例如 999 + 1 = 1000</li>
+                    <li><strong>邊界情況：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>兩個鏈表長度相同</li>
+                            <li>兩個鏈表長度不同</li>
+                            <li>最後有進位（如 99 + 1 = 100）</li>
+                            <li>其中一個鏈表為空（題目說明不會發生）</li>
+                        </ul>
+                    </li>
+                    <li><strong>常見錯誤：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>忘記處理最後的進位</li>
+                            <li>循環條件不正確（應該是 or 而非 and）</li>
+                            <li>沒有使用虛擬頭節點，導致代碼複雜</li>
+                        </ul>
+                    </li>
+                    <li><strong>面試技巧：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>先說明思路：模擬手算加法過程</li>
+                            <li>強調虛擬頭節點的好處</li>
+                            <li>說明如何處理長度不同和進位</li>
+                            <li>可以討論如果數字是正序存儲該如何處理</li>
+                        </ul>
+                    </li>
+                    <li><strong>變形題：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>Add Two Numbers II (#445) - 數字正序存儲</li>
+                            <li>Multiply Strings (#43) - 字串乘法</li>
+                            <li>Plus One (#66) - 數字加一</li>
+                        </ul>
+                    </li>
+                    <li><strong>相似題目：</strong>Merge Two Sorted Lists (21), Plus One (66)</li>
+                </ul>
+            </div>
+        </div>
     </div>
+
     <script>
         hljs.highlightAll();
+        
         function showLanguage(lang) {
-            document.querySelectorAll('.code-container').forEach(el => el.classList.remove('active'));
-            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.code-container').forEach(container => {
+                container.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
             document.getElementById(lang).classList.add('active');
             event.target.classList.add('active');
         }
