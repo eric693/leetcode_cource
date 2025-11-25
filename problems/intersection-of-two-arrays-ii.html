@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>350. Intersection of Two Arrays II - LeetCode 學習平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f8fafc; line-height: 1.8; color: #334155; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .header { background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; padding: 40px; border-radius: 16px; margin-bottom: 30px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .back-btn { display: inline-block; color: white; text-decoration: none; background: rgba(255,255,255,0.2); padding: 10px 20px; border-radius: 8px; margin-bottom: 20px; transition: all 0.3s; }
+        .back-btn:hover { background: rgba(255,255,255,0.3); }
+        .problem-title { font-size: 2.5em; font-weight: 800; margin-bottom: 15px; }
+        .difficulty { display: inline-block; background: rgba(255,255,255,0.3); padding: 8px 20px; border-radius: 20px; font-weight: 600; font-size: 0.9em; }
+        .content-section { background: white; padding: 40px; border-radius: 16px; margin-bottom: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .section-title { font-size: 1.8em; color: #1e293b; margin-bottom: 25px; font-weight: 700; padding-bottom: 10px; border-bottom: 3px solid #10b981; }
+        .description { font-size: 1.1em; line-height: 1.9; color: #475569; margin-bottom: 20px; }
+        .example-box { background: #f0fdf4; border-left: 4px solid #10b981; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .example-title { font-weight: 700; color: #059669; margin-bottom: 10px; font-size: 1.1em; }
+        .approach-box { background: #eff6ff; border-left: 4px solid #3b82f6; padding: 25px; border-radius: 8px; margin: 25px 0; }
+        .approach-title { font-weight: 700; color: #1e40af; margin-bottom: 15px; font-size: 1.3em; }
+        .complexity-box { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .complexity-item { margin: 10px 0; font-weight: 600; color: #92400e; }
+        .language-tabs { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+        .tab-btn { padding: 12px 28px; border: 2px solid #10b981; background: white; color: #10b981; border-radius: 8px; cursor: pointer; font-weight: 600; transition: all 0.3s; font-size: 1em; }
+        .tab-btn:hover { background: #f0fdf4; }
+        .tab-btn.active { background: #10b981; color: white; }
+        .code-container { display: none; margin-top: 20px; }
+        .code-container.active { display: block; }
+        pre { background: #282c34 !important; padding: 25px !important; border-radius: 12px; overflow-x: auto; margin: 0; }
+        code { font-family: 'Fira Code', 'Consolas', monospace; font-size: 0.95em; line-height: 1.6; }
+        ol, ul { margin-left: 30px; margin-top: 15px; }
+        li { margin: 12px 0; line-height: 1.8; }
+        strong { color: #1e293b; font-weight: 700; }
+        .visual-box { background: #f0f9ff; border: 2px solid #3b82f6; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        
+        @media (max-width: 768px) {
+            .container { padding: 10px; }
+            .header { padding: 25px; }
+            .problem-title { font-size: 1.8em; }
+            .content-section { padding: 25px; }
+            .tab-btn { padding: 10px 20px; font-size: 0.9em; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="../index.html" class="back-btn">← 返回題目列表</a>
+            <div class="problem-title">350. Intersection of Two Arrays II</div>
+            <span class="difficulty">Easy</span>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">題目描述</h2>
+            <div class="description">
+                <p>給定兩個整數陣列 <code>nums1</code> 和 <code>nums2</code>，返回它們的<strong>交集</strong>。輸出結果中的每個元素出現的次數，應與元素在兩個陣列中都出現的次數一致（如果出現次數不一致，則考慮較小的次數）。可以不考慮輸出結果的順序。</p>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例 1:</div>
+                <pre><code>輸入: nums1 = [1,2,2,1], nums2 = [2,2]
+輸出: [2,2]</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例 2:</div>
+                <pre><code>輸入: nums1 = [4,9,5], nums2 = [9,4,9,8,4]
+輸出: [4,9] 或 [9,4]</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">限制條件:</div>
+                <pre><code>1 <= nums1.length, nums2.length <= 1000
+0 <= nums1[i], nums2[i] <= 1000</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">進階問題:</div>
+                <ul style="color: #059669; margin-left: 20px;">
+                    <li>如果給定的陣列已經排序，你將如何優化你的算法？</li>
+                    <li>如果 nums1 的大小比 nums2 小，哪種方法更好？</li>
+                    <li>如果 nums2 的元素存儲在磁盤上，內存是有限的，不能一次加載所有的元素到內存中，你該怎麼辦？</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">解題思路</h2>
+            
+            <div class="approach-box">
+                <div class="approach-title">方法一：哈希表計數（推薦）⭐</div>
+                <p>使用哈希表記錄一個陣列中每個元素的出現次數，然後遍歷另一個陣列找交集。</p>
+                
+                <p style="margin-top: 15px;"><strong>核心思想：</strong></p>
+                <p>統計 nums1 中每個數字的頻率，然後遍歷 nums2，如果數字在哈希表中且計數 > 0，就加入結果。</p>
+                
+                <p style="margin-top: 15px;"><strong>步驟：</strong></p>
+                <ol>
+                    <li>創建哈希表，統計 nums1 中每個數字的出現次數</li>
+                    <li>遍歷 nums2：
+                        <ul>
+                            <li>如果當前數字在哈希表中且計數 > 0：
+                                <ul>
+                                    <li>將該數字加入結果</li>
+                                    <li>哈希表中該數字計數減 1</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>返回結果陣列</li>
+                </ol>
+                
+                <div class="visual-box">
+                    <p><strong>視覺化範例：nums1 = [1,2,2,1], nums2 = [2,2]</strong></p>
+                    <pre style="background: white; padding: 15px; border-radius: 5px; margin-top: 10px;"><code>步驟 1: 統計 nums1
+       {1: 2, 2: 2}
+
+步驟 2: 遍歷 nums2
+       檢查 2 → 在哈希表中且計數 = 2 > 0
+       加入結果: [2]
+       更新哈希表: {1: 2, 2: 1}
+
+       檢查 2 → 在哈希表中且計數 = 1 > 0
+       加入結果: [2, 2]
+       更新哈希表: {1: 2, 2: 0}
+
+結果: [2, 2]</code></pre>
+                </div>
+            </div>
+
+            <div class="approach-box">
+                <div class="approach-title">方法二：雙指標（適用於已排序陣列）</div>
+                <p>如果兩個陣列已經排序，可以使用雙指標同時遍歷兩個陣列。</p>
+                
+                <p style="margin-top: 15px;"><strong>步驟：</strong></p>
+                <ol>
+                    <li>先對兩個陣列排序（如果未排序）</li>
+                    <li>使用兩個指標 i, j 分別指向兩個陣列的開始</li>
+                    <li>比較 nums1[i] 和 nums2[j]：
+                        <ul>
+                            <li>如果相等 → 加入結果，i++, j++</li>
+                            <li>如果 nums1[i] < nums2[j] → i++</li>
+                            <li>如果 nums1[i] > nums2[j] → j++</li>
+                        </ul>
+                    </li>
+                </ol>
+                
+                <p style="margin-top: 15px;"><strong>適用場景：</strong>陣列已排序，或排序開銷可接受</p>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">程式碼實現</h2>
+            
+            <div class="language-tabs">
+                <button class="tab-btn active" onclick="showLanguage('python')">Python</button>
+                <button class="tab-btn" onclick="showLanguage('cpp')">C++</button>
+                <button class="tab-btn" onclick="showLanguage('java')">Java</button>
+            </div>
+
+            <div id="python" class="code-container active">
+                <pre><code class="language-python">from collections import Counter
+
+class Solution:
+    def intersect(self, nums1: List[int], nums2: List[int]) -> List[int]:
+        """
+        方法一：哈希表計數（推薦）
+        時間複雜度: O(m + n)
+        空間複雜度: O(min(m, n))
+        """
+        # 使用較小的陣列建立哈希表，節省空間
+        if len(nums1) > len(nums2):
+            nums1, nums2 = nums2, nums1
+        
+        # 統計 nums1 中每個數字的頻率
+        count = Counter(nums1)
+        result = []
+        
+        # 遍歷 nums2
+        for num in nums2:
+            if count[num] > 0:
+                result.append(num)
+                count[num] -= 1
+        
+        return result
+    
+    def intersect_twopointers(self, nums1: List[int], nums2: List[int]) -> List[int]:
+        """
+        方法二：雙指標（適用於已排序陣列）
+        時間複雜度: O(m log m + n log n) - 排序
+        空間複雜度: O(1) - 不考慮輸出空間
+        """
+        nums1.sort()
+        nums2.sort()
+        
+        i, j = 0, 0
+        result = []
+        
+        while i < len(nums1) and j < len(nums2):
+            if nums1[i] == nums2[j]:
+                result.append(nums1[i])
+                i += 1
+                j += 1
+            elif nums1[i] < nums2[j]:
+                i += 1
+            else:
+                j += 1
+        
+        return result</code></pre>
+            </div>
+
+            <div id="cpp" class="code-container">
+                <pre><code class="language-cpp">#include &lt;vector&gt;
+#include &lt;unordered_map&gt;
+#include &lt;algorithm&gt;
+
+class Solution {
+public:
+    /**
+     * 方法一：哈希表計數（推薦）
+     * 時間複雜度: O(m + n)
+     * 空間複雜度: O(min(m, n))
+     */
+    vector<int> intersect(vector<int>& nums1, vector<int>& nums2) {
+        // 使用較小的陣列建立哈希表
+        if (nums1.size() > nums2.size()) {
+            return intersect(nums2, nums1);
+        }
+        
+        // 統計 nums1 中每個數字的頻率
+        unordered_map<int, int> count;
+        for (int num : nums1) {
+            count[num]++;
+        }
+        
+        vector<int> result;
+        
+        // 遍歷 nums2
+        for (int num : nums2) {
+            if (count[num] > 0) {
+                result.push_back(num);
+                count[num]--;
+            }
+        }
+        
+        return result;
+    }
+    
+    /**
+     * 方法二：雙指標（適用於已排序陣列）
+     * 時間複雜度: O(m log m + n log n)
+     * 空間複雜度: O(1)
+     */
+    vector<int> intersect_twopointers(vector<int>& nums1, vector<int>& nums2) {
+        sort(nums1.begin(), nums1.end());
+        sort(nums2.begin(), nums2.end());
+        
+        int i = 0, j = 0;
+        vector<int> result;
+        
+        while (i < nums1.size() && j < nums2.size()) {
+            if (nums1[i] == nums2[j]) {
+                result.push_back(nums1[i]);
+                i++;
+                j++;
+            } else if (nums1[i] < nums2[j]) {
+                i++;
+            } else {
+                j++;
+            }
+        }
+        
+        return result;
+    }
+};</code></pre>
+            </div>
+
+            <div id="java" class="code-container">
+                <pre><code class="language-java">import java.util.*;
+
+class Solution {
+    /**
+     * 方法一：哈希表計數（推薦）
+     * 時間複雜度: O(m + n)
+     * 空間複雜度: O(min(m, n))
+     */
+    public int[] intersect(int[] nums1, int[] nums2) {
+        // 使用較小的陣列建立哈希表
+        if (nums1.length > nums2.length) {
+            return intersect(nums2, nums1);
+        }
+        
+        // 統計 nums1 中每個數字的頻率
+        Map<Integer, Integer> count = new HashMap<>();
+        for (int num : nums1) {
+            count.put(num, count.getOrDefault(num, 0) + 1);
+        }
+        
+        List<Integer> result = new ArrayList<>();
+        
+        // 遍歷 nums2
+        for (int num : nums2) {
+            if (count.getOrDefault(num, 0) > 0) {
+                result.add(num);
+                count.put(num, count.get(num) - 1);
+            }
+        }
+        
+        // 轉換為陣列
+        int[] answer = new int[result.size()];
+        for (int i = 0; i < result.size(); i++) {
+            answer[i] = result.get(i);
+        }
+        
+        return answer;
+    }
+    
+    /**
+     * 方法二：雙指標（適用於已排序陣列）
+     * 時間複雜度: O(m log m + n log n)
+     * 空間複雜度: O(1)
+     */
+    public int[] intersect_twopointers(int[] nums1, int[] nums2) {
+        Arrays.sort(nums1);
+        Arrays.sort(nums2);
+        
+        int i = 0, j = 0;
+        List<Integer> result = new ArrayList<>();
+        
+        while (i < nums1.length && j < nums2.length) {
+            if (nums1[i] == nums2[j]) {
+                result.add(nums1[i]);
+                i++;
+                j++;
+            } else if (nums1[i] < nums2[j]) {
+                i++;
+            } else {
+                j++;
+            }
+        }
+        
+        int[] answer = new int[result.size()];
+        for (int k = 0; k < result.size(); k++) {
+            answer[k] = result.get(k);
+        }
+        
+        return answer;
+    }
+}</code></pre>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">複雜度分析</h2>
+            <div class="complexity-box">
+                <div class="complexity-item">方法一：哈希表</div>
+                <ul style="color: #78716c; margin: 10px 0 10px 30px;">
+                    <li><strong>時間複雜度：</strong>O(m + n) - m、n 分別是兩個陣列的長度</li>
+                    <li><strong>空間複雜度：</strong>O(min(m, n)) - 使用較小陣列建立哈希表</li>
+                </ul>
+                
+                <div class="complexity-item" style="margin-top: 20px;">方法二：雙指標</div>
+                <ul style="color: #78716c; margin: 10px 0 10px 30px;">
+                    <li><strong>時間複雜度：</strong>O(m log m + n log n) - 排序開銷</li>
+                    <li><strong>空間複雜度：</strong>O(1) - 不考慮輸出空間</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">重點提示</h2>
+            <div class="complexity-box">
+                <ul>
+                    <li><strong>與 Intersection I 的區別：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>Intersection I (#349)：每個元素只出現一次</li>
+                            <li>Intersection II (#350)：考慮元素出現次數 ⭐ 本題</li>
+                        </ul>
+                    </li>
+                    <li><strong>優化技巧：</strong>用較小的陣列建立哈希表，節省空間</li>
+                    <li><strong>方法選擇：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>未排序 → 哈希表 O(m+n) ⭐</li>
+                            <li>已排序 → 雙指標 O(m+n)</li>
+                            <li>需排序 → 看情況（排序 vs 哈希表）</li>
+                        </ul>
+                    </li>
+                    <li><strong>進階問題解答：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>已排序 → 使用雙指標，空間 O(1)</li>
+                            <li>nums1 較小 → 用 nums1 建立哈希表</li>
+                            <li>nums2 在磁盤 → 分批讀取 nums2，用 nums1 的哈希表匹配</li>
+                        </ul>
+                    </li>
+                    <li><strong>邊界情況：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>空陣列 → 返回空</li>
+                            <li>無交集 → 返回空</li>
+                            <li>完全相同 → 返回整個陣列</li>
+                        </ul>
+                    </li>
+                    <li><strong>面試技巧：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>先問陣列是否已排序</li>
+                            <li>討論空間和時間的權衡</li>
+                            <li>提到優化：用較小陣列建哈希表</li>
+                            <li>回答進階問題展現深度</li>
+                        </ul>
+                    </li>
+                    <li><strong>相似題目：</strong>Intersection of Two Arrays (349), Find Common Characters (1002)</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        hljs.highlightAll();
+        
+        function showLanguage(lang) {
+            document.querySelectorAll('.code-container').forEach(container => {
+                container.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.getElementById(lang).classList.add('active');
+            event.target.classList.add('active');
+        }
+    </script>
+</body>
+</html>

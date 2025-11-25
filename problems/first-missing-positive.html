@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>41. First Missing Positive - LeetCode 學習平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f8fafc; line-height: 1.8; color: #334155; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .header { background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); color: white; padding: 40px; border-radius: 16px; margin-bottom: 30px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .back-btn { display: inline-block; color: white; text-decoration: none; background: rgba(255,255,255,0.2); padding: 10px 20px; border-radius: 8px; margin-bottom: 20px; transition: all 0.3s; }
+        .back-btn:hover { background: rgba(255,255,255,0.3); }
+        .problem-title { font-size: 2.5em; font-weight: 800; margin-bottom: 15px; }
+        .difficulty { display: inline-block; background: rgba(255,255,255,0.3); padding: 8px 20px; border-radius: 20px; font-weight: 600; font-size: 0.9em; }
+        .content-section { background: white; padding: 40px; border-radius: 16px; margin-bottom: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .section-title { font-size: 1.8em; color: #1e293b; margin-bottom: 25px; font-weight: 700; padding-bottom: 10px; border-bottom: 3px solid #ef4444; }
+        .description { font-size: 1.1em; line-height: 1.9; color: #475569; margin-bottom: 20px; }
+        .example-box { background: #fee2e2; border-left: 4px solid #ef4444; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .example-title { font-weight: 700; color: #dc2626; margin-bottom: 10px; font-size: 1.1em; }
+        .approach-box { background: #eff6ff; border-left: 4px solid #3b82f6; padding: 25px; border-radius: 8px; margin: 25px 0; }
+        .approach-title { font-weight: 700; color: #1e40af; margin-bottom: 15px; font-size: 1.3em; }
+        .complexity-box { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .complexity-item { margin: 10px 0; font-weight: 600; color: #92400e; }
+        .language-tabs { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+        .tab-btn { padding: 12px 28px; border: 2px solid #ef4444; background: white; color: #ef4444; border-radius: 8px; cursor: pointer; font-weight: 600; transition: all 0.3s; font-size: 1em; }
+        .tab-btn:hover { background: #fee2e2; }
+        .tab-btn.active { background: #ef4444; color: white; }
+        .code-container { display: none; margin-top: 20px; }
+        .code-container.active { display: block; }
+        pre { background: #282c34 !important; padding: 25px !important; border-radius: 12px; overflow-x: auto; margin: 0; }
+        code { font-family: 'Fira Code', 'Consolas', monospace; font-size: 0.95em; line-height: 1.6; }
+        ol, ul { margin-left: 30px; margin-top: 15px; }
+        li { margin: 12px 0; line-height: 1.8; }
+        strong { color: #1e293b; font-weight: 700; }
+        .visual-box { background: #f0f9ff; border: 2px solid #3b82f6; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        
+        @media (max-width: 768px) {
+            .container { padding: 10px; }
+            .header { padding: 25px; }
+            .problem-title { font-size: 1.8em; }
+            .content-section { padding: 25px; }
+            .tab-btn { padding: 10px 20px; font-size: 0.9em; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="../index.html" class="back-btn">← 返回題目列表</a>
+            <div class="problem-title">41. First Missing Positive</div>
+            <span class="difficulty">Hard</span>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">題目描述</h2>
+            <div class="description">
+                <p>給定一個未排序的整數陣列 <code>nums</code>，找出其中沒有出現的<strong>最小的正整數</strong>。</p>
+                <p style="margin-top: 15px;"><strong>進階：</strong>你能實現時間複雜度為 <code>O(n)</code> 並且只使用常數級別額外空間的解決方案嗎？</p>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例 1:</div>
+                <pre><code>輸入: nums = [1,2,0]
+輸出: 3
+解釋: 範圍 [1,2] 中的數字都出現了，所以最小的缺失正整數是 3。</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例 2:</div>
+                <pre><code>輸入: nums = [3,4,-1,1]
+輸出: 2
+解釋: 1 在陣列中，但 2 沒有。</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例 3:</div>
+                <pre><code>輸入: nums = [7,8,9,11,12]
+輸出: 1
+解釋: 最小的正整數 1 沒有出現。</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">限制條件:</div>
+                <pre><code>1 <= nums.length <= 10^5
+-2^31 <= nums[i] <= 2^31 - 1</code></pre>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">解題思路</h2>
+            
+            <div class="approach-box">
+                <div class="approach-title">核心洞察</div>
+                <p><strong>關鍵觀察：</strong></p>
+                <p>對於長度為 n 的陣列，答案必定在 [1, n+1] 範圍內。</p>
+                <ul style="margin-top: 10px;">
+                    <li>如果 1~n 都出現了，答案是 n+1</li>
+                    <li>否則，答案是 1~n 中缺失的最小正整數</li>
+                </ul>
+                
+                <p style="margin-top: 15px;"><strong>思路：</strong>將陣列當作 Hash Table 使用！</p>
+                <p>將數字 i 放到索引 i-1 的位置，然後遍歷找第一個不匹配的位置。</p>
+            </div>
+
+            <div class="approach-box">
+                <div class="approach-title">方法：原地哈希（推薦）⭐</div>
+                <p>利用陣列本身作為 Hash Table，實現 O(1) 空間。</p>
+                
+                <p style="margin-top: 15px;"><strong>核心思想：</strong></p>
+                <p>將數字 i 放到索引 i-1 的位置（如果 i 在 [1, n] 範圍內）。</p>
+                
+                <p style="margin-top: 15px;"><strong>步驟：</strong></p>
+                <ol>
+                    <li>遍歷陣列，對每個元素：
+                        <ul>
+                            <li>如果 1 ≤ nums[i] ≤ n 且 nums[i] 不在正確位置</li>
+                            <li>交換 nums[i] 到索引 nums[i]-1</li>
+                            <li>重複直到當前位置無法交換</li>
+                        </ul>
+                    </li>
+                    <li>再次遍歷陣列，找第一個 nums[i] != i+1 的位置</li>
+                    <li>返回 i+1（或 n+1 如果都匹配）</li>
+                </ol>
+                
+                <div class="visual-box">
+                    <p><strong>視覺化範例：nums = [3,4,-1,1]</strong></p>
+                    <pre style="background: white; padding: 15px; border-radius: 5px; margin-top: 10px;"><code>初始: [3, 4, -1, 1]
+索引:  0  1   2  3
+
+目標: 讓 1 在索引 0，2 在索引 1，3 在索引 2...
+
+步驟 1: i=0, nums[0]=3
+  3 應該在索引 2
+  交換 nums[0] 和 nums[2]: [-1, 4, 3, 1]
+
+步驟 2: i=0, nums[0]=-1
+  -1 不在 [1,n] 範圍，跳過
+
+步驟 3: i=1, nums[1]=4
+  4 應該在索引 3
+  交換 nums[1] 和 nums[3]: [-1, 1, 3, 4]
+
+步驟 4: i=1, nums[1]=1
+  1 應該在索引 0
+  交換 nums[1] 和 nums[0]: [1, -1, 3, 4]
+
+步驟 5: i=1, nums[1]=-1
+  -1 不在 [1,n] 範圍，跳過
+
+步驟 6: i=2, nums[2]=3
+  3 已在索引 2（正確位置）
+
+步驟 7: i=3, nums[3]=4
+  4 已在索引 3（正確位置）
+
+最終: [1, -1, 3, 4]
+      ↑   ↑
+    索引 0 正確（1）
+    索引 1 錯誤（-1 != 2）
+
+答案: 2</code></pre>
+                </div>
+            </div>
+
+            <div class="approach-box">
+                <div class="approach-title">為什麼這個方法有效？</div>
+                <ul>
+                    <li><strong>每個數字最多被交換一次：</strong>時間 O(n)</li>
+                    <li><strong>原地操作：</strong>空間 O(1)</li>
+                    <li><strong>關鍵：</strong>忽略不在 [1, n] 範圍的數字</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">程式碼實現</h2>
+            
+            <div class="language-tabs">
+                <button class="tab-btn active" onclick="showLanguage('python')">Python</button>
+                <button class="tab-btn" onclick="showLanguage('cpp')">C++</button>
+                <button class="tab-btn" onclick="showLanguage('java')">Java</button>
+            </div>
+
+            <div id="python" class="code-container active">
+                <pre><code class="language-python">class Solution:
+    def firstMissingPositive(self, nums: List[int]) -> int:
+        """
+        方法：原地哈希
+        時間複雜度: O(n)
+        空間複雜度: O(1)
+        """
+        n = len(nums)
+        
+        # 步驟 1: 將每個數字放到正確位置
+        for i in range(n):
+            # 持續交換直到當前位置無法交換
+            while 1 <= nums[i] <= n and nums[nums[i] - 1] != nums[i]:
+                # 將 nums[i] 放到索引 nums[i]-1
+                correct_idx = nums[i] - 1
+                nums[i], nums[correct_idx] = nums[correct_idx], nums[i]
+        
+        # 步驟 2: 找第一個不匹配的位置
+        for i in range(n):
+            if nums[i] != i + 1:
+                return i + 1
+        
+        # 所有位置都匹配，答案是 n+1
+        return n + 1</code></pre>
+            </div>
+
+            <div id="cpp" class="code-container">
+                <pre><code class="language-cpp">#include &lt;vector&gt;
+
+class Solution {
+public:
+    /**
+     * 方法：原地哈希
+     * 時間複雜度: O(n)
+     * 空間複雜度: O(1)
+     */
+    int firstMissingPositive(vector<int>& nums) {
+        int n = nums.size();
+        
+        // 步驟 1: 將每個數字放到正確位置
+        for (int i = 0; i < n; i++) {
+            // 持續交換直到當前位置無法交換
+            while (nums[i] >= 1 && nums[i] <= n && 
+                   nums[nums[i] - 1] != nums[i]) {
+                // 將 nums[i] 放到索引 nums[i]-1
+                int correct_idx = nums[i] - 1;
+                swap(nums[i], nums[correct_idx]);
+            }
+        }
+        
+        // 步驟 2: 找第一個不匹配的位置
+        for (int i = 0; i < n; i++) {
+            if (nums[i] != i + 1) {
+                return i + 1;
+            }
+        }
+        
+        // 所有位置都匹配，答案是 n+1
+        return n + 1;
+    }
+};</code></pre>
+            </div>
+
+            <div id="java" class="code-container">
+                <pre><code class="language-java">class Solution {
+    /**
+     * 方法：原地哈希
+     * 時間複雜度: O(n)
+     * 空間複雜度: O(1)
+     */
+    public int firstMissingPositive(int[] nums) {
+        int n = nums.length;
+        
+        // 步驟 1: 將每個數字放到正確位置
+        for (int i = 0; i < n; i++) {
+            // 持續交換直到當前位置無法交換
+            while (nums[i] >= 1 && nums[i] <= n && 
+                   nums[nums[i] - 1] != nums[i]) {
+                // 將 nums[i] 放到索引 nums[i]-1
+                int correctIdx = nums[i] - 1;
+                int temp = nums[i];
+                nums[i] = nums[correctIdx];
+                nums[correctIdx] = temp;
+            }
+        }
+        
+        // 步驟 2: 找第一個不匹配的位置
+        for (int i = 0; i < n; i++) {
+            if (nums[i] != i + 1) {
+                return i + 1;
+            }
+        }
+        
+        // 所有位置都匹配，答案是 n+1
+        return n + 1;
+    }
+}</code></pre>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">複雜度分析</h2>
+            <div class="complexity-box">
+                <div class="complexity-item">時間複雜度: O(n)</div>
+                <p style="color: #78716c; margin: 10px 0;">
+                    雖然有雙重循環，但每個元素最多被交換一次到正確位置。<br>
+                    總共最多 n 次交換 + n 次遍歷 = O(n)。
+                </p>
+                
+                <div class="complexity-item" style="margin-top: 20px;">空間複雜度: O(1)</div>
+                <p style="color: #78716c; margin: 10px 0;">
+                    原地修改陣列，只使用常數個變數。
+                </p>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">重點提示</h2>
+            <div class="complexity-box">
+                <ul>
+                    <li><strong>核心洞察：</strong>答案在 [1, n+1] 範圍內</li>
+                    <li><strong>原地哈希：</strong>將陣列當作 Hash Table</li>
+                    <li><strong>交換策略：</strong>將數字 i 放到索引 i-1</li>
+                    <li><strong>時間分析：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>每個數字最多被交換一次</li>
+                            <li>雖然是 while 循環，總複雜度仍是 O(n)</li>
+                        </ul>
+                    </li>
+                    <li><strong>邊界條件：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>忽略 ≤ 0 的數字</li>
+                            <li>忽略 > n 的數字</li>
+                            <li>避免死循環：nums[nums[i]-1] != nums[i]</li>
+                        </ul>
+                    </li>
+                    <li><strong>常見錯誤：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>忘記檢查重複數字（死循環）</li>
+                            <li>交換條件錯誤</li>
+                            <li>索引越界</li>
+                        </ul>
+                    </li>
+                    <li><strong>面試技巧：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>先說明答案範圍在 [1, n+1]</li>
+                            <li>提出原地哈希思路</li>
+                            <li>用例子演示交換過程</li>
+                            <li>說明為什麼時間是 O(n)</li>
+                        </ul>
+                    </li>
+                    <li><strong>其他方法對比：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>排序：O(n log n) 時間</li>
+                            <li>Set：O(n) 空間</li>
+                            <li>原地哈希：O(n) 時間 + O(1) 空間 ⭐</li>
+                        </ul>
+                    </li>
+                    <li><strong>相似題目：</strong>Missing Number (268), Find All Numbers Disappeared (448)</li>
+                    <li><strong>公司頻率：</strong>Amazon ⭐⭐⭐⭐, Microsoft ⭐⭐⭐⭐, Google ⭐⭐⭐</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        hljs.highlightAll();
+        
+        function showLanguage(lang) {
+            document.querySelectorAll('.code-container').forEach(container => {
+                container.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.getElementById(lang).classList.add('active');
+            event.target.classList.add('active');
+        }
+    </script>
+</body>
+</html>

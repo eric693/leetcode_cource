@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>122. Best Time to Buy and Sell Stock II - LeetCode 學習平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f8fafc; line-height: 1.8; color: #334155; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .header { background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: white; padding: 40px; border-radius: 16px; margin-bottom: 30px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .back-btn { display: inline-block; color: white; text-decoration: none; background: rgba(255,255,255,0.2); padding: 10px 20px; border-radius: 8px; margin-bottom: 20px; transition: all 0.3s; }
+        .back-btn:hover { background: rgba(255,255,255,0.3); }
+        .problem-title { font-size: 2.5em; font-weight: 800; margin-bottom: 15px; }
+        .difficulty { display: inline-block; background: rgba(255,255,255,0.3); padding: 8px 20px; border-radius: 20px; font-weight: 600; font-size: 0.9em; }
+        .content-section { background: white; padding: 40px; border-radius: 16px; margin-bottom: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .section-title { font-size: 1.8em; color: #1e293b; margin-bottom: 25px; font-weight: 700; padding-bottom: 10px; border-bottom: 3px solid #f59e0b; }
+        .description { font-size: 1.1em; line-height: 1.9; color: #475569; margin-bottom: 20px; }
+        .example-box { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .example-title { font-weight: 700; color: #d97706; margin-bottom: 10px; font-size: 1.1em; }
+        .approach-box { background: #eff6ff; border-left: 4px solid #3b82f6; padding: 25px; border-radius: 8px; margin: 25px 0; }
+        .approach-title { font-weight: 700; color: #1e40af; margin-bottom: 15px; font-size: 1.3em; }
+        .complexity-box { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .complexity-item { margin: 10px 0; font-weight: 600; color: #92400e; }
+        .language-tabs { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+        .tab-btn { padding: 12px 28px; border: 2px solid #f59e0b; background: white; color: #f59e0b; border-radius: 8px; cursor: pointer; font-weight: 600; transition: all 0.3s; font-size: 1em; }
+        .tab-btn:hover { background: #fef3c7; }
+        .tab-btn.active { background: #f59e0b; color: white; }
+        .code-container { display: none; margin-top: 20px; }
+        .code-container.active { display: block; }
+        pre { background: #282c34 !important; padding: 25px !important; border-radius: 12px; overflow-x: auto; margin: 0; }
+        code { font-family: 'Fira Code', 'Consolas', monospace; font-size: 0.95em; line-height: 1.6; }
+        ol, ul { margin-left: 30px; margin-top: 15px; }
+        li { margin: 12px 0; line-height: 1.8; }
+        strong { color: #1e293b; font-weight: 700; }
+        .visual-box { background: #f0f9ff; border: 2px solid #3b82f6; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        
+        @media (max-width: 768px) {
+            .container { padding: 10px; }
+            .header { padding: 25px; }
+            .problem-title { font-size: 1.8em; }
+            .content-section { padding: 25px; }
+            .tab-btn { padding: 10px 20px; font-size: 0.9em; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="../index.html" class="back-btn">← 返回題目列表</a>
+            <div class="problem-title">122. Best Time to Buy and Sell Stock II</div>
+            <span class="difficulty">Medium</span>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">題目描述</h2>
+            <div class="description">
+                <p>給定一個陣列 <code>prices</code>，其中 <code>prices[i]</code> 表示某支股票第 <code>i</code> 天的價格。</p>
+                <p style="margin-top: 15px;">設計一個算法來計算你所能獲取的最大利潤。你可以完成<strong>任意次數</strong>的交易（即買入和賣出一支股票）。</p>
+                <p style="margin-top: 15px;"><strong>注意：</strong>你不能同時參與多筆交易（你必須在再次購買前出售掉之前的股票）。</p>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例 1:</div>
+                <pre><code>輸入: prices = [7,1,5,3,6,4]
+輸出: 7
+解釋: 在第 2 天（股票價格 = 1）買入，在第 3 天（股票價格 = 5）賣出，利潤 = 5-1 = 4。
+     然後在第 4 天（股票價格 = 3）買入，在第 5 天（股票價格 = 6）賣出，利潤 = 6-3 = 3。
+     總利潤 = 4 + 3 = 7。</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例 2:</div>
+                <pre><code>輸入: prices = [1,2,3,4,5]
+輸出: 4
+解釋: 在第 1 天（股票價格 = 1）買入，在第 5 天（股票價格 = 5）賣出，利潤 = 5-1 = 4。
+     注意你不能在第 1 天和第 2 天接連購買股票，之後再將它們賣出。
+     因為這樣屬於同時參與了多筆交易，你必須在再次購買前出售掉之前的股票。</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例 3:</div>
+                <pre><code>輸入: prices = [7,6,4,3,1]
+輸出: 0
+解釋: 在這種情況下，沒有交易完成，最大利潤為 0。</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">限制條件:</div>
+                <pre><code>1 <= prices.length <= 3 * 10^4
+0 <= prices[i] <= 10^4</code></pre>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">解題思路</h2>
+            
+            <div class="approach-box">
+                <div class="approach-title">方法：貪心算法（推薦）⭐</div>
+                <p>抓住每一次價格上漲的機會，累加所有正向差價。</p>
+                
+                <p style="margin-top: 15px;"><strong>核心思想：</strong></p>
+                <p>只要明天的價格比今天高，就在今天買入明天賣出。把所有上漲的利潤都抓住。</p>
+                
+                <p style="margin-top: 15px;"><strong>關鍵洞察：</strong></p>
+                <ul>
+                    <li>如果價格持續上漲（如 1→2→3→4），可以分解為多次交易：
+                        <ul style="margin-top: 8px;">
+                            <li>方案 A：第 1 天買入，第 4 天賣出 → 利潤 = 4-1 = 3</li>
+                            <li>方案 B：(2-1) + (3-2) + (4-3) = 1+1+1 = 3 ✓</li>
+                            <li>兩種方案利潤相同！所以只需累加每次上漲的差價</li>
+                        </ul>
+                    </li>
+                </ul>
+                
+                <p style="margin-top: 15px;"><strong>步驟：</strong></p>
+                <ol>
+                    <li>遍歷價格陣列（從第 2 天開始）</li>
+                    <li>如果今天的價格 > 昨天的價格：
+                        <ul>
+                            <li>利潤 += 今天價格 - 昨天價格</li>
+                        </ul>
+                    </li>
+                    <li>返回總利潤</li>
+                </ol>
+                
+                <div class="visual-box">
+                    <p><strong>視覺化範例：prices = [7,1,5,3,6,4]</strong></p>
+                    <pre style="background: white; padding: 15px; border-radius: 5px; margin-top: 10px;"><code>價格:  7   1   5   3   6   4
+        ↓   ↓   ↑   ↓   ↑   ↓
+差價:     -6  +4  -2  +3  -2
+
+策略: 只抓上漲
+     第 1→2 天: 1-7 = -6  ✗ 下跌，不交易
+     第 2→3 天: 5-1 = +4  ✓ 上漲，獲利 4
+     第 3→4 天: 3-5 = -2  ✗ 下跌，不交易
+     第 4→5 天: 6-3 = +3  ✓ 上漲，獲利 3
+     第 5→6 天: 4-6 = -2  ✗ 下跌，不交易
+
+總利潤: 4 + 3 = 7</code></pre>
+                </div>
+                
+                <div class="visual-box">
+                    <p><strong>連續上漲範例：prices = [1,2,3,4,5]</strong></p>
+                    <pre style="background: white; padding: 15px; border-radius: 5px; margin-top: 10px;"><code>價格:  1   2   3   4   5
+        ↑   ↑   ↑   ↑   ↑
+差價:     +1  +1  +1  +1
+
+策略: 每天都上漲，每天都交易
+     1→2: +1
+     2→3: +1
+     3→4: +1
+     4→5: +1
+
+總利潤: 1+1+1+1 = 4
+等同於: 5-1 = 4 ✓</code></pre>
+                </div>
+            </div>
+
+            <div class="approach-box">
+                <div class="approach-title">為什麼貪心算法有效？</div>
+                <p><strong>數學證明：</strong></p>
+                <p>假設價格序列為 a₁, a₂, ..., aₙ</p>
+                <p style="margin-top: 10px;">最優策略的總利潤 = Σ max(0, aᵢ₊₁ - aᵢ)</p>
+                <p style="margin-top: 10px;">即：累加所有正向差價</p>
+                
+                <p style="margin-top: 15px;"><strong>直覺理解：</strong></p>
+                <ul>
+                    <li>持續上漲的區間，無論一次買賣還是多次買賣，總利潤相同</li>
+                    <li>下跌時不交易，利潤為 0</li>
+                    <li>所以：抓住每一次上漲機會 = 最大利潤</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">程式碼實現</h2>
+            
+            <div class="language-tabs">
+                <button class="tab-btn active" onclick="showLanguage('python')">Python</button>
+                <button class="tab-btn" onclick="showLanguage('cpp')">C++</button>
+                <button class="tab-btn" onclick="showLanguage('java')">Java</button>
+            </div>
+
+            <div id="python" class="code-container active">
+                <pre><code class="language-python">class Solution:
+    def maxProfit(self, prices: List[int]) -> int:
+        """
+        方法：貪心算法
+        時間複雜度: O(n)
+        空間複雜度: O(1)
+        """
+        profit = 0
+        
+        # 從第二天開始遍歷
+        for i in range(1, len(prices)):
+            # 如果今天價格比昨天高，就交易
+            if prices[i] > prices[i - 1]:
+                profit += prices[i] - prices[i - 1]
+        
+        return profit
+    
+    def maxProfit_pythonic(self, prices: List[int]) -> int:
+        """
+        Python 簡潔寫法
+        """
+        return sum(max(0, prices[i] - prices[i-1]) 
+                   for i in range(1, len(prices)))</code></pre>
+            </div>
+
+            <div id="cpp" class="code-container">
+                <pre><code class="language-cpp">#include &lt;vector&gt;
+
+class Solution {
+public:
+    /**
+     * 方法：貪心算法
+     * 時間複雜度: O(n)
+     * 空間複雜度: O(1)
+     */
+    int maxProfit(vector<int>& prices) {
+        int profit = 0;
+        
+        // 從第二天開始遍歷
+        for (int i = 1; i < prices.size(); i++) {
+            // 如果今天價格比昨天高，就交易
+            if (prices[i] > prices[i - 1]) {
+                profit += prices[i] - prices[i - 1];
+            }
+        }
+        
+        return profit;
+    }
+};</code></pre>
+            </div>
+
+            <div id="java" class="code-container">
+                <pre><code class="language-java">class Solution {
+    /**
+     * 方法：貪心算法
+     * 時間複雜度: O(n)
+     * 空間複雜度: O(1)
+     */
+    public int maxProfit(int[] prices) {
+        int profit = 0;
+        
+        // 從第二天開始遍歷
+        for (int i = 1; i < prices.length; i++) {
+            // 如果今天價格比昨天高，就交易
+            if (prices[i] > prices[i - 1]) {
+                profit += prices[i] - prices[i - 1];
+            }
+        }
+        
+        return profit;
+    }
+}</code></pre>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">複雜度分析</h2>
+            <div class="complexity-box">
+                <div class="complexity-item">時間複雜度: O(n)</div>
+                <p style="color: #78716c; margin: 10px 0;">
+                    只需遍歷價格陣列一次，其中 n 是天數。
+                </p>
+                
+                <div class="complexity-item" style="margin-top: 20px;">空間複雜度: O(1)</div>
+                <p style="color: #78716c; margin: 10px 0;">
+                    只使用常數個變數。
+                </p>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">重點提示</h2>
+            <div class="complexity-box">
+                <ul>
+                    <li><strong>貪心思想：</strong>抓住每一次上漲的機會</li>
+                    <li><strong>核心公式：</strong>profit += max(0, prices[i] - prices[i-1])</li>
+                    <li><strong>為什麼有效：</strong>連續上漲拆分成多次交易，利潤不變</li>
+                    <li><strong>與 Stock I 對比：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>Stock I (#121): 只能交易一次 → 找最大差價</li>
+                            <li>Stock II (#122): 可以多次交易 → 累加所有上漲 ⭐</li>
+                        </ul>
+                    </li>
+                    <li><strong>邊界情況：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>只有一天 → 無法交易，利潤 0</li>
+                            <li>持續下跌 → 不交易，利潤 0</li>
+                            <li>持續上漲 → 每天都交易</li>
+                        </ul>
+                    </li>
+                    <li><strong>常見誤解：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>❌ 誤：需要找到最優買賣時機</li>
+                            <li>✓ 正：只要上漲就立即交易</li>
+                        </ul>
+                    </li>
+                    <li><strong>面試技巧：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>先說明貪心思想</li>
+                            <li>用連續上漲的例子證明有效性</li>
+                            <li>對比 Stock I 展現理解深度</li>
+                            <li>說明時間和空間都是最優的</li>
+                        </ul>
+                    </li>
+                    <li><strong>系列題目：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>Stock I (#121) - 一次交易</li>
+                            <li>Stock II (#122) - 多次交易 ⭐ 本題</li>
+                            <li>Stock III (#123) - 最多兩次交易</li>
+                            <li>Stock IV (#188) - 最多 k 次交易</li>
+                            <li>Stock with Cooldown (#309) - 含冷凍期</li>
+                        </ul>
+                    </li>
+                    <li><strong>相似題目：</strong>Jump Game (55), Jump Game II (45)</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        hljs.highlightAll();
+        
+        function showLanguage(lang) {
+            document.querySelectorAll('.code-container').forEach(container => {
+                container.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.getElementById(lang).classList.add('active');
+            event.target.classList.add('active');
+        }
+    </script>
+</body>
+</html>

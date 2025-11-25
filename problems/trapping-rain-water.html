@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>42. Trapping Rain Water - LeetCode 學習平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f8fafc; line-height: 1.8; color: #334155; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .header { background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); color: white; padding: 40px; border-radius: 16px; margin-bottom: 30px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .back-btn { display: inline-block; color: white; text-decoration: none; background: rgba(255,255,255,0.2); padding: 10px 20px; border-radius: 8px; margin-bottom: 20px; transition: all 0.3s; }
+        .back-btn:hover { background: rgba(255,255,255,0.3); }
+        .problem-title { font-size: 2.5em; font-weight: 800; margin-bottom: 15px; }
+        .difficulty { display: inline-block; background: rgba(255,255,255,0.3); padding: 8px 20px; border-radius: 20px; font-weight: 600; font-size: 0.9em; }
+        .content-section { background: white; padding: 40px; border-radius: 16px; margin-bottom: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .section-title { font-size: 1.8em; color: #1e293b; margin-bottom: 25px; font-weight: 700; padding-bottom: 10px; border-bottom: 3px solid #ef4444; }
+        .description { font-size: 1.1em; line-height: 1.9; color: #475569; margin-bottom: 20px; }
+        .example-box { background: #fee2e2; border-left: 4px solid #ef4444; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .example-title { font-weight: 700; color: #dc2626; margin-bottom: 10px; font-size: 1.1em; }
+        .approach-box { background: #eff6ff; border-left: 4px solid #3b82f6; padding: 25px; border-radius: 8px; margin: 25px 0; }
+        .approach-title { font-weight: 700; color: #1e40af; margin-bottom: 15px; font-size: 1.3em; }
+        .complexity-box { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .complexity-item { margin: 10px 0; font-weight: 600; color: #92400e; }
+        .language-tabs { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+        .tab-btn { padding: 12px 28px; border: 2px solid #ef4444; background: white; color: #ef4444; border-radius: 8px; cursor: pointer; font-weight: 600; transition: all 0.3s; font-size: 1em; }
+        .tab-btn:hover { background: #fee2e2; }
+        .tab-btn.active { background: #ef4444; color: white; }
+        .code-container { display: none; margin-top: 20px; }
+        .code-container.active { display: block; }
+        pre { background: #282c34 !important; padding: 25px !important; border-radius: 12px; overflow-x: auto; margin: 0; }
+        code { font-family: 'Fira Code', 'Consolas', monospace; font-size: 0.95em; line-height: 1.6; }
+        ol, ul { margin-left: 30px; margin-top: 15px; }
+        li { margin: 12px 0; line-height: 1.8; }
+        strong { color: #1e293b; font-weight: 700; }
+        .visual-box { background: #f0f9ff; border: 2px solid #3b82f6; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        
+        @media (max-width: 768px) {
+            .container { padding: 10px; }
+            .header { padding: 25px; }
+            .problem-title { font-size: 1.8em; }
+            .content-section { padding: 25px; }
+            .tab-btn { padding: 10px 20px; font-size: 0.9em; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="../index.html" class="back-btn">← 返回題目列表</a>
+            <div class="problem-title">42. Trapping Rain Water</div>
+            <span class="difficulty">Hard</span>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">題目描述</h2>
+            <div class="description">
+                <p>給定 <code>n</code> 個非負整數表示每個寬度為 <code>1</code> 的柱子的高度圖，計算按此排列的柱子，下雨之後能接多少雨水。</p>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例 1:</div>
+                <pre><code>輸入: height = [0,1,0,2,1,0,1,3,2,1,2,1]
+輸出: 6
+解釋: 上面是由陣列 [0,1,0,2,1,0,1,3,2,1,2,1] 表示的高度圖，
+     在這種情況下，可以接 6 個單位的雨水（藍色部分表示雨水）。
+
+視覺化:
+     █
+ █   ██ █ 
+_█_█_██████_
+0 1 0 2 1 0 1 3 2 1 2 1
+
+接水區域（用 ~ 表示）:
+     █
+ █ ~ ██ █ 
+_█~█~██████_</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例 2:</div>
+                <pre><code>輸入: height = [4,2,0,3,2,5]
+輸出: 9</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">限制條件:</div>
+                <pre><code>n == height.length
+1 <= n <= 2 * 10^4
+0 <= height[i] <= 10^5</code></pre>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">解題思路</h2>
+            
+            <div class="approach-box">
+                <div class="approach-title">核心洞察</div>
+                <p><strong>關鍵問題：</strong>每個位置能接多少水？</p>
+                <p style="margin-top: 15px;"><strong>答案：</strong>取決於該位置左右兩側的最高柱子。</p>
+                <p style="margin-top: 15px;"><strong>公式：</strong></p>
+                <p style="background: #f0f9ff; padding: 15px; border-radius: 8px; margin-top: 10px;">
+                    water[i] = min(left_max[i], right_max[i]) - height[i]
+                </p>
+                <ul style="margin-top: 15px;">
+                    <li>left_max[i]: 位置 i 左側的最大高度（包含 i）</li>
+                    <li>right_max[i]: 位置 i 右側的最大高度（包含 i）</li>
+                    <li>如果 min(left_max, right_max) ≤ height[i]，則無法接水</li>
+                </ul>
+            </div>
+
+            <div class="approach-box">
+                <div class="approach-title">方法一：動態規劃（推薦）⭐</div>
+                <p>預先計算每個位置的左右最大值，然後計算每個位置的接水量。</p>
+                
+                <p style="margin-top: 15px;"><strong>步驟：</strong></p>
+                <ol>
+                    <li>從左到右遍歷，計算 left_max[i]</li>
+                    <li>從右到左遍歷，計算 right_max[i]</li>
+                    <li>對每個位置計算：min(left_max[i], right_max[i]) - height[i]</li>
+                    <li>累加所有位置的接水量</li>
+                </ol>
+                
+                <div class="visual-box">
+                    <p><strong>視覺化範例：height = [0,1,0,2,1,0,1,3,2,1,2,1]</strong></p>
+                    <pre style="background: white; padding: 15px; border-radius: 5px; margin-top: 10px;"><code>索引:     0  1  2  3  4  5  6  7  8  9 10 11
+height:   0  1  0  2  1  0  1  3  2  1  2  1
+left_max: 0  1  1  2  2  2  2  3  3  3  3  3
+right_max:3  3  3  3  3  3  3  3  2  2  2  1
+
+計算每個位置的接水量:
+i=0: min(0,3) - 0 = 0
+i=1: min(1,3) - 1 = 0
+i=2: min(1,3) - 0 = 1 ✓
+i=3: min(2,3) - 2 = 0
+i=4: min(2,3) - 1 = 1 ✓
+i=5: min(2,3) - 0 = 2 ✓
+i=6: min(2,3) - 1 = 1 ✓
+i=7: min(3,3) - 3 = 0
+i=8: min(3,2) - 2 = 0
+i=9: min(3,2) - 1 = 1 ✓
+i=10: min(3,2) - 2 = 0
+i=11: min(3,1) - 1 = 0
+
+總計: 1+1+2+1+1 = 6</code></pre>
+                </div>
+            </div>
+
+            <div class="approach-box">
+                <div class="approach-title">方法二：雙指標（空間優化）⭐⭐</div>
+                <p>使用雙指標從兩端向中間移動，動態維護左右最大值，空間複雜度 O(1)。</p>
+                
+                <p style="margin-top: 15px;"><strong>核心思想：</strong></p>
+                <p>如果 left_max < right_max，則左邊的接水量由 left_max 決定，可以立即計算。</p>
+                
+                <p style="margin-top: 15px;"><strong>步驟：</strong></p>
+                <ol>
+                    <li>設置左右指標 left, right</li>
+                    <li>維護 left_max 和 right_max</li>
+                    <li>比較 height[left] 和 height[right]：
+                        <ul>
+                            <li>如果 height[left] < height[right]：
+                                <ul>
+                                    <li>計算左側接水量</li>
+                                    <li>left++</li>
+                                </ul>
+                            </li>
+                            <li>否則：
+                                <ul>
+                                    <li>計算右側接水量</li>
+                                    <li>right--</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                </ol>
+            </div>
+
+            <div class="approach-box">
+                <div class="approach-title">方法三：單調堆疊</div>
+                <p>使用遞減的單調堆疊，當遇到更高的柱子時計算接水量。</p>
+                <p style="margin-top: 10px;"><strong>複雜度：</strong>時間 O(n)，空間 O(n)</p>
+                <p style="margin-top: 10px;">適合用於理解問題，但實作較複雜。</p>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">程式碼實現</h2>
+            
+            <div class="language-tabs">
+                <button class="tab-btn active" onclick="showLanguage('python')">Python</button>
+                <button class="tab-btn" onclick="showLanguage('cpp')">C++</button>
+                <button class="tab-btn" onclick="showLanguage('java')">Java</button>
+            </div>
+
+            <div id="python" class="code-container active">
+                <pre><code class="language-python">class Solution:
+    def trap(self, height: List[int]) -> int:
+        """
+        方法一：動態規劃
+        時間複雜度: O(n)
+        空間複雜度: O(n)
+        """
+        if not height:
+            return 0
+        
+        n = len(height)
+        
+        # 計算每個位置的左側最大值
+        left_max = [0] * n
+        left_max[0] = height[0]
+        for i in range(1, n):
+            left_max[i] = max(left_max[i-1], height[i])
+        
+        # 計算每個位置的右側最大值
+        right_max = [0] * n
+        right_max[n-1] = height[n-1]
+        for i in range(n-2, -1, -1):
+            right_max[i] = max(right_max[i+1], height[i])
+        
+        # 計算總接水量
+        water = 0
+        for i in range(n):
+            water += min(left_max[i], right_max[i]) - height[i]
+        
+        return water
+    
+    def trap_twopointers(self, height: List[int]) -> int:
+        """
+        方法二：雙指標（空間優化）⭐ 推薦
+        時間複雜度: O(n)
+        空間複雜度: O(1)
+        """
+        if not height:
+            return 0
+        
+        left, right = 0, len(height) - 1
+        left_max = right_max = 0
+        water = 0
+        
+        while left < right:
+            if height[left] < height[right]:
+                # 左邊較低，處理左側
+                if height[left] >= left_max:
+                    left_max = height[left]
+                else:
+                    water += left_max - height[left]
+                left += 1
+            else:
+                # 右邊較低，處理右側
+                if height[right] >= right_max:
+                    right_max = height[right]
+                else:
+                    water += right_max - height[right]
+                right -= 1
+        
+        return water</code></pre>
+            </div>
+
+            <div id="cpp" class="code-container">
+                <pre><code class="language-cpp">#include &lt;vector&gt;
+#include &lt;algorithm&gt;
+
+class Solution {
+public:
+    /**
+     * 方法一：動態規劃
+     * 時間複雜度: O(n)
+     * 空間複雜度: O(n)
+     */
+    int trap(vector<int>& height) {
+        if (height.empty()) return 0;
+        
+        int n = height.size();
+        
+        // 計算每個位置的左側最大值
+        vector<int> left_max(n);
+        left_max[0] = height[0];
+        for (int i = 1; i < n; i++) {
+            left_max[i] = max(left_max[i-1], height[i]);
+        }
+        
+        // 計算每個位置的右側最大值
+        vector<int> right_max(n);
+        right_max[n-1] = height[n-1];
+        for (int i = n-2; i >= 0; i--) {
+            right_max[i] = max(right_max[i+1], height[i]);
+        }
+        
+        // 計算總接水量
+        int water = 0;
+        for (int i = 0; i < n; i++) {
+            water += min(left_max[i], right_max[i]) - height[i];
+        }
+        
+        return water;
+    }
+    
+    /**
+     * 方法二：雙指標（空間優化）⭐ 推薦
+     * 時間複雜度: O(n)
+     * 空間複雜度: O(1)
+     */
+    int trap_twopointers(vector<int>& height) {
+        if (height.empty()) return 0;
+        
+        int left = 0, right = height.size() - 1;
+        int left_max = 0, right_max = 0;
+        int water = 0;
+        
+        while (left < right) {
+            if (height[left] < height[right]) {
+                // 左邊較低，處理左側
+                if (height[left] >= left_max) {
+                    left_max = height[left];
+                } else {
+                    water += left_max - height[left];
+                }
+                left++;
+            } else {
+                // 右邊較低，處理右側
+                if (height[right] >= right_max) {
+                    right_max = height[right];
+                } else {
+                    water += right_max - height[right];
+                }
+                right--;
+            }
+        }
+        
+        return water;
+    }
+};</code></pre>
+            </div>
+
+            <div id="java" class="code-container">
+                <pre><code class="language-java">class Solution {
+    /**
+     * 方法一：動態規劃
+     * 時間複雜度: O(n)
+     * 空間複雜度: O(n)
+     */
+    public int trap(int[] height) {
+        if (height == null || height.length == 0) return 0;
+        
+        int n = height.length;
+        
+        // 計算每個位置的左側最大值
+        int[] left_max = new int[n];
+        left_max[0] = height[0];
+        for (int i = 1; i < n; i++) {
+            left_max[i] = Math.max(left_max[i-1], height[i]);
+        }
+        
+        // 計算每個位置的右側最大值
+        int[] right_max = new int[n];
+        right_max[n-1] = height[n-1];
+        for (int i = n-2; i >= 0; i--) {
+            right_max[i] = Math.max(right_max[i+1], height[i]);
+        }
+        
+        // 計算總接水量
+        int water = 0;
+        for (int i = 0; i < n; i++) {
+            water += Math.min(left_max[i], right_max[i]) - height[i];
+        }
+        
+        return water;
+    }
+    
+    /**
+     * 方法二：雙指標（空間優化）⭐ 推薦
+     * 時間複雜度: O(n)
+     * 空間複雜度: O(1)
+     */
+    public int trap_twopointers(int[] height) {
+        if (height == null || height.length == 0) return 0;
+        
+        int left = 0, right = height.length - 1;
+        int left_max = 0, right_max = 0;
+        int water = 0;
+        
+        while (left < right) {
+            if (height[left] < height[right]) {
+                // 左邊較低，處理左側
+                if (height[left] >= left_max) {
+                    left_max = height[left];
+                } else {
+                    water += left_max - height[left];
+                }
+                left++;
+            } else {
+                // 右邊較低，處理右側
+                if (height[right] >= right_max) {
+                    right_max = height[right];
+                } else {
+                    water += right_max - height[right];
+                }
+                right--;
+            }
+        }
+        
+        return water;
+    }
+}</code></pre>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">複雜度分析</h2>
+            <div class="complexity-box">
+                <div class="complexity-item">方法一：動態規劃</div>
+                <ul style="color: #78716c; margin: 10px 0 10px 30px;">
+                    <li><strong>時間複雜度：</strong>O(n) - 三次遍歷</li>
+                    <li><strong>空間複雜度：</strong>O(n) - 需要兩個陣列</li>
+                </ul>
+                
+                <div class="complexity-item" style="margin-top: 20px;">方法二：雙指標 ⭐</div>
+                <ul style="color: #78716c; margin: 10px 0 10px 30px;">
+                    <li><strong>時間複雜度：</strong>O(n) - 一次遍歷</li>
+                    <li><strong>空間複雜度：</strong>O(1) - 只用常數變數</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">重點提示</h2>
+            <div class="complexity-box">
+                <ul>
+                    <li><strong>核心公式：</strong>water[i] = min(left_max, right_max) - height[i]</li>
+                    <li><strong>最優解：</strong>雙指標 O(n) 時間 + O(1) 空間</li>
+                    <li><strong>雙指標技巧：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>比較兩端高度，處理較矮的一側</li>
+                            <li>動態維護 left_max 和 right_max</li>
+                            <li>較矮一側的接水量確定（不受另一側影響）</li>
+                        </ul>
+                    </li>
+                    <li><strong>三種方法對比：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>DP: 清晰易懂，需要 O(n) 空間</li>
+                            <li>雙指標: 空間最優，稍難理解 ⭐</li>
+                            <li>堆疊: 理論有趣，實作複雜</li>
+                        </ul>
+                    </li>
+                    <li><strong>面試技巧：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>先說 DP 方法（展現思路）</li>
+                            <li>優化到雙指標（展現能力）</li>
+                            <li>用例子解釋雙指標邏輯</li>
+                            <li>說明為什麼較矮側可以確定</li>
+                        </ul>
+                    </li>
+                    <li><strong>常見錯誤：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>忘記更新 left_max 或 right_max</li>
+                            <li>邊界條件處理不當</li>
+                            <li>雙指標移動邏輯錯誤</li>
+                        </ul>
+                    </li>
+                    <li><strong>相似題目：</strong>Container With Most Water (11), Pour Water (755)</li>
+                    <li><strong>公司頻率：</strong>Google ⭐⭐⭐⭐⭐, Amazon ⭐⭐⭐⭐⭐, Facebook ⭐⭐⭐⭐</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        hljs.highlightAll();
+        
+        function showLanguage(lang) {
+            document.querySelectorAll('.code-container').forEach(container => {
+                container.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.getElementById(lang).classList.add('active');
+            event.target.classList.add('active');
+        }
+    </script>
+</body>
+</html>

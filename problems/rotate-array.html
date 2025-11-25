@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>189. Rotate Array - LeetCode 學習平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f8fafc; line-height: 1.8; color: #334155; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .header { background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: white; padding: 40px; border-radius: 16px; margin-bottom: 30px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .back-btn { display: inline-block; color: white; text-decoration: none; background: rgba(255,255,255,0.2); padding: 10px 20px; border-radius: 8px; margin-bottom: 20px; transition: all 0.3s; }
+        .back-btn:hover { background: rgba(255,255,255,0.3); }
+        .problem-title { font-size: 2.5em; font-weight: 800; margin-bottom: 15px; }
+        .difficulty { display: inline-block; background: rgba(255,255,255,0.3); padding: 8px 20px; border-radius: 20px; font-weight: 600; font-size: 0.9em; }
+        .content-section { background: white; padding: 40px; border-radius: 16px; margin-bottom: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .section-title { font-size: 1.8em; color: #1e293b; margin-bottom: 25px; font-weight: 700; padding-bottom: 10px; border-bottom: 3px solid #f59e0b; }
+        .description { font-size: 1.1em; line-height: 1.9; color: #475569; margin-bottom: 20px; }
+        .example-box { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .example-title { font-weight: 700; color: #d97706; margin-bottom: 10px; font-size: 1.1em; }
+        .approach-box { background: #eff6ff; border-left: 4px solid #3b82f6; padding: 25px; border-radius: 8px; margin: 25px 0; }
+        .approach-title { font-weight: 700; color: #1e40af; margin-bottom: 15px; font-size: 1.3em; }
+        .complexity-box { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .complexity-item { margin: 10px 0; font-weight: 600; color: #92400e; }
+        .language-tabs { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+        .tab-btn { padding: 12px 28px; border: 2px solid #f59e0b; background: white; color: #f59e0b; border-radius: 8px; cursor: pointer; font-weight: 600; transition: all 0.3s; font-size: 1em; }
+        .tab-btn:hover { background: #fef3c7; }
+        .tab-btn.active { background: #f59e0b; color: white; }
+        .code-container { display: none; margin-top: 20px; }
+        .code-container.active { display: block; }
+        pre { background: #282c34 !important; padding: 25px !important; border-radius: 12px; overflow-x: auto; margin: 0; }
+        code { font-family: 'Fira Code', 'Consolas', monospace; font-size: 0.95em; line-height: 1.6; }
+        ol, ul { margin-left: 30px; margin-top: 15px; }
+        li { margin: 12px 0; line-height: 1.8; }
+        strong { color: #1e293b; font-weight: 700; }
+        .visual-box { background: #f0f9ff; border: 2px solid #3b82f6; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        
+        @media (max-width: 768px) {
+            .container { padding: 10px; }
+            .header { padding: 25px; }
+            .problem-title { font-size: 1.8em; }
+            .content-section { padding: 25px; }
+            .tab-btn { padding: 10px 20px; font-size: 0.9em; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="../index.html" class="back-btn">← 返回題目列表</a>
+            <div class="problem-title">189. Rotate Array</div>
+            <span class="difficulty">Medium</span>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">題目描述</h2>
+            <div class="description">
+                <p>給定一個陣列，將陣列中的元素向右輪轉 <code>k</code> 個位置，其中 <code>k</code> 是非負數。</p>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例 1:</div>
+                <pre><code>輸入: nums = [1,2,3,4,5,6,7], k = 3
+輸出: [5,6,7,1,2,3,4]
+解釋:
+向右輪轉 1 步: [7,1,2,3,4,5,6]
+向右輪轉 2 步: [6,7,1,2,3,4,5]
+向右輪轉 3 步: [5,6,7,1,2,3,4]</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例 2:</div>
+                <pre><code>輸入: nums = [-1,-100,3,99], k = 2
+輸出: [3,99,-1,-100]
+解釋:
+向右輪轉 1 步: [99,-1,-100,3]
+向右輪轉 2 步: [3,99,-1,-100]</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">限制條件:</div>
+                <pre><code>1 <= nums.length <= 10^5
+-2^31 <= nums[i] <= 2^31 - 1
+0 <= k <= 10^5</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">進階:</div>
+                <p style="color: #d97706;">
+                    • 盡可能想出更多的解決方案，至少有三種不同的方法可以解決這個問題。<br>
+                    • 你能使用空間複雜度為 O(1) 的原地算法解決嗎？
+                </p>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">解題思路</h2>
+            
+            <div class="approach-box">
+                <div class="approach-title">方法一：三次反轉（推薦）⭐</div>
+                <p>最優解！使用三次反轉操作實現輪轉，空間複雜度 O(1)。</p>
+                
+                <p style="margin-top: 15px;"><strong>核心思想：</strong></p>
+                <p>反轉操作的巧妙組合可以實現陣列輪轉。</p>
+                
+                <p style="margin-top: 15px;"><strong>關鍵步驟（向右輪轉 k 步）：</strong></p>
+                <ol>
+                    <li>先對整個陣列進行反轉</li>
+                    <li>再對前 k 個元素進行反轉</li>
+                    <li>最後對剩餘的 n-k 個元素進行反轉</li>
+                </ol>
+                
+                <div class="visual-box">
+                    <p><strong>視覺化範例：nums = [1,2,3,4,5,6,7], k = 3</strong></p>
+                    <pre style="background: white; padding: 15px; border-radius: 5px; margin-top: 10px;"><code>原始陣列: [1, 2, 3, 4, 5, 6, 7]
+
+步驟 1: 反轉整個陣列
+       [7, 6, 5, 4, 3, 2, 1]
+
+步驟 2: 反轉前 k=3 個元素
+       [5, 6, 7, 4, 3, 2, 1]
+        ↑-------↑
+
+步驟 3: 反轉剩餘的 n-k=4 個元素
+       [5, 6, 7, 1, 2, 3, 4]
+                 ↑---------↑
+
+結果: [5, 6, 7, 1, 2, 3, 4] ✓</code></pre>
+                </div>
+                
+                <p style="margin-top: 15px;"><strong>為什麼有效？</strong></p>
+                <ul>
+                    <li>第一次反轉：將後 k 個元素移到前面（但順序相反）</li>
+                    <li>第二次反轉：將前 k 個元素恢復正確順序</li>
+                    <li>第三次反轉：將剩餘元素恢復正確順序</li>
+                </ul>
+            </div>
+
+            <div class="approach-box">
+                <div class="approach-title">方法二：使用額外陣列</div>
+                <p>最直觀的方法，使用新陣列存放輪轉後的結果。</p>
+                
+                <p style="margin-top: 15px;"><strong>步驟：</strong></p>
+                <ol>
+                    <li>創建新陣列 result</li>
+                    <li>將 nums[i] 放到 result[(i + k) % n]</li>
+                    <li>將 result 複製回 nums</li>
+                </ol>
+                
+                <p style="margin-top: 15px;"><strong>優缺點：</strong></p>
+                <ul>
+                    <li>優點：簡單易懂</li>
+                    <li>缺點：需要 O(n) 額外空間</li>
+                </ul>
+            </div>
+
+            <div class="approach-box">
+                <div class="approach-title">重要細節：處理 k > n</div>
+                <p>當 k 大於陣列長度時，需要取模：<code>k = k % n</code></p>
+                <p style="margin-top: 10px;">因為輪轉 n 步後陣列回到原位，所以只需輪轉 k % n 步。</p>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">程式碼實現</h2>
+            
+            <div class="language-tabs">
+                <button class="tab-btn active" onclick="showLanguage('python')">Python</button>
+                <button class="tab-btn" onclick="showLanguage('cpp')">C++</button>
+                <button class="tab-btn" onclick="showLanguage('java')">Java</button>
+            </div>
+
+            <div id="python" class="code-container active">
+                <pre><code class="language-python">class Solution:
+    def rotate(self, nums: List[int], k: int) -> None:
+        """
+        方法一：三次反轉（推薦）
+        時間複雜度: O(n)
+        空間複雜度: O(1)
+        
+        Do not return anything, modify nums in-place instead.
+        """
+        n = len(nums)
+        k = k % n  # 處理 k > n 的情況
+        
+        # 輔助函數：反轉陣列的 [left, right] 區間
+        def reverse(left: int, right: int) -> None:
+            while left < right:
+                nums[left], nums[right] = nums[right], nums[left]
+                left += 1
+                right -= 1
+        
+        # 三次反轉
+        reverse(0, n - 1)      # 反轉整個陣列
+        reverse(0, k - 1)      # 反轉前 k 個元素
+        reverse(k, n - 1)      # 反轉剩餘元素
+    
+    def rotate_extra_space(self, nums: List[int], k: int) -> None:
+        """
+        方法二：使用額外陣列
+        時間複雜度: O(n)
+        空間複雜度: O(n)
+        """
+        n = len(nums)
+        k = k % n
+        
+        # 創建新陣列
+        result = [0] * n
+        
+        # 將元素放到新位置
+        for i in range(n):
+            result[(i + k) % n] = nums[i]
+        
+        # 複製回原陣列
+        nums[:] = result</code></pre>
+            </div>
+
+            <div id="cpp" class="code-container">
+                <pre><code class="language-cpp">#include &lt;vector&gt;
+#include &lt;algorithm&gt;
+
+class Solution {
+public:
+    /**
+     * 方法一：三次反轉（推薦）
+     * 時間複雜度: O(n)
+     * 空間複雜度: O(1)
+     */
+    void rotate(vector<int>& nums, int k) {
+        int n = nums.size();
+        k = k % n;  // 處理 k > n 的情況
+        
+        // 三次反轉
+        reverse(nums.begin(), nums.end());           // 反轉整個陣列
+        reverse(nums.begin(), nums.begin() + k);     // 反轉前 k 個元素
+        reverse(nums.begin() + k, nums.end());       // 反轉剩餘元素
+    }
+    
+    /**
+     * 方法二：使用額外陣列
+     * 時間複雜度: O(n)
+     * 空間複雜度: O(n)
+     */
+    void rotate_extra_space(vector<int>& nums, int k) {
+        int n = nums.size();
+        k = k % n;
+        
+        vector<int> result(n);
+        
+        // 將元素放到新位置
+        for (int i = 0; i < n; i++) {
+            result[(i + k) % n] = nums[i];
+        }
+        
+        // 複製回原陣列
+        nums = result;
+    }
+};</code></pre>
+            </div>
+
+            <div id="java" class="code-container">
+                <pre><code class="language-java">class Solution {
+    /**
+     * 方法一：三次反轉（推薦）
+     * 時間複雜度: O(n)
+     * 空間複雜度: O(1)
+     */
+    public void rotate(int[] nums, int k) {
+        int n = nums.length;
+        k = k % n;  // 處理 k > n 的情況
+        
+        // 三次反轉
+        reverse(nums, 0, n - 1);      // 反轉整個陣列
+        reverse(nums, 0, k - 1);      // 反轉前 k 個元素
+        reverse(nums, k, n - 1);      // 反轉剩餘元素
+    }
+    
+    // 輔助函數：反轉陣列的 [left, right] 區間
+    private void reverse(int[] nums, int left, int right) {
+        while (left < right) {
+            int temp = nums[left];
+            nums[left] = nums[right];
+            nums[right] = temp;
+            left++;
+            right--;
+        }
+    }
+    
+    /**
+     * 方法二：使用額外陣列
+     * 時間複雜度: O(n)
+     * 空間複雜度: O(n)
+     */
+    public void rotate_extra_space(int[] nums, int k) {
+        int n = nums.length;
+        k = k % n;
+        
+        int[] result = new int[n];
+        
+        // 將元素放到新位置
+        for (int i = 0; i < n; i++) {
+            result[(i + k) % n] = nums[i];
+        }
+        
+        // 複製回原陣列
+        for (int i = 0; i < n; i++) {
+            nums[i] = result[i];
+        }
+    }
+}</code></pre>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">複雜度分析</h2>
+            <div class="complexity-box">
+                <div class="complexity-item">方法一：三次反轉</div>
+                <ul style="color: #78716c; margin: 10px 0 10px 30px;">
+                    <li><strong>時間複雜度：</strong>O(n) - 三次反轉，每次 O(n)</li>
+                    <li><strong>空間複雜度：</strong>O(1) - 原地操作</li>
+                </ul>
+                
+                <div class="complexity-item" style="margin-top: 20px;">方法二：額外陣列</div>
+                <ul style="color: #78716c; margin: 10px 0 10px 30px;">
+                    <li><strong>時間複雜度：</strong>O(n)</li>
+                    <li><strong>空間複雜度：</strong>O(n) - 需要新陣列</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">重點提示</h2>
+            <div class="complexity-box">
+                <ul>
+                    <li><strong>三次反轉技巧：</strong>這是最優解，必須掌握 ⭐</li>
+                    <li><strong>k % n 處理：</strong>避免不必要的輪轉，k > n 時必須取模</li>
+                    <li><strong>原地操作：</strong>三次反轉法滿足 O(1) 空間要求</li>
+                    <li><strong>反轉邏輯：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>整體反轉 → 後 k 個到前面（逆序）</li>
+                            <li>局部反轉 → 恢復正確順序</li>
+                        </ul>
+                    </li>
+                    <li><strong>邊界情況：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>k = 0 → 不需輪轉</li>
+                            <li>k = n → 等同於 k = 0</li>
+                            <li>k > n → 取模後處理</li>
+                            <li>n = 1 → 不需輪轉</li>
+                        </ul>
+                    </li>
+                    <li><strong>常見錯誤：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>忘記處理 k > n 的情況</li>
+                            <li>反轉順序錯誤</li>
+                            <li>邊界索引計算錯誤</li>
+                        </ul>
+                    </li>
+                    <li><strong>面試技巧：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>先說額外陣列法（展現思路）</li>
+                            <li>立即優化到三次反轉（展現能力）</li>
+                            <li>用例子驗證三次反轉的正確性</li>
+                            <li>說明時間和空間複雜度都是最優</li>
+                        </ul>
+                    </li>
+                    <li><strong>變形題：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>Rotate List (#61) - 輪轉鏈表</li>
+                            <li>Reverse String (#344) - 反轉字串</li>
+                        </ul>
+                    </li>
+                    <li><strong>相似題目：</strong>Reverse Words in a String (151), Rotate Image (48)</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        hljs.highlightAll();
+        
+        function showLanguage(lang) {
+            document.querySelectorAll('.code-container').forEach(container => {
+                container.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.getElementById(lang).classList.add('active');
+            event.target.classList.add('active');
+        }
+    </script>
+</body>
+</html>

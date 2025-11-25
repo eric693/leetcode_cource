@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>127. Word Ladder - LeetCode 學習平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f8fafc; line-height: 1.8; color: #334155; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .header { background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); color: white; padding: 40px; border-radius: 16px; margin-bottom: 30px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .back-btn { display: inline-block; color: white; text-decoration: none; background: rgba(255,255,255,0.2); padding: 10px 20px; border-radius: 8px; margin-bottom: 20px; transition: all 0.3s; }
+        .back-btn:hover { background: rgba(255,255,255,0.3); }
+        .problem-title { font-size: 2.5em; font-weight: 800; margin-bottom: 15px; }
+        .difficulty { display: inline-block; background: rgba(255,255,255,0.3); padding: 8px 20px; border-radius: 20px; font-weight: 600; font-size: 0.9em; }
+        .content-section { background: white; padding: 40px; border-radius: 16px; margin-bottom: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .section-title { font-size: 1.8em; color: #1e293b; margin-bottom: 25px; font-weight: 700; padding-bottom: 10px; border-bottom: 3px solid #ef4444; }
+        .description { font-size: 1.1em; line-height: 1.9; color: #475569; margin-bottom: 20px; }
+        .example-box { background: #fee2e2; border-left: 4px solid #ef4444; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .example-title { font-weight: 700; color: #dc2626; margin-bottom: 10px; font-size: 1.1em; }
+        .approach-box { background: #eff6ff; border-left: 4px solid #3b82f6; padding: 25px; border-radius: 8px; margin: 25px 0; }
+        .approach-title { font-weight: 700; color: #1e40af; margin-bottom: 15px; font-size: 1.3em; }
+        .complexity-box { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .complexity-item { margin: 10px 0; font-weight: 600; color: #92400e; }
+        .language-tabs { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+        .tab-btn { padding: 12px 28px; border: 2px solid #ef4444; background: white; color: #ef4444; border-radius: 8px; cursor: pointer; font-weight: 600; transition: all 0.3s; font-size: 1em; }
+        .tab-btn:hover { background: #fee2e2; }
+        .tab-btn.active { background: #ef4444; color: white; }
+        .code-container { display: none; margin-top: 20px; }
+        .code-container.active { display: block; }
+        pre { background: #282c34 !important; padding: 25px !important; border-radius: 12px; overflow-x: auto; margin: 0; }
+        code { font-family: 'Fira Code', 'Consolas', monospace; font-size: 0.95em; line-height: 1.6; }
+        ol, ul { margin-left: 30px; margin-top: 15px; }
+        li { margin: 12px 0; line-height: 1.8; }
+        strong { color: #1e293b; font-weight: 700; }
+        .visual-box { background: #f0f9ff; border: 2px solid #3b82f6; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        
+        @media (max-width: 768px) {
+            .container { padding: 10px; }
+            .header { padding: 25px; }
+            .problem-title { font-size: 1.8em; }
+            .content-section { padding: 25px; }
+            .tab-btn { padding: 10px 20px; font-size: 0.9em; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="../index.html" class="back-btn">← 返回題目列表</a>
+            <div class="problem-title">127. Word Ladder</div>
+            <span class="difficulty">Hard</span>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">題目描述</h2>
+            <div class="description">
+                <p>字典 <code>wordList</code> 中從單詞 <code>beginWord</code> 到 <code>endWord</code> 的<strong>轉換序列</strong>是一個按下述規格形成的序列：</p>
+                <ul style="margin-left: 30px; margin-top: 10px;">
+                    <li>序列中第一個單詞是 beginWord</li>
+                    <li>序列中最後一個單詞是 endWord</li>
+                    <li>每次轉換只能改變一個字母</li>
+                    <li>轉換過程中的中間單詞必須是字典 wordList 中的單詞</li>
+                </ul>
+                <p style="margin-top: 15px;">給你兩個單詞 beginWord 和 endWord 和一個字典 wordList，找到從 beginWord 到 endWord 的<strong>最短轉換序列</strong>中的<strong>單詞數量</strong>。如果不存在這樣的轉換序列，返回 0。</p>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例 1:</div>
+                <pre><code>輸入: beginWord = "hit", endWord = "cog", 
+     wordList = ["hot","dot","dog","lot","log","cog"]
+輸出: 5
+解釋: 一個最短轉換序列是 "hit" -> "hot" -> "dot" -> "dog" -> "cog"，返回它的長度 5。</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例 2:</div>
+                <pre><code>輸入: beginWord = "hit", endWord = "cog", 
+     wordList = ["hot","dot","dog","lot","log"]
+輸出: 0
+解釋: endWord "cog" 不在字典中，所以無法進行轉換。</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">限制條件:</div>
+                <pre><code>1 <= beginWord.length <= 10
+endWord.length == beginWord.length
+1 <= wordList.length <= 5000
+wordList[i].length == beginWord.length
+beginWord、endWord 和 wordList[i] 由小寫英文字母組成
+beginWord != endWord
+wordList 中的所有字串互不相同</code></pre>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">解題思路</h2>
+            
+            <div class="approach-box">
+                <div class="approach-title">核心概念：圖的最短路徑 (BFS)</div>
+                <p><strong>問題建模：</strong></p>
+                <ul>
+                    <li>將每個單詞視為圖中的一個節點</li>
+                    <li>如果兩個單詞只差一個字母，則它們之間有一條邊</li>
+                    <li>問題轉化為：從 beginWord 到 endWord 的最短路徑</li>
+                </ul>
+                <p style="margin-top: 15px;"><strong>為什麼用 BFS？</strong></p>
+                <p>BFS 保證找到的第一條路徑就是最短路徑（無權圖）。</p>
+            </div>
+
+            <div class="approach-box">
+                <div class="approach-title">方法一：BFS（推薦）⭐</div>
+                <p>使用廣度優先搜尋找最短轉換序列。</p>
+                
+                <p style="margin-top: 15px;"><strong>步驟：</strong></p>
+                <ol>
+                    <li>檢查 endWord 是否在 wordList 中，不在則返回 0</li>
+                    <li>將 beginWord 加入佇列，標記已訪問</li>
+                    <li>BFS 遍歷：
+                        <ul>
+                            <li>取出佇列頭部的單詞</li>
+                            <li>嘗試改變每個位置的字母（a-z）</li>
+                            <li>如果新單詞在 wordList 中且未訪問：
+                                <ul>
+                                    <li>如果是 endWord → 返回步數</li>
+                                    <li>否則加入佇列繼續搜尋</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>如果佇列為空還未找到 → 返回 0</li>
+                </ol>
+                
+                <div class="visual-box">
+                    <p><strong>視覺化範例：beginWord = "hit", endWord = "cog"</strong></p>
+                    <pre style="background: white; padding: 15px; border-radius: 5px; margin-top: 10px;"><code>字典: ["hot","dot","dog","lot","log","cog"]
+
+建立圖（只差一個字母的單詞相連）:
+hit → hot
+hot → dot, lot
+dot → dog, lot
+dog → cog, log
+lot → log
+log → cog
+
+BFS 搜尋過程:
+層級 1: hit
+層級 2: hot
+層級 3: dot, lot
+層級 4: dog, log
+層級 5: cog ✓ 找到！
+
+最短路徑: hit → hot → dot → dog → cog
+長度: 5</code></pre>
+                </div>
+            </div>
+
+            <div class="approach-box">
+                <div class="approach-title">優化技巧</div>
+                <ul>
+                    <li><strong>使用 Set：</strong>將 wordList 轉為 Set，查找 O(1)</li>
+                    <li><strong>雙向 BFS：</strong>從起點和終點同時搜尋，速度更快</li>
+                    <li><strong>提前終止：</strong>找到 endWord 立即返回</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">程式碼實現</h2>
+            
+            <div class="language-tabs">
+                <button class="tab-btn active" onclick="showLanguage('python')">Python</button>
+                <button class="tab-btn" onclick="showLanguage('cpp')">C++</button>
+                <button class="tab-btn" onclick="showLanguage('java')">Java</button>
+            </div>
+
+            <div id="python" class="code-container active">
+                <pre><code class="language-python">from collections import deque
+
+class Solution:
+    def ladderLength(self, beginWord: str, endWord: str, wordList: List[str]) -> int:
+        """
+        方法：BFS
+        時間複雜度: O(M^2 * N) - M 是單詞長度，N 是單詞數量
+        空間複雜度: O(N)
+        """
+        # 將 wordList 轉為 set，加速查找
+        word_set = set(wordList)
+        
+        # endWord 必須在 wordList 中
+        if endWord not in word_set:
+            return 0
+        
+        # BFS 佇列：(當前單詞, 步數)
+        queue = deque([(beginWord, 1)])
+        visited = {beginWord}
+        
+        while queue:
+            current_word, steps = queue.popleft()
+            
+            # 嘗試改變每個位置的字母
+            for i in range(len(current_word)):
+                # 嘗試 a-z
+                for c in 'abcdefghijklmnopqrstuvwxyz':
+                    # 構造新單詞
+                    new_word = current_word[:i] + c + current_word[i+1:]
+                    
+                    # 找到目標
+                    if new_word == endWord:
+                        return steps + 1
+                    
+                    # 新單詞在字典中且未訪問
+                    if new_word in word_set and new_word not in visited:
+                        visited.add(new_word)
+                        queue.append((new_word, steps + 1))
+        
+        # 無法到達
+        return 0</code></pre>
+            </div>
+
+            <div id="cpp" class="code-container">
+                <pre><code class="language-cpp">#include &lt;string&gt;
+#include &lt;vector&gt;
+#include &lt;unordered_set&gt;
+#include &lt;queue&gt;
+
+class Solution {
+public:
+    /**
+     * 方法：BFS
+     * 時間複雜度: O(M^2 * N)
+     * 空間複雜度: O(N)
+     */
+    int ladderLength(string beginWord, string endWord, vector<string>& wordList) {
+        // 將 wordList 轉為 set
+        unordered_set<string> word_set(wordList.begin(), wordList.end());
+        
+        // endWord 必須在 wordList 中
+        if (word_set.find(endWord) == word_set.end()) {
+            return 0;
+        }
+        
+        // BFS 佇列：(當前單詞, 步數)
+        queue<pair<string, int>> q;
+        q.push({beginWord, 1});
+        
+        unordered_set<string> visited;
+        visited.insert(beginWord);
+        
+        while (!q.empty()) {
+            auto [current_word, steps] = q.front();
+            q.pop();
+            
+            // 嘗試改變每個位置的字母
+            for (int i = 0; i < current_word.length(); i++) {
+                string new_word = current_word;
+                
+                // 嘗試 a-z
+                for (char c = 'a'; c <= 'z'; c++) {
+                    new_word[i] = c;
+                    
+                    // 找到目標
+                    if (new_word == endWord) {
+                        return steps + 1;
+                    }
+                    
+                    // 新單詞在字典中且未訪問
+                    if (word_set.count(new_word) && !visited.count(new_word)) {
+                        visited.insert(new_word);
+                        q.push({new_word, steps + 1});
+                    }
+                }
+            }
+        }
+        
+        // 無法到達
+        return 0;
+    }
+};</code></pre>
+            </div>
+
+            <div id="java" class="code-container">
+                <pre><code class="language-java">import java.util.*;
+
+class Solution {
+    /**
+     * 方法：BFS
+     * 時間複雜度: O(M^2 * N)
+     * 空間複雜度: O(N)
+     */
+    public int ladderLength(String beginWord, String endWord, List<String> wordList) {
+        // 將 wordList 轉為 set
+        Set<String> wordSet = new HashSet<>(wordList);
+        
+        // endWord 必須在 wordList 中
+        if (!wordSet.contains(endWord)) {
+            return 0;
+        }
+        
+        // BFS 佇列
+        Queue<Pair<String, Integer>> queue = new LinkedList<>();
+        queue.offer(new Pair<>(beginWord, 1));
+        
+        Set<String> visited = new HashSet<>();
+        visited.add(beginWord);
+        
+        while (!queue.isEmpty()) {
+            Pair<String, Integer> current = queue.poll();
+            String currentWord = current.getKey();
+            int steps = current.getValue();
+            
+            // 嘗試改變每個位置的字母
+            char[] chars = currentWord.toCharArray();
+            for (int i = 0; i < chars.length; i++) {
+                char originalChar = chars[i];
+                
+                // 嘗試 a-z
+                for (char c = 'a'; c <= 'z'; c++) {
+                    chars[i] = c;
+                    String newWord = new String(chars);
+                    
+                    // 找到目標
+                    if (newWord.equals(endWord)) {
+                        return steps + 1;
+                    }
+                    
+                    // 新單詞在字典中且未訪問
+                    if (wordSet.contains(newWord) && !visited.contains(newWord)) {
+                        visited.add(newWord);
+                        queue.offer(new Pair<>(newWord, steps + 1));
+                    }
+                }
+                
+                // 恢復原字母
+                chars[i] = originalChar;
+            }
+        }
+        
+        // 無法到達
+        return 0;
+    }
+}</code></pre>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">複雜度分析</h2>
+            <div class="complexity-box">
+                <div class="complexity-item">時間複雜度: O(M² × N)</div>
+                <p style="color: #78716c; margin: 10px 0;">
+                    M 是單詞長度，N 是單詞數量。<br>
+                    對每個單詞（N 個），嘗試改變每個位置（M 個），每次構造新單詞 O(M)。
+                </p>
+                
+                <div class="complexity-item" style="margin-top: 20px;">空間複雜度: O(N)</div>
+                <p style="color: #78716c; margin: 10px 0;">
+                    Set 和 visited 集合最多存儲 N 個單詞，佇列最多存儲 N 個單詞。
+                </p>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">重點提示</h2>
+            <div class="complexity-box">
+                <ul>
+                    <li><strong>圖論建模：</strong>單詞 → 節點，差一個字母 → 邊</li>
+                    <li><strong>BFS 保證最短：</strong>第一次到達就是最短路徑</li>
+                    <li><strong>Set 加速：</strong>將 wordList 轉為 Set，查找 O(1)</li>
+                    <li><strong>visited 避免重複：</strong>防止環路和重複訪問</li>
+                    <li><strong>邊界情況：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>endWord 不在字典 → 返回 0</li>
+                            <li>beginWord == endWord → 返回 1（題目保證不相等）</li>
+                            <li>字典為空 → 返回 0</li>
+                        </ul>
+                    </li>
+                    <li><strong>優化技巧：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>雙向 BFS：從兩端同時搜尋</li>
+                            <li>預處理：建立通用狀態圖（如 h*t, *ot）</li>
+                        </ul>
+                    </li>
+                    <li><strong>面試技巧：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>先說明圖論建模思路</li>
+                            <li>解釋為什麼用 BFS 而非 DFS</li>
+                            <li>說明 Set 的作用</li>
+                            <li>提到雙向 BFS 優化</li>
+                        </ul>
+                    </li>
+                    <li><strong>相似題目：</strong>Word Ladder II (126), Minimum Genetic Mutation (433)</li>
+                    <li><strong>公司頻率：</strong>Amazon ⭐⭐⭐⭐⭐, LinkedIn ⭐⭐⭐⭐, Facebook ⭐⭐⭐⭐</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        hljs.highlightAll();
+        
+        function showLanguage(lang) {
+            document.querySelectorAll('.code-container').forEach(container => {
+                container.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.getElementById(lang).classList.add('active');
+            event.target.classList.add('active');
+        }
+    </script>
+</body>
+</html>

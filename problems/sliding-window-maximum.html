@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>239. Sliding Window Maximum - LeetCode 學習平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f8fafc; line-height: 1.8; color: #334155; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .header { background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); color: white; padding: 40px; border-radius: 16px; margin-bottom: 30px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .back-btn { display: inline-block; color: white; text-decoration: none; background: rgba(255,255,255,0.2); padding: 10px 20px; border-radius: 8px; margin-bottom: 20px; transition: all 0.3s; }
+        .back-btn:hover { background: rgba(255,255,255,0.3); }
+        .problem-title { font-size: 2.5em; font-weight: 800; margin-bottom: 15px; }
+        .difficulty { display: inline-block; background: rgba(255,255,255,0.3); padding: 8px 20px; border-radius: 20px; font-weight: 600; font-size: 0.9em; }
+        .content-section { background: white; padding: 40px; border-radius: 16px; margin-bottom: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .section-title { font-size: 1.8em; color: #1e293b; margin-bottom: 25px; font-weight: 700; padding-bottom: 10px; border-bottom: 3px solid #ef4444; }
+        .description { font-size: 1.1em; line-height: 1.9; color: #475569; margin-bottom: 20px; }
+        .example-box { background: #fee2e2; border-left: 4px solid #ef4444; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .example-title { font-weight: 700; color: #dc2626; margin-bottom: 10px; font-size: 1.1em; }
+        .approach-box { background: #eff6ff; border-left: 4px solid #3b82f6; padding: 25px; border-radius: 8px; margin: 25px 0; }
+        .approach-title { font-weight: 700; color: #1e40af; margin-bottom: 15px; font-size: 1.3em; }
+        .complexity-box { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .complexity-item { margin: 10px 0; font-weight: 600; color: #92400e; }
+        .language-tabs { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+        .tab-btn { padding: 12px 28px; border: 2px solid #ef4444; background: white; color: #ef4444; border-radius: 8px; cursor: pointer; font-weight: 600; transition: all 0.3s; font-size: 1em; }
+        .tab-btn:hover { background: #fee2e2; }
+        .tab-btn.active { background: #ef4444; color: white; }
+        .code-container { display: none; margin-top: 20px; }
+        .code-container.active { display: block; }
+        pre { background: #282c34 !important; padding: 25px !important; border-radius: 12px; overflow-x: auto; margin: 0; }
+        code { font-family: 'Fira Code', 'Consolas', monospace; font-size: 0.95em; line-height: 1.6; }
+        ol, ul { margin-left: 30px; margin-top: 15px; }
+        li { margin: 12px 0; line-height: 1.8; }
+        strong { color: #1e293b; font-weight: 700; }
+        .visual-box { background: #f0f9ff; border: 2px solid #3b82f6; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        
+        @media (max-width: 768px) {
+            .container { padding: 10px; }
+            .header { padding: 25px; }
+            .problem-title { font-size: 1.8em; }
+            .content-section { padding: 25px; }
+            .tab-btn { padding: 10px 20px; font-size: 0.9em; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="../index.html" class="back-btn">← 返回題目列表</a>
+            <div class="problem-title">239. Sliding Window Maximum</div>
+            <span class="difficulty">Hard</span>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">題目描述</h2>
+            <div class="description">
+                <p>給定一個整數陣列 <code>nums</code>，有一個大小為 <code>k</code> 的滑動窗口從陣列的最左側移動到最右側。你只可以看到在滑動窗口內的 <code>k</code> 個數字。滑動窗口每次只向右移動一位。</p>
+                <p style="margin-top: 15px;">返回滑動窗口中的最大值。</p>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例 1:</div>
+                <pre><code>輸入: nums = [1,3,-1,-3,5,3,6,7], k = 3
+輸出: [3,3,5,5,6,7]
+解釋: 
+滑動窗口的位置                最大值
+---------------               -----
+[1  3  -1] -3  5  3  6  7       3
+ 1 [3  -1  -3] 5  3  6  7       3
+ 1  3 [-1  -3  5] 3  6  7       5
+ 1  3  -1 [-3  5  3] 6  7       5
+ 1  3  -1  -3 [5  3  6] 7       6
+ 1  3  -1  -3  5 [3  6  7]      7</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例 2:</div>
+                <pre><code>輸入: nums = [1], k = 1
+輸出: [1]</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">限制條件:</div>
+                <pre><code>1 <= nums.length <= 10^5
+-10^4 <= nums[i] <= 10^4
+1 <= k <= nums.length</code></pre>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">解題思路</h2>
+            
+            <div class="approach-box">
+                <div class="approach-title">方法：單調遞減佇列（Monotonic Deque）⭐</div>
+                <p>使用雙端佇列（deque）維護一個單調遞減的索引序列。</p>
+                
+                <p style="margin-top: 15px;"><strong>核心思想：</strong></p>
+                <p>佇列中保存索引，且對應的值是遞減的。佇列頭部永遠是當前窗口的最大值。</p>
+                
+                <p style="margin-top: 15px;"><strong>為什麼有效？</strong></p>
+                <ul>
+                    <li>如果新元素比佇列尾部的元素大，則尾部元素永遠不會成為最大值 → 移除</li>
+                    <li>佇列頭部的索引如果已經滑出窗口 → 移除</li>
+                    <li>佇列頭部永遠是當前窗口的最大值索引</li>
+                </ul>
+                
+                <p style="margin-top: 15px;"><strong>步驟：</strong></p>
+                <ol>
+                    <li>遍歷陣列，對每個元素：
+                        <ul>
+                            <li>移除佇列中所有小於當前元素的索引（從尾部移除）</li>
+                            <li>移除超出窗口範圍的索引（從頭部移除）</li>
+                            <li>將當前索引加入佇列尾部</li>
+                            <li>如果窗口已形成（i >= k-1），記錄佇列頭部對應的值</li>
+                        </ul>
+                    </li>
+                </ol>
+                
+                <div class="visual-box">
+                    <p><strong>視覺化範例：nums = [1,3,-1,-3,5], k = 3</strong></p>
+                    <pre style="background: white; padding: 15px; border-radius: 5px; margin-top: 10px;"><code>i=0, num=1:
+  deque: [0]  (值: [1])
+  窗口未形成
+
+i=1, num=3:
+  3 > 1 → 移除索引 0
+  deque: [1]  (值: [3])
+  窗口未形成
+
+i=2, num=-1:
+  -1 < 3 → 保留
+  deque: [1, 2]  (值: [3, -1])
+  窗口 [1,3,-1] → max = nums[1] = 3 ✓
+
+i=3, num=-3:
+  -3 < -1 → 保留
+  deque: [1, 2, 3]  (值: [3, -1, -3])
+  窗口 [3,-1,-3] → max = nums[1] = 3 ✓
+
+i=4, num=5:
+  5 > -3 → 移除索引 3
+  5 > -1 → 移除索引 2
+  5 > 3 → 移除索引 1
+  索引 1 已滑出窗口（4-1=3 > 1）
+  deque: [4]  (值: [5])
+  窗口 [-1,-3,5] → max = nums[4] = 5 ✓
+
+結果: [3, 3, 5]</code></pre>
+                </div>
+            </div>
+
+            <div class="approach-box">
+                <div class="approach-title">為什麼不用其他方法？</div>
+                <ul>
+                    <li><strong>暴力法 O(nk)：</strong>對每個窗口遍歷找最大值 → 太慢</li>
+                    <li><strong>堆積 O(n log n)：</strong>無法高效移除窗口外的元素</li>
+                    <li><strong>單調佇列 O(n) ⭐：</strong>每個元素最多進出佇列一次</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">程式碼實現</h2>
+            
+            <div class="language-tabs">
+                <button class="tab-btn active" onclick="showLanguage('python')">Python</button>
+                <button class="tab-btn" onclick="showLanguage('cpp')">C++</button>
+                <button class="tab-btn" onclick="showLanguage('java')">Java</button>
+            </div>
+
+            <div id="python" class="code-container active">
+                <pre><code class="language-python">from collections import deque
+
+class Solution:
+    def maxSlidingWindow(self, nums: List[int], k: int) -> List[int]:
+        """
+        方法：單調遞減佇列
+        時間複雜度: O(n)
+        空間複雜度: O(k)
+        """
+        if not nums or k == 0:
+            return []
+        
+        dq = deque()  # 存儲索引
+        result = []
+        
+        for i in range(len(nums)):
+            # 移除超出窗口範圍的索引
+            while dq and dq[0] < i - k + 1:
+                dq.popleft()
+            
+            # 移除所有小於當前元素的索引
+            while dq and nums[dq[-1]] < nums[i]:
+                dq.pop()
+            
+            # 加入當前索引
+            dq.append(i)
+            
+            # 窗口形成後，記錄最大值
+            if i >= k - 1:
+                result.append(nums[dq[0]])
+        
+        return result</code></pre>
+            </div>
+
+            <div id="cpp" class="code-container">
+                <pre><code class="language-cpp">#include &lt;vector&gt;
+#include &lt;deque&gt;
+
+class Solution {
+public:
+    /**
+     * 方法：單調遞減佇列
+     * 時間複雜度: O(n)
+     * 空間複雜度: O(k)
+     */
+    vector<int> maxSlidingWindow(vector<int>& nums, int k) {
+        if (nums.empty() || k == 0) return {};
+        
+        deque<int> dq;  // 存儲索引
+        vector<int> result;
+        
+        for (int i = 0; i < nums.size(); i++) {
+            // 移除超出窗口範圍的索引
+            while (!dq.empty() && dq.front() < i - k + 1) {
+                dq.pop_front();
+            }
+            
+            // 移除所有小於當前元素的索引
+            while (!dq.empty() && nums[dq.back()] < nums[i]) {
+                dq.pop_back();
+            }
+            
+            // 加入當前索引
+            dq.push_back(i);
+            
+            // 窗口形成後，記錄最大值
+            if (i >= k - 1) {
+                result.push_back(nums[dq.front()]);
+            }
+        }
+        
+        return result;
+    }
+};</code></pre>
+            </div>
+
+            <div id="java" class="code-container">
+                <pre><code class="language-java">import java.util.*;
+
+class Solution {
+    /**
+     * 方法：單調遞減佇列
+     * 時間複雜度: O(n)
+     * 空間複雜度: O(k)
+     */
+    public int[] maxSlidingWindow(int[] nums, int k) {
+        if (nums == null || nums.length == 0 || k == 0) {
+            return new int[0];
+        }
+        
+        Deque<Integer> dq = new LinkedList<>();  // 存儲索引
+        int[] result = new int[nums.length - k + 1];
+        int idx = 0;
+        
+        for (int i = 0; i < nums.length; i++) {
+            // 移除超出窗口範圍的索引
+            while (!dq.isEmpty() && dq.peekFirst() < i - k + 1) {
+                dq.pollFirst();
+            }
+            
+            // 移除所有小於當前元素的索引
+            while (!dq.isEmpty() && nums[dq.peekLast()] < nums[i]) {
+                dq.pollLast();
+            }
+            
+            // 加入當前索引
+            dq.offerLast(i);
+            
+            // 窗口形成後，記錄最大值
+            if (i >= k - 1) {
+                result[idx++] = nums[dq.peekFirst()];
+            }
+        }
+        
+        return result;
+    }
+}</code></pre>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">複雜度分析</h2>
+            <div class="complexity-box">
+                <div class="complexity-item">時間複雜度: O(n)</div>
+                <p style="color: #78716c; margin: 10px 0;">
+                    每個元素最多進出佇列一次，總共 2n 次操作。
+                </p>
+                
+                <div class="complexity-item" style="margin-top: 20px;">空間複雜度: O(k)</div>
+                <p style="color: #78716c; margin: 10px 0;">
+                    佇列中最多存儲 k 個索引（窗口大小）。
+                </p>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">重點提示</h2>
+            <div class="complexity-box">
+                <ul>
+                    <li><strong>單調佇列：</strong>維護遞減的索引序列</li>
+                    <li><strong>佇列存索引：</strong>而非存值，方便判斷是否在窗口內</li>
+                    <li><strong>兩次移除：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>從頭部移除：超出窗口的索引</li>
+                            <li>從尾部移除：比當前元素小的索引</li>
+                        </ul>
+                    </li>
+                    <li><strong>佇列性質：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>頭部：窗口最大值的索引</li>
+                            <li>遞減：確保能快速找到次大值</li>
+                        </ul>
+                    </li>
+                    <li><strong>常見錯誤：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>佇列存值而非索引</li>
+                            <li>忘記移除超出窗口的元素</li>
+                            <li>窗口起始判斷錯誤（應該是 i >= k-1）</li>
+                        </ul>
+                    </li>
+                    <li><strong>面試技巧：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>先說暴力法 O(nk)</li>
+                            <li>解釋為什麼堆積不夠優</li>
+                            <li>引入單調佇列概念</li>
+                            <li>用例子演示佇列變化</li>
+                        </ul>
+                    </li>
+                    <li><strong>相似題目：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>Sliding Window Median (480)</li>
+                            <li>Longest Continuous Subarray (1438)</li>
+                        </ul>
+                    </li>
+                    <li><strong>公司頻率：</strong>Amazon ⭐⭐⭐⭐⭐, Google ⭐⭐⭐⭐, Microsoft ⭐⭐⭐⭐</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        hljs.highlightAll();
+        
+        function showLanguage(lang) {
+            document.querySelectorAll('.code-container').forEach(container => {
+                container.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.getElementById(lang).classList.add('active');
+            event.target.classList.add('active');
+        }
+    </script>
+</body>
+</html>

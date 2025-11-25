@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>10. Regular Expression Matching - LeetCode 學習平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f8fafc; line-height: 1.8; color: #334155; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .header { background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); color: white; padding: 40px; border-radius: 16px; margin-bottom: 30px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .back-btn { display: inline-block; color: white; text-decoration: none; background: rgba(255,255,255,0.2); padding: 10px 20px; border-radius: 8px; margin-bottom: 20px; transition: all 0.3s; }
+        .back-btn:hover { background: rgba(255,255,255,0.3); }
+        .problem-title { font-size: 2.5em; font-weight: 800; margin-bottom: 15px; }
+        .difficulty { display: inline-block; background: rgba(255,255,255,0.3); padding: 8px 20px; border-radius: 20px; font-weight: 600; font-size: 0.9em; }
+        .content-section { background: white; padding: 40px; border-radius: 16px; margin-bottom: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .section-title { font-size: 1.8em; color: #1e293b; margin-bottom: 25px; font-weight: 700; padding-bottom: 10px; border-bottom: 3px solid #ef4444; }
+        .description { font-size: 1.1em; line-height: 1.9; color: #475569; margin-bottom: 20px; }
+        .example-box { background: #fee2e2; border-left: 4px solid #ef4444; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .example-title { font-weight: 700; color: #dc2626; margin-bottom: 10px; font-size: 1.1em; }
+        .approach-box { background: #eff6ff; border-left: 4px solid #3b82f6; padding: 25px; border-radius: 8px; margin: 25px 0; }
+        .approach-title { font-weight: 700; color: #1e40af; margin-bottom: 15px; font-size: 1.3em; }
+        .complexity-box { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .complexity-item { margin: 10px 0; font-weight: 600; color: #92400e; }
+        .language-tabs { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+        .tab-btn { padding: 12px 28px; border: 2px solid #ef4444; background: white; color: #ef4444; border-radius: 8px; cursor: pointer; font-weight: 600; transition: all 0.3s; font-size: 1em; }
+        .tab-btn:hover { background: #fee2e2; }
+        .tab-btn.active { background: #ef4444; color: white; }
+        .code-container { display: none; margin-top: 20px; }
+        .code-container.active { display: block; }
+        pre { background: #282c34 !important; padding: 25px !important; border-radius: 12px; overflow-x: auto; margin: 0; }
+        code { font-family: 'Fira Code', 'Consolas', monospace; font-size: 0.95em; line-height: 1.6; }
+        ol, ul { margin-left: 30px; margin-top: 15px; }
+        li { margin: 12px 0; line-height: 1.8; }
+        strong { color: #1e293b; font-weight: 700; }
+        .visual-box { background: #f0f9ff; border: 2px solid #3b82f6; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        table { border-collapse: collapse; width: 100%; margin: 15px 0; }
+        th, td { border: 1px solid #e2e8f0; padding: 12px; text-align: left; }
+        th { background: #f1f5f9; font-weight: 600; }
+        
+        @media (max-width: 768px) {
+            .container { padding: 10px; }
+            .header { padding: 25px; }
+            .problem-title { font-size: 1.8em; }
+            .content-section { padding: 25px; }
+            .tab-btn { padding: 10px 20px; font-size: 0.9em; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="../index.html" class="back-btn">← 返回題目列表</a>
+            <div class="problem-title">10. Regular Expression Matching</div>
+            <span class="difficulty">Hard</span>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">題目描述</h2>
+            <div class="description">
+                <p>給定一個字串 <code>s</code> 和一個字元模式 <code>p</code>，實現一個支持 <code>'.'</code> 和 <code>'*'</code> 的正則表達式匹配。</p>
+                <ul style="margin-left: 30px; margin-top: 15px;">
+                    <li><code>'.'</code> 匹配任意單個字元</li>
+                    <li><code>'*'</code> 匹配零個或多個前面的那一個元素</li>
+                </ul>
+                <p style="margin-top: 15px;">所謂匹配，是要涵蓋<strong>整個</strong>字串 <code>s</code> 的，而不是部分字串。</p>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例 1:</div>
+                <pre><code>輸入: s = "aa", p = "a"
+輸出: false
+解釋: "a" 無法匹配 "aa" 整個字串</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例 2:</div>
+                <pre><code>輸入: s = "aa", p = "a*"
+輸出: true
+解釋: '*' 代表可以匹配零個或多個前面的那一個元素，即 'a'。
+     因此重複 'a' 一次，字串就是 "aa"。</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例 3:</div>
+                <pre><code>輸入: s = "ab", p = ".*"
+輸出: true
+解釋: ".*" 表示可匹配零個或多個('*')任意字元('.')。</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例 4:</div>
+                <pre><code>輸入: s = "aab", p = "c*a*b"
+輸出: true
+解釋: c 可以不被重複，a 可以被重複 2 次。因此可以匹配字串 "aab"。</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例 5:</div>
+                <pre><code>輸入: s = "mississippi", p = "mis*is*p*."
+輸出: false</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">限制條件:</div>
+                <pre><code>1 <= s.length <= 20
+1 <= p.length <= 20
+s 只包含從 a-z 的小寫字母
+p 只包含從 a-z 的小寫字母，以及字元 . 和 *
+保證每次出現字元 * 時，前面都匹配到有效的字元</code></pre>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">解題思路</h2>
+            
+            <div class="approach-box">
+                <div class="approach-title">核心概念：動態規劃</div>
+                <p><strong>為什麼用 DP？</strong></p>
+                <p>匹配問題有最優子結構：整個字串的匹配可以由子字串的匹配決定。</p>
+                
+                <p style="margin-top: 15px;"><strong>狀態定義：</strong></p>
+                <p><code>dp[i][j]</code> 表示 s 的前 i 個字元與 p 的前 j 個字元是否匹配</p>
+                
+                <p style="margin-top: 15px;"><strong>關鍵規則：</strong></p>
+                <ul>
+                    <li><strong>普通字元：</strong>s[i-1] == p[j-1] → dp[i][j] = dp[i-1][j-1]</li>
+                    <li><strong>'.' 字元：</strong>匹配任意字元 → dp[i][j] = dp[i-1][j-1]</li>
+                    <li><strong>'*' 字元：</strong>複雜情況（見下方詳解）</li>
+                </ul>
+            </div>
+
+            <div class="approach-box">
+                <div class="approach-title">處理 '*' 的邏輯</div>
+                <p>'*' 可以讓前一個字元重複 0 次或多次。</p>
+                
+                <p style="margin-top: 15px;"><strong>兩種情況：</strong></p>
+                <ol>
+                    <li><strong>匹配 0 次（忽略 x*）：</strong>
+                        <ul>
+                            <li>dp[i][j] = dp[i][j-2]</li>
+                            <li>例如："ab" 匹配 "abc*" → 忽略 c*</li>
+                        </ul>
+                    </li>
+                    <li><strong>匹配 1 次或多次：</strong>
+                        <ul>
+                            <li>前提：s[i-1] 與 p[j-2] 匹配（p[j-2] 是 * 前面的字元）</li>
+                            <li>dp[i][j] = dp[i-1][j]</li>
+                            <li>例如："aaa" 匹配 "a*" → 繼續用 a* 匹配前面的字元</li>
+                        </ul>
+                    </li>
+                </ol>
+                
+                <div class="visual-box">
+                    <p><strong>DP 表格範例：s = "aab", p = "c*a*b"</strong></p>
+                    <table>
+                        <tr>
+                            <th></th>
+                            <th>""</th>
+                            <th>c</th>
+                            <th>c*</th>
+                            <th>c*a</th>
+                            <th>c*a*</th>
+                            <th>c*a*b</th>
+                        </tr>
+                        <tr>
+                            <td><strong>""</strong></td>
+                            <td>T</td>
+                            <td>F</td>
+                            <td>T</td>
+                            <td>F</td>
+                            <td>T</td>
+                            <td>F</td>
+                        </tr>
+                        <tr>
+                            <td><strong>a</strong></td>
+                            <td>F</td>
+                            <td>F</td>
+                            <td>F</td>
+                            <td>T</td>
+                            <td>T</td>
+                            <td>F</td>
+                        </tr>
+                        <tr>
+                            <td><strong>aa</strong></td>
+                            <td>F</td>
+                            <td>F</td>
+                            <td>F</td>
+                            <td>F</td>
+                            <td>T</td>
+                            <td>F</td>
+                        </tr>
+                        <tr>
+                            <td><strong>aab</strong></td>
+                            <td>F</td>
+                            <td>F</td>
+                            <td>F</td>
+                            <td>F</td>
+                            <td>F</td>
+                            <td>T</td>
+                        </tr>
+                    </table>
+                    <p style="margin-top: 10px;">dp[3][6] = T，表示 "aab" 可以匹配 "c*a*b"</p>
+                </div>
+            </div>
+
+            <div class="approach-box">
+                <div class="approach-title">狀態轉移方程</div>
+                <pre style="background: #f0f9ff; padding: 15px; border-radius: 8px;"><code>如果 p[j-1] != '*':
+    if s[i-1] == p[j-1] or p[j-1] == '.':
+        dp[i][j] = dp[i-1][j-1]
+    else:
+        dp[i][j] = false
+
+如果 p[j-1] == '*':
+    # 情況 1: 匹配 0 次（忽略 x*）
+    dp[i][j] = dp[i][j-2]
+    
+    # 情況 2: 匹配 1+ 次
+    if s[i-1] == p[j-2] or p[j-2] == '.':
+        dp[i][j] = dp[i][j] or dp[i-1][j]</code></pre>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">程式碼實現</h2>
+            
+            <div class="language-tabs">
+                <button class="tab-btn active" onclick="showLanguage('python')">Python</button>
+                <button class="tab-btn" onclick="showLanguage('cpp')">C++</button>
+                <button class="tab-btn" onclick="showLanguage('java')">Java</button>
+            </div>
+
+            <div id="python" class="code-container active">
+                <pre><code class="language-python">class Solution:
+    def isMatch(self, s: str, p: str) -> bool:
+        """
+        方法：動態規劃
+        時間複雜度: O(m * n)
+        空間複雜度: O(m * n)
+        """
+        m, n = len(s), len(p)
+        
+        # dp[i][j]: s 的前 i 個字元與 p 的前 j 個字元是否匹配
+        dp = [[False] * (n + 1) for _ in range(m + 1)]
+        
+        # 初始化：空字串匹配空模式
+        dp[0][0] = True
+        
+        # 初始化：空字串匹配 x* 模式
+        for j in range(2, n + 1):
+            if p[j - 1] == '*':
+                dp[0][j] = dp[0][j - 2]
+        
+        # 填充 DP 表格
+        for i in range(1, m + 1):
+            for j in range(1, n + 1):
+                if p[j - 1] == '*':
+                    # 情況 1: 匹配 0 次（忽略 x*）
+                    dp[i][j] = dp[i][j - 2]
+                    
+                    # 情況 2: 匹配 1+ 次
+                    if s[i - 1] == p[j - 2] or p[j - 2] == '.':
+                        dp[i][j] = dp[i][j] or dp[i - 1][j]
+                else:
+                    # 普通字元或 '.'
+                    if s[i - 1] == p[j - 1] or p[j - 1] == '.':
+                        dp[i][j] = dp[i - 1][j - 1]
+        
+        return dp[m][n]</code></pre>
+            </div>
+
+            <div id="cpp" class="code-container">
+                <pre><code class="language-cpp">#include &lt;string&gt;
+#include &lt;vector&gt;
+
+class Solution {
+public:
+    /**
+     * 方法：動態規劃
+     * 時間複雜度: O(m * n)
+     * 空間複雜度: O(m * n)
+     */
+    bool isMatch(string s, string p) {
+        int m = s.length(), n = p.length();
+        
+        // dp[i][j]: s 的前 i 個字元與 p 的前 j 個字元是否匹配
+        vector<vector<bool>> dp(m + 1, vector<bool>(n + 1, false));
+        
+        // 初始化：空字串匹配空模式
+        dp[0][0] = true;
+        
+        // 初始化：空字串匹配 x* 模式
+        for (int j = 2; j <= n; j++) {
+            if (p[j - 1] == '*') {
+                dp[0][j] = dp[0][j - 2];
+            }
+        }
+        
+        // 填充 DP 表格
+        for (int i = 1; i <= m; i++) {
+            for (int j = 1; j <= n; j++) {
+                if (p[j - 1] == '*') {
+                    // 情況 1: 匹配 0 次（忽略 x*）
+                    dp[i][j] = dp[i][j - 2];
+                    
+                    // 情況 2: 匹配 1+ 次
+                    if (s[i - 1] == p[j - 2] || p[j - 2] == '.') {
+                        dp[i][j] = dp[i][j] || dp[i - 1][j];
+                    }
+                } else {
+                    // 普通字元或 '.'
+                    if (s[i - 1] == p[j - 1] || p[j - 1] == '.') {
+                        dp[i][j] = dp[i - 1][j - 1];
+                    }
+                }
+            }
+        }
+        
+        return dp[m][n];
+    }
+};</code></pre>
+            </div>
+
+            <div id="java" class="code-container">
+                <pre><code class="language-java">class Solution {
+    /**
+     * 方法：動態規劃
+     * 時間複雜度: O(m * n)
+     * 空間複雜度: O(m * n)
+     */
+    public boolean isMatch(String s, String p) {
+        int m = s.length(), n = p.length();
+        
+        // dp[i][j]: s 的前 i 個字元與 p 的前 j 個字元是否匹配
+        boolean[][] dp = new boolean[m + 1][n + 1];
+        
+        // 初始化：空字串匹配空模式
+        dp[0][0] = true;
+        
+        // 初始化：空字串匹配 x* 模式
+        for (int j = 2; j <= n; j++) {
+            if (p.charAt(j - 1) == '*') {
+                dp[0][j] = dp[0][j - 2];
+            }
+        }
+        
+        // 填充 DP 表格
+        for (int i = 1; i <= m; i++) {
+            for (int j = 1; j <= n; j++) {
+                if (p.charAt(j - 1) == '*') {
+                    // 情況 1: 匹配 0 次（忽略 x*）
+                    dp[i][j] = dp[i][j - 2];
+                    
+                    // 情況 2: 匹配 1+ 次
+                    if (s.charAt(i - 1) == p.charAt(j - 2) || p.charAt(j - 2) == '.') {
+                        dp[i][j] = dp[i][j] || dp[i - 1][j];
+                    }
+                } else {
+                    // 普通字元或 '.'
+                    if (s.charAt(i - 1) == p.charAt(j - 1) || p.charAt(j - 1) == '.') {
+                        dp[i][j] = dp[i - 1][j - 1];
+                    }
+                }
+            }
+        }
+        
+        return dp[m][n];
+    }
+}</code></pre>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">複雜度分析</h2>
+            <div class="complexity-box">
+                <div class="complexity-item">時間複雜度: O(m × n)</div>
+                <p style="color: #78716c; margin: 10px 0;">
+                    需要填充 m×n 的 DP 表格，其中 m 是字串長度，n 是模式長度。
+                </p>
+                
+                <div class="complexity-item" style="margin-top: 20px;">空間複雜度: O(m × n)</div>
+                <p style="color: #78716c; margin: 10px 0;">
+                    需要 m×n 的 DP 表格存儲狀態。
+                    <br>可優化至 O(n)：只保留兩行（當前行和上一行）
+                </p>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">重點提示</h2>
+            <div class="complexity-box">
+                <ul>
+                    <li><strong>DP 狀態定義：</strong>dp[i][j] = s 前 i 字元匹配 p 前 j 字元</li>
+                    <li><strong>'*' 的兩種情況：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>匹配 0 次：dp[i][j-2]</li>
+                            <li>匹配 1+ 次：dp[i-1][j]（前提是字元匹配）</li>
+                        </ul>
+                    </li>
+                    <li><strong>初始化關鍵：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>dp[0][0] = true（空匹配空）</li>
+                            <li>dp[0][j] 處理 x* 模式（可以匹配空字串）</li>
+                        </ul>
+                    </li>
+                    <li><strong>常見錯誤：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>忘記初始化 dp[0][j]</li>
+                            <li>* 的邏輯錯誤（要先考慮匹配 0 次）</li>
+                            <li>索引偏移錯誤（dp 是 1-indexed，字串是 0-indexed）</li>
+                        </ul>
+                    </li>
+                    <li><strong>面試技巧：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>先說明 DP 的狀態定義</li>
+                            <li>重點解釋 * 的處理邏輯</li>
+                            <li>用簡單例子演示 DP 表格</li>
+                            <li>提到空間優化可能性</li>
+                        </ul>
+                    </li>
+                    <li><strong>變形題：</strong>Wildcard Matching (#44) - 使用 ? 和 *</li>
+                    <li><strong>相似題目：</strong>Edit Distance (72), Longest Common Subsequence (1143)</li>
+                    <li><strong>公司頻率：</strong>Google ⭐⭐⭐⭐⭐, Facebook ⭐⭐⭐⭐⭐, Amazon ⭐⭐⭐⭐</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        hljs.highlightAll();
+        
+        function showLanguage(lang) {
+            document.querySelectorAll('.code-container').forEach(container => {
+                container.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.getElementById(lang).classList.add('active');
+            event.target.classList.add('active');
+        }
+    </script>
+</body>
+</html>
