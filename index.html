@@ -49,24 +49,24 @@
     <div class="container">
         <header>
             <h1>LeetCode 學習平台</h1>
-            <p>精選 52 題 | Python & C++ & Java 詳解</p>
+            <p>Python & C++ & Java 詳解</p>
         </header>
 
         <div class="stats-bar">
             <div class="stat-item">
-                <div class="stat-number">52</div>
+                <div class="stat-number">47</div>
                 <div class="stat-label">總題數</div>
             </div>
             <div class="stat-item">
-                <div class="stat-number">18</div>
+                <div class="stat-number">16</div>
                 <div class="stat-label">Easy</div>
             </div>
             <div class="stat-item">
-                <div class="stat-number">26</div>
+                <div class="stat-number">24</div>
                 <div class="stat-label">Medium</div>
             </div>
             <div class="stat-item">
-                <div class="stat-number">8</div>
+                <div class="stat-number">7</div>
                 <div class="stat-label">Hard</div>
             </div>
         </div>
@@ -190,6 +190,20 @@
                         </div>
                     </div>
 
+                    <div class="problem-card" data-difficulty="medium" onclick="location.href='top-k-frequent.html'">
+                        <div class="problem-header">
+                            <div class="problem-number">#347</div>
+                            <div class="difficulty-badge medium">Medium</div>
+                        </div>
+                        <div class="problem-title">Top K Frequent Elements</div>
+                        <div class="problem-description">給定整數陣列,返回出現頻率最高的 k 個元素。</div>
+                        <div class="problem-tags">
+                            <span class="tag">Array</span>
+                            <span class="tag">Hash Table</span>
+                            <span class="tag">Heap</span>
+                        </div>
+                    </div>
+
                     <div class="problem-card" data-difficulty="hard" onclick="location.href='first-missing-positive.html'">
                         <div class="problem-header">
                             <div class="problem-number">#41</div>
@@ -209,6 +223,19 @@
             <div class="category-section">
                 <h2 class="category-title">Two Pointers & Sliding Window</h2>
                 <div class="problems-grid">
+                    <div class="problem-card" data-difficulty="easy" onclick="location.href='valid-palindrome.html'">
+                        <div class="problem-header">
+                            <div class="problem-number">#125</div>
+                            <div class="difficulty-badge easy">Easy</div>
+                        </div>
+                        <div class="problem-title">Valid Palindrome</div>
+                        <div class="problem-description">判斷給定字串是否為回文,只考慮字母和數字字符,忽略大小寫。</div>
+                        <div class="problem-tags">
+                            <span class="tag">Two Pointers</span>
+                            <span class="tag">String</span>
+                        </div>
+                    </div>
+
                     <div class="problem-card" data-difficulty="easy" onclick="location.href='two-sum-ii.html'">
                         <div class="problem-header">
                             <div class="problem-number">#167</div>
@@ -219,6 +246,33 @@
                         <div class="problem-tags">
                             <span class="tag">Two Pointers</span>
                             <span class="tag">Array</span>
+                        </div>
+                    </div>
+
+                    <div class="problem-card" data-difficulty="medium" onclick="location.href='longest-substring.html'">
+                        <div class="problem-header">
+                            <div class="problem-number">#3</div>
+                            <div class="difficulty-badge medium">Medium</div>
+                        </div>
+                        <div class="problem-title">Longest Substring Without Repeating Characters</div>
+                        <div class="problem-description">找出字串中最長不含重複字符的子字串長度。</div>
+                        <div class="problem-tags">
+                            <span class="tag">Hash Table</span>
+                            <span class="tag">String</span>
+                            <span class="tag">Sliding Window</span>
+                        </div>
+                    </div>
+
+                    <div class="problem-card" data-difficulty="medium" onclick="location.href='container-with-most-water.html'">
+                        <div class="problem-header">
+                            <div class="problem-number">#11</div>
+                            <div class="difficulty-badge medium">Medium</div>
+                        </div>
+                        <div class="problem-title">Container With Most Water</div>
+                        <div class="problem-description">給定 n 個非負整數,找出兩條線能與 x 軸組成的容器可以容納最多的水。</div>
+                        <div class="problem-tags">
+                            <span class="tag">Array</span>
+                            <span class="tag">Two Pointers</span>
                         </div>
                     </div>
 
@@ -258,6 +312,109 @@
                         <div class="problem-tags">
                             <span class="tag">Array</span>
                             <span class="tag">Sliding Window</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stack & Queue -->
+            <div class="category-section">
+                <h2 class="category-title">Stack & Queue</h2>
+                <div class="problems-grid">
+                    <div class="problem-card" data-difficulty="easy" onclick="location.href='valid-parentheses.html'">
+                        <div class="problem-header">
+                            <div class="problem-number">#20</div>
+                            <div class="difficulty-badge easy">Easy</div>
+                        </div>
+                        <div class="problem-title">Valid Parentheses</div>
+                        <div class="problem-description">判斷給定字串中的括號是否有效配對。</div>
+                        <div class="problem-tags">
+                            <span class="tag">String</span>
+                            <span class="tag">Stack</span>
+                        </div>
+                    </div>
+
+                    <div class="problem-card" data-difficulty="medium" onclick="location.href='min-stack.html'">
+                        <div class="problem-header">
+                            <div class="problem-number">#155</div>
+                            <div class="difficulty-badge medium">Medium</div>
+                        </div>
+                        <div class="problem-title">Min Stack</div>
+                        <div class="problem-description">設計一個支援 push、pop、top 操作,並能在常數時間內檢索到最小元素的堆疊。</div>
+                        <div class="problem-tags">
+                            <span class="tag">Stack</span>
+                            <span class="tag">Design</span>
+                        </div>
+                    </div>
+
+                    <div class="problem-card" data-difficulty="medium" onclick="location.href='daily-temperatures.html'">
+                        <div class="problem-header">
+                            <div class="problem-number">#739</div>
+                            <div class="difficulty-badge medium">Medium</div>
+                        </div>
+                        <div class="problem-title">Daily Temperatures</div>
+                        <div class="problem-description">給定每日溫度列表,返回需要等待多少天才會有更高的溫度。</div>
+                        <div class="problem-tags">
+                            <span class="tag">Array</span>
+                            <span class="tag">Stack</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Binary Search -->
+            <div class="category-section">
+                <h2 class="category-title">Binary Search</h2>
+                <div class="problems-grid">
+                    <div class="problem-card" data-difficulty="easy" onclick="location.href='binary-search.html'">
+                        <div class="problem-header">
+                            <div class="problem-number">#704</div>
+                            <div class="difficulty-badge easy">Easy</div>
+                        </div>
+                        <div class="problem-title">Binary Search</div>
+                        <div class="problem-description">在已排序的陣列中使用二分搜尋法找到目標值的索引。</div>
+                        <div class="problem-tags">
+                            <span class="tag">Array</span>
+                            <span class="tag">Binary Search</span>
+                        </div>
+                    </div>
+
+                    <div class="problem-card" data-difficulty="medium" onclick="location.href='search-rotated-array.html'">
+                        <div class="problem-header">
+                            <div class="problem-number">#33</div>
+                            <div class="difficulty-badge medium">Medium</div>
+                        </div>
+                        <div class="problem-title">Search in Rotated Sorted Array</div>
+                        <div class="problem-description">在旋轉過的已排序陣列中搜尋目標值。</div>
+                        <div class="problem-tags">
+                            <span class="tag">Array</span>
+                            <span class="tag">Binary Search</span>
+                        </div>
+                    </div>
+
+                    <div class="problem-card" data-difficulty="medium" onclick="location.href='find-first-and-last-position.html'">
+                        <div class="problem-header">
+                            <div class="problem-number">#34</div>
+                            <div class="difficulty-badge medium">Medium</div>
+                        </div>
+                        <div class="problem-title">Find First and Last Position</div>
+                        <div class="problem-description">在排序陣列中找到目標值的開始和結束位置，使用二分搜尋變形。</div>
+                        <div class="problem-tags">
+                            <span class="tag">Array</span>
+                            <span class="tag">Binary Search</span>
+                        </div>
+                    </div>
+
+                    <div class="problem-card" data-difficulty="hard" onclick="location.href='median-of-two-sorted-arrays.html'">
+                        <div class="problem-header">
+                            <div class="problem-number">#4</div>
+                            <div class="difficulty-badge hard">Hard</div>
+                        </div>
+                        <div class="problem-title">Median of Two Sorted Arrays</div>
+                        <div class="problem-description">找出兩個已排序陣列的中位數,時間複雜度要求 O(log(m+n))。</div>
+                        <div class="problem-tags">
+                            <span class="tag">Array</span>
+                            <span class="tag">Binary Search</span>
                         </div>
                     </div>
                 </div>
@@ -351,7 +508,20 @@
                         </div>
                     </div>
 
-                    <div class="problem-card" data-difficulty="medium" onclick="location.href='add-two-numbers-complete.html'">
+                    <div class="problem-card" data-difficulty="easy" onclick="location.href='reverse-linked-list.html'">
+                        <div class="problem-header">
+                            <div class="problem-number">#206</div>
+                            <div class="difficulty-badge easy">Easy</div>
+                        </div>
+                        <div class="problem-title">Reverse Linked List</div>
+                        <div class="problem-description">反轉一個單向鏈表。</div>
+                        <div class="problem-tags">
+                            <span class="tag">Linked List</span>
+                            <span class="tag">Recursion</span>
+                        </div>
+                    </div>
+
+                    <div class="problem-card" data-difficulty="medium" onclick="location.href='add-two-numbers.html'">
                         <div class="problem-header">
                             <div class="problem-number">#2</div>
                             <div class="difficulty-badge medium">Medium</div>
@@ -364,7 +534,7 @@
                         </div>
                     </div>
 
-                    <div class="problem-card" data-difficulty="hard" onclick="location.href='merge-k-sorted-lists-complete.html'">
+                    <div class="problem-card" data-difficulty="hard" onclick="location.href='merge-k-sorted-lists.html'">
                         <div class="problem-header">
                             <div class="problem-number">#23</div>
                             <div class="difficulty-badge hard">Hard</div>
@@ -553,25 +723,6 @@
                 </div>
             </div>
 
-            <!-- Binary Search -->
-            <div class="category-section">
-                <h2 class="category-title">Binary Search</h2>
-                <div class="problems-grid">
-                    <div class="problem-card" data-difficulty="medium" onclick="location.href='find-first-and-last-position.html'">
-                        <div class="problem-header">
-                            <div class="problem-number">#34</div>
-                            <div class="difficulty-badge medium">Medium</div>
-                        </div>
-                        <div class="problem-title">Find First and Last Position</div>
-                        <div class="problem-description">在排序陣列中找到目標值的開始和結束位置，使用二分搜尋變形。</div>
-                        <div class="problem-tags">
-                            <span class="tag">Array</span>
-                            <span class="tag">Binary Search</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
             <!-- Math -->
             <div class="category-section">
                 <h2 class="category-title">Math</h2>
@@ -614,7 +765,7 @@
 
         <footer>
             <p>LeetCode 學習平台 | 專注於演算法與資料結構</p>
-            <p style="margin-top: 10px; opacity: 0.8;">© 2025 All Rights Reserved | 52 題精選收錄</p>
+            <p style="margin-top: 10px; opacity: 0.8;">© 2025 All Rights Reserved | 47 題精選收錄</p>
         </footer>
     </div>
 
