@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>217. Contains Duplicate - LeetCode 學習平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f8fafc; line-height: 1.8; color: #334155; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .header { background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; padding: 40px; border-radius: 16px; margin-bottom: 30px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .back-btn { display: inline-block; color: white; text-decoration: none; background: rgba(255,255,255,0.2); padding: 10px 20px; border-radius: 8px; margin-bottom: 20px; transition: all 0.3s; }
+        .back-btn:hover { background: rgba(255,255,255,0.3); }
+        .problem-title { font-size: 2.5em; font-weight: 800; margin-bottom: 15px; }
+        .difficulty { display: inline-block; background: rgba(255,255,255,0.3); padding: 8px 20px; border-radius: 20px; font-weight: 600; font-size: 0.9em; }
+        .content-section { background: white; padding: 40px; border-radius: 16px; margin-bottom: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .section-title { font-size: 1.8em; color: #1e293b; margin-bottom: 25px; font-weight: 700; padding-bottom: 10px; border-bottom: 3px solid #10b981; }
+        .description { font-size: 1.1em; line-height: 1.9; color: #475569; margin-bottom: 20px; }
+        .example-box { background: #f0fdf4; border-left: 4px solid #10b981; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .example-title { font-weight: 700; color: #059669; margin-bottom: 10px; font-size: 1.1em; }
+        .approach-box { background: #eff6ff; border-left: 4px solid #3b82f6; padding: 25px; border-radius: 8px; margin: 25px 0; }
+        .approach-title { font-weight: 700; color: #1e40af; margin-bottom: 15px; font-size: 1.3em; }
+        .complexity-box { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .complexity-item { margin: 10px 0; font-weight: 600; color: #92400e; }
+        .language-tabs { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+        .tab-btn { padding: 12px 28px; border: 2px solid #10b981; background: white; color: #10b981; border-radius: 8px; cursor: pointer; font-weight: 600; transition: all 0.3s; font-size: 1em; }
+        .tab-btn:hover { background: #f0fdf4; }
+        .tab-btn.active { background: #10b981; color: white; }
+        .code-container { display: none; margin-top: 20px; }
+        .code-container.active { display: block; }
+        pre { background: #282c34 !important; padding: 25px !important; border-radius: 12px; overflow-x: auto; margin: 0; }
+        code { font-family: 'Fira Code', 'Consolas', monospace; font-size: 0.95em; line-height: 1.6; }
+        ol, ul { margin-left: 30px; margin-top: 15px; }
+        li { margin: 12px 0; line-height: 1.8; }
+        strong { color: #1e293b; font-weight: 700; }
+        .visual-box { background: #f0f9ff; border: 2px solid #3b82f6; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        
+        @media (max-width: 768px) {
+            .container { padding: 10px; }
+            .header { padding: 25px; }
+            .problem-title { font-size: 1.8em; }
+            .content-section { padding: 25px; }
+            .tab-btn { padding: 10px 20px; font-size: 0.9em; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="../index.html" class="back-btn">← 返回題目列表</a>
+            <div class="problem-title">217. Contains Duplicate</div>
+            <span class="difficulty">Easy</span>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">題目描述</h2>
+            <div class="description">
+                <p>給定一個整數陣列 <code>nums</code>，如果任一值在陣列中出現<strong>至少兩次</strong>，返回 <code>true</code>；如果每個元素都不相同，則返回 <code>false</code>。</p>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例 1:</div>
+                <pre><code>輸入: nums = [1,2,3,1]
+輸出: true</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例 2:</div>
+                <pre><code>輸入: nums = [1,2,3,4]
+輸出: false</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例 3:</div>
+                <pre><code>輸入: nums = [1,1,1,3,3,4,3,2,4,2]
+輸出: true</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">限制條件:</div>
+                <pre><code>1 <= nums.length <= 10^5
+-10^9 <= nums[i] <= 10^9</code></pre>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">解題思路</h2>
+            
+            <div class="approach-box">
+                <div class="approach-title">方法一：哈希集合（推薦）⭐</div>
+                <p>使用 Set 記錄已經出現過的元素，遇到重複元素立即返回 true。</p>
+                
+                <p style="margin-top: 15px;"><strong>核心思想：</strong></p>
+                <p>遍歷陣列，每次檢查當前元素是否已在 Set 中。如果在，說明有重複；如果不在，加入 Set。</p>
+                
+                <p style="margin-top: 15px;"><strong>步驟：</strong></p>
+                <ol>
+                    <li>創建空的 Set</li>
+                    <li>遍歷陣列：
+                        <ul>
+                            <li>如果當前元素在 Set 中 → 返回 true</li>
+                            <li>否則將當前元素加入 Set</li>
+                        </ul>
+                    </li>
+                    <li>遍歷結束後返回 false（沒有重複）</li>
+                </ol>
+                
+                <div class="visual-box">
+                    <p><strong>視覺化範例：nums = [1,2,3,1]</strong></p>
+                    <pre style="background: white; padding: 15px; border-radius: 5px; margin-top: 10px;"><code>初始: Set = {}
+
+步驟 1: 檢查 1
+       1 不在 Set 中 → 加入
+       Set = {1}
+
+步驟 2: 檢查 2
+       2 不在 Set 中 → 加入
+       Set = {1, 2}
+
+步驟 3: 檢查 3
+       3 不在 Set 中 → 加入
+       Set = {1, 2, 3}
+
+步驟 4: 檢查 1
+       1 在 Set 中 ✓ 找到重複！
+       返回 true</code></pre>
+                </div>
+            </div>
+
+            <div class="approach-box">
+                <div class="approach-title">方法二：排序後比較</div>
+                <p>先排序陣列，然後比較相鄰元素是否相同。</p>
+                
+                <p style="margin-top: 15px;"><strong>優缺點：</strong></p>
+                <ul>
+                    <li>優點：空間複雜度 O(1)（不考慮排序的空間）</li>
+                    <li>缺點：時間複雜度 O(n log n)，比哈希集合慢</li>
+                </ul>
+            </div>
+
+            <div class="approach-box">
+                <div class="approach-title">方法三：暴力法（不推薦）</div>
+                <p>雙重循環，比較每對元素。</p>
+                <p style="margin-top: 10px; color: #64748b;">時間複雜度 O(n²)，面試中應避免。</p>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">程式碼實現</h2>
+            
+            <div class="language-tabs">
+                <button class="tab-btn active" onclick="showLanguage('python')">Python</button>
+                <button class="tab-btn" onclick="showLanguage('cpp')">C++</button>
+                <button class="tab-btn" onclick="showLanguage('java')">Java</button>
+            </div>
+
+            <div id="python" class="code-container active">
+                <pre><code class="language-python">class Solution:
+    def containsDuplicate(self, nums: List[int]) -> bool:
+        """
+        方法一：哈希集合（推薦）
+        時間複雜度: O(n)
+        空間複雜度: O(n)
+        """
+        seen = set()
+        
+        for num in nums:
+            if num in seen:
+                return True
+            seen.add(num)
+        
+        return False
+    
+    def containsDuplicate_pythonic(self, nums: List[int]) -> bool:
+        """
+        方法一：Python 簡潔寫法
+        """
+        return len(nums) != len(set(nums))
+    
+    def containsDuplicate_sort(self, nums: List[int]) -> bool:
+        """
+        方法二：排序後比較
+        時間複雜度: O(n log n)
+        空間複雜度: O(1)
+        """
+        nums.sort()
+        
+        for i in range(len(nums) - 1):
+            if nums[i] == nums[i + 1]:
+                return True
+        
+        return False</code></pre>
+            </div>
+
+            <div id="cpp" class="code-container">
+                <pre><code class="language-cpp">#include &lt;vector&gt;
+#include &lt;unordered_set&gt;
+#include &lt;algorithm&gt;
+
+class Solution {
+public:
+    /**
+     * 方法一：哈希集合（推薦）
+     * 時間複雜度: O(n)
+     * 空間複雜度: O(n)
+     */
+    bool containsDuplicate(vector<int>& nums) {
+        unordered_set<int> seen;
+        
+        for (int num : nums) {
+            if (seen.count(num) > 0) {
+                return true;
+            }
+            seen.insert(num);
+        }
+        
+        return false;
+    }
+    
+    /**
+     * 方法二：排序後比較
+     * 時間複雜度: O(n log n)
+     * 空間複雜度: O(1)
+     */
+    bool containsDuplicate_sort(vector<int>& nums) {
+        sort(nums.begin(), nums.end());
+        
+        for (int i = 0; i < nums.size() - 1; i++) {
+            if (nums[i] == nums[i + 1]) {
+                return true;
+            }
+        }
+        
+        return false;
+    }
+};</code></pre>
+            </div>
+
+            <div id="java" class="code-container">
+                <pre><code class="language-java">import java.util.HashSet;
+import java.util.Arrays;
+
+class Solution {
+    /**
+     * 方法一：哈希集合（推薦）
+     * 時間複雜度: O(n)
+     * 空間複雜度: O(n)
+     */
+    public boolean containsDuplicate(int[] nums) {
+        HashSet<Integer> seen = new HashSet<>();
+        
+        for (int num : nums) {
+            if (seen.contains(num)) {
+                return true;
+            }
+            seen.add(num);
+        }
+        
+        return false;
+    }
+    
+    /**
+     * 方法二：排序後比較
+     * 時間複雜度: O(n log n)
+     * 空間複雜度: O(1)
+     */
+    public boolean containsDuplicate_sort(int[] nums) {
+        Arrays.sort(nums);
+        
+        for (int i = 0; i < nums.length - 1; i++) {
+            if (nums[i] == nums[i + 1]) {
+                return true;
+            }
+        }
+        
+        return false;
+    }
+}</code></pre>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">複雜度分析</h2>
+            <div class="complexity-box">
+                <div class="complexity-item">方法一：哈希集合</div>
+                <ul style="color: #78716c; margin: 10px 0 10px 30px;">
+                    <li><strong>時間複雜度：</strong>O(n) - 遍歷陣列一次</li>
+                    <li><strong>空間複雜度：</strong>O(n) - Set 最多存儲 n 個元素</li>
+                </ul>
+                
+                <div class="complexity-item" style="margin-top: 20px;">方法二：排序</div>
+                <ul style="color: #78716c; margin: 10px 0 10px 30px;">
+                    <li><strong>時間複雜度：</strong>O(n log n) - 排序的時間</li>
+                    <li><strong>空間複雜度：</strong>O(1) - 原地排序</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">重點提示</h2>
+            <div class="complexity-box">
+                <ul>
+                    <li><strong>最優解：</strong>哈希集合 O(n) 時間</li>
+                    <li><strong>Python 技巧：</strong>len(nums) != len(set(nums)) 一行搞定</li>
+                    <li><strong>空間換時間：</strong>使用 O(n) 空間換取 O(n) 時間</li>
+                    <li><strong>提前返回：</strong>找到重複立即返回，不需遍歷完整陣列</li>
+                    <li><strong>邊界情況：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>只有一個元素 → false</li>
+                            <li>所有元素相同 → true</li>
+                            <li>空陣列 → 題目保證不會出現</li>
+                        </ul>
+                    </li>
+                    <li><strong>面試技巧：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>先說哈希集合 O(n) 解法</li>
+                            <li>提到排序解法作為空間優化</li>
+                            <li>說明為什麼不用暴力法</li>
+                        </ul>
+                    </li>
+                    <li><strong>變形題：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>Contains Duplicate II (#219) - 距離限制</li>
+                            <li>Contains Duplicate III (#220) - 值和距離限制</li>
+                        </ul>
+                    </li>
+                    <li><strong>相似題目：</strong>Single Number (136), Find All Duplicates (442)</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        hljs.highlightAll();
+        
+        function showLanguage(lang) {
+            document.querySelectorAll('.code-container').forEach(container => {
+                container.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.getElementById(lang).classList.add('active');
+            event.target.classList.add('active');
+        }
+    </script>
+</body>
+</html>
