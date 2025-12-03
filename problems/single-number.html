@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>136. Single Number - LeetCode 學習平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f8fafc; line-height: 1.8; color: #334155; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .header { background: linear-gradient(135deg, #16a34a 0%, #15803d 100%); color: white; padding: 40px; border-radius: 16px; margin-bottom: 30px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .back-btn { display: inline-block; color: white; text-decoration: none; background: rgba(255,255,255,0.2); padding: 10px 20px; border-radius: 8px; margin-bottom: 20px; transition: all 0.3s; }
+        .back-btn:hover { background: rgba(255,255,255,0.3); }
+        .problem-title { font-size: 2.5em; font-weight: 800; margin-bottom: 15px; }
+        .difficulty { display: inline-block; background: rgba(255,255,255,0.3); padding: 8px 20px; border-radius: 20px; font-weight: 600; font-size: 0.9em; }
+        .content-section { background: white; padding: 40px; border-radius: 16px; margin-bottom: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .section-title { font-size: 1.8em; color: #1e293b; margin-bottom: 25px; font-weight: 700; padding-bottom: 10px; border-bottom: 3px solid #16a34a; }
+        .description { font-size: 1.1em; line-height: 1.9; color: #475569; margin-bottom: 20px; }
+        .example-box { background: #dcfce7; border-left: 4px solid #16a34a; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .example-title { font-weight: 700; color: #15803d; margin-bottom: 10px; font-size: 1.1em; }
+        .approach-box { background: #eff6ff; border-left: 4px solid #3b82f6; padding: 25px; border-radius: 8px; margin: 25px 0; }
+        .approach-title { font-weight: 700; color: #1e40af; margin-bottom: 15px; font-size: 1.3em; }
+        .complexity-box { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .complexity-item { margin: 10px 0; font-weight: 600; color: #92400e; }
+        .language-tabs { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+        .tab-btn { padding: 12px 28px; border: 2px solid #16a34a; background: white; color: #16a34a; border-radius: 8px; cursor: pointer; font-weight: 600; transition: all 0.3s; font-size: 1em; }
+        .tab-btn:hover { background: #dcfce7; }
+        .tab-btn.active { background: #16a34a; color: white; }
+        .code-container { display: none; margin-top: 20px; }
+        .code-container.active { display: block; }
+        pre { background: #282c34 !important; padding: 25px !important; border-radius: 12px; overflow-x: auto; margin: 0; }
+        code { font-family: 'Fira Code', 'Consolas', monospace; font-size: 0.95em; line-height: 1.6; }
+        ol, ul { margin-left: 30px; margin-top: 15px; }
+        li { margin: 12px 0; line-height: 1.8; }
+        strong { color: #1e293b; font-weight: 700; }
+        .visual-box { background: #f0f9ff; border: 2px solid #3b82f6; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        
+        @media (max-width: 768px) {
+            .container { padding: 10px; }
+            .header { padding: 25px; }
+            .problem-title { font-size: 1.8em; }
+            .content-section { padding: 25px; }
+            .tab-btn { padding: 10px 20px; font-size: 0.9em; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="../index.html" class="back-btn">← 返回題目列表</a>
+            <div class="problem-title">136. Single Number</div>
+            <span class="difficulty">Easy</span>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">題目描述</h2>
+            <div class="description">
+                <p>給定一個<strong>非空</strong>整數陣列 <code>nums</code>，除了某個元素只出現一次以外，其餘每個元素均出現兩次。找出那個只出現了一次的元素。</p>
+                <p style="margin-top: 15px;"><strong>說明：</strong>你的演算法應該具有線性時間複雜度。你可以不使用額外空間來實現嗎？</p>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例 1:</div>
+                <pre><code>輸入: nums = [2,2,1]
+輸出: 1</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例 2:</div>
+                <pre><code>輸入: nums = [4,1,2,1,2]
+輸出: 4</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例 3:</div>
+                <pre><code>輸入: nums = [1]
+輸出: 1</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">限制條件:</div>
+                <pre><code>1 <= nums.length <= 3 * 10^4
+-3 * 10^4 <= nums[i] <= 3 * 10^4
+每個元素均出現兩次，除了某個元素只出現一次</code></pre>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">解題思路</h2>
+            
+            <div class="approach-box">
+                <div class="approach-title">核心觀察</div>
+                <p>這道題的關鍵約束：</p>
+                <ul>
+                    <li>除了一個數字外，其他數字都出現兩次</li>
+                    <li>需要線性時間 O(n)</li>
+                    <li>最好不使用額外空間 O(1)</li>
+                </ul>
+                <p style="margin-top: 15px; color: #16a34a; font-weight: 600;">
+                    提示：想想有什麼運算可以讓兩個相同的數字"抵消"？
+                </p>
+            </div>
+            
+            <div class="approach-box">
+                <div class="approach-title">方法一：XOR 位元運算（最優）⭐⭐⭐</div>
+                <p>利用 XOR 的神奇特性，這是本題的<strong>最優解</strong>。</p>
+                
+                <p style="margin-top: 15px;"><strong>XOR 運算特性：</strong></p>
+                <ul>
+                    <li><strong>a ⊕ a = 0</strong>（任何數和自己 XOR 結果為 0）</li>
+                    <li><strong>a ⊕ 0 = a</strong>（任何數和 0 XOR 還是自己）</li>
+                    <li><strong>交換律：</strong>a ⊕ b = b ⊕ a</li>
+                    <li><strong>結合律：</strong>(a ⊕ b) ⊕ c = a ⊕ (b ⊕ c)</li>
+                </ul>
+                
+                <p style="margin-top: 15px;"><strong>核心思想：</strong></p>
+                <p>將所有數字進行 XOR 運算，出現兩次的數字會相互抵消變成 0，最後只剩下出現一次的數字。</p>
+                
+                <div class="visual-box">
+                    <p><strong>視覺化範例：nums = [4,1,2,1,2]</strong></p>
+                    <pre style="background: white; padding: 15px; border-radius: 5px; margin-top: 10px;"><code>初始: result = 0
+
+步驟 1: result = 0 ⊕ 4 = 4
+        二進位: 0000 ⊕ 0100 = 0100
+
+步驟 2: result = 4 ⊕ 1 = 5
+        二進位: 0100 ⊕ 0001 = 0101
+
+步驟 3: result = 5 ⊕ 2 = 7
+        二進位: 0101 ⊕ 0010 = 0111
+
+步驟 4: result = 7 ⊕ 1 = 6
+        二進位: 0111 ⊕ 0001 = 0110
+
+步驟 5: result = 6 ⊕ 2 = 4
+        二進位: 0110 ⊕ 0010 = 0100
+
+最終結果: 4 ✓
+
+換個角度理解（利用交換律）:
+4 ⊕ 1 ⊕ 2 ⊕ 1 ⊕ 2
+= 4 ⊕ (1 ⊕ 1) ⊕ (2 ⊕ 2)
+= 4 ⊕ 0 ⊕ 0
+= 4</code></pre>
+                </div>
+                
+                <div class="visual-box">
+                    <p><strong>XOR 真值表：</strong></p>
+                    <pre style="background: white; padding: 15px; border-radius: 5px; margin-top: 10px;"><code>a | b | a ⊕ b
+--|---|-------
+0 | 0 |   0
+0 | 1 |   1
+1 | 0 |   1
+1 | 1 |   0  ← 相同為 0
+
+關鍵觀察：只有當兩個位不同時，XOR 結果才為 1</code></pre>
+                </div>
+                
+                <p style="margin-top: 15px;"><strong>為什麼這個方法可行？</strong></p>
+                <ul>
+                    <li>所有出現兩次的數字會兩兩配對</li>
+                    <li>a ⊕ a = 0，配對的數字抵消為 0</li>
+                    <li>0 ⊕ x = x，最後只剩下單獨的數字</li>
+                    <li>XOR 的順序不影響結果（交換律）</li>
+                </ul>
+            </div>
+
+            <div class="approach-box">
+                <div class="approach-title">方法二：HashSet</div>
+                <p>使用集合記錄出現過的數字。</p>
+                
+                <p style="margin-top: 15px;"><strong>步驟：</strong></p>
+                <ol>
+                    <li>遍歷陣列</li>
+                    <li>如果數字在集合中，從集合移除（表示出現第二次）</li>
+                    <li>如果數字不在集合中，加入集合</li>
+                    <li>最後集合中剩下的就是答案</li>
+                </ol>
+                
+                <ul style="margin-top: 10px;">
+                    <li>時間複雜度：O(n)</li>
+                    <li>空間複雜度：O(n) - 不符合進階要求</li>
+                </ul>
+            </div>
+
+            <div class="approach-box">
+                <div class="approach-title">方法三：HashMap 計數</div>
+                <p>統計每個數字出現次數，找出出現一次的。</p>
+                <ul style="margin-top: 10px;">
+                    <li>時間複雜度：O(n)</li>
+                    <li>空間複雜度：O(n)</li>
+                    <li>最直觀但不是最優</li>
+                </ul>
+            </div>
+
+            <div class="approach-box">
+                <div class="approach-title">方法四：數學方法</div>
+                <p>2 × (所有不重複數字的和) - 陣列總和 = 答案</p>
+                <ul style="margin-top: 10px;">
+                    <li>時間複雜度：O(n)</li>
+                    <li>空間複雜度：O(n)（需要 set）</li>
+                    <li>有創意但不如 XOR</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">程式碼實現</h2>
+            
+            <div class="language-tabs">
+                <button class="tab-btn active" onclick="showLanguage('python')">Python</button>
+                <button class="tab-btn" onclick="showLanguage('cpp')">C++</button>
+                <button class="tab-btn" onclick="showLanguage('java')">Java</button>
+            </div>
+
+            <div id="python" class="code-container active">
+                <pre><code class="language-python">class Solution:
+    def singleNumber(self, nums: List[int]) -> int:
+        """
+        方法一：XOR 位元運算（最優）
+        時間複雜度: O(n)
+        空間複雜度: O(1)
+        """
+        result = 0
+        for num in nums:
+            result ^= num
+        return result
+    
+    def singleNumber_oneliner(self, nums: List[int]) -> int:
+        """
+        方法一：XOR - 一行寫法
+        """
+        from functools import reduce
+        return reduce(lambda x, y: x ^ y, nums)
+    
+    def singleNumber_set(self, nums: List[int]) -> int:
+        """
+        方法二：HashSet
+        時間複雜度: O(n)
+        空間複雜度: O(n)
+        """
+        seen = set()
+        for num in nums:
+            if num in seen:
+                seen.remove(num)
+            else:
+                seen.add(num)
+        return seen.pop()
+    
+    def singleNumber_math(self, nums: List[int]) -> int:
+        """
+        方法四：數學方法
+        2 * (a + b + c) - (a + a + b + b + c) = c
+        """
+        return 2 * sum(set(nums)) - sum(nums)
+    
+    def singleNumber_dict(self, nums: List[int]) -> int:
+        """
+        方法三：HashMap 計數
+        """
+        from collections import Counter
+        count = Counter(nums)
+        for num, freq in count.items():
+            if freq == 1:
+                return num</code></pre>
+            </div>
+
+            <div id="cpp" class="code-container">
+                <pre><code class="language-cpp">#include &lt;vector&gt;
+#include &lt;unordered_set&gt;
+using namespace std;
+
+class Solution {
+public:
+    /**
+     * 方法一：XOR 位元運算（最優）
+     * 時間複雜度: O(n)
+     * 空間複雜度: O(1)
+     */
+    int singleNumber(vector<int>& nums) {
+        int result = 0;
+        for (int num : nums) {
+            result ^= num;
+        }
+        return result;
+    }
+    
+    /**
+     * 方法二：HashSet
+     * 時間複雜度: O(n)
+     * 空間複雜度: O(n)
+     */
+    int singleNumber_set(vector<int>& nums) {
+        unordered_set<int> seen;
+        for (int num : nums) {
+            if (seen.count(num)) {
+                seen.erase(num);
+            } else {
+                seen.insert(num);
+            }
+        }
+        return *seen.begin();
+    }
+};</code></pre>
+            </div>
+
+            <div id="java" class="code-container">
+                <pre><code class="language-java">import java.util.HashSet;
+import java.util.Set;
+
+class Solution {
+    /**
+     * 方法一：XOR 位元運算（最優）
+     * 時間複雜度: O(n)
+     * 空間複雜度: O(1)
+     */
+    public int singleNumber(int[] nums) {
+        int result = 0;
+        for (int num : nums) {
+            result ^= num;
+        }
+        return result;
+    }
+    
+    /**
+     * 方法二：HashSet
+     * 時間複雜度: O(n)
+     * 空間複雜度: O(n)
+     */
+    public int singleNumber_set(int[] nums) {
+        Set<Integer> seen = new HashSet<>();
+        for (int num : nums) {
+            if (seen.contains(num)) {
+                seen.remove(num);
+            } else {
+                seen.add(num);
+            }
+        }
+        return seen.iterator().next();
+    }
+}</code></pre>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">複雜度分析</h2>
+            <div class="complexity-box">
+                <div class="complexity-item">時間複雜度: O(n)</div>
+                <p style="color: #78716c; margin: 10px 0;">
+                    只需遍歷陣列一次。
+                </p>
+                
+                <div class="complexity-item" style="margin-top: 20px;">空間複雜度: O(1)</div>
+                <p style="color: #78716c; margin: 10px 0;">
+                    XOR 方法只使用一個變數，不需要額外空間。
+                </p>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">重點提示</h2>
+            <div class="complexity-box">
+                <ul>
+                    <li><strong>XOR 是關鍵：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>這道題最優雅的解法</li>
+                            <li>展示對位元運算的深入理解</li>
+                            <li>面試官最喜歡看到的解法</li>
+                        </ul>
+                    </li>
+                    <li><strong>XOR 的數學證明：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>設單獨數字為 x，其他數字為 a, b, c...</li>
+                            <li>陣列為 [a, a, b, b, c, c, ..., x]</li>
+                            <li>全部 XOR：a⊕a⊕b⊕b⊕c⊕c⊕...⊕x</li>
+                            <li>= 0⊕0⊕0⊕...⊕x = x</li>
+                        </ul>
+                    </li>
+                    <li><strong>為什麼不用加法？</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>加法無法"抵消"重複元素</li>
+                            <li>2 + 2 = 4，不是 0</li>
+                            <li>但 2 ⊕ 2 = 0，完美抵消！</li>
+                        </ul>
+                    </li>
+                    <li><strong>XOR 的實際應用：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>錯誤檢測和校正</li>
+                            <li>加密算法</li>
+                            <li>交換兩個變數（不用臨時變數）</li>
+                            <li>找出不同的位元</li>
+                        </ul>
+                    </li>
+                    <li><strong>位元運算技巧：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>^ 是 XOR 運算符</li>
+                            <li>不需要考慮正負數問題</li>
+                            <li>對二進位的每一位都獨立運算</li>
+                        </ul>
+                    </li>
+                    <li><strong>HashSet 方法思路：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>第一次見到：加入集合</li>
+                            <li>第二次見到：從集合移除</li>
+                            <li>最後剩下的就是答案</li>
+                        </ul>
+                    </li>
+                    <li><strong>數學方法原理：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>假設數字為 [a, a, b, b, x]</li>
+                            <li>不重複數字和 = a + b + x</li>
+                            <li>2×(a+b+x) - (a+a+b+b+x) = x</li>
+                        </ul>
+                    </li>
+                    <li><strong>面試技巧：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>先說 HashMap 暴力解</li>
+                            <li>提到空間可以優化</li>
+                            <li>說出 XOR 解法（展示深度）</li>
+                            <li>解釋 XOR 為什麼可行</li>
+                        </ul>
+                    </li>
+                    <li><strong>常見錯誤：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>忘記初始化 result = 0</li>
+                            <li>不理解 XOR 的交換律</li>
+                            <li>以為只能用 HashMap</li>
+                        </ul>
+                    </li>
+                    <li><strong>延伸題目：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>如果每個數字出現 3 次，只有一個出現 1 次？</li>
+                            <li>如果有兩個數字只出現 1 次？(Single Number II, III)</li>
+                        </ul>
+                    </li>
+                    <li><strong>Python 一行解：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>from functools import reduce</li>
+                            <li>return reduce(lambda x, y: x ^ y, nums)</li>
+                            <li>或：from operator import xor; reduce(xor, nums)</li>
+                        </ul>
+                    </li>
+                    <li><strong>變形題：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>Single Number II (#137) - 每個數字出現 3 次</li>
+                            <li>Single Number III (#260) - 兩個數字出現 1 次</li>
+                            <li>Missing Number (#268) - 類似的 XOR 應用</li>
+                        </ul>
+                    </li>
+                    <li><strong>實際應用：</strong>資料完整性驗證、RAID 系統、網路封包校驗</li>
+                    <li><strong>記憶口訣：</strong>「相同抵消留不同，XOR 運算最輕鬆」</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        hljs.highlightAll();
+        
+        function showLanguage(lang) {
+            document.querySelectorAll('.code-container').forEach(container => {
+                container.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.getElementById(lang).classList.add('active');
+            event.target.classList.add('active');
+        }
+    </script>
+</body>
+</html>

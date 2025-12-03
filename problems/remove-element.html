@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>27. Remove Element - LeetCode 學習平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f8fafc; line-height: 1.8; color: #334155; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .header { background: linear-gradient(135deg, #16a34a 0%, #15803d 100%); color: white; padding: 40px; border-radius: 16px; margin-bottom: 30px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .back-btn { display: inline-block; color: white; text-decoration: none; background: rgba(255,255,255,0.2); padding: 10px 20px; border-radius: 8px; margin-bottom: 20px; transition: all 0.3s; }
+        .back-btn:hover { background: rgba(255,255,255,0.3); }
+        .problem-title { font-size: 2.5em; font-weight: 800; margin-bottom: 15px; }
+        .difficulty { display: inline-block; background: rgba(255,255,255,0.3); padding: 8px 20px; border-radius: 20px; font-weight: 600; font-size: 0.9em; }
+        .content-section { background: white; padding: 40px; border-radius: 16px; margin-bottom: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .section-title { font-size: 1.8em; color: #1e293b; margin-bottom: 25px; font-weight: 700; padding-bottom: 10px; border-bottom: 3px solid #16a34a; }
+        .description { font-size: 1.1em; line-height: 1.9; color: #475569; margin-bottom: 20px; }
+        .example-box { background: #dcfce7; border-left: 4px solid #16a34a; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .example-title { font-weight: 700; color: #15803d; margin-bottom: 10px; font-size: 1.1em; }
+        .approach-box { background: #eff6ff; border-left: 4px solid #3b82f6; padding: 25px; border-radius: 8px; margin: 25px 0; }
+        .approach-title { font-weight: 700; color: #1e40af; margin-bottom: 15px; font-size: 1.3em; }
+        .complexity-box { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .complexity-item { margin: 10px 0; font-weight: 600; color: #92400e; }
+        .language-tabs { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+        .tab-btn { padding: 12px 28px; border: 2px solid #16a34a; background: white; color: #16a34a; border-radius: 8px; cursor: pointer; font-weight: 600; transition: all 0.3s; font-size: 1em; }
+        .tab-btn:hover { background: #dcfce7; }
+        .tab-btn.active { background: #16a34a; color: white; }
+        .code-container { display: none; margin-top: 20px; }
+        .code-container.active { display: block; }
+        pre { background: #282c34 !important; padding: 25px !important; border-radius: 12px; overflow-x: auto; margin: 0; }
+        code { font-family: 'Fira Code', 'Consolas', monospace; font-size: 0.95em; line-height: 1.6; }
+        ol, ul { margin-left: 30px; margin-top: 15px; }
+        li { margin: 12px 0; line-height: 1.8; }
+        strong { color: #1e293b; font-weight: 700; }
+        .visual-box { background: #f0f9ff; border: 2px solid #3b82f6; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        
+        @media (max-width: 768px) {
+            .container { padding: 10px; }
+            .header { padding: 25px; }
+            .problem-title { font-size: 1.8em; }
+            .content-section { padding: 25px; }
+            .tab-btn { padding: 10px 20px; font-size: 0.9em; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="../index.html" class="back-btn">← 返回題目列表</a>
+            <div class="problem-title">27. Remove Element</div>
+            <span class="difficulty">Easy</span>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">題目描述</h2>
+            <div class="description">
+                <p>給你一個陣列 <code>nums</code> 和一個值 <code>val</code>，你需要<strong>原地</strong>移除所有數值等於 <code>val</code> 的元素，並返回移除後陣列的新長度。</p>
+                <p style="margin-top: 15px;">不要使用額外的陣列空間，你必須僅使用 O(1) 額外空間並<strong>原地</strong>修改輸入陣列。</p>
+                <p style="margin-top: 15px;">元素的順序可以改變。你不需要考慮陣列中超出新長度後面的元素。</p>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">說明:</div>
+                <p>為什麼返回數值是整數，但輸出的答案是陣列呢？</p>
+                <p style="margin-top: 10px;">請注意，輸入陣列是以「引用」方式傳遞的，這意味著在函數裡修改輸入陣列對於調用者是可見的。</p>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例 1:</div>
+                <pre><code>輸入: nums = [3,2,2,3], val = 3
+輸出: 2, nums = [2,2,_,_]
+解釋: 函數應該返回新的長度 2, 並且 nums 中的前兩個元素均為 2。
+你不需要考慮陣列中超出新長度後面的元素。
+例如，函數返回的新長度為 2，而 nums = [2,2,3,3] 或 nums = [2,2,0,0]，也會被視為正確答案。</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例 2:</div>
+                <pre><code>輸入: nums = [0,1,2,2,3,0,4,2], val = 2
+輸出: 5, nums = [0,1,4,0,3,_,_,_]
+解釋: 函數應該返回新的長度 5，並且 nums 中的前五個元素為 0,1,3,0,4。
+注意這五個元素可為任意順序。你不需要考慮陣列中超出新長度後面的元素。</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">限制條件:</div>
+                <pre><code>0 <= nums.length <= 100
+0 <= nums[i] <= 50
+0 <= val <= 100</code></pre>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">解題思路</h2>
+            
+            <div class="approach-box">
+                <div class="approach-title">核心觀察</div>
+                <p>這道題的關鍵特性：</p>
+                <ul>
+                    <li>需要<strong>原地</strong>操作 - O(1) 空間</li>
+                    <li>元素<strong>順序可以改變</strong> - 這很重要！</li>
+                    <li>不需要考慮新長度後的元素</li>
+                    <li>只需保留不等於 val 的元素</li>
+                </ul>
+                <p style="margin-top: 15px; color: #16a34a; font-weight: 600;">
+                    關鍵：與 #26 類似，使用雙指標技巧
+                </p>
+            </div>
+            
+            <div class="approach-box">
+                <div class="approach-title">方法一：雙指標（快慢指標）⭐⭐⭐</div>
+                <p>使用兩個指標來實現原地移除。</p>
+                
+                <p style="margin-top: 15px;"><strong>核心思想：</strong></p>
+                <ul>
+                    <li><strong>慢指標（slow）：</strong>指向下一個要寫入的位置</li>
+                    <li><strong>快指標（fast）：</strong>遍歷整個陣列</li>
+                    <li>當 nums[fast] != val 時，保留這個元素</li>
+                    <li>將 nums[fast] 寫入 nums[slow]，slow++</li>
+                </ul>
+                
+                <div class="visual-box">
+                    <p><strong>視覺化範例：nums = [3,2,2,3], val = 3</strong></p>
+                    <pre style="background: white; padding: 15px; border-radius: 5px; margin-top: 10px;"><code>初始狀態:
+nums = [3, 2, 2, 3], val = 3
+        ↑
+      slow=0
+
+fast=0: nums[0]=3 == val，跳過（不保留）
+nums = [3, 2, 2, 3]
+        ↑  ↑
+      slow fast
+
+fast=1: nums[1]=2 != val，保留！
+        nums[slow] = nums[fast] = 2
+        slow++
+nums = [2, 2, 2, 3]
+           ↑  ↑
+         slow fast
+
+fast=2: nums[2]=2 != val，保留！
+        nums[slow] = nums[fast] = 2
+        slow++
+nums = [2, 2, 2, 3]
+              ↑  ↑
+            slow fast
+
+fast=3: nums[3]=3 == val，跳過（不保留）
+nums = [2, 2, 2, 3]
+              ↑     ↑
+            slow   fast
+
+最終結果:
+nums = [2, 2, _, _]
+返回 slow = 2</code></pre>
+                </div>
+                
+                <div class="visual-box">
+                    <p><strong>更複雜的範例：nums = [0,1,2,2,3,0,4,2], val = 2</strong></p>
+                    <pre style="background: white; padding: 15px; border-radius: 5px; margin-top: 10px;"><code>初始: nums = [0, 1, 2, 2, 3, 0, 4, 2], val = 2
+
+fast=0: nums[0]=0 != 2 → 保留 → nums[0]=0, slow=1
+fast=1: nums[1]=1 != 2 → 保留 → nums[1]=1, slow=2
+fast=2: nums[2]=2 == 2 → 跳過
+fast=3: nums[3]=2 == 2 → 跳過
+fast=4: nums[4]=3 != 2 → 保留 → nums[2]=3, slow=3
+fast=5: nums[5]=0 != 2 → 保留 → nums[3]=0, slow=4
+fast=6: nums[6]=4 != 2 → 保留 → nums[4]=4, slow=5
+fast=7: nums[7]=2 == 2 → 跳過
+
+結果: nums = [0, 1, 3, 0, 4, _, _, _]
+返回 slow = 5</code></pre>
+                </div>
+            </div>
+
+            <div class="approach-box">
+                <div class="approach-title">方法二：雙指標優化（交換法）⭐⭐⭐</div>
+                <p>當要刪除的元素很少時，這個方法更高效。</p>
+                
+                <p style="margin-top: 15px;"><strong>核心思想：</strong></p>
+                <ul>
+                    <li>從左右兩端同時開始</li>
+                    <li>左指標遇到 val，與右指標交換</li>
+                    <li>右指標左移，左指標不動</li>
+                    <li>左指標遇到非 val，左移繼續</li>
+                </ul>
+                
+                <p style="margin-top: 15px;"><strong>優勢：</strong></p>
+                <ul>
+                    <li>減少不必要的賦值操作</li>
+                    <li>當 val 元素少時更高效</li>
+                    <li>避免覆蓋有用的元素</li>
+                </ul>
+                
+                <div class="visual-box">
+                    <p><strong>視覺化範例：nums = [3,2,2,3], val = 3</strong></p>
+                    <pre style="background: white; padding: 15px; border-radius: 5px; margin-top: 10px;"><code>初始: nums = [3, 2, 2, 3]
+              ↑        ↑
+            left     right
+
+left=0: nums[0]=3 == val
+        交換 nums[left] 和 nums[right]
+        right--
+nums = [3, 2, 2, 3]
+        ↑     ↑
+      left  right
+
+left=0: nums[0]=3 == val
+        交換 nums[left] 和 nums[right]
+        right--
+nums = [2, 2, 2, 3]
+        ↑  ↑
+      left right
+
+left=0: nums[0]=2 != val
+        left++
+nums = [2, 2, 2, 3]
+           ↑  ↑
+         left right
+
+left=1: nums[1]=2 != val
+        left++
+nums = [2, 2, 2, 3]
+              ↑
+          left,right
+
+left > right，結束
+返回 right + 1 = 2</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">程式碼實現</h2>
+            
+            <div class="language-tabs">
+                <button class="tab-btn active" onclick="showLanguage('python')">Python</button>
+                <button class="tab-btn" onclick="showLanguage('cpp')">C++</button>
+                <button class="tab-btn" onclick="showLanguage('java')">Java</button>
+            </div>
+
+            <div id="python" class="code-container active">
+                <pre><code class="language-python">class Solution:
+    def removeElement(self, nums: List[int], val: int) -> int:
+        """
+        方法一：雙指標（快慢指標）
+        時間複雜度: O(n)
+        空間複雜度: O(1)
+        """
+        slow = 0
+        
+        for fast in range(len(nums)):
+            # 保留所有不等於 val 的元素
+            if nums[fast] != val:
+                nums[slow] = nums[fast]
+                slow += 1
+        
+        return slow
+    
+    def removeElement_swap(self, nums: List[int], val: int) -> int:
+        """
+        方法二：雙指標優化（交換法）
+        時間複雜度: O(n)
+        空間複雜度: O(1)
+        
+        優勢：當要移除的元素較少時，減少賦值次數
+        """
+        left = 0
+        right = len(nums) - 1
+        
+        while left <= right:
+            if nums[left] == val:
+                # 與末尾元素交換
+                nums[left] = nums[right]
+                right -= 1
+            else:
+                left += 1
+        
+        return left</code></pre>
+            </div>
+
+            <div id="cpp" class="code-container">
+                <pre><code class="language-cpp">#include &lt;vector&gt;
+using namespace std;
+
+class Solution {
+public:
+    /**
+     * 方法一：雙指標（快慢指標）
+     * 時間複雜度: O(n)
+     * 空間複雜度: O(1)
+     */
+    int removeElement(vector<int>& nums, int val) {
+        int slow = 0;
+        
+        for (int fast = 0; fast < nums.size(); fast++) {
+            if (nums[fast] != val) {
+                nums[slow] = nums[fast];
+                slow++;
+            }
+        }
+        
+        return slow;
+    }
+    
+    /**
+     * 方法二：雙指標優化（交換法）
+     * 時間複雜度: O(n)
+     * 空間複雜度: O(1)
+     */
+    int removeElement_swap(vector<int>& nums, int val) {
+        int left = 0;
+        int right = nums.size() - 1;
+        
+        while (left <= right) {
+            if (nums[left] == val) {
+                nums[left] = nums[right];
+                right--;
+            } else {
+                left++;
+            }
+        }
+        
+        return left;
+    }
+};</code></pre>
+            </div>
+
+            <div id="java" class="code-container">
+                <pre><code class="language-java">class Solution {
+    /**
+     * 方法一：雙指標（快慢指標）
+     * 時間複雜度: O(n)
+     * 空間複雜度: O(1)
+     */
+    public int removeElement(int[] nums, int val) {
+        int slow = 0;
+        
+        for (int fast = 0; fast < nums.length; fast++) {
+            if (nums[fast] != val) {
+                nums[slow] = nums[fast];
+                slow++;
+            }
+        }
+        
+        return slow;
+    }
+    
+    /**
+     * 方法二：雙指標優化（交換法）
+     * 時間複雜度: O(n)
+     * 空間複雜度: O(1)
+     */
+    public int removeElement_swap(int[] nums, int val) {
+        int left = 0;
+        int right = nums.length - 1;
+        
+        while (left <= right) {
+            if (nums[left] == val) {
+                nums[left] = nums[right];
+                right--;
+            } else {
+                left++;
+            }
+        }
+        
+        return left;
+    }
+}</code></pre>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">複雜度分析</h2>
+            <div class="complexity-box">
+                <div class="complexity-item">時間複雜度: O(n)</div>
+                <p style="color: #78716c; margin: 10px 0;">
+                    兩種方法都只需遍歷陣列一次（最多）。
+                </p>
+                
+                <div class="complexity-item" style="margin-top: 20px;">空間複雜度: O(1)</div>
+                <p style="color: #78716c; margin: 10px 0;">
+                    只使用常數額外空間，原地修改。
+                </p>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">重點提示</h2>
+            <div class="complexity-box">
+                <ul>
+                    <li><strong>兩種方法比較：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>方法一（快慢指標）：穩定，適合大多數情況</li>
+                            <li>方法二（交換法）：當要移除的元素很少時更優</li>
+                            <li>方法一：賦值次數 = n - val_count</li>
+                            <li>方法二：賦值次數 = val_count</li>
+                        </ul>
+                    </li>
+                    <li><strong>與 #26 的區別：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>#26：移除重複元素（已排序）</li>
+                            <li>#27：移除指定值（任意順序）</li>
+                            <li>兩題都用雙指標，思路相似</li>
+                        </ul>
+                    </li>
+                    <li><strong>為什麼順序可以改變很重要？</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>允許我們使用交換法</li>
+                            <li>不需要保持相對順序</li>
+                            <li>可以更靈活地優化</li>
+                        </ul>
+                    </li>
+                    <li><strong>交換法的優勢：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>假設陣列 [1,2,3,4,5]，val = 5</li>
+                            <li>快慢指標：需要複製 4 次（1,2,3,4）</li>
+                            <li>交換法：只需交換 1 次（5 和 5）</li>
+                        </ul>
+                    </li>
+                    <li><strong>何時使用哪種方法？</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>不確定 val 數量 → 用方法一</li>
+                            <li>val 元素很少 → 用方法二</li>
+                            <li>需要穩定順序 → 只能用方法一</li>
+                        </ul>
+                    </li>
+                    <li><strong>邊界情況：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>空陣列 → 返回 0</li>
+                            <li>所有元素都是 val → 返回 0</li>
+                            <li>沒有元素是 val → 返回原長度</li>
+                            <li>只有一個元素</li>
+                        </ul>
+                    </li>
+                    <li><strong>常見錯誤：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>忘記初始化 slow = 0</li>
+                            <li>交換法中 left <= right 寫成 left < right</li>
+                            <li>沒有處理空陣列（Python 不需要）</li>
+                        </ul>
+                    </li>
+                    <li><strong>面試技巧：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>先問是否需要保持順序</li>
+                            <li>提出兩種解法</li>
+                            <li>分析各自優劣</li>
+                            <li>畫圖展示過程</li>
+                        </ul>
+                    </li>
+                    <li><strong>與 Move Zeroes (#283) 的關係：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>#283 是本題的變形</li>
+                            <li>移除 0 後，需要填充 0</li>
+                            <li>核心思想完全一樣</li>
+                        </ul>
+                    </li>
+                    <li><strong>延伸思考：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>如果要移除多個不同的值？</li>
+                            <li>如果需要統計移除了多少個？</li>
+                            <li>如果需要返回被移除的元素？</li>
+                        </ul>
+                    </li>
+                    <li><strong>實際應用場景：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>數據過濾</li>
+                            <li>清除無效值</li>
+                            <li>陣列壓縮</li>
+                        </ul>
+                    </li>
+                    <li><strong>變形題：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>Remove Duplicates from Sorted Array (#26)</li>
+                            <li>Move Zeroes (#283)</li>
+                            <li>Remove All Occurrences of a Substring (#1910)</li>
+                        </ul>
+                    </li>
+                    <li><strong>記憶口訣：</strong>「快讀慢寫留不同，交換優化少移動」</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        hljs.highlightAll();
+        
+        function showLanguage(lang) {
+            document.querySelectorAll('.code-container').forEach(container => {
+                container.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.getElementById(lang).classList.add('active');
+            event.target.classList.add('active');
+        }
+    </script>
+</body>
+</html>

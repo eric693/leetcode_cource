@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>268. Missing Number - LeetCode 學習平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f8fafc; line-height: 1.8; color: #334155; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .header { background: linear-gradient(135deg, #16a34a 0%, #15803d 100%); color: white; padding: 40px; border-radius: 16px; margin-bottom: 30px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .back-btn { display: inline-block; color: white; text-decoration: none; background: rgba(255,255,255,0.2); padding: 10px 20px; border-radius: 8px; margin-bottom: 20px; transition: all 0.3s; }
+        .back-btn:hover { background: rgba(255,255,255,0.3); }
+        .problem-title { font-size: 2.5em; font-weight: 800; margin-bottom: 15px; }
+        .difficulty { display: inline-block; background: rgba(255,255,255,0.3); padding: 8px 20px; border-radius: 20px; font-weight: 600; font-size: 0.9em; }
+        .content-section { background: white; padding: 40px; border-radius: 16px; margin-bottom: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .section-title { font-size: 1.8em; color: #1e293b; margin-bottom: 25px; font-weight: 700; padding-bottom: 10px; border-bottom: 3px solid #16a34a; }
+        .description { font-size: 1.1em; line-height: 1.9; color: #475569; margin-bottom: 20px; }
+        .example-box { background: #dcfce7; border-left: 4px solid #16a34a; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .example-title { font-weight: 700; color: #15803d; margin-bottom: 10px; font-size: 1.1em; }
+        .approach-box { background: #eff6ff; border-left: 4px solid #3b82f6; padding: 25px; border-radius: 8px; margin: 25px 0; }
+        .approach-title { font-weight: 700; color: #1e40af; margin-bottom: 15px; font-size: 1.3em; }
+        .complexity-box { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .complexity-item { margin: 10px 0; font-weight: 600; color: #92400e; }
+        .language-tabs { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+        .tab-btn { padding: 12px 28px; border: 2px solid #16a34a; background: white; color: #16a34a; border-radius: 8px; cursor: pointer; font-weight: 600; transition: all 0.3s; font-size: 1em; }
+        .tab-btn:hover { background: #dcfce7; }
+        .tab-btn.active { background: #16a34a; color: white; }
+        .code-container { display: none; margin-top: 20px; }
+        .code-container.active { display: block; }
+        pre { background: #282c34 !important; padding: 25px !important; border-radius: 12px; overflow-x: auto; margin: 0; }
+        code { font-family: 'Fira Code', 'Consolas', monospace; font-size: 0.95em; line-height: 1.6; }
+        ol, ul { margin-left: 30px; margin-top: 15px; }
+        li { margin: 12px 0; line-height: 1.8; }
+        strong { color: #1e293b; font-weight: 700; }
+        .visual-box { background: #f0f9ff; border: 2px solid #3b82f6; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        
+        @media (max-width: 768px) {
+            .container { padding: 10px; }
+            .header { padding: 25px; }
+            .problem-title { font-size: 1.8em; }
+            .content-section { padding: 25px; }
+            .tab-btn { padding: 10px 20px; font-size: 0.9em; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="../index.html" class="back-btn">← 返回題目列表</a>
+            <div class="problem-title">268. Missing Number</div>
+            <span class="difficulty">Easy</span>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">題目描述</h2>
+            <div class="description">
+                <p>給定一個包含 <code>n</code> 個不同數字的陣列 <code>nums</code>，數字範圍在 <code>[0, n]</code> 之間。請找出這個範圍內沒有出現在陣列中的那個數字。</p>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例 1:</div>
+                <pre><code>輸入: nums = [3,0,1]
+輸出: 2
+解釋: n = 3，因為有 3 個數字，所以所有數字都在範圍 [0,3] 內。
+2 是沒有出現在陣列中的數字。</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例 2:</div>
+                <pre><code>輸入: nums = [0,1]
+輸出: 2
+解釋: n = 2，因為有 2 個數字，所以所有數字都在範圍 [0,2] 內。
+2 是沒有出現在陣列中的數字。</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例 3:</div>
+                <pre><code>輸入: nums = [9,6,4,2,3,5,7,0,1]
+輸出: 8
+解釋: n = 9，因為有 9 個數字，所以所有數字都在範圍 [0,9] 內。
+8 是沒有出現在陣列中的數字。</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">限制條件:</div>
+                <pre><code>n == nums.length
+1 <= n <= 10^4
+0 <= nums[i] <= n
+nums 中的所有數字都是唯一的</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">進階挑戰:</div>
+                <p>你能否實現線性時間複雜度、僅使用額外常數空間的算法？</p>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">解題思路</h2>
+            
+            <div class="approach-box">
+                <div class="approach-title">核心觀察</div>
+                <p>這道題有多種解法，關鍵是理解數字的特性：</p>
+                <ul>
+                    <li>陣列長度為 n，包含 n 個數字</li>
+                    <li>數字範圍是 [0, n]，共 n+1 個數字</li>
+                    <li>所以恰好缺少一個數字</li>
+                    <li>數字都是唯一的</li>
+                </ul>
+            </div>
+            
+            <div class="approach-box">
+                <div class="approach-title">方法一：數學求和（推薦）⭐⭐⭐</div>
+                <p>使用數學公式計算期望總和，與實際總和的差就是缺失的數字。</p>
+                
+                <p style="margin-top: 15px;"><strong>核心思想：</strong></p>
+                <ul>
+                    <li>0 到 n 的總和公式：sum = n × (n + 1) / 2</li>
+                    <li>計算陣列實際總和</li>
+                    <li>期望總和 - 實際總和 = 缺失數字</li>
+                </ul>
+                
+                <div class="visual-box">
+                    <p><strong>視覺化範例：nums = [3,0,1]</strong></p>
+                    <pre style="background: white; padding: 15px; border-radius: 5px; margin-top: 10px;"><code>n = 3（陣列長度）
+範圍: [0, 1, 2, 3]
+
+期望總和 = 0 + 1 + 2 + 3 = 6
+         = 3 × (3 + 1) / 2 = 6
+
+實際總和 = 3 + 0 + 1 = 4
+
+缺失數字 = 6 - 4 = 2 ✓</code></pre>
+                </div>
+                
+                <p style="margin-top: 15px;"><strong>優點：</strong></p>
+                <ul>
+                    <li>時間複雜度：O(n)</li>
+                    <li>空間複雜度：O(1)</li>
+                    <li>思路清晰，易於理解</li>
+                </ul>
+                
+                <p style="margin-top: 15px; color: #dc2626; font-weight: 600;">
+                    注意：需要注意整數溢位問題（對於大的 n 值）
+                </p>
+            </div>
+
+            <div class="approach-box">
+                <div class="approach-title">方法二：位元運算 XOR（最優）⭐⭐⭐</div>
+                <p>利用 XOR 的特性：相同數字 XOR 結果為 0。</p>
+                
+                <p style="margin-top: 15px;"><strong>XOR 特性：</strong></p>
+                <ul>
+                    <li>a ⊕ a = 0（相同數字 XOR 為 0）</li>
+                    <li>a ⊕ 0 = a（任何數與 0 XOR 還是自己）</li>
+                    <li>XOR 滿足交換律和結合律</li>
+                </ul>
+                
+                <p style="margin-top: 15px;"><strong>步驟：</strong></p>
+                <ol>
+                    <li>將 0 到 n 的所有數字與陣列元素一起 XOR</li>
+                    <li>相同的數字會相互抵消（XOR 為 0）</li>
+                    <li>最後剩下的就是缺失的數字</li>
+                </ol>
+                
+                <div class="visual-box">
+                    <p><strong>視覺化範例：nums = [3,0,1]</strong></p>
+                    <pre style="background: white; padding: 15px; border-radius: 5px; margin-top: 10px;"><code>陣列元素: 3, 0, 1
+完整範圍: 0, 1, 2, 3
+
+計算過程:
+result = 0 ⊕ 1 ⊕ 2 ⊕ 3 ⊕ 3 ⊕ 0 ⊕ 1
+
+重新排列（利用交換律）:
+= (0 ⊕ 0) ⊕ (1 ⊕ 1) ⊕ (3 ⊕ 3) ⊕ 2
+= 0 ⊕ 0 ⊕ 0 ⊕ 2
+= 2 ✓
+
+解釋：0、1、3 都出現兩次，XOR 後為 0
+     只有 2 出現一次，所以結果是 2</code></pre>
+                </div>
+                
+                <p style="margin-top: 15px;"><strong>優點：</strong></p>
+                <ul>
+                    <li>不會溢位</li>
+                    <li>空間 O(1)</li>
+                    <li>時間 O(n)</li>
+                    <li>最優雅的解法</li>
+                </ul>
+            </div>
+
+            <div class="approach-box">
+                <div class="approach-title">方法三：HashSet</div>
+                <p>使用 HashSet 存儲所有數字，然後檢查哪個數字缺失。</p>
+                <ul style="margin-top: 10px;">
+                    <li>時間複雜度：O(n)</li>
+                    <li>空間複雜度：O(n) - 不是最優</li>
+                    <li>思路直觀但空間不夠優</li>
+                </ul>
+            </div>
+
+            <div class="approach-box">
+                <div class="approach-title">方法四：排序</div>
+                <p>先排序，然後檢查哪個位置的數字不對。</p>
+                <ul style="margin-top: 10px;">
+                    <li>時間複雜度：O(n log n) - 不是最優</li>
+                    <li>空間複雜度：O(1)</li>
+                    <li>效率較低</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">程式碼實現</h2>
+            
+            <div class="language-tabs">
+                <button class="tab-btn active" onclick="showLanguage('python')">Python</button>
+                <button class="tab-btn" onclick="showLanguage('cpp')">C++</button>
+                <button class="tab-btn" onclick="showLanguage('java')">Java</button>
+            </div>
+
+            <div id="python" class="code-container active">
+                <pre><code class="language-python">class Solution:
+    def missingNumber(self, nums: List[int]) -> int:
+        """
+        方法一：數學求和
+        時間複雜度: O(n)
+        空間複雜度: O(1)
+        """
+        n = len(nums)
+        expected_sum = n * (n + 1) // 2
+        actual_sum = sum(nums)
+        return expected_sum - actual_sum
+    
+    def missingNumber_xor(self, nums: List[int]) -> int:
+        """
+        方法二：XOR 位元運算（最優）
+        時間複雜度: O(n)
+        空間複雜度: O(1)
+        """
+        result = len(nums)  # 先 XOR n
+        
+        for i, num in enumerate(nums):
+            result ^= i ^ num
+        
+        return result
+    
+    def missingNumber_xor_v2(self, nums: List[int]) -> int:
+        """
+        方法二：XOR 位元運算（另一種寫法）
+        """
+        result = 0
+        
+        # XOR 所有索引
+        for i in range(len(nums) + 1):
+            result ^= i
+        
+        # XOR 所有元素
+        for num in nums:
+            result ^= num
+        
+        return result
+    
+    def missingNumber_set(self, nums: List[int]) -> int:
+        """
+        方法三：HashSet
+        時間複雜度: O(n)
+        空間複雜度: O(n)
+        """
+        num_set = set(nums)
+        n = len(nums)
+        
+        for i in range(n + 1):
+            if i not in num_set:
+                return i
+        
+        return -1  # 不會執行到這裡</code></pre>
+            </div>
+
+            <div id="cpp" class="code-container">
+                <pre><code class="language-cpp">#include &lt;vector&gt;
+#include &lt;numeric&gt;
+using namespace std;
+
+class Solution {
+public:
+    /**
+     * 方法一：數學求和
+     * 時間複雜度: O(n)
+     * 空間複雜度: O(1)
+     */
+    int missingNumber(vector<int>& nums) {
+        int n = nums.size();
+        int expected_sum = n * (n + 1) / 2;
+        int actual_sum = accumulate(nums.begin(), nums.end(), 0);
+        return expected_sum - actual_sum;
+    }
+    
+    /**
+     * 方法二：XOR 位元運算
+     * 時間複雜度: O(n)
+     * 空間複雜度: O(1)
+     */
+    int missingNumber_xor(vector<int>& nums) {
+        int result = nums.size();
+        
+        for (int i = 0; i < nums.size(); i++) {
+            result ^= i ^ nums[i];
+        }
+        
+        return result;
+    }
+};</code></pre>
+            </div>
+
+            <div id="java" class="code-container">
+                <pre><code class="language-java">class Solution {
+    /**
+     * 方法一：數學求和
+     * 時間複雜度: O(n)
+     * 空間複雜度: O(1)
+     */
+    public int missingNumber(int[] nums) {
+        int n = nums.length;
+        int expectedSum = n * (n + 1) / 2;
+        int actualSum = 0;
+        
+        for (int num : nums) {
+            actualSum += num;
+        }
+        
+        return expectedSum - actualSum;
+    }
+    
+    /**
+     * 方法二：XOR 位元運算
+     * 時間複雜度: O(n)
+     * 空間複雜度: O(1)
+     */
+    public int missingNumber_xor(int[] nums) {
+        int result = nums.length;
+        
+        for (int i = 0; i < nums.length; i++) {
+            result ^= i ^ nums[i];
+        }
+        
+        return result;
+    }
+}</code></pre>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">複雜度分析</h2>
+            <div class="complexity-box">
+                <div class="complexity-item">時間複雜度: O(n)</div>
+                <p style="color: #78716c; margin: 10px 0;">
+                    需要遍歷陣列一次。
+                </p>
+                
+                <div class="complexity-item" style="margin-top: 20px;">空間複雜度: O(1)</div>
+                <p style="color: #78716c; margin: 10px 0;">
+                    只使用常數額外空間（數學求和和 XOR 方法）。
+                </p>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">重點提示</h2>
+            <div class="complexity-box">
+                <ul>
+                    <li><strong>數學求和法優點：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>思路最直觀</li>
+                            <li>易於理解和實現</li>
+                            <li>面試時可以先提出這個方案</li>
+                        </ul>
+                    </li>
+                    <li><strong>數學求和法注意事項：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>可能有整數溢位風險</li>
+                            <li>對於 n = 10^4，總和可達 5 × 10^7，通常沒問題</li>
+                            <li>但如果 n 更大，需要考慮使用 long 型別</li>
+                        </ul>
+                    </li>
+                    <li><strong>XOR 方法優勢：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>不會溢位</li>
+                            <li>位元運算效率高</li>
+                            <li>最優雅的解法</li>
+                            <li>展示對位元運算的理解</li>
+                        </ul>
+                    </li>
+                    <li><strong>XOR 核心原理：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>a ⊕ a = 0</li>
+                            <li>a ⊕ 0 = a</li>
+                            <li>XOR 滿足交換律：a ⊕ b = b ⊕ a</li>
+                            <li>XOR 滿足結合律：(a ⊕ b) ⊕ c = a ⊕ (b ⊕ c)</li>
+                        </ul>
+                    </li>
+                    <li><strong>為什麼 XOR 可行？</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>把 0 到 n 的所有數字都 XOR 一遍</li>
+                            <li>再把陣列中的所有數字都 XOR 一遍</li>
+                            <li>出現兩次的數字會抵消為 0</li>
+                            <li>只出現一次的（缺失的）數字會保留</li>
+                        </ul>
+                    </li>
+                    <li><strong>HashSet 方法：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>最直觀但空間不優</li>
+                            <li>適合先想到的第一個方案</li>
+                            <li>可以作為暴力解提出</li>
+                        </ul>
+                    </li>
+                    <li><strong>邊界情況：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>nums = [0] → 缺失 1</li>
+                            <li>nums = [1] → 缺失 0</li>
+                            <li>缺失的數字可能是 0 或 n</li>
+                        </ul>
+                    </li>
+                    <li><strong>常見錯誤：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>忘記 n 的範圍是 [0, n] 而不是 [0, n-1]</li>
+                            <li>數學求和公式寫錯</li>
+                            <li>XOR 的初始值設錯</li>
+                        </ul>
+                    </li>
+                    <li><strong>面試技巧：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>先說 HashSet 方法（暴力解）</li>
+                            <li>然後優化到數學求和</li>
+                            <li>最後提出 XOR 方法（展示深度）</li>
+                            <li>分析各方法的優缺點</li>
+                        </ul>
+                    </li>
+                    <li><strong>公式推導：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>0 + 1 + 2 + ... + n = n(n+1)/2</li>
+                            <li>這是等差數列求和公式</li>
+                            <li>首項 a₁ = 0，末項 aₙ = n，項數 = n+1</li>
+                            <li>和 = (首項 + 末項) × 項數 / 2</li>
+                        </ul>
+                    </li>
+                    <li><strong>延伸思考：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>如果缺失兩個數字怎麼辦？</li>
+                            <li>如果有重複數字怎麼辦？</li>
+                            <li>如何找到缺失和重複的數字？</li>
+                        </ul>
+                    </li>
+                    <li><strong>變形題：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>Find All Numbers Disappeared in an Array (#448)</li>
+                            <li>Single Number (#136) - 類似的 XOR 應用</li>
+                            <li>Find the Duplicate Number (#287)</li>
+                        </ul>
+                    </li>
+                    <li><strong>實際應用：</strong>數據完整性檢查、錯誤檢測、網路傳輸驗證</li>
+                    <li><strong>相似題目：</strong>First Missing Positive (41), Single Number (136)</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        hljs.highlightAll();
+        
+        function showLanguage(lang) {
+            document.querySelectorAll('.code-container').forEach(container => {
+                container.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.getElementById(lang).classList.add('active');
+            event.target.classList.add('active');
+        }
+    </script>
+</body>
+</html>

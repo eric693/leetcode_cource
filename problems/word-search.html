@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>79. Word Search - LeetCode 學習平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f8fafc; line-height: 1.8; color: #334155; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .header { background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: white; padding: 40px; border-radius: 16px; margin-bottom: 30px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .back-btn { display: inline-block; color: white; text-decoration: none; background: rgba(255,255,255,0.2); padding: 10px 20px; border-radius: 8px; margin-bottom: 20px; transition: all 0.3s; }
+        .back-btn:hover { background: rgba(255,255,255,0.3); }
+        .problem-title { font-size: 2.5em; font-weight: 800; margin-bottom: 15px; }
+        .difficulty { display: inline-block; background: rgba(255,255,255,0.3); padding: 8px 20px; border-radius: 20px; font-weight: 600; font-size: 0.9em; }
+        .content-section { background: white; padding: 40px; border-radius: 16px; margin-bottom: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .section-title { font-size: 1.8em; color: #1e293b; margin-bottom: 25px; font-weight: 700; padding-bottom: 10px; border-bottom: 3px solid #f59e0b; }
+        .description { font-size: 1.1em; line-height: 1.9; color: #475569; margin-bottom: 20px; }
+        .example-box { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .example-title { font-weight: 700; color: #92400e; margin-bottom: 10px; font-size: 1.1em; }
+        .approach-box { background: #eff6ff; border-left: 4px solid #3b82f6; padding: 25px; border-radius: 8px; margin: 25px 0; }
+        .approach-title { font-weight: 700; color: #1e40af; margin-bottom: 15px; font-size: 1.3em; }
+        .complexity-box { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .complexity-item { margin: 10px 0; font-weight: 600; color: #92400e; }
+        .language-tabs { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+        .tab-btn { padding: 12px 28px; border: 2px solid #f59e0b; background: white; color: #f59e0b; border-radius: 8px; cursor: pointer; font-weight: 600; transition: all 0.3s; font-size: 1em; }
+        .tab-btn:hover { background: #fef3c7; }
+        .tab-btn.active { background: #f59e0b; color: white; }
+        .code-container { display: none; margin-top: 20px; }
+        .code-container.active { display: block; }
+        pre { background: #282c34 !important; padding: 25px !important; border-radius: 12px; overflow-x: auto; margin: 0; }
+        code { font-family: 'Fira Code', 'Consolas', monospace; font-size: 0.95em; line-height: 1.6; }
+        ol, ul { margin-left: 30px; margin-top: 15px; }
+        li { margin: 12px 0; line-height: 1.8; }
+        strong { color: #1e293b; font-weight: 700; }
+        .visual-box { background: #f0f9ff; border: 2px solid #3b82f6; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        
+        @media (max-width: 768px) {
+            .container { padding: 10px; }
+            .header { padding: 25px; }
+            .problem-title { font-size: 1.8em; }
+            .content-section { padding: 25px; }
+            .tab-btn { padding: 10px 20px; font-size: 0.9em; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="../index.html" class="back-btn">← 返回題目列表</a>
+            <div class="problem-title">79. Word Search</div>
+            <span class="difficulty">Medium</span>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">題目描述</h2>
+            <div class="description">
+                <p>給定一個 <code>m x n</code> 二維字符網格 <code>board</code> 和一個字串 <code>word</code>。如果 <code>word</code> 存在於網格中，返回 <code>true</code>；否則，返回 <code>false</code>。</p>
+                <p style="margin-top: 15px;">單詞必須按照字母順序，通過<strong>相鄰的單元格</strong>內的字母構成，其中「相鄰」單元格是那些水平相鄰或垂直相鄰的單元格。同一個單元格內的字母<strong>不允許被重複使用</strong>。</p>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例 1:</div>
+                <pre><code>輸入: board = [["A","B","C","E"],
+              ["S","F","C","S"],
+              ["A","D","E","E"]], 
+     word = "ABCCED"
+輸出: true
+
+視覺化:
+A → B → C ↓
+S   F   C   E
+A   D   E ← E</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例 2:</div>
+                <pre><code>輸入: board = [["A","B","C","E"],
+              ["S","F","C","S"],
+              ["A","D","E","E"]], 
+     word = "SEE"
+輸出: true
+
+視覺化:
+A   B   C   E
+S → E ← E   S
+A   D   E   E
+    ↓
+    (S-E-E)</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例 3:</div>
+                <pre><code>輸入: board = [["A","B","C","E"],
+              ["S","F","C","S"],
+              ["A","D","E","E"]], 
+     word = "ABCB"
+輸出: false
+解釋: 無法找到，因為同一個格子不能重複使用</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">限制條件:</div>
+                <pre><code>m == board.length
+n = board[i].length
+1 <= m, n <= 6
+1 <= word.length <= 15
+board 和 word 僅由大小寫英文字母組成</code></pre>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">解題思路</h2>
+            
+            <div class="approach-box">
+                <div class="approach-title">核心觀察</div>
+                <p>這是一個典型的<strong>回溯（Backtracking）</strong>問題：</p>
+                <ul>
+                    <li>需要在二維網格中搜尋路徑</li>
+                    <li>可以上下左右移動</li>
+                    <li>每個格子只能使用一次</li>
+                    <li>需要嘗試所有可能的路徑</li>
+                </ul>
+                <p style="margin-top: 15px; color: #f59e0b; font-weight: 600;">
+                    關鍵：DFS + 回溯 + 訪問標記
+                </p>
+            </div>
+            
+            <div class="approach-box">
+                <div class="approach-title">方法：DFS + 回溯 ⭐⭐⭐</div>
+                <p>使用深度優先搜尋和回溯來探索所有可能的路徑。</p>
+                
+                <p style="margin-top: 15px;"><strong>核心思想：</strong></p>
+                <ul>
+                    <li>從每個格子作為起點嘗試</li>
+                    <li>DFS 探索四個方向</li>
+                    <li>匹配成功繼續，失敗則回溯</li>
+                    <li>使用標記避免重複訪問</li>
+                </ul>
+                
+                <p style="margin-top: 15px;"><strong>算法步驟：</strong></p>
+                <ol>
+                    <li>遍歷 board 的每個格子作為起點</li>
+                    <li>從起點開始 DFS：
+                        <ul style="margin-top: 8px;">
+                            <li>檢查當前字符是否匹配</li>
+                            <li>標記當前格子為已訪問</li>
+                            <li>遞迴探索四個方向</li>
+                            <li>回溯：恢復標記</li>
+                        </ul>
+                    </li>
+                    <li>如果找到完整單詞，返回 true</li>
+                </ol>
+                
+                <div class="visual-box">
+                    <p><strong>視覺化範例：word = "ABCCED"</strong></p>
+                    <pre style="background: white; padding: 15px; border-radius: 5px; margin-top: 10px;"><code>Board:
+A  B  C  E
+S  F  C  S
+A  D  E  E
+
+搜尋過程（從 A 開始）:
+
+步驟 1: 找到 'A' at (0,0)
+[A] B  C  E
+ S  F  C  S
+ A  D  E  E
+匹配: A ✓
+
+步驟 2: 向右找 'B' at (0,1)
+[A][B] C  E
+ S  F  C  S
+ A  D  E  E
+匹配: AB ✓
+
+步驟 3: 向右找 'C' at (0,2)
+[A][B][C] E
+ S  F  C  S
+ A  D  E  E
+匹配: ABC ✓
+
+步驟 4: 向下找 'C' at (1,2)
+[A][B][C] E
+ S  F [C] S
+ A  D  E  E
+匹配: ABCC ✓
+
+步驟 5: 向下找 'E' at (2,2)
+[A][B][C] E
+ S  F [C] S
+ A  D [E] E
+匹配: ABCCE ✓
+
+步驟 6: 向右找 'D'？不匹配，回溯
+向左找 'D'？不匹配
+向上找 'D'？不匹配
+向下找 'D'？越界
+
+回溯到步驟 4，嘗試其他方向...
+
+最終找到正確路徑:
+A → B → C
+        ↓
+        C
+        ↓
+        E → D (不對)
+
+重新嘗試:
+A → B → C
+        ↓
+        C → S? (不對)
+
+繼續回溯探索...</code></pre>
+                </div>
+                
+                <p style="margin-top: 15px;"><strong>訪問標記的方法：</strong></p>
+                <ul>
+                    <li>方法 1：使用 visited 陣列</li>
+                    <li>方法 2：修改 board（臨時改成特殊字符）</li>
+                    <li>方法 3：使用 set 記錄座標</li>
+                </ul>
+                
+                <p style="margin-top: 15px;"><strong>剪枝優化：</strong></p>
+                <ul>
+                    <li>邊界檢查</li>
+                    <li>字符不匹配立即返回</li>
+                    <li>已訪問過立即返回</li>
+                    <li>提前找到答案立即返回</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">程式碼實現</h2>
+            
+            <div class="language-tabs">
+                <button class="tab-btn active" onclick="showLanguage('python')">Python</button>
+                <button class="tab-btn" onclick="showLanguage('cpp')">C++</button>
+                <button class="tab-btn" onclick="showLanguage('java')">Java</button>
+            </div>
+
+            <div id="python" class="code-container active">
+                <pre><code class="language-python">class Solution:
+    def exist(self, board: List[List[str]], word: str) -> bool:
+        """
+        DFS + 回溯
+        時間複雜度: O(m×n×4^L)，L 是單詞長度
+        空間複雜度: O(L)，遞迴棧深度
+        """
+        if not board or not board[0]:
+            return False
+        
+        m, n = len(board), len(board[0])
+        
+        def dfs(i, j, index):
+            """
+            從 (i,j) 開始搜尋 word[index:]
+            """
+            # 找到完整單詞
+            if index == len(word):
+                return True
+            
+            # 邊界檢查
+            if i < 0 or i >= m or j < 0 or j >= n:
+                return False
+            
+            # 字符不匹配或已訪問
+            if board[i][j] != word[index]:
+                return False
+            
+            # 標記為已訪問
+            temp = board[i][j]
+            board[i][j] = '#'
+            
+            # 探索四個方向
+            found = (dfs(i+1, j, index+1) or  # 下
+                    dfs(i-1, j, index+1) or  # 上
+                    dfs(i, j+1, index+1) or  # 右
+                    dfs(i, j-1, index+1))    # 左
+            
+            # 回溯：恢復訪問標記
+            board[i][j] = temp
+            
+            return found
+        
+        # 從每個格子作為起點嘗試
+        for i in range(m):
+            for j in range(n):
+                if dfs(i, j, 0):
+                    return True
+        
+        return False
+    
+    def exist_v2(self, board: List[List[str]], word: str) -> bool:
+        """
+        使用 visited 集合的版本
+        """
+        m, n = len(board), len(board[0])
+        
+        def dfs(i, j, index, visited):
+            if index == len(word):
+                return True
+            
+            if (i < 0 or i >= m or j < 0 or j >= n or
+                (i, j) in visited or board[i][j] != word[index]):
+                return False
+            
+            visited.add((i, j))
+            
+            found = (dfs(i+1, j, index+1, visited) or
+                    dfs(i-1, j, index+1, visited) or
+                    dfs(i, j+1, index+1, visited) or
+                    dfs(i, j-1, index+1, visited))
+            
+            visited.remove((i, j))
+            
+            return found
+        
+        for i in range(m):
+            for j in range(n):
+                if dfs(i, j, 0, set()):
+                    return True
+        
+        return False</code></pre>
+            </div>
+
+            <div id="cpp" class="code-container">
+                <pre><code class="language-cpp">#include &lt;vector&gt;
+#include &lt;string&gt;
+using namespace std;
+
+class Solution {
+public:
+    /**
+     * DFS + 回溯
+     * 時間複雜度: O(m×n×4^L)
+     * 空間複雜度: O(L)
+     */
+    bool exist(vector<vector<char>>& board, string word) {
+        if (board.empty() || board[0].empty()) return false;
+        
+        m = board.size();
+        n = board[0].size();
+        
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (dfs(board, word, i, j, 0)) {
+                    return true;
+                }
+            }
+        }
+        
+        return false;
+    }
+    
+private:
+    int m, n;
+    
+    bool dfs(vector<vector<char>>& board, string& word, int i, int j, int index) {
+        if (index == word.length()) {
+            return true;
+        }
+        
+        if (i < 0 || i >= m || j < 0 || j >= n || board[i][j] != word[index]) {
+            return false;
+        }
+        
+        char temp = board[i][j];
+        board[i][j] = '#';
+        
+        bool found = dfs(board, word, i+1, j, index+1) ||
+                     dfs(board, word, i-1, j, index+1) ||
+                     dfs(board, word, i, j+1, index+1) ||
+                     dfs(board, word, i, j-1, index+1);
+        
+        board[i][j] = temp;
+        
+        return found;
+    }
+};</code></pre>
+            </div>
+
+            <div id="java" class="code-container">
+                <pre><code class="language-java">class Solution {
+    private int m, n;
+    
+    /**
+     * DFS + 回溯
+     * 時間複雜度: O(m×n×4^L)
+     * 空間複雜度: O(L)
+     */
+    public boolean exist(char[][] board, String word) {
+        if (board == null || board.length == 0 || board[0].length == 0) {
+            return false;
+        }
+        
+        m = board.length;
+        n = board[0].length;
+        
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (dfs(board, word, i, j, 0)) {
+                    return true;
+                }
+            }
+        }
+        
+        return false;
+    }
+    
+    private boolean dfs(char[][] board, String word, int i, int j, int index) {
+        if (index == word.length()) {
+            return true;
+        }
+        
+        if (i < 0 || i >= m || j < 0 || j >= n || board[i][j] != word.charAt(index)) {
+            return false;
+        }
+        
+        char temp = board[i][j];
+        board[i][j] = '#';
+        
+        boolean found = dfs(board, word, i+1, j, index+1) ||
+                        dfs(board, word, i-1, j, index+1) ||
+                        dfs(board, word, i, j+1, index+1) ||
+                        dfs(board, word, i, j-1, index+1);
+        
+        board[i][j] = temp;
+        
+        return found;
+    }
+}</code></pre>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">複雜度分析</h2>
+            <div class="complexity-box">
+                <div class="complexity-item">時間複雜度: O(m×n×4^L)</div>
+                <p style="color: #78716c; margin: 10px 0;">
+                    m×n 個起點，每個位置最多探索 4 個方向，單詞長度 L。實際會因剪枝更快。
+                </p>
+                
+                <div class="complexity-item" style="margin-top: 20px;">空間複雜度: O(L)</div>
+                <p style="color: #78716c; margin: 10px 0;">
+                    遞迴棧深度等於單詞長度。
+                </p>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">重點提示</h2>
+            <div class="complexity-box">
+                <ul>
+                    <li><strong>回溯三要素：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>選擇：四個方向</li>
+                            <li>約束：邊界、字符匹配、未訪問</li>
+                            <li>目標：找到完整單詞</li>
+                        </ul>
+                    </li>
+                    <li><strong>訪問標記技巧：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>臨時修改 board 為特殊字符（'#'）</li>
+                            <li>回溯時恢復原值</li>
+                            <li>避免額外空間</li>
+                        </ul>
+                    </li>
+                    <li><strong>DFS 順序：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>上下左右任意順序都可以</li>
+                            <li>使用 or 短路求值</li>
+                            <li>找到答案立即返回</li>
+                        </ul>
+                    </li>
+                    <li><strong>剪枝優化：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>提前檢查邊界</li>
+                            <li>字符不匹配立即返回</li>
+                            <li>找到答案不再探索</li>
+                        </ul>
+                    </li>
+                    <li><strong>常見錯誤：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>忘記回溯恢復標記</li>
+                            <li>邊界條件檢查不全</li>
+                            <li>忘記檢查已訪問</li>
+                        </ul>
+                    </li>
+                    <li><strong>面試技巧：</strong>回溯模板的典型應用</li>
+                    <li><strong>變形題：</strong>Word Search II (#212) - Trie 優化</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        hljs.highlightAll();
+        
+        function showLanguage(lang) {
+            document.querySelectorAll('.code-container').forEach(container => {
+                container.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.getElementById(lang).classList.add('active');
+            event.target.classList.add('active');
+        }
+    </script>
+</body>
+</html>

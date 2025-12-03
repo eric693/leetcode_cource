@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>118. Pascal's Triangle - LeetCode 學習平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f8fafc; line-height: 1.8; color: #334155; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .header { background: linear-gradient(135deg, #16a34a 0%, #15803d 100%); color: white; padding: 40px; border-radius: 16px; margin-bottom: 30px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .back-btn { display: inline-block; color: white; text-decoration: none; background: rgba(255,255,255,0.2); padding: 10px 20px; border-radius: 8px; margin-bottom: 20px; transition: all 0.3s; }
+        .back-btn:hover { background: rgba(255,255,255,0.3); }
+        .problem-title { font-size: 2.5em; font-weight: 800; margin-bottom: 15px; }
+        .difficulty { display: inline-block; background: rgba(255,255,255,0.3); padding: 8px 20px; border-radius: 20px; font-weight: 600; font-size: 0.9em; }
+        .content-section { background: white; padding: 40px; border-radius: 16px; margin-bottom: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .section-title { font-size: 1.8em; color: #1e293b; margin-bottom: 25px; font-weight: 700; padding-bottom: 10px; border-bottom: 3px solid #16a34a; }
+        .description { font-size: 1.1em; line-height: 1.9; color: #475569; margin-bottom: 20px; }
+        .example-box { background: #dcfce7; border-left: 4px solid #16a34a; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .example-title { font-weight: 700; color: #15803d; margin-bottom: 10px; font-size: 1.1em; }
+        .approach-box { background: #eff6ff; border-left: 4px solid #3b82f6; padding: 25px; border-radius: 8px; margin: 25px 0; }
+        .approach-title { font-weight: 700; color: #1e40af; margin-bottom: 15px; font-size: 1.3em; }
+        .complexity-box { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .complexity-item { margin: 10px 0; font-weight: 600; color: #92400e; }
+        .language-tabs { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+        .tab-btn { padding: 12px 28px; border: 2px solid #16a34a; background: white; color: #16a34a; border-radius: 8px; cursor: pointer; font-weight: 600; transition: all 0.3s; font-size: 1em; }
+        .tab-btn:hover { background: #dcfce7; }
+        .tab-btn.active { background: #16a34a; color: white; }
+        .code-container { display: none; margin-top: 20px; }
+        .code-container.active { display: block; }
+        pre { background: #282c34 !important; padding: 25px !important; border-radius: 12px; overflow-x: auto; margin: 0; }
+        code { font-family: 'Fira Code', 'Consolas', monospace; font-size: 0.95em; line-height: 1.6; }
+        ol, ul { margin-left: 30px; margin-top: 15px; }
+        li { margin: 12px 0; line-height: 1.8; }
+        strong { color: #1e293b; font-weight: 700; }
+        .visual-box { background: #f0f9ff; border: 2px solid #3b82f6; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        
+        @media (max-width: 768px) {
+            .container { padding: 10px; }
+            .header { padding: 25px; }
+            .problem-title { font-size: 1.8em; }
+            .content-section { padding: 25px; }
+            .tab-btn { padding: 10px 20px; font-size: 0.9em; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="../index.html" class="back-btn">← 返回題目列表</a>
+            <div class="problem-title">118. Pascal's Triangle</div>
+            <span class="difficulty">Easy</span>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">題目描述</h2>
+            <div class="description">
+                <p>給定一個非負整數 <code>numRows</code>，生成「楊輝三角」的前 <code>numRows</code> 行。</p>
+                <p style="margin-top: 15px;">在楊輝三角中，每個數是它左上方和右上方的數的和。</p>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">視覺化:</div>
+                <pre><code>        1
+       1 1
+      1 2 1
+     1 3 3 1
+    1 4 6 4 1</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例 1:</div>
+                <pre><code>輸入: numRows = 5
+輸出: [[1],[1,1],[1,2,1],[1,3,3,1],[1,4,6,4,1]]</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例 2:</div>
+                <pre><code>輸入: numRows = 1
+輸出: [[1]]</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">限制條件:</div>
+                <pre><code>1 <= numRows <= 30</code></pre>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">解題思路</h2>
+            
+            <div class="approach-box">
+                <div class="approach-title">核心觀察</div>
+                <p>楊輝三角（Pascal's Triangle）的規律：</p>
+                <ul>
+                    <li>第一行只有一個 1</li>
+                    <li>每行的首尾都是 1</li>
+                    <li>中間的數 = 上一行左上 + 上一行右上</li>
+                    <li>第 n 行有 n 個數字</li>
+                </ul>
+                <p style="margin-top: 15px; color: #16a34a; font-weight: 600;">
+                    公式：triangle[i][j] = triangle[i-1][j-1] + triangle[i-1][j]
+                </p>
+            </div>
+            
+            <div class="approach-box">
+                <div class="approach-title">方法：動態規劃 ⭐⭐⭐</div>
+                <p>逐行構建楊輝三角。</p>
+                
+                <p style="margin-top: 15px;"><strong>算法步驟：</strong></p>
+                <ol>
+                    <li>創建結果列表</li>
+                    <li>對每一行 i（從 0 到 numRows-1）：
+                        <ul style="margin-top: 8px;">
+                            <li>創建新行，初始化為 [1] * (i+1)</li>
+                            <li>填充中間元素（如果有）</li>
+                            <li>row[j] = prevRow[j-1] + prevRow[j]</li>
+                            <li>將新行加入結果</li>
+                        </ul>
+                    </li>
+                </ol>
+                
+                <div class="visual-box">
+                    <p><strong>視覺化構建過程：numRows = 5</strong></p>
+                    <pre style="background: white; padding: 15px; border-radius: 5px; margin-top: 10px;"><code>第 0 行（i=0）:
+[1]
+→ 只有一個元素，直接是 1
+
+第 1 行（i=1）:
+[1, 1]
+→ 首尾都是 1，沒有中間元素
+
+第 2 行（i=2）:
+初始: [1, ?, 1]
+j=1: row[1] = prevRow[0] + prevRow[1] = 1 + 1 = 2
+結果: [1, 2, 1]
+
+第 3 行（i=3）:
+初始: [1, ?, ?, 1]
+j=1: row[1] = prevRow[0] + prevRow[1] = 1 + 2 = 3
+j=2: row[2] = prevRow[1] + prevRow[2] = 2 + 1 = 3
+結果: [1, 3, 3, 1]
+
+第 4 行（i=4）:
+初始: [1, ?, ?, ?, 1]
+j=1: row[1] = prevRow[0] + prevRow[1] = 1 + 3 = 4
+j=2: row[2] = prevRow[1] + prevRow[2] = 3 + 3 = 6
+j=3: row[3] = prevRow[2] + prevRow[3] = 3 + 1 = 4
+結果: [1, 4, 6, 4, 1]
+
+最終結果:
+[
+  [1],
+  [1,1],
+  [1,2,1],
+  [1,3,3,1],
+  [1,4,6,4,1]
+]</code></pre>
+                </div>
+                
+                <div class="visual-box">
+                    <p><strong>數字的來源：</strong></p>
+                    <pre style="background: white; padding: 15px; border-radius: 5px; margin-top: 10px;"><code>      1
+     / \
+    1   1
+   / \ / \
+  1   2   1
+ / \ / \ / \
+1   3   3   1
+
+每個數字 = 左上方數字 + 右上方數字
+
+例如：
+- 第 2 行的 2 = 上一行的 1 + 1
+- 第 3 行的 3 = 上一行的 1 + 2
+- 第 4 行的 6 = 上一行的 3 + 3</code></pre>
+                </div>
+                
+                <p style="margin-top: 15px;"><strong>數學性質：</strong></p>
+                <ul>
+                    <li>第 n 行第 k 個數 = C(n, k) = n! / (k! × (n-k)!)</li>
+                    <li>這是組合數公式</li>
+                    <li>例如：第 4 行第 2 個數 = C(4,2) = 6</li>
+                    <li>但直接用上一行計算更簡單</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">程式碼實現</h2>
+            
+            <div class="language-tabs">
+                <button class="tab-btn active" onclick="showLanguage('python')">Python</button>
+                <button class="tab-btn" onclick="showLanguage('cpp')">C++</button>
+                <button class="tab-btn" onclick="showLanguage('java')">Java</button>
+            </div>
+
+            <div id="python" class="code-container active">
+                <pre><code class="language-python">class Solution:
+    def generate(self, numRows: int) -> List[List[int]]:
+        """
+        動態規劃
+        時間複雜度: O(numRows²)
+        空間複雜度: O(1)，不計算輸出空間
+        """
+        result = []
+        
+        for i in range(numRows):
+            # 創建新行，初始化為全 1
+            row = [1] * (i + 1)
+            
+            # 填充中間元素
+            for j in range(1, i):
+                row[j] = result[i-1][j-1] + result[i-1][j]
+            
+            result.append(row)
+        
+        return result
+    
+    def generate_v2(self, numRows: int) -> List[List[int]]:
+        """
+        另一種寫法：不預先初始化
+        """
+        result = []
+        
+        for i in range(numRows):
+            row = []
+            for j in range(i + 1):
+                if j == 0 or j == i:
+                    # 首尾是 1
+                    row.append(1)
+                else:
+                    # 中間元素
+                    row.append(result[i-1][j-1] + result[i-1][j])
+            result.append(row)
+        
+        return result</code></pre>
+            </div>
+
+            <div id="cpp" class="code-container">
+                <pre><code class="language-cpp">#include &lt;vector&gt;
+using namespace std;
+
+class Solution {
+public:
+    /**
+     * 動態規劃
+     * 時間複雜度: O(numRows²)
+     * 空間複雜度: O(1)
+     */
+    vector<vector<int>> generate(int numRows) {
+        vector<vector<int>> result;
+        
+        for (int i = 0; i < numRows; i++) {
+            vector<int> row(i + 1, 1);
+            
+            for (int j = 1; j < i; j++) {
+                row[j] = result[i-1][j-1] + result[i-1][j];
+            }
+            
+            result.push_back(row);
+        }
+        
+        return result;
+    }
+};</code></pre>
+            </div>
+
+            <div id="java" class="code-container">
+                <pre><code class="language-java">import java.util.ArrayList;
+import java.util.List;
+
+class Solution {
+    /**
+     * 動態規劃
+     * 時間複雜度: O(numRows²)
+     * 空間複雜度: O(1)
+     */
+    public List<List<Integer>> generate(int numRows) {
+        List<List<Integer>> result = new ArrayList<>();
+        
+        for (int i = 0; i < numRows; i++) {
+            List<Integer> row = new ArrayList<>();
+            
+            for (int j = 0; j <= i; j++) {
+                if (j == 0 || j == i) {
+                    row.add(1);
+                } else {
+                    int sum = result.get(i-1).get(j-1) + result.get(i-1).get(j);
+                    row.add(sum);
+                }
+            }
+            
+            result.add(row);
+        }
+        
+        return result;
+    }
+}</code></pre>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">複雜度分析</h2>
+            <div class="complexity-box">
+                <div class="complexity-item">時間複雜度: O(numRows²)</div>
+                <p style="color: #78716c; margin: 10px 0;">
+                    總共需要計算 1 + 2 + 3 + ... + numRows = numRows×(numRows+1)/2 個元素。
+                </p>
+                
+                <div class="complexity-item" style="margin-top: 20px;">空間複雜度: O(1)</div>
+                <p style="color: #78716c; margin: 10px 0;">
+                    不計算輸出空間，只使用常數額外空間。
+                </p>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">重點提示</h2>
+            <div class="complexity-box">
+                <ul>
+                    <li><strong>楊輝三角的規律：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>對稱性：左右對稱</li>
+                            <li>每行首尾都是 1</li>
+                            <li>每個數 = 左上 + 右上</li>
+                            <li>第 n 行有 n 個數</li>
+                        </ul>
+                    </li>
+                    <li><strong>構建策略：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>從第一行開始逐行構建</li>
+                            <li>每行都依賴上一行</li>
+                            <li>這是典型的動態規劃</li>
+                        </ul>
+                    </li>
+                    <li><strong>兩種實現方式：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>方式 1：預先初始化為全 1，再填充中間</li>
+                            <li>方式 2：逐個判斷是首尾還是中間</li>
+                            <li>兩種方式效率相當</li>
+                        </ul>
+                    </li>
+                    <li><strong>索引關係：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>當前行索引：i</li>
+                            <li>當前位置：j</li>
+                            <li>左上：result[i-1][j-1]</li>
+                            <li>右上：result[i-1][j]</li>
+                        </ul>
+                    </li>
+                    <li><strong>數學背景：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>楊輝三角的每個數是組合數</li>
+                            <li>第 n 行第 k 個 = C(n,k)</li>
+                            <li>C(n,k) = n! / (k! × (n-k)!)</li>
+                            <li>遞推關係：C(n,k) = C(n-1,k-1) + C(n-1,k)</li>
+                        </ul>
+                    </li>
+                    <li><strong>實際應用：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>二項式展開</li>
+                            <li>組合計數</li>
+                            <li>概率論</li>
+                            <li>數值分析</li>
+                        </ul>
+                    </li>
+                    <li><strong>邊界情況：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>numRows = 1 → [[1]]</li>
+                            <li>numRows = 2 → [[1],[1,1]]</li>
+                            <li>首行特殊處理</li>
+                        </ul>
+                    </li>
+                    <li><strong>常見錯誤：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>索引越界（訪問 result[i-1]）</li>
+                            <li>忘記首尾是 1</li>
+                            <li>循環範圍錯誤</li>
+                        </ul>
+                    </li>
+                    <li><strong>優化技巧：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>利用對稱性，只計算一半</li>
+                            <li>但實際提升不明顯</li>
+                            <li>代碼會變複雜</li>
+                        </ul>
+                    </li>
+                    <li><strong>二項式定理：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>(a+b)ⁿ 展開式的係數</li>
+                            <li>例如：(a+b)³ = a³ + 3a²b + 3ab² + b³</li>
+                            <li>係數 [1,3,3,1] 正是第 3 行</li>
+                        </ul>
+                    </li>
+                    <li><strong>面試技巧：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>先畫出楊輝三角</li>
+                            <li>找出規律</li>
+                            <li>說明遞推關係</li>
+                            <li>寫出清晰的代碼</li>
+                        </ul>
+                    </li>
+                    <li><strong>變形題：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>Pascal's Triangle II (#119) - 返回第 n 行</li>
+                            <li>需要 O(n) 空間優化</li>
+                        </ul>
+                    </li>
+                    <li><strong>歷史背景：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>中國稱為「楊輝三角」</li>
+                            <li>西方稱為「Pascal's Triangle」</li>
+                            <li>實際上更早出現在中國和波斯</li>
+                        </ul>
+                    </li>
+                    <li><strong>記憶口訣：</strong>「首尾全是一，中間上兩數之和」</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        hljs.highlightAll();
+        
+        function showLanguage(lang) {
+            document.querySelectorAll('.code-container').forEach(container => {
+                container.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.getElementById(lang).classList.add('active');
+            event.target.classList.add('active');
+        }
+    </script>
+</body>
+</html>

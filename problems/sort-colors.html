@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>75. Sort Colors - LeetCode 學習平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f8fafc; line-height: 1.8; color: #334155; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .header { background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: white; padding: 40px; border-radius: 16px; margin-bottom: 30px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .back-btn { display: inline-block; color: white; text-decoration: none; background: rgba(255,255,255,0.2); padding: 10px 20px; border-radius: 8px; margin-bottom: 20px; transition: all 0.3s; }
+        .back-btn:hover { background: rgba(255,255,255,0.3); }
+        .problem-title { font-size: 2.5em; font-weight: 800; margin-bottom: 15px; }
+        .difficulty { display: inline-block; background: rgba(255,255,255,0.3); padding: 8px 20px; border-radius: 20px; font-weight: 600; font-size: 0.9em; }
+        .content-section { background: white; padding: 40px; border-radius: 16px; margin-bottom: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .section-title { font-size: 1.8em; color: #1e293b; margin-bottom: 25px; font-weight: 700; padding-bottom: 10px; border-bottom: 3px solid #f59e0b; }
+        .description { font-size: 1.1em; line-height: 1.9; color: #475569; margin-bottom: 20px; }
+        .example-box { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .example-title { font-weight: 700; color: #92400e; margin-bottom: 10px; font-size: 1.1em; }
+        .approach-box { background: #eff6ff; border-left: 4px solid #3b82f6; padding: 25px; border-radius: 8px; margin: 25px 0; }
+        .approach-title { font-weight: 700; color: #1e40af; margin-bottom: 15px; font-size: 1.3em; }
+        .complexity-box { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .complexity-item { margin: 10px 0; font-weight: 600; color: #92400e; }
+        .language-tabs { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+        .tab-btn { padding: 12px 28px; border: 2px solid #f59e0b; background: white; color: #f59e0b; border-radius: 8px; cursor: pointer; font-weight: 600; transition: all 0.3s; font-size: 1em; }
+        .tab-btn:hover { background: #fef3c7; }
+        .tab-btn.active { background: #f59e0b; color: white; }
+        .code-container { display: none; margin-top: 20px; }
+        .code-container.active { display: block; }
+        pre { background: #282c34 !important; padding: 25px !important; border-radius: 12px; overflow-x: auto; margin: 0; }
+        code { font-family: 'Fira Code', 'Consolas', monospace; font-size: 0.95em; line-height: 1.6; }
+        ol, ul { margin-left: 30px; margin-top: 15px; }
+        li { margin: 12px 0; line-height: 1.8; }
+        strong { color: #1e293b; font-weight: 700; }
+        .visual-box { background: #f0f9ff; border: 2px solid #3b82f6; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        
+        @media (max-width: 768px) {
+            .container { padding: 10px; }
+            .header { padding: 25px; }
+            .problem-title { font-size: 1.8em; }
+            .content-section { padding: 25px; }
+            .tab-btn { padding: 10px 20px; font-size: 0.9em; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="../index.html" class="back-btn">← 返回題目列表</a>
+            <div class="problem-title">75. Sort Colors</div>
+            <span class="difficulty">Medium</span>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">題目描述</h2>
+            <div class="description">
+                <p>給定一個包含紅色、白色和藍色，一共 <code>n</code> 個元素的陣列 <code>nums</code>，<strong>原地</strong>對它們進行排序，使得相同顏色的元素相鄰，並按照紅色、白色、藍色順序排列。</p>
+                <p style="margin-top: 15px;">我們使用整數 <code>0</code>、<code>1</code> 和 <code>2</code> 分別表示紅色、白色和藍色。</p>
+                <p style="margin-top: 15px;"><strong>必須在不使用庫的 sort 函數的情況下解決這個問題。</strong></p>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例 1:</div>
+                <pre><code>輸入: nums = [2,0,2,1,1,0]
+輸出: [0,0,1,1,2,2]</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例 2:</div>
+                <pre><code>輸入: nums = [2,0,1]
+輸出: [0,1,2]</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">限制條件:</div>
+                <pre><code>n == nums.length
+1 <= n <= 300
+nums[i] 為 0、1 或 2</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">進階挑戰:</div>
+                <p>你能想出一個僅使用常數空間的一趟掃描算法嗎？</p>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">解題思路</h2>
+            
+            <div class="approach-box">
+                <div class="approach-title">核心觀察</div>
+                <p>這道題也被稱為<strong>「荷蘭國旗問題」</strong>（Dutch National Flag Problem）：</p>
+                <ul>
+                    <li>只有三種顏色：0（紅）、1（白）、2（藍）</li>
+                    <li>需要原地排序</li>
+                    <li>要求 O(1) 空間</li>
+                    <li>最好一次遍歷（O(n) 時間）</li>
+                </ul>
+                <p style="margin-top: 15px; color: #f59e0b; font-weight: 600;">
+                    關鍵：使用三指標將陣列分成三個區域
+                </p>
+            </div>
+            
+            <div class="approach-box">
+                <div class="approach-title">方法一：三指標（荷蘭國旗）⭐⭐⭐</div>
+                <p>使用三個指標將陣列分成三個區域。</p>
+                
+                <p style="margin-top: 15px;"><strong>核心思想：</strong></p>
+                <ul>
+                    <li><strong>left：</strong>指向下一個 0 應該放置的位置</li>
+                    <li><strong>right：</strong>指向下一個 2 應該放置的位置</li>
+                    <li><strong>current：</strong>當前遍歷的位置</li>
+                    <li>維護三個區域：[0...left-1] 全是 0，[left...current-1] 全是 1，[right+1...n-1] 全是 2</li>
+                </ul>
+                
+                <p style="margin-top: 15px;"><strong>區域劃分：</strong></p>
+                <pre style="background: #f1f5f9; padding: 15px; border-radius: 8px; margin-top: 10px;"><code>[0,0,0 | 1,1,1 | ?,?,? | 2,2,2]
+       ↑       ↑       ↑
+      left  current  right
+
+已處理的 0 | 已處理的 1 | 未處理 | 已處理的 2</code></pre>
+                
+                <p style="margin-top: 15px;"><strong>操作規則：</strong></p>
+                <ol>
+                    <li>如果 nums[current] = 0：
+                        <ul style="margin-top: 8px;">
+                            <li>交換 nums[left] 和 nums[current]</li>
+                            <li>left++, current++</li>
+                        </ul>
+                    </li>
+                    <li>如果 nums[current] = 1：
+                        <ul style="margin-top: 8px;">
+                            <li>不需要交換</li>
+                            <li>current++</li>
+                        </ul>
+                    </li>
+                    <li>如果 nums[current] = 2：
+                        <ul style="margin-top: 8px;">
+                            <li>交換 nums[current] 和 nums[right]</li>
+                            <li>right--</li>
+                            <li>current 不動（因為交換來的元素還沒檢查）</li>
+                        </ul>
+                    </li>
+                </ol>
+                
+                <div class="visual-box">
+                    <p><strong>視覺化範例：nums = [2,0,2,1,1,0]</strong></p>
+                    <pre style="background: white; padding: 15px; border-radius: 5px; margin-top: 10px;"><code>初始狀態:
+nums = [2, 0, 2, 1, 1, 0]
+        ↑              ↑
+      left,cur       right
+
+步驟 1: nums[cur]=2，與 right 交換
+交換 nums[0] 和 nums[5]: [0, 0, 2, 1, 1, 2]
+right--
+nums = [0, 0, 2, 1, 1, 2]
+        ↑           ↑
+      left,cur    right
+
+步驟 2: nums[cur]=0，與 left 交換
+交換 nums[0] 和 nums[0]: [0, 0, 2, 1, 1, 2]
+left++, cur++
+nums = [0, 0, 2, 1, 1, 2]
+           ↑        ↑
+         left,cur right
+
+步驟 3: nums[cur]=0，與 left 交換
+交換 nums[1] 和 nums[1]: [0, 0, 2, 1, 1, 2]
+left++, cur++
+nums = [0, 0, 2, 1, 1, 2]
+              ↑     ↑
+            left,  right
+              cur
+
+步驟 4: nums[cur]=2，與 right 交換
+交換 nums[2] 和 nums[4]: [0, 0, 1, 1, 2, 2]
+right--
+nums = [0, 0, 1, 1, 2, 2]
+              ↑  ↑
+            left,right
+              cur
+
+步驟 5: nums[cur]=1，直接移動
+cur++
+nums = [0, 0, 1, 1, 2, 2]
+              ↑  ↑
+            left right
+                 cur
+
+步驟 6: nums[cur]=1，直接移動
+cur++
+nums = [0, 0, 1, 1, 2, 2]
+              ↑  ↑
+            left cur,right
+
+cur > right，結束！
+最終結果: [0, 0, 1, 1, 2, 2] ✓</code></pre>
+                </div>
+                
+                <p style="margin-top: 15px;"><strong>為什麼 current 遇到 2 不移動？</strong></p>
+                <ul>
+                    <li>與 right 交換後，current 位置得到的是未檢查的元素</li>
+                    <li>可能是 0、1 或 2</li>
+                    <li>需要再次檢查</li>
+                    <li>而與 left 交換後，得到的一定是已處理的 1（或自己）</li>
+                </ul>
+            </div>
+
+            <div class="approach-box">
+                <div class="approach-title">方法二：計數排序</div>
+                <p>統計 0、1、2 的數量，然後重建陣列。</p>
+                
+                <p style="margin-top: 15px;"><strong>步驟：</strong></p>
+                <ol>
+                    <li>第一次遍歷：統計 0、1、2 的數量</li>
+                    <li>第二次遍歷：按照數量填充陣列</li>
+                </ol>
+                
+                <ul style="margin-top: 10px;">
+                    <li>時間複雜度：O(n)，但需要兩次遍歷</li>
+                    <li>空間複雜度：O(1)</li>
+                    <li>不符合「一趟掃描」的要求</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">程式碼實現</h2>
+            
+            <div class="language-tabs">
+                <button class="tab-btn active" onclick="showLanguage('python')">Python</button>
+                <button class="tab-btn" onclick="showLanguage('cpp')">C++</button>
+                <button class="tab-btn" onclick="showLanguage('java')">Java</button>
+            </div>
+
+            <div id="python" class="code-container active">
+                <pre><code class="language-python">class Solution:
+    def sortColors(self, nums: List[int]) -> None:
+        """
+        方法一：三指標（荷蘭國旗）
+        時間複雜度: O(n)，一次遍歷
+        空間複雜度: O(1)
+        
+        Do not return anything, modify nums in-place instead.
+        """
+        left = 0  # 下一個 0 的位置
+        right = len(nums) - 1  # 下一個 2 的位置
+        current = 0  # 當前檢查的位置
+        
+        while current <= right:
+            if nums[current] == 0:
+                # 將 0 交換到左邊
+                nums[left], nums[current] = nums[current], nums[left]
+                left += 1
+                current += 1
+            elif nums[current] == 1:
+                # 1 在中間，不需要移動
+                current += 1
+            else:  # nums[current] == 2
+                # 將 2 交換到右邊
+                nums[current], nums[right] = nums[right], nums[current]
+                right -= 1
+                # current 不移動，因為交換來的元素還沒檢查
+    
+    def sortColors_counting(self, nums: List[int]) -> None:
+        """
+        方法二：計數排序
+        時間複雜度: O(n)，兩次遍歷
+        空間複雜度: O(1)
+        """
+        count = [0, 0, 0]
+        
+        # 統計數量
+        for num in nums:
+            count[num] += 1
+        
+        # 重建陣列
+        index = 0
+        for color in range(3):
+            for _ in range(count[color]):
+                nums[index] = color
+                index += 1</code></pre>
+            </div>
+
+            <div id="cpp" class="code-container">
+                <pre><code class="language-cpp">#include &lt;vector&gt;
+using namespace std;
+
+class Solution {
+public:
+    /**
+     * 方法一：三指標（荷蘭國旗）
+     * 時間複雜度: O(n)
+     * 空間複雜度: O(1)
+     */
+    void sortColors(vector<int>& nums) {
+        int left = 0;
+        int right = nums.size() - 1;
+        int current = 0;
+        
+        while (current <= right) {
+            if (nums[current] == 0) {
+                swap(nums[left], nums[current]);
+                left++;
+                current++;
+            } else if (nums[current] == 1) {
+                current++;
+            } else {  // nums[current] == 2
+                swap(nums[current], nums[right]);
+                right--;
+            }
+        }
+    }
+    
+    /**
+     * 方法二：計數排序
+     * 時間複雜度: O(n)
+     * 空間複雜度: O(1)
+     */
+    void sortColors_counting(vector<int>& nums) {
+        int count[3] = {0};
+        
+        for (int num : nums) {
+            count[num]++;
+        }
+        
+        int index = 0;
+        for (int color = 0; color < 3; color++) {
+            for (int i = 0; i < count[color]; i++) {
+                nums[index++] = color;
+            }
+        }
+    }
+};</code></pre>
+            </div>
+
+            <div id="java" class="code-container">
+                <pre><code class="language-java">class Solution {
+    /**
+     * 方法一：三指標（荷蘭國旗）
+     * 時間複雜度: O(n)
+     * 空間複雜度: O(1)
+     */
+    public void sortColors(int[] nums) {
+        int left = 0;
+        int right = nums.length - 1;
+        int current = 0;
+        
+        while (current <= right) {
+            if (nums[current] == 0) {
+                swap(nums, left, current);
+                left++;
+                current++;
+            } else if (nums[current] == 1) {
+                current++;
+            } else {  // nums[current] == 2
+                swap(nums, current, right);
+                right--;
+            }
+        }
+    }
+    
+    private void swap(int[] nums, int i, int j) {
+        int temp = nums[i];
+        nums[i] = nums[j];
+        nums[j] = temp;
+    }
+    
+    /**
+     * 方法二：計數排序
+     * 時間複雜度: O(n)
+     * 空間複雜度: O(1)
+     */
+    public void sortColors_counting(int[] nums) {
+        int[] count = new int[3];
+        
+        for (int num : nums) {
+            count[num]++;
+        }
+        
+        int index = 0;
+        for (int color = 0; color < 3; color++) {
+            for (int i = 0; i < count[color]; i++) {
+                nums[index++] = color;
+            }
+        }
+    }
+}</code></pre>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">複雜度分析</h2>
+            <div class="complexity-box">
+                <div class="complexity-item">時間複雜度: O(n)</div>
+                <p style="color: #78716c; margin: 10px 0;">
+                    三指標法只需一次遍歷，每個元素最多被訪問一次。
+                </p>
+                
+                <div class="complexity-item" style="margin-top: 20px;">空間複雜度: O(1)</div>
+                <p style="color: #78716c; margin: 10px 0;">
+                    只使用常數額外空間（三個指標變數）。
+                </p>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">重點提示</h2>
+            <div class="complexity-box">
+                <ul>
+                    <li><strong>荷蘭國旗問題：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>由荷蘭科學家 Edsger Dijkstra 提出</li>
+                            <li>荷蘭國旗有三種顏色（紅白藍）</li>
+                            <li>經典的三路快排（3-way partition）</li>
+                        </ul>
+                    </li>
+                    <li><strong>三指標的精髓：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>left 左邊全是 0</li>
+                            <li>right 右邊全是 2</li>
+                            <li>current 掃描未處理區域</li>
+                            <li>中間自然就是 1</li>
+                        </ul>
+                    </li>
+                    <li><strong>為什麼遇到 2 不移動 current？</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>交換來的元素未知</li>
+                            <li>可能是 0、1 或 2</li>
+                            <li>需要重新判斷</li>
+                            <li>這是最容易出錯的地方</li>
+                        </ul>
+                    </li>
+                    <li><strong>為什麼遇到 0 可以移動 current？</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>left 指向的一定是已處理區域</li>
+                            <li>交換來的只可能是 1（或自己的 0）</li>
+                            <li>不需要重新判斷</li>
+                        </ul>
+                    </li>
+                    <li><strong>循環不變式：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>[0, left) 全是 0</li>
+                            <li>[left, current) 全是 1</li>
+                            <li>(right, n-1] 全是 2</li>
+                            <li>[current, right] 是未處理區域</li>
+                        </ul>
+                    </li>
+                    <li><strong>兩種方法比較：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>三指標：一次遍歷，符合進階要求</li>
+                            <li>計數排序：兩次遍歷，更直觀</li>
+                            <li>面試時優先說三指標</li>
+                        </ul>
+                    </li>
+                    <li><strong>邊界情況：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>只有一個元素</li>
+                            <li>全是同一種顏色</li>
+                            <li>已經排序好</li>
+                            <li>逆序排列</li>
+                        </ul>
+                    </li>
+                    <li><strong>常見錯誤：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>遇到 2 時 current++ （錯誤）</li>
+                            <li>循環條件寫成 current < right</li>
+                            <li>忘記交換後移動指標</li>
+                        </ul>
+                    </li>
+                    <li><strong>與快速排序的關係：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>這是三路快排的核心思想</li>
+                            <li>快排：< pivot, = pivot, > pivot</li>
+                            <li>本題：= 0, = 1, = 2</li>
+                        </ul>
+                    </li>
+                    <li><strong>面試技巧：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>先提計數排序（暴力解）</li>
+                            <li>說明兩次遍歷的缺點</li>
+                            <li>提出三指標優化</li>
+                            <li>畫圖展示指標移動</li>
+                            <li>強調循環不變式</li>
+                        </ul>
+                    </li>
+                    <li><strong>擴展問題：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>如果有 4 種顏色怎麼辦？</li>
+                            <li>如果有 k 種顏色？</li>
+                            <li>如何推廣到一般情況？</li>
+                        </ul>
+                    </li>
+                    <li><strong>實際應用：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>數據分類</li>
+                            <li>快速排序優化</li>
+                            <li>三路快排</li>
+                        </ul>
+                    </li>
+                    <li><strong>變形題：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>Move Zeroes (#283) - 類似思想</li>
+                            <li>Partition Array - 相同模式</li>
+                        </ul>
+                    </li>
+                    <li><strong>記憶口訣：</strong>「左指 0，右指 2，中掃未知別忘檢」</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        hljs.highlightAll();
+        
+        function showLanguage(lang) {
+            document.querySelectorAll('.code-container').forEach(container => {
+                container.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.getElementById(lang).classList.add('active');
+            event.target.classList.add('active');
+        }
+    </script>
+</body>
+</html>

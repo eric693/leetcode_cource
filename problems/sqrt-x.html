@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>69. Sqrt(x) - LeetCode 學習平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f8fafc; line-height: 1.8; color: #334155; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .header { background: linear-gradient(135deg, #16a34a 0%, #15803d 100%); color: white; padding: 40px; border-radius: 16px; margin-bottom: 30px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .back-btn { display: inline-block; color: white; text-decoration: none; background: rgba(255,255,255,0.2); padding: 10px 20px; border-radius: 8px; margin-bottom: 20px; transition: all 0.3s; }
+        .back-btn:hover { background: rgba(255,255,255,0.3); }
+        .problem-title { font-size: 2.5em; font-weight: 800; margin-bottom: 15px; }
+        .difficulty { display: inline-block; background: rgba(255,255,255,0.3); padding: 8px 20px; border-radius: 20px; font-weight: 600; font-size: 0.9em; }
+        .content-section { background: white; padding: 40px; border-radius: 16px; margin-bottom: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .section-title { font-size: 1.8em; color: #1e293b; margin-bottom: 25px; font-weight: 700; padding-bottom: 10px; border-bottom: 3px solid #16a34a; }
+        .description { font-size: 1.1em; line-height: 1.9; color: #475569; margin-bottom: 20px; }
+        .example-box { background: #dcfce7; border-left: 4px solid #16a34a; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .example-title { font-weight: 700; color: #15803d; margin-bottom: 10px; font-size: 1.1em; }
+        .approach-box { background: #eff6ff; border-left: 4px solid #3b82f6; padding: 25px; border-radius: 8px; margin: 25px 0; }
+        .approach-title { font-weight: 700; color: #1e40af; margin-bottom: 15px; font-size: 1.3em; }
+        .complexity-box { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .complexity-item { margin: 10px 0; font-weight: 600; color: #92400e; }
+        .language-tabs { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+        .tab-btn { padding: 12px 28px; border: 2px solid #16a34a; background: white; color: #16a34a; border-radius: 8px; cursor: pointer; font-weight: 600; transition: all 0.3s; font-size: 1em; }
+        .tab-btn:hover { background: #dcfce7; }
+        .tab-btn.active { background: #16a34a; color: white; }
+        .code-container { display: none; margin-top: 20px; }
+        .code-container.active { display: block; }
+        pre { background: #282c34 !important; padding: 25px !important; border-radius: 12px; overflow-x: auto; margin: 0; }
+        code { font-family: 'Fira Code', 'Consolas', monospace; font-size: 0.95em; line-height: 1.6; }
+        ol, ul { margin-left: 30px; margin-top: 15px; }
+        li { margin: 12px 0; line-height: 1.8; }
+        strong { color: #1e293b; font-weight: 700; }
+        .visual-box { background: #f0f9ff; border: 2px solid #3b82f6; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        
+        @media (max-width: 768px) {
+            .container { padding: 10px; }
+            .header { padding: 25px; }
+            .problem-title { font-size: 1.8em; }
+            .content-section { padding: 25px; }
+            .tab-btn { padding: 10px 20px; font-size: 0.9em; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="../index.html" class="back-btn">← 返回題目列表</a>
+            <div class="problem-title">69. Sqrt(x)</div>
+            <span class="difficulty">Easy</span>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">題目描述</h2>
+            <div class="description">
+                <p>給你一個非負整數 <code>x</code>，計算並返回 <code>x</code> 的<strong>算術平方根</strong>。</p>
+                <p style="margin-top: 15px;">由於返回類型是整數，結果只保留<strong>整數部分</strong>，小數部分將被<strong>捨去</strong>。</p>
+                <p style="margin-top: 15px;"><strong>注意：</strong>不允許使用任何內建指數函數和運算符，例如 <code>pow(x, 0.5)</code> 或者 <code>x ** 0.5</code>。</p>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例 1:</div>
+                <pre><code>輸入: x = 4
+輸出: 2
+解釋: 4 的平方根是 2，所以返回 2。</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例 2:</div>
+                <pre><code>輸入: x = 8
+輸出: 2
+解釋: 8 的平方根是 2.82842...，由於返回類型是整數，小數部分將被捨去。</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">限制條件:</div>
+                <pre><code>0 <= x <= 2^31 - 1</code></pre>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">解題思路</h2>
+            
+            <div class="approach-box">
+                <div class="approach-title">核心觀察</div>
+                <p>這道題的關鍵：</p>
+                <ul>
+                    <li>找到最大的整數 k，使得 k² ≤ x</li>
+                    <li>答案範圍在 [0, x]</li>
+                    <li>單調遞增：k 越大，k² 越大</li>
+                    <li>適合用二分搜尋</li>
+                </ul>
+                <p style="margin-top: 15px; color: #16a34a; font-weight: 600;">
+                    關鍵：這是一個「找最後一個滿足條件的數」的問題
+                </p>
+            </div>
+            
+            <div class="approach-box">
+                <div class="approach-title">方法一：二分搜尋（推薦）⭐⭐⭐</div>
+                <p>在 [0, x] 範圍內二分搜尋答案。</p>
+                
+                <p style="margin-top: 15px;"><strong>核心思想：</strong></p>
+                <ul>
+                    <li>答案範圍：[0, x]</li>
+                    <li>對於每個 mid，檢查 mid² 與 x 的關係</li>
+                    <li>如果 mid² ≤ x，答案可能是 mid 或更大</li>
+                    <li>如果 mid² > x，答案一定更小</li>
+                </ul>
+                
+                <p style="margin-top: 15px;"><strong>注意溢位：</strong></p>
+                <ul>
+                    <li>mid * mid 可能溢位</li>
+                    <li>改用 mid ≤ x / mid 來比較</li>
+                    <li>或使用 long 型別</li>
+                </ul>
+                
+                <div class="visual-box">
+                    <p><strong>視覺化範例：x = 8</strong></p>
+                    <pre style="background: white; padding: 15px; border-radius: 5px; margin-top: 10px;"><code>尋找最大的 k 使得 k² ≤ 8
+
+初始: left = 0, right = 8
+
+迭代 1:
+mid = (0 + 8) / 2 = 4
+4² = 16 > 8
+right = mid - 1 = 3
+
+迭代 2:
+left = 0, right = 3
+mid = (0 + 3) / 2 = 1
+1² = 1 ≤ 8 ✓
+left = mid + 1 = 2
+
+迭代 3:
+left = 2, right = 3
+mid = (2 + 3) / 2 = 2
+2² = 4 ≤ 8 ✓
+left = mid + 1 = 3
+
+迭代 4:
+left = 3, right = 3
+mid = (3 + 3) / 2 = 3
+3² = 9 > 8
+right = mid - 1 = 2
+
+left > right，循環結束
+答案 = right = 2 ✓
+
+驗證: 2² = 4 ≤ 8，3² = 9 > 8</code></pre>
+                </div>
+                
+                <div class="visual-box">
+                    <p><strong>為什麼返回 right 而不是 left？</strong></p>
+                    <pre style="background: white; padding: 15px; border-radius: 5px; margin-top: 10px;"><code>本題要找「最後一個 k² ≤ x 的 k」
+
+循環結束時：
+- left: 第一個 k² > x 的位置
+- right: 最後一個 k² ≤ x 的位置
+
+所以答案是 right
+
+對比 #35（插入位置）：
+- #35 要找第一個 >= target，返回 left
+- #69 要找最後一個滿足條件，返回 right</code></pre>
+                </div>
+            </div>
+
+            <div class="approach-box">
+                <div class="approach-title">方法二：牛頓迭代法 ⭐⭐</div>
+                <p>使用牛頓法求方程 f(x) = x² - a = 0 的根。</p>
+                
+                <p style="margin-top: 15px;"><strong>公式：</strong></p>
+                <p>x_{n+1} = (x_n + a/x_n) / 2</p>
+                
+                <p style="margin-top: 15px;"><strong>幾何意義：</strong></p>
+                <ul>
+                    <li>用切線逼近曲線</li>
+                    <li>收斂速度很快（平方收斂）</li>
+                    <li>每次迭代精度翻倍</li>
+                </ul>
+                
+                <div class="visual-box">
+                    <p><strong>牛頓法範例：x = 8</strong></p>
+                    <pre style="background: white; padding: 15px; border-radius: 5px; margin-top: 10px;"><code>初始猜測: x₀ = 8
+
+迭代 1:
+x₁ = (8 + 8/8) / 2 = (8 + 1) / 2 = 4.5
+
+迭代 2:
+x₂ = (4.5 + 8/4.5) / 2 = (4.5 + 1.778) / 2 = 3.139
+
+迭代 3:
+x₃ = (3.139 + 8/3.139) / 2 = (3.139 + 2.548) / 2 = 2.843
+
+迭代 4:
+x₄ = (2.843 + 8/2.843) / 2 = 2.828
+
+收斂到 √8 ≈ 2.828
+取整數部分 = 2 ✓</code></pre>
+                </div>
+            </div>
+
+            <div class="approach-box">
+                <div class="approach-title">方法三：暴力法</div>
+                <p>從 0 開始逐一嘗試。</p>
+                <ul style="margin-top: 10px;">
+                    <li>時間複雜度：O(√x)</li>
+                    <li>會超時，不推薦</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">程式碼實現</h2>
+            
+            <div class="language-tabs">
+                <button class="tab-btn active" onclick="showLanguage('python')">Python</button>
+                <button class="tab-btn" onclick="showLanguage('cpp')">C++</button>
+                <button class="tab-btn" onclick="showLanguage('java')">Java</button>
+            </div>
+
+            <div id="python" class="code-container active">
+                <pre><code class="language-python">class Solution:
+    def mySqrt(self, x: int) -> int:
+        """
+        方法一：二分搜尋
+        時間複雜度: O(log x)
+        空間複雜度: O(1)
+        """
+        if x == 0:
+            return 0
+        
+        left, right = 1, x
+        
+        while left <= right:
+            mid = left + (right - left) // 2
+            
+            # 避免溢位：mid * mid > x 改為 mid > x / mid
+            if mid <= x // mid:
+                left = mid + 1
+            else:
+                right = mid - 1
+        
+        return right
+    
+    def mySqrt_v2(self, x: int) -> int:
+        """
+        方法一：二分搜尋（使用 long）
+        """
+        if x == 0:
+            return 0
+        
+        left, right = 1, x
+        
+        while left <= right:
+            mid = left + (right - left) // 2
+            square = mid * mid
+            
+            if square == x:
+                return mid
+            elif square < x:
+                left = mid + 1
+            else:
+                right = mid - 1
+        
+        return right
+    
+    def mySqrt_newton(self, x: int) -> int:
+        """
+        方法二：牛頓迭代法
+        時間複雜度: O(log x)
+        空間複雜度: O(1)
+        """
+        if x == 0:
+            return 0
+        
+        # 初始猜測
+        r = x
+        
+        while r > x // r:
+            # 牛頓公式
+            r = (r + x // r) // 2
+        
+        return r</code></pre>
+            </div>
+
+            <div id="cpp" class="code-container">
+                <pre><code class="language-cpp">class Solution {
+public:
+    /**
+     * 方法一：二分搜尋
+     * 時間複雜度: O(log x)
+     * 空間複雜度: O(1)
+     */
+    int mySqrt(int x) {
+        if (x == 0) return 0;
+        
+        long left = 1, right = x;
+        
+        while (left <= right) {
+            long mid = left + (right - left) / 2;
+            long square = mid * mid;
+            
+            if (square == x) {
+                return mid;
+            } else if (square < x) {
+                left = mid + 1;
+            } else {
+                right = mid - 1;
+            }
+        }
+        
+        return right;
+    }
+    
+    /**
+     * 方法二：牛頓迭代法
+     * 時間複雜度: O(log x)
+     * 空間複雜度: O(1)
+     */
+    int mySqrt_newton(int x) {
+        if (x == 0) return 0;
+        
+        long r = x;
+        
+        while (r > x / r) {
+            r = (r + x / r) / 2;
+        }
+        
+        return r;
+    }
+};</code></pre>
+            </div>
+
+            <div id="java" class="code-container">
+                <pre><code class="language-java">class Solution {
+    /**
+     * 方法一：二分搜尋
+     * 時間複雜度: O(log x)
+     * 空間複雜度: O(1)
+     */
+    public int mySqrt(int x) {
+        if (x == 0) return 0;
+        
+        long left = 1, right = x;
+        
+        while (left <= right) {
+            long mid = left + (right - left) / 2;
+            long square = mid * mid;
+            
+            if (square == x) {
+                return (int) mid;
+            } else if (square < x) {
+                left = mid + 1;
+            } else {
+                right = mid - 1;
+            }
+        }
+        
+        return (int) right;
+    }
+    
+    /**
+     * 方法二：牛頓迭代法
+     * 時間複雜度: O(log x)
+     * 空間複雜度: O(1)
+     */
+    public int mySqrt_newton(int x) {
+        if (x == 0) return 0;
+        
+        long r = x;
+        
+        while (r > x / r) {
+            r = (r + x / r) / 2;
+        }
+        
+        return (int) r;
+    }
+}</code></pre>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">複雜度分析</h2>
+            <div class="complexity-box">
+                <div class="complexity-item">時間複雜度: O(log x)</div>
+                <p style="color: #78716c; margin: 10px 0;">
+                    二分搜尋和牛頓法都是對數時間。
+                </p>
+                
+                <div class="complexity-item" style="margin-top: 20px;">空間複雜度: O(1)</div>
+                <p style="color: #78716c; margin: 10px 0;">
+                    只使用常數額外空間。
+                </p>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">重點提示</h2>
+            <div class="complexity-box">
+                <ul>
+                    <li><strong>二分搜尋要點：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>搜尋範圍：[1, x]（0 要特殊處理）</li>
+                            <li>返回 right（最後一個滿足條件的）</li>
+                            <li>注意溢位問題</li>
+                        </ul>
+                    </li>
+                    <li><strong>溢位處理：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>方法 1：mid * mid 可能溢位 → 用 long</li>
+                            <li>方法 2：改用 mid ≤ x / mid</li>
+                            <li>方法 3：mid ≤ x // mid（Python 整除）</li>
+                        </ul>
+                    </li>
+                    <li><strong>為什麼返回 right？</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>要找最後一個 k² ≤ x</li>
+                            <li>循環結束：left 超過了答案</li>
+                            <li>right 停在正確答案上</li>
+                        </ul>
+                    </li>
+                    <li><strong>牛頓法優勢：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>收斂速度更快（平方收斂）</li>
+                            <li>迭代次數更少</li>
+                            <li>適合高精度計算</li>
+                        </ul>
+                    </li>
+                    <li><strong>牛頓法原理：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>求解 f(x) = x² - a = 0</li>
+                            <li>f'(x) = 2x</li>
+                            <li>x_{n+1} = x_n - f(x_n)/f'(x_n)</li>
+                            <li>= x_n - (x_n² - a)/(2x_n)</li>
+                            <li>= (x_n + a/x_n) / 2</li>
+                        </ul>
+                    </li>
+                    <li><strong>邊界情況：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>x = 0 → 0</li>
+                            <li>x = 1 → 1</li>
+                            <li>x = 2 → 1</li>
+                            <li>完全平方數（4, 9, 16...）</li>
+                        </ul>
+                    </li>
+                    <li><strong>常見錯誤：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>返回 left 而不是 right</li>
+                            <li>忘記處理溢位</li>
+                            <li>初始 right = x/2（錯誤，應該是 x）</li>
+                            <li>牛頓法除以 0</li>
+                        </ul>
+                    </li>
+                    <li><strong>優化技巧：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>right 可以優化為 x/2 + 1（√x ≤ x/2 對 x ≥ 4）</li>
+                            <li>但要注意小數字的情況</li>
+                            <li>實際提升不明顯</li>
+                        </ul>
+                    </li>
+                    <li><strong>二分搜尋變形：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>#35：找插入位置（第一個 >=）</li>
+                            <li>#69：找平方根（最後一個 ≤）</li>
+                            <li>同樣是二分，返回值不同</li>
+                        </ul>
+                    </li>
+                    <li><strong>面試技巧：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>先提二分搜尋（最常見）</li>
+                            <li>說明溢位處理</li>
+                            <li>可以提牛頓法（加分項）</li>
+                            <li>解釋為什麼返回 right</li>
+                        </ul>
+                    </li>
+                    <li><strong>延伸思考：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>如何求立方根？</li>
+                            <li>如何求 n 次方根？</li>
+                            <li>如何保留小數？</li>
+                        </ul>
+                    </li>
+                    <li><strong>變形題：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>Valid Perfect Square (#367)</li>
+                            <li>Pow(x, n) (#50)</li>
+                        </ul>
+                    </li>
+                    <li><strong>實際應用：</strong>計算機圖形學、物理模擬、數值計算</li>
+                    <li><strong>記憶口訣：</strong>「平方根用二分找，注意溢位返回 right」</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        hljs.highlightAll();
+        
+        function showLanguage(lang) {
+            document.querySelectorAll('.code-container').forEach(container => {
+                container.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.getElementById(lang).classList.add('active');
+            event.target.classList.add('active');
+        }
+    </script>
+</body>
+</html>

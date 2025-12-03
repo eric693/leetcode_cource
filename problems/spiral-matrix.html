@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>54. Spiral Matrix - LeetCode 學習平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f8fafc; line-height: 1.8; color: #334155; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .header { background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: white; padding: 40px; border-radius: 16px; margin-bottom: 30px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .back-btn { display: inline-block; color: white; text-decoration: none; background: rgba(255,255,255,0.2); padding: 10px 20px; border-radius: 8px; margin-bottom: 20px; transition: all 0.3s; }
+        .back-btn:hover { background: rgba(255,255,255,0.3); }
+        .problem-title { font-size: 2.5em; font-weight: 800; margin-bottom: 15px; }
+        .difficulty { display: inline-block; background: rgba(255,255,255,0.3); padding: 8px 20px; border-radius: 20px; font-weight: 600; font-size: 0.9em; }
+        .content-section { background: white; padding: 40px; border-radius: 16px; margin-bottom: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .section-title { font-size: 1.8em; color: #1e293b; margin-bottom: 25px; font-weight: 700; padding-bottom: 10px; border-bottom: 3px solid #f59e0b; }
+        .description { font-size: 1.1em; line-height: 1.9; color: #475569; margin-bottom: 20px; }
+        .example-box { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .example-title { font-weight: 700; color: #92400e; margin-bottom: 10px; font-size: 1.1em; }
+        .approach-box { background: #eff6ff; border-left: 4px solid #3b82f6; padding: 25px; border-radius: 8px; margin: 25px 0; }
+        .approach-title { font-weight: 700; color: #1e40af; margin-bottom: 15px; font-size: 1.3em; }
+        .complexity-box { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .complexity-item { margin: 10px 0; font-weight: 600; color: #92400e; }
+        .language-tabs { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+        .tab-btn { padding: 12px 28px; border: 2px solid #f59e0b; background: white; color: #f59e0b; border-radius: 8px; cursor: pointer; font-weight: 600; transition: all 0.3s; font-size: 1em; }
+        .tab-btn:hover { background: #fef3c7; }
+        .tab-btn.active { background: #f59e0b; color: white; }
+        .code-container { display: none; margin-top: 20px; }
+        .code-container.active { display: block; }
+        pre { background: #282c34 !important; padding: 25px !important; border-radius: 12px; overflow-x: auto; margin: 0; }
+        code { font-family: 'Fira Code', 'Consolas', monospace; font-size: 0.95em; line-height: 1.6; }
+        ol, ul { margin-left: 30px; margin-top: 15px; }
+        li { margin: 12px 0; line-height: 1.8; }
+        strong { color: #1e293b; font-weight: 700; }
+        .visual-box { background: #f0f9ff; border: 2px solid #3b82f6; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        
+        @media (max-width: 768px) {
+            .container { padding: 10px; }
+            .header { padding: 25px; }
+            .problem-title { font-size: 1.8em; }
+            .content-section { padding: 25px; }
+            .tab-btn { padding: 10px 20px; font-size: 0.9em; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="../index.html" class="back-btn">← 返回題目列表</a>
+            <div class="problem-title">54. Spiral Matrix</div>
+            <span class="difficulty">Medium</span>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">題目描述</h2>
+            <div class="description">
+                <p>給你一個 <code>m x n</code> 矩陣 <code>matrix</code>，請按照<strong>順時針螺旋順序</strong>，返回矩陣中的所有元素。</p>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例 1:</div>
+                <pre><code>輸入: matrix = [[1,2,3],[4,5,6],[7,8,9]]
+輸出: [1,2,3,6,9,8,7,4,5]
+
+視覺化:
+1 → 2 → 3
+        ↓
+4 → 5   6
+↑       ↓
+7 ← 8 ← 9</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例 2:</div>
+                <pre><code>輸入: matrix = [[1,2,3,4],[5,6,7,8],[9,10,11,12]]
+輸出: [1,2,3,4,8,12,11,10,9,5,6,7]
+
+視覺化:
+1  → 2  → 3  → 4
+                ↓
+5  → 6  → 7    8
+↑              ↓
+9  ← 10 ← 11 ← 12</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">限制條件:</div>
+                <pre><code>m == matrix.length
+n == matrix[i].length
+1 <= m, n <= 10
+-100 <= matrix[i][j] <= 100</code></pre>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">解題思路</h2>
+            
+            <div class="approach-box">
+                <div class="approach-title">核心觀察</div>
+                <p>螺旋遍歷的特點：</p>
+                <ul>
+                    <li>順時針方向：右 → 下 → 左 → 上</li>
+                    <li>一層一層向內遍歷</li>
+                    <li>需要維護四個邊界</li>
+                    <li>每遍歷完一個方向，收縮對應邊界</li>
+                </ul>
+                <p style="margin-top: 15px; color: #f59e0b; font-weight: 600;">
+                    關鍵：維護上下左右四個邊界，順時針收縮
+                </p>
+            </div>
+            
+            <div class="approach-box">
+                <div class="approach-title">方法：邊界收縮法 ⭐⭐⭐</div>
+                <p>維護四個邊界，按順時針方向遍歷並收縮。</p>
+                
+                <p style="margin-top: 15px;"><strong>四個邊界：</strong></p>
+                <ul>
+                    <li><strong>top：</strong>上邊界</li>
+                    <li><strong>bottom：</strong>下邊界</li>
+                    <li><strong>left：</strong>左邊界</li>
+                    <li><strong>right：</strong>右邊界</li>
+                </ul>
+                
+                <p style="margin-top: 15px;"><strong>遍歷順序：</strong></p>
+                <ol>
+                    <li><strong>向右：</strong>從 left 到 right，行 = top
+                        <ul style="margin-top: 8px;">
+                            <li>完成後 top++</li>
+                        </ul>
+                    </li>
+                    <li><strong>向下：</strong>從 top 到 bottom，列 = right
+                        <ul style="margin-top: 8px;">
+                            <li>完成後 right--</li>
+                        </ul>
+                    </li>
+                    <li><strong>向左：</strong>從 right 到 left，行 = bottom
+                        <ul style="margin-top: 8px;">
+                            <li>需要檢查 top <= bottom</li>
+                            <li>完成後 bottom--</li>
+                        </ul>
+                    </li>
+                    <li><strong>向上：</strong>從 bottom 到 top，列 = left
+                        <ul style="margin-top: 8px;">
+                            <li>需要檢查 left <= right</li>
+                            <li>完成後 left++</li>
+                        </ul>
+                    </li>
+                </ol>
+                
+                <div class="visual-box">
+                    <p><strong>視覺化範例：3x3 矩陣</strong></p>
+                    <pre style="background: white; padding: 15px; border-radius: 5px; margin-top: 10px;"><code>初始狀態:
+top=0, bottom=2, left=0, right=2
+
+1  2  3
+4  5  6
+7  8  9
+
+第一輪螺旋:
+
+1. 向右 (row=top=0, col: left→right)
+   訪問: 1, 2, 3
+   top++ → top=1
+
+2. 向下 (row: top→bottom, col=right=2)
+   訪問: 6, 9
+   right-- → right=1
+
+3. 向左 (row=bottom=2, col: right→left)
+   訪問: 8, 7
+   bottom-- → bottom=1
+
+4. 向上 (row: bottom→top, col=left=0)
+   訪問: 4
+   left++ → left=1
+
+第二輪螺旋:
+top=1, bottom=1, left=1, right=1
+
+1. 向右 (row=1, col: 1→1)
+   訪問: 5
+   top++ → top=2
+
+現在 top > bottom，結束！
+
+結果: [1,2,3,6,9,8,7,4,5] ✓</code></pre>
+                </div>
+                
+                <div class="visual-box">
+                    <p><strong>邊界檢查的必要性：</strong></p>
+                    <pre style="background: white; padding: 15px; border-radius: 5px; margin-top: 10px;"><code>為什麼向左和向上需要檢查？
+
+情況 1：單行矩陣 [1,2,3]
+- 向右：訪問 1,2,3，top++
+- 向下：無（top > bottom）
+- 向左：如果不檢查，會重複訪問！
+  需要檢查 top <= bottom
+
+情況 2：單列矩陣 [[1],[2],[3]]
+- 向右：訪問 1，top++
+- 向下：訪問 2,3，right--
+- 向左：無（top > bottom）
+- 向上：如果不檢查，會重複訪問！
+  需要檢查 left <= right
+
+結論：
+- 向右、向下：第一次一定有效
+- 向左、向上：可能已經遍歷完，需要檢查</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">程式碼實現</h2>
+            
+            <div class="language-tabs">
+                <button class="tab-btn active" onclick="showLanguage('python')">Python</button>
+                <button class="tab-btn" onclick="showLanguage('cpp')">C++</button>
+                <button class="tab-btn" onclick="showLanguage('java')">Java</button>
+            </div>
+
+            <div id="python" class="code-container active">
+                <pre><code class="language-python">class Solution:
+    def spiralOrder(self, matrix: List[List[int]]) -> List[int]:
+        """
+        邊界收縮法
+        時間複雜度: O(m×n)
+        空間複雜度: O(1)，不計算輸出空間
+        """
+        if not matrix or not matrix[0]:
+            return []
+        
+        result = []
+        top, bottom = 0, len(matrix) - 1
+        left, right = 0, len(matrix[0]) - 1
+        
+        while top <= bottom and left <= right:
+            # 向右：從 left 到 right
+            for col in range(left, right + 1):
+                result.append(matrix[top][col])
+            top += 1
+            
+            # 向下：從 top 到 bottom
+            for row in range(top, bottom + 1):
+                result.append(matrix[row][right])
+            right -= 1
+            
+            # 向左：從 right 到 left（需要檢查）
+            if top <= bottom:
+                for col in range(right, left - 1, -1):
+                    result.append(matrix[bottom][col])
+                bottom -= 1
+            
+            # 向上：從 bottom 到 top（需要檢查）
+            if left <= right:
+                for row in range(bottom, top - 1, -1):
+                    result.append(matrix[row][left])
+                left += 1
+        
+        return result</code></pre>
+            </div>
+
+            <div id="cpp" class="code-container">
+                <pre><code class="language-cpp">#include &lt;vector&gt;
+using namespace std;
+
+class Solution {
+public:
+    /**
+     * 邊界收縮法
+     * 時間複雜度: O(m×n)
+     * 空間複雜度: O(1)
+     */
+    vector<int> spiralOrder(vector<vector<int>>& matrix) {
+        vector<int> result;
+        if (matrix.empty() || matrix[0].empty()) return result;
+        
+        int top = 0, bottom = matrix.size() - 1;
+        int left = 0, right = matrix[0].size() - 1;
+        
+        while (top <= bottom && left <= right) {
+            // 向右
+            for (int col = left; col <= right; col++) {
+                result.push_back(matrix[top][col]);
+            }
+            top++;
+            
+            // 向下
+            for (int row = top; row <= bottom; row++) {
+                result.push_back(matrix[row][right]);
+            }
+            right--;
+            
+            // 向左
+            if (top <= bottom) {
+                for (int col = right; col >= left; col--) {
+                    result.push_back(matrix[bottom][col]);
+                }
+                bottom--;
+            }
+            
+            // 向上
+            if (left <= right) {
+                for (int row = bottom; row >= top; row--) {
+                    result.push_back(matrix[row][left]);
+                }
+                left++;
+            }
+        }
+        
+        return result;
+    }
+};</code></pre>
+            </div>
+
+            <div id="java" class="code-container">
+                <pre><code class="language-java">import java.util.ArrayList;
+import java.util.List;
+
+class Solution {
+    /**
+     * 邊界收縮法
+     * 時間複雜度: O(m×n)
+     * 空間複雜度: O(1)
+     */
+    public List<Integer> spiralOrder(int[][] matrix) {
+        List<Integer> result = new ArrayList<>();
+        if (matrix == null || matrix.length == 0 || matrix[0].length == 0) {
+            return result;
+        }
+        
+        int top = 0, bottom = matrix.length - 1;
+        int left = 0, right = matrix[0].length - 1;
+        
+        while (top <= bottom && left <= right) {
+            // 向右
+            for (int col = left; col <= right; col++) {
+                result.add(matrix[top][col]);
+            }
+            top++;
+            
+            // 向下
+            for (int row = top; row <= bottom; row++) {
+                result.add(matrix[row][right]);
+            }
+            right--;
+            
+            // 向左
+            if (top <= bottom) {
+                for (int col = right; col >= left; col--) {
+                    result.add(matrix[bottom][col]);
+                }
+                bottom--;
+            }
+            
+            // 向上
+            if (left <= right) {
+                for (int row = bottom; row >= top; row--) {
+                    result.add(matrix[row][left]);
+                }
+                left++;
+            }
+        }
+        
+        return result;
+    }
+}</code></pre>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">複雜度分析</h2>
+            <div class="complexity-box">
+                <div class="complexity-item">時間複雜度: O(m×n)</div>
+                <p style="color: #78716c; margin: 10px 0;">
+                    需要訪問每個元素恰好一次。
+                </p>
+                
+                <div class="complexity-item" style="margin-top: 20px;">空間複雜度: O(1)</div>
+                <p style="color: #78716c; margin: 10px 0;">
+                    不計算輸出空間，只使用常數額外空間。
+                </p>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">重點提示</h2>
+            <div class="complexity-box">
+                <ul>
+                    <li><strong>四個邊界的含義：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>top：當前還沒訪問的最上面一行</li>
+                            <li>bottom：當前還沒訪問的最下面一行</li>
+                            <li>left：當前還沒訪問的最左邊一列</li>
+                            <li>right：當前還沒訪問的最右邊一列</li>
+                        </ul>
+                    </li>
+                    <li><strong>為什麼需要邊界檢查？</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>防止單行或單列矩陣重複訪問</li>
+                            <li>向左：檢查 top <= bottom</li>
+                            <li>向上：檢查 left <= right</li>
+                        </ul>
+                    </li>
+                    <li><strong>循環條件：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>while top <= bottom and left <= right</li>
+                            <li>兩個條件都要滿足</li>
+                            <li>任一邊界交叉就結束</li>
+                        </ul>
+                    </li>
+                    <li><strong>邊界更新時機：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>每完成一個方向立即更新</li>
+                            <li>向右完成 → top++</li>
+                            <li>向下完成 → right--</li>
+                            <li>向左完成 → bottom--</li>
+                            <li>向上完成 → left++</li>
+                        </ul>
+                    </li>
+                    <li><strong>常見錯誤：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>忘記向左和向上的邊界檢查</li>
+                            <li>循環條件只寫一個</li>
+                            <li>邊界更新位置錯誤</li>
+                            <li>range 範圍寫錯</li>
+                        </ul>
+                    </li>
+                    <li><strong>邊界情況：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>1×1 矩陣：[[5]]</li>
+                            <li>單行：[[1,2,3,4]]</li>
+                            <li>單列：[[1],[2],[3]]</li>
+                            <li>空矩陣：[]</li>
+                        </ul>
+                    </li>
+                    <li><strong>方向切換技巧：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>也可以用方向陣列：[(0,1), (1,0), (0,-1), (-1,0)]</li>
+                            <li>但邊界法更直觀</li>
+                        </ul>
+                    </li>
+                    <li><strong>面試技巧：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>畫圖展示遍歷過程</li>
+                            <li>說明四個邊界的作用</li>
+                            <li>解釋為什麼需要檢查</li>
+                            <li>測試單行單列情況</li>
+                        </ul>
+                    </li>
+                    <li><strong>變形題：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>Spiral Matrix II (#59) - 填充螺旋矩陣</li>
+                            <li>Spiral Matrix III (#885)</li>
+                        </ul>
+                    </li>
+                    <li><strong>實際應用：</strong>圖像處理、矩陣遍歷、打印格式化</li>
+                    <li><strong>記憶口訣：</strong>「右下左上轉圈圈，左上需檢防重複」</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        hljs.highlightAll();
+        
+        function showLanguage(lang) {
+            document.querySelectorAll('.code-container').forEach(container => {
+                container.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.getElementById(lang).classList.add('active');
+            event.target.classList.add('active');
+        }
+    </script>
+</body>
+</html>

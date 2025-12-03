@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>26. Remove Duplicates from Sorted Array - LeetCode 學習平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f8fafc; line-height: 1.8; color: #334155; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .header { background: linear-gradient(135deg, #16a34a 0%, #15803d 100%); color: white; padding: 40px; border-radius: 16px; margin-bottom: 30px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .back-btn { display: inline-block; color: white; text-decoration: none; background: rgba(255,255,255,0.2); padding: 10px 20px; border-radius: 8px; margin-bottom: 20px; transition: all 0.3s; }
+        .back-btn:hover { background: rgba(255,255,255,0.3); }
+        .problem-title { font-size: 2.5em; font-weight: 800; margin-bottom: 15px; }
+        .difficulty { display: inline-block; background: rgba(255,255,255,0.3); padding: 8px 20px; border-radius: 20px; font-weight: 600; font-size: 0.9em; }
+        .content-section { background: white; padding: 40px; border-radius: 16px; margin-bottom: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .section-title { font-size: 1.8em; color: #1e293b; margin-bottom: 25px; font-weight: 700; padding-bottom: 10px; border-bottom: 3px solid #16a34a; }
+        .description { font-size: 1.1em; line-height: 1.9; color: #475569; margin-bottom: 20px; }
+        .example-box { background: #dcfce7; border-left: 4px solid #16a34a; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .example-title { font-weight: 700; color: #15803d; margin-bottom: 10px; font-size: 1.1em; }
+        .approach-box { background: #eff6ff; border-left: 4px solid #3b82f6; padding: 25px; border-radius: 8px; margin: 25px 0; }
+        .approach-title { font-weight: 700; color: #1e40af; margin-bottom: 15px; font-size: 1.3em; }
+        .complexity-box { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .complexity-item { margin: 10px 0; font-weight: 600; color: #92400e; }
+        .language-tabs { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+        .tab-btn { padding: 12px 28px; border: 2px solid #16a34a; background: white; color: #16a34a; border-radius: 8px; cursor: pointer; font-weight: 600; transition: all 0.3s; font-size: 1em; }
+        .tab-btn:hover { background: #dcfce7; }
+        .tab-btn.active { background: #16a34a; color: white; }
+        .code-container { display: none; margin-top: 20px; }
+        .code-container.active { display: block; }
+        pre { background: #282c34 !important; padding: 25px !important; border-radius: 12px; overflow-x: auto; margin: 0; }
+        code { font-family: 'Fira Code', 'Consolas', monospace; font-size: 0.95em; line-height: 1.6; }
+        ol, ul { margin-left: 30px; margin-top: 15px; }
+        li { margin: 12px 0; line-height: 1.8; }
+        strong { color: #1e293b; font-weight: 700; }
+        .visual-box { background: #f0f9ff; border: 2px solid #3b82f6; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        
+        @media (max-width: 768px) {
+            .container { padding: 10px; }
+            .header { padding: 25px; }
+            .problem-title { font-size: 1.8em; }
+            .content-section { padding: 25px; }
+            .tab-btn { padding: 10px 20px; font-size: 0.9em; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="../index.html" class="back-btn">← 返回題目列表</a>
+            <div class="problem-title">26. Remove Duplicates from Sorted Array</div>
+            <span class="difficulty">Easy</span>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">題目描述</h2>
+            <div class="description">
+                <p>給你一個<strong>已排序的</strong>陣列 <code>nums</code>，請你<strong>原地</strong>刪除重複出現的元素，使每個元素<strong>只出現一次</strong>，返回刪除後陣列的新長度。元素的<strong>相對順序</strong>應該保持一致。</p>
+                <p style="margin-top: 15px;">不要使用額外的空間，你必須在<strong>原地</strong>修改輸入陣列並在使用 O(1) 額外空間的條件下完成。</p>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">澄清說明:</div>
+                <p>為什麼返回數值是整數，但輸出的答案是陣列呢？</p>
+                <p style="margin-top: 10px;">請注意，輸入陣列是以「引用」方式傳遞的，這意味著在函數裡修改輸入陣列對於調用者是可見的。</p>
+                <pre style="margin-top: 10px;"><code>// nums 是以「引用」方式傳遞的。也就是說，不對實參做任何拷貝
+int len = removeDuplicates(nums);
+
+// 在函數裡修改輸入陣列對於調用者是可見的。
+// 根據你的函數返回的長度, 它會打印出陣列中該長度範圍內的所有元素。
+for (int i = 0; i < len; i++) {
+    print(nums[i]);
+}</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例 1:</div>
+                <pre><code>輸入: nums = [1,1,2]
+輸出: 2, nums = [1,2,_]
+解釋: 函數應該返回新的長度 2，並且原陣列 nums 的前兩個元素被修改為 1, 2。
+不需要考慮陣列中超出新長度後面的元素。</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例 2:</div>
+                <pre><code>輸入: nums = [0,0,1,1,1,2,2,3,3,4]
+輸出: 5, nums = [0,1,2,3,4,_,_,_,_,_]
+解釋: 函數應該返回新的長度 5，並且原陣列 nums 的前五個元素被修改為 0, 1, 2, 3, 4。
+不需要考慮陣列中超出新長度後面的元素。</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">限制條件:</div>
+                <pre><code>1 <= nums.length <= 3 * 10^4
+-100 <= nums[i] <= 100
+nums 已按升序排列</code></pre>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">解題思路</h2>
+            
+            <div class="approach-box">
+                <div class="approach-title">核心觀察</div>
+                <p>這道題的關鍵特性：</p>
+                <ul>
+                    <li>陣列<strong>已排序</strong> - 重複元素會相鄰</li>
+                    <li>需要<strong>原地</strong>操作 - O(1) 空間</li>
+                    <li>保持<strong>相對順序</strong></li>
+                    <li>只需處理前 k 個元素，後面的可以忽略</li>
+                </ul>
+                <p style="margin-top: 15px; color: #16a34a; font-weight: 600;">
+                    關鍵：使用雙指標技巧，一個讀取，一個寫入
+                </p>
+            </div>
+            
+            <div class="approach-box">
+                <div class="approach-title">方法：雙指標（快慢指標）⭐⭐⭐</div>
+                <p>使用兩個指標來實現原地去重。</p>
+                
+                <p style="margin-top: 15px;"><strong>核心思想：</strong></p>
+                <ul>
+                    <li><strong>慢指標（slow）：</strong>指向下一個要寫入的位置</li>
+                    <li><strong>快指標（fast）：</strong>遍歷整個陣列</li>
+                    <li>當 nums[fast] != nums[slow-1] 時，說明找到新元素</li>
+                    <li>將 nums[fast] 寫入 nums[slow]，slow++</li>
+                </ul>
+                
+                <p style="margin-top: 15px;"><strong>算法步驟：</strong></p>
+                <ol>
+                    <li>如果陣列為空或只有一個元素，直接返回長度</li>
+                    <li>初始化 slow = 1（第一個元素一定保留）</li>
+                    <li>從 fast = 1 開始遍歷：
+                        <ul style="margin-top: 8px;">
+                            <li>如果 nums[fast] != nums[fast-1]（找到新元素）</li>
+                            <li>將 nums[fast] 複製到 nums[slow]</li>
+                            <li>slow++</li>
+                        </ul>
+                    </li>
+                    <li>返回 slow（新陣列長度）</li>
+                </ol>
+                
+                <div class="visual-box">
+                    <p><strong>視覺化範例：nums = [0,0,1,1,1,2,2,3,3,4]</strong></p>
+                    <pre style="background: white; padding: 15px; border-radius: 5px; margin-top: 10px;"><code>初始狀態:
+nums = [0, 0, 1, 1, 1, 2, 2, 3, 3, 4]
+        ↑
+      slow=1
+
+fast=1: nums[1]=0 == nums[0]=0，跳過
+nums = [0, 0, 1, 1, 1, 2, 2, 3, 3, 4]
+        ↑  ↑
+      slow fast
+
+fast=2: nums[2]=1 != nums[1]=0，找到新元素！
+        nums[slow] = nums[fast] = 1
+        slow++
+nums = [0, 1, 1, 1, 1, 2, 2, 3, 3, 4]
+           ↑  ↑
+         slow fast
+
+fast=3: nums[3]=1 == nums[2]=1，跳過
+nums = [0, 1, 1, 1, 1, 2, 2, 3, 3, 4]
+           ↑     ↑
+         slow   fast
+
+fast=4: nums[4]=1 == nums[3]=1，跳過
+nums = [0, 1, 1, 1, 1, 2, 2, 3, 3, 4]
+           ↑        ↑
+         slow      fast
+
+fast=5: nums[5]=2 != nums[4]=1，找到新元素！
+        nums[slow] = nums[fast] = 2
+        slow++
+nums = [0, 1, 2, 1, 1, 2, 2, 3, 3, 4]
+              ↑        ↑
+            slow      fast
+
+fast=6: nums[6]=2 == nums[5]=2，跳過
+nums = [0, 1, 2, 1, 1, 2, 2, 3, 3, 4]
+              ↑           ↑
+            slow         fast
+
+fast=7: nums[7]=3 != nums[6]=2，找到新元素！
+        nums[slow] = nums[fast] = 3
+        slow++
+nums = [0, 1, 2, 3, 1, 2, 2, 3, 3, 4]
+                 ↑           ↑
+               slow         fast
+
+fast=8: nums[8]=3 == nums[7]=3，跳過
+nums = [0, 1, 2, 3, 1, 2, 2, 3, 3, 4]
+                 ↑              ↑
+               slow            fast
+
+fast=9: nums[9]=4 != nums[8]=3，找到新元素！
+        nums[slow] = nums[fast] = 4
+        slow++
+nums = [0, 1, 2, 3, 4, 2, 2, 3, 3, 4]
+                    ↑              ↑
+                  slow            fast
+
+最終結果:
+nums = [0, 1, 2, 3, 4, _, _, _, _, _]
+返回 slow = 5</code></pre>
+                </div>
+                
+                <div class="visual-box">
+                    <p><strong>指標移動規則：</strong></p>
+                    <pre style="background: white; padding: 15px; border-radius: 5px; margin-top: 10px;"><code>slow: 只在找到新元素時移動（寫入指標）
+fast: 每次都移動（讀取指標）
+
+比喻：
+- fast 是「探險家」，不斷前進探索
+- slow 是「記錄員」，只記錄新發現
+
+結果：
+- slow 之前的元素都是唯一的
+- fast 繼續探索尋找新元素</code></pre>
+                </div>
+                
+                <p style="margin-top: 15px;"><strong>為什麼這個方法可行？</strong></p>
+                <ul>
+                    <li>陣列已排序，相同元素一定相鄰</li>
+                    <li>只需比較相鄰元素就能檢測重複</li>
+                    <li>slow 之前的元素保證都是唯一的</li>
+                    <li>fast 在前面探路，找到新元素就告訴 slow</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">程式碼實現</h2>
+            
+            <div class="language-tabs">
+                <button class="tab-btn active" onclick="showLanguage('python')">Python</button>
+                <button class="tab-btn" onclick="showLanguage('cpp')">C++</button>
+                <button class="tab-btn" onclick="showLanguage('java')">Java</button>
+            </div>
+
+            <div id="python" class="code-container active">
+                <pre><code class="language-python">class Solution:
+    def removeDuplicates(self, nums: List[int]) -> int:
+        """
+        雙指標法
+        時間複雜度: O(n)
+        空間複雜度: O(1)
+        """
+        if not nums:
+            return 0
+        
+        # slow 指向下一個要寫入的位置
+        slow = 1
+        
+        # fast 遍歷陣列
+        for fast in range(1, len(nums)):
+            # 找到新元素（與前一個不同）
+            if nums[fast] != nums[fast - 1]:
+                nums[slow] = nums[fast]
+                slow += 1
+        
+        return slow
+    
+    def removeDuplicates_v2(self, nums: List[int]) -> int:
+        """
+        另一種寫法：比較 nums[fast] 和 nums[slow-1]
+        """
+        if not nums:
+            return 0
+        
+        slow = 1
+        
+        for fast in range(1, len(nums)):
+            if nums[fast] != nums[slow - 1]:
+                nums[slow] = nums[fast]
+                slow += 1
+        
+        return slow</code></pre>
+            </div>
+
+            <div id="cpp" class="code-container">
+                <pre><code class="language-cpp">#include &lt;vector&gt;
+using namespace std;
+
+class Solution {
+public:
+    /**
+     * 雙指標法
+     * 時間複雜度: O(n)
+     * 空間複雜度: O(1)
+     */
+    int removeDuplicates(vector<int>& nums) {
+        if (nums.empty()) {
+            return 0;
+        }
+        
+        int slow = 1;
+        
+        for (int fast = 1; fast < nums.size(); fast++) {
+            if (nums[fast] != nums[fast - 1]) {
+                nums[slow] = nums[fast];
+                slow++;
+            }
+        }
+        
+        return slow;
+    }
+};</code></pre>
+            </div>
+
+            <div id="java" class="code-container">
+                <pre><code class="language-java">class Solution {
+    /**
+     * 雙指標法
+     * 時間複雜度: O(n)
+     * 空間複雜度: O(1)
+     */
+    public int removeDuplicates(int[] nums) {
+        if (nums.length == 0) {
+            return 0;
+        }
+        
+        int slow = 1;
+        
+        for (int fast = 1; fast < nums.length; fast++) {
+            if (nums[fast] != nums[fast - 1]) {
+                nums[slow] = nums[fast];
+                slow++;
+            }
+        }
+        
+        return slow;
+    }
+}</code></pre>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">複雜度分析</h2>
+            <div class="complexity-box">
+                <div class="complexity-item">時間複雜度: O(n)</div>
+                <p style="color: #78716c; margin: 10px 0;">
+                    只需遍歷陣列一次。
+                </p>
+                
+                <div class="complexity-item" style="margin-top: 20px;">空間複雜度: O(1)</div>
+                <p style="color: #78716c; margin: 10px 0;">
+                    只使用兩個指標變數，原地修改。
+                </p>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">重點提示</h2>
+            <div class="complexity-box">
+                <ul>
+                    <li><strong>雙指標模式：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>快指標：負責探索和讀取</li>
+                            <li>慢指標：負責寫入和記錄</li>
+                            <li>這是處理陣列原地修改的常用技巧</li>
+                        </ul>
+                    </li>
+                    <li><strong>為什麼從索引 1 開始？</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>第一個元素（索引 0）一定保留</li>
+                            <li>它不可能是重複的</li>
+                            <li>所以 slow 從 1 開始</li>
+                        </ul>
+                    </li>
+                    <li><strong>比較策略：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>方法一：nums[fast] != nums[fast-1]</li>
+                            <li>方法二：nums[fast] != nums[slow-1]</li>
+                            <li>兩種方法都可以，效果相同</li>
+                        </ul>
+                    </li>
+                    <li><strong>已排序的重要性：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>如果未排序，需要先排序或用 HashSet</li>
+                            <li>已排序使得重複元素相鄰</li>
+                            <li>只需比較相鄰元素即可</li>
+                        </ul>
+                    </li>
+                    <li><strong>原地修改技巧：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>不需要創建新陣列</li>
+                            <li>直接在原陣列上修改</li>
+                            <li>後面的元素可以被覆蓋</li>
+                        </ul>
+                    </li>
+                    <li><strong>邊界情況：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>空陣列 → 返回 0</li>
+                            <li>只有一個元素 → 返回 1</li>
+                            <li>沒有重複 → 返回原長度</li>
+                            <li>全部重複 → 返回 1</li>
+                        </ul>
+                    </li>
+                    <li><strong>常見錯誤：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>忘記處理空陣列</li>
+                            <li>slow 初始化為 0 而不是 1</li>
+                            <li>比較錯誤的元素</li>
+                            <li>忘記移動指標</li>
+                        </ul>
+                    </li>
+                    <li><strong>為什麼不用 Set？</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>Set 需要 O(n) 空間</li>
+                            <li>不符合原地修改的要求</li>
+                            <li>雙指標更優雅，O(1) 空間</li>
+                        </ul>
+                    </li>
+                    <li><strong>面試技巧：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>先確認陣列是否已排序</li>
+                            <li>畫圖展示指標移動過程</li>
+                            <li>說明為什麼從 1 開始</li>
+                            <li>測試邊界情況</li>
+                        </ul>
+                    </li>
+                    <li><strong>指標命名：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>slow/fast 清楚表達速度差異</li>
+                            <li>也可以用 i/j 或 write/read</li>
+                            <li>好的命名幫助理解</li>
+                        </ul>
+                    </li>
+                    <li><strong>擴展思考：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>如果允許每個元素出現最多 2 次？(#80)</li>
+                            <li>如果陣列未排序？</li>
+                            <li>如果需要保留原陣列？</li>
+                        </ul>
+                    </li>
+                    <li><strong>類似模式的題目：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>Move Zeroes (#283) - 類似雙指標</li>
+                            <li>Remove Element (#27) - 幾乎相同</li>
+                            <li>Partition Array - 相同模式</li>
+                        </ul>
+                    </li>
+                    <li><strong>變形題：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>Remove Duplicates from Sorted Array II (#80)</li>
+                            <li>Remove Element (#27)</li>
+                            <li>Remove Duplicates from Sorted List (#83)</li>
+                        </ul>
+                    </li>
+                    <li><strong>實際應用：</strong>數據清洗、去重處理、陣列壓縮</li>
+                    <li><strong>記憶口訣：</strong>「快探慢寫，遇新則記」</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        hljs.highlightAll();
+        
+        function showLanguage(lang) {
+            document.querySelectorAll('.code-container').forEach(container => {
+                container.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.getElementById(lang).classList.add('active');
+            event.target.classList.add('active');
+        }
+    </script>
+</body>
+</html>

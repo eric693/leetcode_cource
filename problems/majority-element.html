@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>169. Majority Element - LeetCode 學習平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f8fafc; line-height: 1.8; color: #334155; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .header { background: linear-gradient(135deg, #16a34a 0%, #15803d 100%); color: white; padding: 40px; border-radius: 16px; margin-bottom: 30px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .back-btn { display: inline-block; color: white; text-decoration: none; background: rgba(255,255,255,0.2); padding: 10px 20px; border-radius: 8px; margin-bottom: 20px; transition: all 0.3s; }
+        .back-btn:hover { background: rgba(255,255,255,0.3); }
+        .problem-title { font-size: 2.5em; font-weight: 800; margin-bottom: 15px; }
+        .difficulty { display: inline-block; background: rgba(255,255,255,0.3); padding: 8px 20px; border-radius: 20px; font-weight: 600; font-size: 0.9em; }
+        .content-section { background: white; padding: 40px; border-radius: 16px; margin-bottom: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .section-title { font-size: 1.8em; color: #1e293b; margin-bottom: 25px; font-weight: 700; padding-bottom: 10px; border-bottom: 3px solid #16a34a; }
+        .description { font-size: 1.1em; line-height: 1.9; color: #475569; margin-bottom: 20px; }
+        .example-box { background: #dcfce7; border-left: 4px solid #16a34a; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .example-title { font-weight: 700; color: #15803d; margin-bottom: 10px; font-size: 1.1em; }
+        .approach-box { background: #eff6ff; border-left: 4px solid #3b82f6; padding: 25px; border-radius: 8px; margin: 25px 0; }
+        .approach-title { font-weight: 700; color: #1e40af; margin-bottom: 15px; font-size: 1.3em; }
+        .complexity-box { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .complexity-item { margin: 10px 0; font-weight: 600; color: #92400e; }
+        .language-tabs { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+        .tab-btn { padding: 12px 28px; border: 2px solid #16a34a; background: white; color: #16a34a; border-radius: 8px; cursor: pointer; font-weight: 600; transition: all 0.3s; font-size: 1em; }
+        .tab-btn:hover { background: #dcfce7; }
+        .tab-btn.active { background: #16a34a; color: white; }
+        .code-container { display: none; margin-top: 20px; }
+        .code-container.active { display: block; }
+        pre { background: #282c34 !important; padding: 25px !important; border-radius: 12px; overflow-x: auto; margin: 0; }
+        code { font-family: 'Fira Code', 'Consolas', monospace; font-size: 0.95em; line-height: 1.6; }
+        ol, ul { margin-left: 30px; margin-top: 15px; }
+        li { margin: 12px 0; line-height: 1.8; }
+        strong { color: #1e293b; font-weight: 700; }
+        .visual-box { background: #f0f9ff; border: 2px solid #3b82f6; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        
+        @media (max-width: 768px) {
+            .container { padding: 10px; }
+            .header { padding: 25px; }
+            .problem-title { font-size: 1.8em; }
+            .content-section { padding: 25px; }
+            .tab-btn { padding: 10px 20px; font-size: 0.9em; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="../index.html" class="back-btn">← 返回題目列表</a>
+            <div class="problem-title">169. Majority Element</div>
+            <span class="difficulty">Easy</span>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">題目描述</h2>
+            <div class="description">
+                <p>給定一個大小為 <code>n</code> 的陣列 <code>nums</code>，返回其中的<strong>多數元素</strong>。</p>
+                <p style="margin-top: 15px;">多數元素是指在陣列中出現次數<strong>大於 ⌊n/2⌋</strong> 的元素。</p>
+                <p style="margin-top: 15px;">你可以假設陣列是非空的，並且給定的陣列總是存在多數元素。</p>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例 1:</div>
+                <pre><code>輸入: nums = [3,2,3]
+輸出: 3</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例 2:</div>
+                <pre><code>輸入: nums = [2,2,1,1,1,2,2]
+輸出: 2</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">限制條件:</div>
+                <pre><code>n == nums.length
+1 <= n <= 5 * 10^4
+-10^9 <= nums[i] <= 10^9</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">進階挑戰:</div>
+                <p>你能設計時間複雜度為 O(n)、空間複雜度為 O(1) 的演算法來解決此問題嗎？</p>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">解題思路</h2>
+            
+            <div class="approach-box">
+                <div class="approach-title">核心觀察</div>
+                <p>多數元素的特性：</p>
+                <ul>
+                    <li>出現次數 > n/2</li>
+                    <li>一定存在（題目保證）</li>
+                    <li>只有一個多數元素</li>
+                    <li>出現次數大於所有其他元素的總和</li>
+                </ul>
+                <p style="margin-top: 15px; color: #16a34a; font-weight: 600;">
+                    關鍵洞察：多數元素的數量比其他所有元素加起來還多！
+                </p>
+            </div>
+            
+            <div class="approach-box">
+                <div class="approach-title">方法一：Boyer-Moore 投票算法（最優）⭐⭐⭐</div>
+                <p>這是一個非常巧妙的算法，被稱為<strong>摩爾投票算法</strong>。</p>
+                
+                <p style="margin-top: 15px;"><strong>核心思想：</strong></p>
+                <p>想像一場戰鬥，多數元素和其他元素互相抵消，最後剩下的一定是多數元素。</p>
+                
+                <p style="margin-top: 15px;"><strong>算法步驟：</strong></p>
+                <ol>
+                    <li>維護一個候選人（candidate）和計數器（count）</li>
+                    <li>遍歷陣列：
+                        <ul style="margin-top: 8px;">
+                            <li>如果 count = 0，選擇當前元素為候選人</li>
+                            <li>如果當前元素 = 候選人，count++</li>
+                            <li>如果當前元素 ≠ 候選人，count--</li>
+                        </ul>
+                    </li>
+                    <li>最後的候選人就是多數元素</li>
+                </ol>
+                
+                <div class="visual-box">
+                    <p><strong>視覺化範例：nums = [2,2,1,1,1,2,2]</strong></p>
+                    <pre style="background: white; padding: 15px; border-radius: 5px; margin-top: 10px;"><code>i=0, num=2:
+  count=0，選擇 2 為候選人
+  candidate=2, count=1
+
+i=1, num=2:
+  2 == candidate(2)
+  candidate=2, count=2
+
+i=2, num=1:
+  1 != candidate(2)
+  candidate=2, count=1
+
+i=3, num=1:
+  1 != candidate(2)
+  candidate=2, count=0
+
+i=4, num=1:
+  count=0，選擇 1 為候選人
+  candidate=1, count=1
+
+i=5, num=2:
+  2 != candidate(1)
+  candidate=1, count=0
+
+i=6, num=2:
+  count=0，選擇 2 為候選人
+  candidate=2, count=1
+
+最終候選人: 2 ✓
+
+計數驗證: 2 出現 4 次，1 出現 3 次
+4 > 7/2 = 3.5，所以 2 是多數元素</code></pre>
+                </div>
+                
+                <div class="visual-box">
+                    <p><strong>為什麼這個算法正確？</strong></p>
+                    <pre style="background: white; padding: 15px; border-radius: 5px; margin-top: 10px;"><code>關鍵證明：
+
+1. 多數元素出現次數 > n/2
+2. 其他所有元素出現次數 < n/2
+3. 當多數元素和其他元素"配對抵消"時：
+   - 最壞情況：每個多數元素都和一個非多數元素抵消
+   - 多數元素有 > n/2 個
+   - 非多數元素有 < n/2 個
+   - 抵消後，多數元素還會剩下
+4. 所以最後剩下的一定是多數元素
+
+比喻：
+想像一場投票，多數黨 vs 其他黨派
+- 多數黨有 100 票
+- 其他黨派加起來只有 99 票
+- 每次一對一抵消
+- 最後多數黨還剩 1 票</code></pre>
+                </div>
+                
+                <p style="margin-top: 15px;"><strong>優點：</strong></p>
+                <ul>
+                    <li>時間複雜度：O(n)</li>
+                    <li>空間複雜度：O(1)</li>
+                    <li>只需遍歷一次</li>
+                    <li>最優雅的解法</li>
+                </ul>
+            </div>
+
+            <div class="approach-box">
+                <div class="approach-title">方法二：HashMap 計數</div>
+                <p>統計每個元素出現次數，找出大於 n/2 的。</p>
+                <ul style="margin-top: 10px;">
+                    <li>時間複雜度：O(n)</li>
+                    <li>空間複雜度：O(n)</li>
+                    <li>最直觀的方法</li>
+                </ul>
+            </div>
+
+            <div class="approach-box">
+                <div class="approach-title">方法三：排序</div>
+                <p>排序後，中間位置（n/2）的元素一定是多數元素。</p>
+                
+                <p style="margin-top: 15px;"><strong>為什麼？</strong></p>
+                <ul>
+                    <li>多數元素出現 > n/2 次</li>
+                    <li>排序後，這些元素會連在一起</li>
+                    <li>跨越中間位置</li>
+                    <li>所以 nums[n/2] 一定是多數元素</li>
+                </ul>
+                
+                <ul style="margin-top: 10px;">
+                    <li>時間複雜度：O(n log n)</li>
+                    <li>空間複雜度：O(1) 或 O(n)（看排序算法）</li>
+                </ul>
+            </div>
+
+            <div class="approach-box">
+                <div class="approach-title">方法四：隨機化</div>
+                <p>隨機選擇元素，檢查是否是多數元素。</p>
+                <ul style="margin-top: 10px;">
+                    <li>期望時間複雜度：O(n)</li>
+                    <li>每次有 > 50% 的機率選中多數元素</li>
+                    <li>不是確定性算法</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">程式碼實現</h2>
+            
+            <div class="language-tabs">
+                <button class="tab-btn active" onclick="showLanguage('python')">Python</button>
+                <button class="tab-btn" onclick="showLanguage('cpp')">C++</button>
+                <button class="tab-btn" onclick="showLanguage('java')">Java</button>
+            </div>
+
+            <div id="python" class="code-container active">
+                <pre><code class="language-python">class Solution:
+    def majorityElement(self, nums: List[int]) -> int:
+        """
+        方法一：Boyer-Moore 投票算法（最優）
+        時間複雜度: O(n)
+        空間複雜度: O(1)
+        """
+        candidate = None
+        count = 0
+        
+        # 找出候選人
+        for num in nums:
+            if count == 0:
+                candidate = num
+            count += 1 if num == candidate else -1
+        
+        return candidate
+    
+    def majorityElement_hashmap(self, nums: List[int]) -> int:
+        """
+        方法二：HashMap 計數
+        時間複雜度: O(n)
+        空間複雜度: O(n)
+        """
+        from collections import Counter
+        counts = Counter(nums)
+        return max(counts.keys(), key=counts.get)
+        
+        # 或者
+        # for num, count in counts.items():
+        #     if count > len(nums) // 2:
+        #         return num
+    
+    def majorityElement_sort(self, nums: List[int]) -> int:
+        """
+        方法三：排序
+        時間複雜度: O(n log n)
+        空間複雜度: O(1)
+        """
+        nums.sort()
+        return nums[len(nums) // 2]
+    
+    def majorityElement_random(self, nums: List[int]) -> int:
+        """
+        方法四：隨機化
+        期望時間複雜度: O(n)
+        """
+        import random
+        
+        while True:
+            candidate = random.choice(nums)
+            if nums.count(candidate) > len(nums) // 2:
+                return candidate</code></pre>
+            </div>
+
+            <div id="cpp" class="code-container">
+                <pre><code class="language-cpp">#include &lt;vector&gt;
+#include &lt;unordered_map&gt;
+#include &lt;algorithm&gt;
+using namespace std;
+
+class Solution {
+public:
+    /**
+     * 方法一：Boyer-Moore 投票算法
+     * 時間複雜度: O(n)
+     * 空間複雜度: O(1)
+     */
+    int majorityElement(vector<int>& nums) {
+        int candidate = 0;
+        int count = 0;
+        
+        for (int num : nums) {
+            if (count == 0) {
+                candidate = num;
+            }
+            count += (num == candidate) ? 1 : -1;
+        }
+        
+        return candidate;
+    }
+    
+    /**
+     * 方法二：HashMap 計數
+     * 時間複雜度: O(n)
+     * 空間複雜度: O(n)
+     */
+    int majorityElement_hashmap(vector<int>& nums) {
+        unordered_map<int, int> counts;
+        int n = nums.size();
+        
+        for (int num : nums) {
+            counts[num]++;
+            if (counts[num] > n / 2) {
+                return num;
+            }
+        }
+        
+        return -1;  // 不會執行到這裡
+    }
+    
+    /**
+     * 方法三：排序
+     * 時間複雜度: O(n log n)
+     * 空間複雜度: O(1)
+     */
+    int majorityElement_sort(vector<int>& nums) {
+        sort(nums.begin(), nums.end());
+        return nums[nums.size() / 2];
+    }
+};</code></pre>
+            </div>
+
+            <div id="java" class="code-container">
+                <pre><code class="language-java">import java.util.HashMap;
+import java.util.Map;
+import java.util.Arrays;
+
+class Solution {
+    /**
+     * 方法一：Boyer-Moore 投票算法
+     * 時間複雜度: O(n)
+     * 空間複雜度: O(1)
+     */
+    public int majorityElement(int[] nums) {
+        int candidate = 0;
+        int count = 0;
+        
+        for (int num : nums) {
+            if (count == 0) {
+                candidate = num;
+            }
+            count += (num == candidate) ? 1 : -1;
+        }
+        
+        return candidate;
+    }
+    
+    /**
+     * 方法二：HashMap 計數
+     * 時間複雜度: O(n)
+     * 空間複雜度: O(n)
+     */
+    public int majorityElement_hashmap(int[] nums) {
+        Map<Integer, Integer> counts = new HashMap<>();
+        int n = nums.length;
+        
+        for (int num : nums) {
+            counts.put(num, counts.getOrDefault(num, 0) + 1);
+            if (counts.get(num) > n / 2) {
+                return num;
+            }
+        }
+        
+        return -1;  // 不會執行到這裡
+    }
+    
+    /**
+     * 方法三：排序
+     * 時間複雜度: O(n log n)
+     * 空間複雜度: O(1)
+     */
+    public int majorityElement_sort(int[] nums) {
+        Arrays.sort(nums);
+        return nums[nums.length / 2];
+    }
+}</code></pre>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">複雜度分析</h2>
+            <div class="complexity-box">
+                <div class="complexity-item">時間複雜度: O(n)</div>
+                <p style="color: #78716c; margin: 10px 0;">
+                    Boyer-Moore 算法只需遍歷陣列一次。
+                </p>
+                
+                <div class="complexity-item" style="margin-top: 20px;">空間複雜度: O(1)</div>
+                <p style="color: #78716c; margin: 10px 0;">
+                    只使用兩個變數（candidate 和 count）。
+                </p>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">重點提示</h2>
+            <div class="complexity-box">
+                <ul>
+                    <li><strong>Boyer-Moore 算法精髓：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>抵消思想：不同元素互相抵消</li>
+                            <li>多數元素數量 > 其他元素總和</li>
+                            <li>最後剩下的一定是多數元素</li>
+                        </ul>
+                    </li>
+                    <li><strong>為什麼不需要驗證？</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>題目保證存在多數元素</li>
+                            <li>如果不保證，需要第二次遍歷驗證</li>
+                            <li>驗證：計算候選人出現次數是否 > n/2</li>
+                        </ul>
+                    </li>
+                    <li><strong>算法正確性證明：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>設多數元素為 M，出現 m 次（m > n/2）</li>
+                            <li>其他元素總共出現 n - m 次（< n/2）</li>
+                            <li>最壞情況：每個 M 都和非 M 配對抵消</li>
+                            <li>抵消 n - m 對後，還剩 m - (n - m) = 2m - n 個 M</li>
+                            <li>因為 m > n/2，所以 2m - n > 0</li>
+                            <li>最後一定剩下 M</li>
+                        </ul>
+                    </li>
+                    <li><strong>排序法為什麼正確？</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>多數元素出現 > n/2 次</li>
+                            <li>排序後會形成連續區間</li>
+                            <li>區間長度 > n/2</li>
+                            <li>必然包含中間位置 nums[n/2]</li>
+                        </ul>
+                    </li>
+                    <li><strong>各方法比較：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>Boyer-Moore: O(n) 時間，O(1) 空間 ⭐最優</li>
+                            <li>HashMap: O(n) 時間，O(n) 空間</li>
+                            <li>排序: O(n log n) 時間，O(1) 空間</li>
+                            <li>隨機化: O(n) 期望時間，非確定性</li>
+                        </ul>
+                    </li>
+                    <li><strong>面試技巧：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>先說 HashMap 暴力解</li>
+                            <li>提到排序法（展示思考）</li>
+                            <li>最後說 Boyer-Moore（展示深度）</li>
+                            <li>解釋為什麼算法正確</li>
+                        </ul>
+                    </li>
+                    <li><strong>常見錯誤：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>count 初始化錯誤</li>
+                            <li>忘記 count == 0 時更新候選人</li>
+                            <li>誤以為需要驗證候選人</li>
+                        </ul>
+                    </li>
+                    <li><strong>邊界情況：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>nums = [1] → 1</li>
+                            <li>nums = [1,1] → 1</li>
+                            <li>所有元素相同</li>
+                        </ul>
+                    </li>
+                    <li><strong>延伸思考：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>如果沒有多數元素怎麼辦？需要第二次驗證</li>
+                            <li>如果要找出現 > n/3 次的元素？（變形題）</li>
+                            <li>如果要找所有出現 > n/k 次的元素？</li>
+                        </ul>
+                    </li>
+                    <li><strong>實戰應用：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>選舉制度（找出獲得多數票的候選人）</li>
+                            <li>錯誤檢測（找出主要錯誤類型）</li>
+                            <li>數據分析（找出主要模式）</li>
+                        </ul>
+                    </li>
+                    <li><strong>變形題：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>Majority Element II (#229) - 找 > n/3 的元素</li>
+                            <li>最多需要兩個候選人</li>
+                        </ul>
+                    </li>
+                    <li><strong>記憶技巧：</strong>「多數元素像是戰場上的勝利者，即使和敵人一對一抵消，最後還會剩下」</li>
+                    <li><strong>實際應用：</strong>投票系統、數據流分析、網路流量監控</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        hljs.highlightAll();
+        
+        function showLanguage(lang) {
+            document.querySelectorAll('.code-container').forEach(container => {
+                container.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.getElementById(lang).classList.add('active');
+            event.target.classList.add('active');
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>171. Excel Sheet Column Number - LeetCode 學習平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f8fafc; line-height: 1.8; color: #334155; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .header { background: linear-gradient(135deg, #16a34a 0%, #15803d 100%); color: white; padding: 40px; border-radius: 16px; margin-bottom: 30px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .back-btn { display: inline-block; color: white; text-decoration: none; background: rgba(255,255,255,0.2); padding: 10px 20px; border-radius: 8px; margin-bottom: 20px; transition: all 0.3s; }
+        .back-btn:hover { background: rgba(255,255,255,0.3); }
+        .problem-title { font-size: 2.5em; font-weight: 800; margin-bottom: 15px; }
+        .difficulty { display: inline-block; background: rgba(255,255,255,0.3); padding: 8px 20px; border-radius: 20px; font-weight: 600; font-size: 0.9em; }
+        .content-section { background: white; padding: 40px; border-radius: 16px; margin-bottom: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .section-title { font-size: 1.8em; color: #1e293b; margin-bottom: 25px; font-weight: 700; padding-bottom: 10px; border-bottom: 3px solid #16a34a; }
+        .description { font-size: 1.1em; line-height: 1.9; color: #475569; margin-bottom: 20px; }
+        .example-box { background: #dcfce7; border-left: 4px solid #16a34a; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .example-title { font-weight: 700; color: #15803d; margin-bottom: 10px; font-size: 1.1em; }
+        .approach-box { background: #eff6ff; border-left: 4px solid #3b82f6; padding: 25px; border-radius: 8px; margin: 25px 0; }
+        .approach-title { font-weight: 700; color: #1e40af; margin-bottom: 15px; font-size: 1.3em; }
+        .complexity-box { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .complexity-item { margin: 10px 0; font-weight: 600; color: #92400e; }
+        .language-tabs { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+        .tab-btn { padding: 12px 28px; border: 2px solid #16a34a; background: white; color: #16a34a; border-radius: 8px; cursor: pointer; font-weight: 600; transition: all 0.3s; font-size: 1em; }
+        .tab-btn:hover { background: #dcfce7; }
+        .tab-btn.active { background: #16a34a; color: white; }
+        .code-container { display: none; margin-top: 20px; }
+        .code-container.active { display: block; }
+        pre { background: #282c34 !important; padding: 25px !important; border-radius: 12px; overflow-x: auto; margin: 0; }
+        code { font-family: 'Fira Code', 'Consolas', monospace; font-size: 0.95em; line-height: 1.6; }
+        ol, ul { margin-left: 30px; margin-top: 15px; }
+        li { margin: 12px 0; line-height: 1.8; }
+        strong { color: #1e293b; font-weight: 700; }
+        .visual-box { background: #f0f9ff; border: 2px solid #3b82f6; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        
+        @media (max-width: 768px) {
+            .container { padding: 10px; }
+            .header { padding: 25px; }
+            .problem-title { font-size: 1.8em; }
+            .content-section { padding: 25px; }
+            .tab-btn { padding: 10px 20px; font-size: 0.9em; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="../index.html" class="back-btn">← 返回題目列表</a>
+            <div class="problem-title">171. Excel Sheet Column Number</div>
+            <span class="difficulty">Easy</span>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">題目描述</h2>
+            <div class="description">
+                <p>給你一個字串 <code>columnTitle</code>，表示 Excel 表格中的列名稱。返回該列名稱對應的列序號。</p>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">對照表:</div>
+                <pre><code>A -> 1
+B -> 2
+C -> 3
+...
+Z -> 26
+AA -> 27
+AB -> 28
+...
+ZY -> 701
+ZZ -> 702
+AAA -> 703
+...</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例 1:</div>
+                <pre><code>輸入: columnTitle = "A"
+輸出: 1</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例 2:</div>
+                <pre><code>輸入: columnTitle = "AB"
+輸出: 28</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例 3:</div>
+                <pre><code>輸入: columnTitle = "ZY"
+輸出: 701</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">限制條件:</div>
+                <pre><code>1 <= columnTitle.length <= 7
+columnTitle 僅由大寫英文字母組成
+columnTitle 在範圍 ["A", "FXSHRXW"] 內</code></pre>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">解題思路</h2>
+            
+            <div class="approach-box">
+                <div class="approach-title">核心觀察</div>
+                <p>這是一個<strong>26 進制</strong>轉換問題（類似）：</p>
+                <ul>
+                    <li>A-Z 代表 1-26（注意不是 0-25）</li>
+                    <li>類似十進制：123 = 1×100 + 2×10 + 3×1</li>
+                    <li>Excel 列：AB = A×26 + B = 1×26 + 2 = 28</li>
+                    <li>從左到右，每個字母權重是 26 的次方</li>
+                </ul>
+                <p style="margin-top: 15px; color: #16a34a; font-weight: 600;">
+                    關鍵：這不是標準 26 進制（因為沒有 0，從 1 開始）
+                </p>
+            </div>
+            
+            <div class="approach-box">
+                <div class="approach-title">方法：進制轉換 ⭐⭐⭐</div>
+                <p>將 Excel 列名轉換為數字。</p>
+                
+                <p style="margin-top: 15px;"><strong>核心思想：</strong></p>
+                <ul>
+                    <li>從左到右遍歷字串</li>
+                    <li>每次結果 × 26</li>
+                    <li>加上當前字母的值（A=1, B=2, ..., Z=26）</li>
+                    <li>累積得到最終結果</li>
+                </ul>
+                
+                <p style="margin-top: 15px;"><strong>公式：</strong></p>
+                <p>result = result × 26 + (當前字母 - 'A' + 1)</p>
+                
+                <div class="visual-box">
+                    <p><strong>視覺化範例 1：columnTitle = "AB"</strong></p>
+                    <pre style="background: white; padding: 15px; border-radius: 5px; margin-top: 10px;"><code>AB = A×26¹ + B×26⁰ = 1×26 + 2×1 = 28
+
+逐步計算:
+初始: result = 0
+
+處理 'A':
+  A 的值 = 'A' - 'A' + 1 = 1
+  result = 0 × 26 + 1 = 1
+
+處理 'B':
+  B 的值 = 'B' - 'A' + 1 = 2
+  result = 1 × 26 + 2 = 28 ✓</code></pre>
+                </div>
+                
+                <div class="visual-box">
+                    <p><strong>視覺化範例 2：columnTitle = "ZY"</strong></p>
+                    <pre style="background: white; padding: 15px; border-radius: 5px; margin-top: 10px;"><code>ZY = Z×26¹ + Y×26⁰ = 26×26 + 25×1 = 701
+
+逐步計算:
+初始: result = 0
+
+處理 'Z':
+  Z 的值 = 'Z' - 'A' + 1 = 26
+  result = 0 × 26 + 26 = 26
+
+處理 'Y':
+  Y 的值 = 'Y' - 'A' + 1 = 25
+  result = 26 × 26 + 25 = 676 + 25 = 701 ✓</code></pre>
+                </div>
+                
+                <div class="visual-box">
+                    <p><strong>與十進制類比：</strong></p>
+                    <pre style="background: white; padding: 15px; border-radius: 5px; margin-top: 10px;"><code>十進制數 "123":
+1×10² + 2×10¹ + 3×10⁰ = 100 + 20 + 3 = 123
+
+逐步計算（從左到右）:
+result = 0
+result = 0 × 10 + 1 = 1
+result = 1 × 10 + 2 = 12
+result = 12 × 10 + 3 = 123
+
+Excel 列名 "ABC":
+result = 0
+result = 0 × 26 + 1 = 1      (A)
+result = 1 × 26 + 2 = 28     (B)
+result = 28 × 26 + 3 = 731   (C)
+
+ABC = 731</code></pre>
+                </div>
+                
+                <p style="margin-top: 15px;"><strong>為什麼是 +1？</strong></p>
+                <ul>
+                    <li>因為 A 代表 1，不是 0</li>
+                    <li>'A' - 'A' = 0，需要 +1 變成 1</li>
+                    <li>'Z' - 'A' = 25，需要 +1 變成 26</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">程式碼實現</h2>
+            
+            <div class="language-tabs">
+                <button class="tab-btn active" onclick="showLanguage('python')">Python</button>
+                <button class="tab-btn" onclick="showLanguage('cpp')">C++</button>
+                <button class="tab-btn" onclick="showLanguage('java')">Java</button>
+            </div>
+
+            <div id="python" class="code-container active">
+                <pre><code class="language-python">class Solution:
+    def titleToNumber(self, columnTitle: str) -> int:
+        """
+        進制轉換
+        時間複雜度: O(n)，n 是字串長度
+        空間複雜度: O(1)
+        """
+        result = 0
+        
+        for char in columnTitle:
+            # 當前字母的值 (A=1, B=2, ..., Z=26)
+            value = ord(char) - ord('A') + 1
+            # 累積計算
+            result = result * 26 + value
+        
+        return result
+    
+    def titleToNumber_v2(self, columnTitle: str) -> int:
+        """
+        另一種寫法：從右到左計算
+        """
+        result = 0
+        power = 0
+        
+        # 從右到左遍歷
+        for i in range(len(columnTitle) - 1, -1, -1):
+            value = ord(columnTitle[i]) - ord('A') + 1
+            result += value * (26 ** power)
+            power += 1
+        
+        return result
+    
+    def titleToNumber_oneliner(self, columnTitle: str) -> int:
+        """
+        Python 一行解法
+        """
+        return sum((ord(c) - ord('A') + 1) * (26 ** i) 
+                   for i, c in enumerate(reversed(columnTitle)))</code></pre>
+            </div>
+
+            <div id="cpp" class="code-container">
+                <pre><code class="language-cpp">#include &lt;string&gt;
+using namespace std;
+
+class Solution {
+public:
+    /**
+     * 進制轉換
+     * 時間複雜度: O(n)
+     * 空間複雜度: O(1)
+     */
+    int titleToNumber(string columnTitle) {
+        int result = 0;
+        
+        for (char c : columnTitle) {
+            int value = c - 'A' + 1;
+            result = result * 26 + value;
+        }
+        
+        return result;
+    }
+};</code></pre>
+            </div>
+
+            <div id="java" class="code-container">
+                <pre><code class="language-java">class Solution {
+    /**
+     * 進制轉換
+     * 時間複雜度: O(n)
+     * 空間複雜度: O(1)
+     */
+    public int titleToNumber(String columnTitle) {
+        int result = 0;
+        
+        for (char c : columnTitle.toCharArray()) {
+            int value = c - 'A' + 1;
+            result = result * 26 + value;
+        }
+        
+        return result;
+    }
+}</code></pre>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">複雜度分析</h2>
+            <div class="complexity-box">
+                <div class="complexity-item">時間複雜度: O(n)</div>
+                <p style="color: #78716c; margin: 10px 0;">
+                    需要遍歷字串一次，n 是字串長度。
+                </p>
+                
+                <div class="complexity-item" style="margin-top: 20px;">空間複雜度: O(1)</div>
+                <p style="color: #78716c; margin: 10px 0;">
+                    只使用常數額外空間。
+                </p>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">重點提示</h2>
+            <div class="complexity-box">
+                <ul>
+                    <li><strong>進制轉換核心：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>從左到右：result = result × 26 + value</li>
+                            <li>從右到左：result += value × 26^power</li>
+                            <li>兩種方法等價，左到右更簡潔</li>
+                        </ul>
+                    </li>
+                    <li><strong>字母到數字的映射：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>A → 1：'A' - 'A' + 1 = 0 + 1 = 1</li>
+                            <li>B → 2：'B' - 'A' + 1 = 1 + 1 = 2</li>
+                            <li>Z → 26：'Z' - 'A' + 1 = 25 + 1 = 26</li>
+                        </ul>
+                    </li>
+                    <li><strong>為什麼不是標準 26 進制？</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>標準 26 進制：0-25（有 0）</li>
+                            <li>Excel 列名：1-26（沒有 0）</li>
+                            <li>這導致沒有 "0" 對應的字母</li>
+                        </ul>
+                    </li>
+                    <li><strong>常見錯誤：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>忘記 +1（A 應該是 1 不是 0）</li>
+                            <li>溢位問題（最長 7 位，不會溢位 int）</li>
+                            <li>字母大小寫（題目保證大寫）</li>
+                        </ul>
+                    </li>
+                    <li><strong>驗證範例：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>A = 1 ✓</li>
+                            <li>Z = 26 ✓</li>
+                            <li>AA = 1×26 + 1 = 27 ✓</li>
+                            <li>AZ = 1×26 + 26 = 52 ✓</li>
+                            <li>BA = 2×26 + 1 = 53 ✓</li>
+                        </ul>
+                    </li>
+                    <li><strong>與標準進制的區別：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>十進制：0-9（10 個符號）</li>
+                            <li>二進制：0-1（2 個符號）</li>
+                            <li>Excel：1-26（26 個符號，無 0）</li>
+                        </ul>
+                    </li>
+                    <li><strong>邊界情況：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>單字母：A-Z（1-26）</li>
+                            <li>雙字母：AA-ZZ（27-702）</li>
+                            <li>最長 7 位不會溢位 32 位整數</li>
+                        </ul>
+                    </li>
+                    <li><strong>面試技巧：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>先舉例說明規律</li>
+                            <li>類比十進制轉換</li>
+                            <li>說明為什麼 +1</li>
+                            <li>寫出清晰代碼</li>
+                        </ul>
+                    </li>
+                    <li><strong>Python 技巧：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>ord(c) 獲取字符 ASCII 值</li>
+                            <li>chr(n) 將數字轉回字符</li>
+                            <li>可以用 reduce 寫一行</li>
+                        </ul>
+                    </li>
+                    <li><strong>反向題目：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>Excel Sheet Column Title (#168)</li>
+                            <li>數字 → 列名（反向轉換）</li>
+                            <li>需要處理餘數和商</li>
+                        </ul>
+                    </li>
+                    <li><strong>實際應用：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>Excel 相關程式</li>
+                            <li>表格處理</li>
+                            <li>進制轉換系統</li>
+                        </ul>
+                    </li>
+                    <li><strong>數學推導：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>1 位：A-Z（1-26）共 26 個</li>
+                            <li>2 位：AA-ZZ（27-702）共 26² 個</li>
+                            <li>3 位：AAA-ZZZ（703-18278）共 26³ 個</li>
+                        </ul>
+                    </li>
+                    <li><strong>變形題：</strong>Excel Sheet Column Title (#168)</li>
+                    <li><strong>記憶口訣：</strong>「左到右掃，乘 26 加值，記得 +1」</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        hljs.highlightAll();
+        
+        function showLanguage(lang) {
+            document.querySelectorAll('.code-container').forEach(container => {
+                container.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.getElementById(lang).classList.add('active');
+            event.target.classList.add('active');
+        }
+    </script>
+</body>
+</html>
