@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>240. Search a 2D Matrix II - LeetCode 學習平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f8fafc; line-height: 1.8; color: #334155; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .header { background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: white; padding: 40px; border-radius: 16px; margin-bottom: 30px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .back-btn { display: inline-block; color: white; text-decoration: none; background: rgba(255,255,255,0.2); padding: 10px 20px; border-radius: 8px; margin-bottom: 20px; transition: all 0.3s; }
+        .back-btn:hover { background: rgba(255,255,255,0.3); }
+        .problem-title { font-size: 2.5em; font-weight: 800; margin-bottom: 15px; }
+        .difficulty { display: inline-block; background: rgba(255,255,255,0.3); padding: 8px 20px; border-radius: 20px; font-weight: 600; font-size: 0.9em; }
+        .content-section { background: white; padding: 40px; border-radius: 16px; margin-bottom: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .section-title { font-size: 1.8em; color: #1e293b; margin-bottom: 25px; font-weight: 700; padding-bottom: 10px; border-bottom: 3px solid #f59e0b; }
+        .description { font-size: 1.1em; line-height: 1.9; color: #475569; margin-bottom: 20px; }
+        .example-box { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .example-title { font-weight: 700; color: #d97706; margin-bottom: 10px; font-size: 1.1em; }
+        .approach-box { background: #eff6ff; border-left: 4px solid #3b82f6; padding: 25px; border-radius: 8px; margin: 25px 0; }
+        .approach-title { font-weight: 700; color: #1e40af; margin-bottom: 15px; font-size: 1.3em; }
+        .complexity-box { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .complexity-item { margin: 10px 0; font-weight: 600; color: #92400e; }
+        .language-tabs { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+        .tab-btn { padding: 12px 28px; border: 2px solid #f59e0b; background: white; color: #f59e0b; border-radius: 8px; cursor: pointer; font-weight: 600; transition: all 0.3s; font-size: 1em; }
+        .tab-btn:hover { background: #fef3c7; }
+        .tab-btn.active { background: #f59e0b; color: white; }
+        .code-container { display: none; margin-top: 20px; }
+        .code-container.active { display: block; }
+        pre { background: #282c34 !important; padding: 25px !important; border-radius: 12px; overflow-x: auto; margin: 0; }
+        code { font-family: 'Fira Code', 'Consolas', monospace; font-size: 0.95em; line-height: 1.6; }
+        ol, ul { margin-left: 30px; margin-top: 15px; }
+        li { margin: 12px 0; line-height: 1.8; }
+        strong { color: #1e293b; font-weight: 700; }
+        .visual-box { background: #f0f9ff; border: 2px solid #3b82f6; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        
+        @media (max-width: 768px) {
+            .container { padding: 10px; }
+            .header { padding: 25px; }
+            .problem-title { font-size: 1.8em; }
+            .content-section { padding: 25px; }
+            .tab-btn { padding: 10px 20px; font-size: 0.9em; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="../index.html" class="back-btn">← 返回題目列表</a>
+            <div class="problem-title">240. Search a 2D Matrix II</div>
+            <span class="difficulty">Medium</span>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">題目描述</h2>
+            <div class="description">
+                <p>編寫一個高效的算法來搜尋 <code>m x n</code> 矩陣 <code>matrix</code> 中的一個目標值 <code>target</code>。該矩陣具有以下特性：</p>
+                <ul style="margin-top: 15px;">
+                    <li>每行的元素從左到右升序排列。</li>
+                    <li>每列的元素從上到下升序排列。</li>
+                </ul>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例 1:</div>
+                <pre><code>輸入: matrix = [[1,4,7,11,15],[2,5,8,12,19],[3,6,9,16,22],[10,13,14,17,24],[18,21,23,26,30]], target = 5
+輸出: true</code></pre>
+                <div style="margin-top: 10px;">
+                    <pre style="background: white; padding: 10px; border-radius: 5px;"><code>矩陣:
+ 1   4   7  11  15
+ 2  [5]  8  12  19
+ 3   6   9  16  22
+10  13  14  17  24
+18  21  23  26  30
+
+找到 5 ✓</code></pre>
+                </div>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例 2:</div>
+                <pre><code>輸入: matrix = [[1,4,7,11,15],[2,5,8,12,19],[3,6,9,16,22],[10,13,14,17,24],[18,21,23,26,30]], target = 20
+輸出: false</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">限制條件:</div>
+                <pre><code>m == matrix.length
+n == matrix[i].length
+1 <= n, m <= 300
+-10^9 <= matrix[i][j] <= 10^9
+每行的所有元素從左到右升序排列
+每列的所有元素從上到下升序排列
+-10^9 <= target <= 10^9</code></pre>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">解題思路</h2>
+            
+            <div class="approach-box">
+                <div class="approach-title">核心觀察</div>
+                <p>這個矩陣有特殊的性質：</p>
+                <ul>
+                    <li>每行從左到右遞增</li>
+                    <li>每列從上到下遞增</li>
+                    <li><strong>關鍵：</strong>右上角或左下角的元素有特殊性質！</li>
+                </ul>
+                <p style="margin-top: 15px; color: #dc2626; font-weight: 600;">
+                    從右上角開始：比目標大就往左，比目標小就往下
+                </p>
+            </div>
+            
+            <div class="approach-box">
+                <div class="approach-title">方法一：從右上角開始搜尋（推薦）⭐⭐⭐</div>
+                <p>從矩陣的右上角開始搜尋，利用排序特性進行二維搜尋。</p>
+                
+                <p style="margin-top: 15px;"><strong>核心思想：</strong></p>
+                <p>從右上角 (0, n-1) 開始：</p>
+                <ul>
+                    <li>如果當前值 == target → 找到，返回 true</li>
+                    <li>如果當前值 > target → 往左移動（排除當前列）</li>
+                    <li>如果當前值 < target → 往下移動（排除當前行）</li>
+                </ul>
+                
+                <p style="margin-top: 15px;"><strong>為什麼從右上角？</strong></p>
+                <ul>
+                    <li>右上角的左邊都比它小（同一行）</li>
+                    <li>右上角的下邊都比它大（同一列）</li>
+                    <li>可以明確地排除一整行或一整列</li>
+                </ul>
+                
+                <div class="visual-box">
+                    <p><strong>視覺化範例：尋找 target = 5</strong></p>
+                    <pre style="background: white; padding: 15px; border-radius: 5px; margin-top: 10px;"><code>矩陣:
+ 1   4   7  11 [15] ← 從這裡開始 (0,4)
+ 2   5   8  12  19
+ 3   6   9  16  22
+10  13  14  17  24
+18  21  23  26  30
+
+步驟 1: 當前 = 15, target = 5
+       15 > 5 → 往左移動
+       
+ 1   4   7 [11] 15  (0,3)
+ 2   5   8  12  19
+ 3   6   9  16  22
+10  13  14  17  24
+18  21  23  26  30
+
+步驟 2: 當前 = 11, target = 5
+       11 > 5 → 往左移動
+       
+ 1   4  [7] 11  15  (0,2)
+ 2   5   8  12  19
+ 3   6   9  16  22
+10  13  14  17  24
+18  21  23  26  30
+
+步驟 3: 當前 = 7, target = 5
+       7 > 5 → 往左移動
+       
+ 1  [4]  7  11  15  (0,1)
+ 2   5   8  12  19
+ 3   6   9  16  22
+10  13  14  17  24
+18  21  23  26  30
+
+步驟 4: 當前 = 4, target = 5
+       4 < 5 → 往下移動
+       
+ 1   4   7  11  15
+ 2  [5]  8  12  19  (1,1)
+ 3   6   9  16  22
+10  13  14  17  24
+18  21  23  26  30
+
+步驟 5: 當前 = 5, target = 5
+       找到！返回 true ✓</code></pre>
+                </div>
+            </div>
+
+            <div class="approach-box">
+                <div class="approach-title">方法二：從左下角開始搜尋⭐⭐</div>
+                <p>同樣的思路，但從左下角開始也可以。</p>
+                <ul style="margin-top: 10px;">
+                    <li>如果當前值 > target → 往上移動</li>
+                    <li>如果當前值 < target → 往右移動</li>
+                </ul>
+            </div>
+
+            <div class="approach-box">
+                <div class="approach-title">方法三：暴力法（不推薦）</div>
+                <p>遍歷整個矩陣尋找目標值。</p>
+                <p style="color: #64748b; margin-top: 10px;">
+                    時間複雜度 O(m×n)，沒有利用矩陣的排序特性。
+                </p>
+            </div>
+
+            <div class="approach-box">
+                <div class="approach-title">方法四：對每一行進行二分搜尋</div>
+                <p>對每一行使用二分搜尋。</p>
+                <p style="color: #64748b; margin-top: 10px;">
+                    時間複雜度 O(m log n)，比方法一慢。
+                </p>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">程式碼實現</h2>
+            
+            <div class="language-tabs">
+                <button class="tab-btn active" onclick="showLanguage('python')">Python</button>
+                <button class="tab-btn" onclick="showLanguage('cpp')">C++</button>
+                <button class="tab-btn" onclick="showLanguage('java')">Java</button>
+            </div>
+
+            <div id="python" class="code-container active">
+                <pre><code class="language-python">class Solution:
+    def searchMatrix(self, matrix: List[List[int]], target: int) -> bool:
+        """
+        方法一：從右上角開始搜尋（推薦）
+        時間複雜度: O(m + n)
+        空間複雜度: O(1)
+        """
+        if not matrix or not matrix[0]:
+            return False
+        
+        m, n = len(matrix), len(matrix[0])
+        row, col = 0, n - 1  # 從右上角開始
+        
+        while row < m and col >= 0:
+            current = matrix[row][col]
+            
+            if current == target:
+                return True
+            elif current > target:
+                col -= 1  # 往左移動
+            else:
+                row += 1  # 往下移動
+        
+        return False
+    
+    def searchMatrix_leftBottom(self, matrix: List[List[int]], target: int) -> bool:
+        """
+        方法二：從左下角開始搜尋
+        時間複雜度: O(m + n)
+        空間複雜度: O(1)
+        """
+        if not matrix or not matrix[0]:
+            return False
+        
+        m, n = len(matrix), len(matrix[0])
+        row, col = m - 1, 0  # 從左下角開始
+        
+        while row >= 0 and col < n:
+            current = matrix[row][col]
+            
+            if current == target:
+                return True
+            elif current > target:
+                row -= 1  # 往上移動
+            else:
+                col += 1  # 往右移動
+        
+        return False
+    
+    def searchMatrix_binarySearch(self, matrix: List[List[int]], target: int) -> bool:
+        """
+        方法三：對每一行進行二分搜尋
+        時間複雜度: O(m log n)
+        空間複雜度: O(1)
+        """
+        if not matrix or not matrix[0]:
+            return False
+        
+        for row in matrix:
+            # 檢查 target 是否可能在這一行
+            if row[0] <= target <= row[-1]:
+                # 二分搜尋
+                left, right = 0, len(row) - 1
+                while left <= right:
+                    mid = (left + right) // 2
+                    if row[mid] == target:
+                        return True
+                    elif row[mid] < target:
+                        left = mid + 1
+                    else:
+                        right = mid - 1
+        
+        return False</code></pre>
+            </div>
+
+            <div id="cpp" class="code-container">
+                <pre><code class="language-cpp">#include &lt;vector&gt;
+using namespace std;
+
+class Solution {
+public:
+    /**
+     * 方法一：從右上角開始搜尋（推薦）
+     * 時間複雜度: O(m + n)
+     * 空間複雜度: O(1)
+     */
+    bool searchMatrix(vector<vector<int>>& matrix, int target) {
+        if (matrix.empty() || matrix[0].empty()) {
+            return false;
+        }
+        
+        int m = matrix.size(), n = matrix[0].size();
+        int row = 0, col = n - 1;  // 從右上角開始
+        
+        while (row < m && col >= 0) {
+            int current = matrix[row][col];
+            
+            if (current == target) {
+                return true;
+            } else if (current > target) {
+                col--;  // 往左移動
+            } else {
+                row++;  // 往下移動
+            }
+        }
+        
+        return false;
+    }
+    
+    /**
+     * 方法二：從左下角開始搜尋
+     * 時間複雜度: O(m + n)
+     * 空間複雜度: O(1)
+     */
+    bool searchMatrix_leftBottom(vector<vector<int>>& matrix, int target) {
+        if (matrix.empty() || matrix[0].empty()) {
+            return false;
+        }
+        
+        int m = matrix.size(), n = matrix[0].size();
+        int row = m - 1, col = 0;  // 從左下角開始
+        
+        while (row >= 0 && col < n) {
+            int current = matrix[row][col];
+            
+            if (current == target) {
+                return true;
+            } else if (current > target) {
+                row--;  // 往上移動
+            } else {
+                col++;  // 往右移動
+            }
+        }
+        
+        return false;
+    }
+};</code></pre>
+            </div>
+
+            <div id="java" class="code-container">
+                <pre><code class="language-java">class Solution {
+    /**
+     * 方法一：從右上角開始搜尋（推薦）
+     * 時間複雜度: O(m + n)
+     * 空間複雜度: O(1)
+     */
+    public boolean searchMatrix(int[][] matrix, int target) {
+        if (matrix == null || matrix.length == 0 || matrix[0].length == 0) {
+            return false;
+        }
+        
+        int m = matrix.length, n = matrix[0].length;
+        int row = 0, col = n - 1;  // 從右上角開始
+        
+        while (row < m && col >= 0) {
+            int current = matrix[row][col];
+            
+            if (current == target) {
+                return true;
+            } else if (current > target) {
+                col--;  // 往左移動
+            } else {
+                row++;  // 往下移動
+            }
+        }
+        
+        return false;
+    }
+    
+    /**
+     * 方法二：從左下角開始搜尋
+     * 時間複雜度: O(m + n)
+     * 空間複雜度: O(1)
+     */
+    public boolean searchMatrix_leftBottom(int[][] matrix, int target) {
+        if (matrix == null || matrix.length == 0 || matrix[0].length == 0) {
+            return false;
+        }
+        
+        int m = matrix.length, n = matrix[0].length;
+        int row = m - 1, col = 0;  // 從左下角開始
+        
+        while (row >= 0 && col < n) {
+            int current = matrix[row][col];
+            
+            if (current == target) {
+                return true;
+            } else if (current > target) {
+                row--;  // 往上移動
+            } else {
+                col++;  // 往右移動
+            }
+        }
+        
+        return false;
+    }
+}</code></pre>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">複雜度分析</h2>
+            <div class="complexity-box">
+                <div class="complexity-item">時間複雜度: O(m + n)</div>
+                <p style="color: #78716c; margin: 10px 0;">
+                    最壞情況下，從右上角走到左下角，需要 m + n 步。
+                    m 是行數，n 是列數。
+                </p>
+                
+                <div class="complexity-item" style="margin-top: 20px;">空間複雜度: O(1)</div>
+                <p style="color: #78716c; margin: 10px 0;">
+                    只使用了兩個變數記錄位置，沒有使用額外空間。
+                </p>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">重點提示</h2>
+            <div class="complexity-box">
+                <ul>
+                    <li><strong>核心技巧：</strong>從右上角或左下角開始，利用排序特性</li>
+                    <li><strong>為什麼不從左上或右下？</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>左上角：右邊和下邊都比它大，無法確定方向</li>
+                            <li>右下角：左邊和上邊都比它小，無法確定方向</li>
+                            <li>右上/左下：有明確的大小關係，可以排除</li>
+                        </ul>
+                    </li>
+                    <li><strong>搜尋路徑：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>右上角：大了往左，小了往下</li>
+                            <li>左下角：大了往上，小了往右</li>
+                            <li>每次排除一整行或一整列</li>
+                        </ul>
+                    </li>
+                    <li><strong>時間複雜度分析：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>最好：O(1)（第一次就找到）</li>
+                            <li>最壞：O(m + n)（走完 L 型路徑）</li>
+                            <li>平均：O(m + n)</li>
+                        </ul>
+                    </li>
+                    <li><strong>與 #74 Search a 2D Matrix 的區別：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>#74：每行首元素 > 前一行尾元素（更強的條件）</li>
+                            <li>#240：只保證行內和列內有序</li>
+                            <li>#74 可以視為一維陣列用二分搜尋 O(log(mn))</li>
+                        </ul>
+                    </li>
+                    <li><strong>邊界情況：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>空矩陣 → false</li>
+                            <li>只有一個元素 → 比較該元素</li>
+                            <li>target 小於左上角 → false</li>
+                            <li>target 大於右下角 → false</li>
+                        </ul>
+                    </li>
+                    <li><strong>常見錯誤：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>從錯誤的角落開始（左上或右下）</li>
+                            <li>移動方向搞反</li>
+                            <li>邊界條件判斷錯誤</li>
+                        </ul>
+                    </li>
+                    <li><strong>面試技巧：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>先畫小矩陣示意圖</li>
+                            <li>說明為什麼選右上角/左下角</li>
+                            <li>展示搜尋路徑過程</li>
+                            <li>分析時間複雜度優於暴力法</li>
+                        </ul>
+                    </li>
+                    <li><strong>延伸思考：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>如果要找所有出現位置？（記錄所有匹配）</li>
+                            <li>如果矩陣不保證有序？（只能暴力）</li>
+                            <li>如果可以預處理矩陣？（建索引）</li>
+                        </ul>
+                    </li>
+                    <li><strong>變形題：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>Search a 2D Matrix (#74) - 更強的有序條件</li>
+                            <li>Kth Smallest Element in a Sorted Matrix (#378)</li>
+                        </ul>
+                    </li>
+                    <li><strong>實際應用：</strong>資料庫查詢優化、圖像處理、排序矩陣搜尋</li>
+                    <li><strong>相似題目：</strong>Binary Search (704), Find Peak Element (162)</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        hljs.highlightAll();
+        
+        function showLanguage(lang) {
+            document.querySelectorAll('.code-container').forEach(container => {
+                container.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.getElementById(lang).classList.add('active');
+            event.target.classList.add('active');
+        }
+    </script>
+</body>
+</html>

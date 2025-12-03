@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>279. Perfect Squares - LeetCode 學習平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f8fafc; line-height: 1.8; color: #334155; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .header { background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: white; padding: 40px; border-radius: 16px; margin-bottom: 30px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .back-btn { display: inline-block; color: white; text-decoration: none; background: rgba(255,255,255,0.2); padding: 10px 20px; border-radius: 8px; margin-bottom: 20px; transition: all 0.3s; }
+        .back-btn:hover { background: rgba(255,255,255,0.3); }
+        .problem-title { font-size: 2.5em; font-weight: 800; margin-bottom: 15px; }
+        .difficulty { display: inline-block; background: rgba(255,255,255,0.3); padding: 8px 20px; border-radius: 20px; font-weight: 600; font-size: 0.9em; }
+        .content-section { background: white; padding: 40px; border-radius: 16px; margin-bottom: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .section-title { font-size: 1.8em; color: #1e293b; margin-bottom: 25px; font-weight: 700; padding-bottom: 10px; border-bottom: 3px solid #f59e0b; }
+        .description { font-size: 1.1em; line-height: 1.9; color: #475569; margin-bottom: 20px; }
+        .example-box { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .example-title { font-weight: 700; color: #d97706; margin-bottom: 10px; font-size: 1.1em; }
+        .approach-box { background: #eff6ff; border-left: 4px solid #3b82f6; padding: 25px; border-radius: 8px; margin: 25px 0; }
+        .approach-title { font-weight: 700; color: #1e40af; margin-bottom: 15px; font-size: 1.3em; }
+        .complexity-box { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .complexity-item { margin: 10px 0; font-weight: 600; color: #92400e; }
+        .language-tabs { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+        .tab-btn { padding: 12px 28px; border: 2px solid #f59e0b; background: white; color: #f59e0b; border-radius: 8px; cursor: pointer; font-weight: 600; transition: all 0.3s; font-size: 1em; }
+        .tab-btn:hover { background: #fef3c7; }
+        .tab-btn.active { background: #f59e0b; color: white; }
+        .code-container { display: none; margin-top: 20px; }
+        .code-container.active { display: block; }
+        pre { background: #282c34 !important; padding: 25px !important; border-radius: 12px; overflow-x: auto; margin: 0; }
+        code { font-family: 'Fira Code', 'Consolas', monospace; font-size: 0.95em; line-height: 1.6; }
+        ol, ul { margin-left: 30px; margin-top: 15px; }
+        li { margin: 12px 0; line-height: 1.8; }
+        strong { color: #1e293b; font-weight: 700; }
+        .visual-box { background: #f0f9ff; border: 2px solid #3b82f6; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        
+        @media (max-width: 768px) {
+            .container { padding: 10px; }
+            .header { padding: 25px; }
+            .problem-title { font-size: 1.8em; }
+            .content-section { padding: 25px; }
+            .tab-btn { padding: 10px 20px; font-size: 0.9em; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="../index.html" class="back-btn">← 返回題目列表</a>
+            <div class="problem-title">279. Perfect Squares</div>
+            <span class="difficulty">Medium</span>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">題目描述</h2>
+            <div class="description">
+                <p>給你一個整數 <code>n</code>，返回<strong>和為 <code>n</code> 的完全平方數的最少數量</strong>。</p>
+                <p style="margin-top: 15px;"><strong>完全平方數</strong>是一個整數，其值等於另一個整數的平方；換句話說，其值等於一個整數自乘的積。例如，<code>1</code>、<code>4</code>、<code>9</code> 和 <code>16</code> 都是完全平方數，而 <code>3</code> 和 <code>11</code> 不是。</p>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例 1:</div>
+                <pre><code>輸入: n = 12
+輸出: 3
+解釋: 12 = 4 + 4 + 4</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例 2:</div>
+                <pre><code>輸入: n = 13
+輸出: 2
+解釋: 13 = 4 + 9</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">限制條件:</div>
+                <pre><code>1 <= n <= 10^4</code></pre>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">解題思路</h2>
+            
+            <div class="approach-box">
+                <div class="approach-title">核心觀察</div>
+                <p>這是一個典型的<strong>完全背包問題</strong>或<strong>BFS 最短路徑問題</strong>：</p>
+                <ul>
+                    <li>完全平方數：1, 4, 9, 16, 25, ...</li>
+                    <li>可以重複使用每個完全平方數</li>
+                    <li>目標：找到最少數量的完全平方數，使其和為 n</li>
+                </ul>
+                <p style="margin-top: 15px; color: #dc2626; font-weight: 600;">
+                    關鍵：類似 Coin Change 問題，但硬幣是完全平方數
+                </p>
+            </div>
+            
+            <div class="approach-box">
+                <div class="approach-title">方法一：動態規劃（推薦）⭐⭐⭐</div>
+                <p>使用 DP 記錄湊成每個數字所需的最少完全平方數個數。</p>
+                
+                <p style="margin-top: 15px;"><strong>狀態定義：</strong></p>
+                <ul>
+                    <li><strong>dp[i]：</strong>湊成數字 i 所需的最少完全平方數個數</li>
+                    <li><strong>初始狀態：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>dp[0] = 0（0 不需要任何數）</li>
+                            <li>dp[i] = ∞（其他初始化為無窮大）</li>
+                        </ul>
+                    </li>
+                    <li><strong>轉移方程：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>對於每個 i，嘗試所有完全平方數 j²（j² ≤ i）</li>
+                            <li>dp[i] = min(dp[i], dp[i - j²] + 1)</li>
+                        </ul>
+                    </li>
+                </ul>
+                
+                <div class="visual-box">
+                    <p><strong>視覺化範例：n = 12</strong></p>
+                    <pre style="background: white; padding: 15px; border-radius: 5px; margin-top: 10px;"><code>完全平方數: 1, 4, 9, 16, ...
+
+初始化:
+dp[0] = 0
+dp[1..12] = ∞
+
+計算 dp[1]:
+  使用 1² = 1: dp[1] = dp[0] + 1 = 1
+  dp[1] = 1
+
+計算 dp[2]:
+  使用 1² = 1: dp[2] = dp[1] + 1 = 2
+  dp[2] = 2
+
+計算 dp[3]:
+  使用 1² = 1: dp[3] = dp[2] + 1 = 3
+  dp[3] = 3
+
+計算 dp[4]:
+  使用 1² = 1: dp[4] = dp[3] + 1 = 4
+  使用 2² = 4: dp[4] = dp[0] + 1 = 1 ✓
+  dp[4] = 1
+
+計算 dp[5]:
+  使用 1² = 1: dp[5] = dp[4] + 1 = 2
+  使用 2² = 4: dp[5] = dp[1] + 1 = 2
+  dp[5] = 2
+
+...繼續計算...
+
+計算 dp[12]:
+  使用 1² = 1: dp[12] = dp[11] + 1 = 4
+  使用 2² = 4: dp[12] = dp[8] + 1 = 3 ✓
+  使用 3² = 9: dp[12] = dp[3] + 1 = 4
+  dp[12] = 3
+
+結果: 3 (12 = 4 + 4 + 4)</code></pre>
+                </div>
+            </div>
+
+            <div class="approach-box">
+                <div class="approach-title">方法二：BFS 廣度優先搜尋⭐⭐</div>
+                <p>將問題視為最短路徑問題，從 0 出發，每次可以加一個完全平方數。</p>
+                
+                <p style="margin-top: 15px;"><strong>思路：</strong></p>
+                <ul>
+                    <li>從 n 開始，每次減去一個完全平方數</li>
+                    <li>使用 BFS 找到最短路徑</li>
+                    <li>第一次到達 0 的層數就是答案</li>
+                </ul>
+            </div>
+
+            <div class="approach-box">
+                <div class="approach-title">方法三：數學定理（拉格朗日四平方和定理）</div>
+                <p>根據數學定理，任何正整數都可以表示為最多 4 個完全平方數的和。</p>
+                <ul style="margin-top: 10px;">
+                    <li>如果 n 本身是完全平方數 → 答案是 1</li>
+                    <li>如果 n = 4^k × (8m + 7) → 答案是 4</li>
+                    <li>如果可以用兩個完全平方數表示 → 答案是 2</li>
+                    <li>否則答案是 3</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">程式碼實現</h2>
+            
+            <div class="language-tabs">
+                <button class="tab-btn active" onclick="showLanguage('python')">Python</button>
+                <button class="tab-btn" onclick="showLanguage('cpp')">C++</button>
+                <button class="tab-btn" onclick="showLanguage('java')">Java</button>
+            </div>
+
+            <div id="python" class="code-container active">
+                <pre><code class="language-python">import math
+from collections import deque
+
+class Solution:
+    def numSquares(self, n: int) -> int:
+        """
+        方法一：動態規劃（推薦）
+        時間複雜度: O(n * sqrt(n))
+        空間複雜度: O(n)
+        """
+        # dp[i] 表示湊成 i 所需的最少完全平方數個數
+        dp = [float('inf')] * (n + 1)
+        dp[0] = 0
+        
+        # 計算所有完全平方數
+        squares = [i * i for i in range(1, int(math.sqrt(n)) + 1)]
+        
+        # 填充 DP 表
+        for i in range(1, n + 1):
+            for square in squares:
+                if square > i:
+                    break
+                dp[i] = min(dp[i], dp[i - square] + 1)
+        
+        return dp[n]
+    
+    def numSquares_bfs(self, n: int) -> int:
+        """
+        方法二：BFS
+        時間複雜度: O(n * sqrt(n))
+        空間複雜度: O(n)
+        """
+        # 生成所有完全平方數
+        squares = [i * i for i in range(1, int(math.sqrt(n)) + 1)]
+        
+        # BFS
+        queue = deque([(n, 0)])  # (剩餘數字, 層數)
+        visited = {n}
+        
+        while queue:
+            remainder, level = queue.popleft()
+            
+            # 嘗試所有完全平方數
+            for square in squares:
+                next_remainder = remainder - square
+                
+                if next_remainder == 0:
+                    return level + 1
+                
+                if next_remainder > 0 and next_remainder not in visited:
+                    visited.add(next_remainder)
+                    queue.append((next_remainder, level + 1))
+        
+        return 0
+    
+    def numSquares_math(self, n: int) -> int:
+        """
+        方法三：數學定理（拉格朗日四平方和定理）
+        時間複雜度: O(sqrt(n))
+        空間複雜度: O(1)
+        """
+        # 檢查是否為完全平方數
+        if int(math.sqrt(n)) ** 2 == n:
+            return 1
+        
+        # 檢查是否符合 4^k * (8m + 7) 形式（答案為 4）
+        while n % 4 == 0:
+            n //= 4
+        if n % 8 == 7:
+            return 4
+        
+        # 檢查是否可以用兩個完全平方數表示
+        for i in range(1, int(math.sqrt(n)) + 1):
+            remainder = n - i * i
+            if int(math.sqrt(remainder)) ** 2 == remainder:
+                return 2
+        
+        # 否則答案是 3
+        return 3</code></pre>
+            </div>
+
+            <div id="cpp" class="code-container">
+                <pre><code class="language-cpp">#include &lt;vector&gt;
+#include &lt;cmath&gt;
+#include &lt;algorithm&gt;
+#include &lt;queue&gt;
+#include &lt;unordered_set&gt;
+using namespace std;
+
+class Solution {
+public:
+    /**
+     * 方法一：動態規劃（推薦）
+     * 時間複雜度: O(n * sqrt(n))
+     * 空間複雜度: O(n)
+     */
+    int numSquares(int n) {
+        vector<int> dp(n + 1, INT_MAX);
+        dp[0] = 0;
+        
+        // 預先計算完全平方數
+        vector<int> squares;
+        for (int i = 1; i * i <= n; i++) {
+            squares.push_back(i * i);
+        }
+        
+        // 填充 DP 表
+        for (int i = 1; i <= n; i++) {
+            for (int square : squares) {
+                if (square > i) break;
+                dp[i] = min(dp[i], dp[i - square] + 1);
+            }
+        }
+        
+        return dp[n];
+    }
+    
+    /**
+     * 方法二：BFS
+     * 時間複雜度: O(n * sqrt(n))
+     * 空間複雜度: O(n)
+     */
+    int numSquares_bfs(int n) {
+        vector<int> squares;
+        for (int i = 1; i * i <= n; i++) {
+            squares.push_back(i * i);
+        }
+        
+        queue<pair<int, int>> q;  // (remainder, level)
+        q.push({n, 0});
+        unordered_set<int> visited;
+        visited.insert(n);
+        
+        while (!q.empty()) {
+            auto [remainder, level] = q.front();
+            q.pop();
+            
+            for (int square : squares) {
+                int nextRemainder = remainder - square;
+                
+                if (nextRemainder == 0) {
+                    return level + 1;
+                }
+                
+                if (nextRemainder > 0 && visited.find(nextRemainder) == visited.end()) {
+                    visited.insert(nextRemainder);
+                    q.push({nextRemainder, level + 1});
+                }
+            }
+        }
+        
+        return 0;
+    }
+};</code></pre>
+            </div>
+
+            <div id="java" class="code-container">
+                <pre><code class="language-java">import java.util.*;
+
+class Solution {
+    /**
+     * 方法一：動態規劃（推薦）
+     * 時間複雜度: O(n * sqrt(n))
+     * 空間複雜度: O(n)
+     */
+    public int numSquares(int n) {
+        int[] dp = new int[n + 1];
+        Arrays.fill(dp, Integer.MAX_VALUE);
+        dp[0] = 0;
+        
+        // 預先計算完全平方數
+        List<Integer> squares = new ArrayList<>();
+        for (int i = 1; i * i <= n; i++) {
+            squares.add(i * i);
+        }
+        
+        // 填充 DP 表
+        for (int i = 1; i <= n; i++) {
+            for (int square : squares) {
+                if (square > i) break;
+                dp[i] = Math.min(dp[i], dp[i - square] + 1);
+            }
+        }
+        
+        return dp[n];
+    }
+    
+    /**
+     * 方法二：BFS
+     * 時間複雜度: O(n * sqrt(n))
+     * 空間複雜度: O(n)
+     */
+    public int numSquares_bfs(int n) {
+        List<Integer> squares = new ArrayList<>();
+        for (int i = 1; i * i <= n; i++) {
+            squares.add(i * i);
+        }
+        
+        Queue<int[]> queue = new LinkedList<>();
+        queue.offer(new int[]{n, 0});  // [remainder, level]
+        Set<Integer> visited = new HashSet<>();
+        visited.add(n);
+        
+        while (!queue.isEmpty()) {
+            int[] current = queue.poll();
+            int remainder = current[0];
+            int level = current[1];
+            
+            for (int square : squares) {
+                int nextRemainder = remainder - square;
+                
+                if (nextRemainder == 0) {
+                    return level + 1;
+                }
+                
+                if (nextRemainder > 0 && !visited.contains(nextRemainder)) {
+                    visited.add(nextRemainder);
+                    queue.offer(new int[]{nextRemainder, level + 1});
+                }
+            }
+        }
+        
+        return 0;
+    }
+}</code></pre>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">複雜度分析</h2>
+            <div class="complexity-box">
+                <div class="complexity-item">方法一：動態規劃</div>
+                <ul style="color: #78716c; margin: 10px 0 10px 30px;">
+                    <li><strong>時間複雜度：</strong>O(n × √n) - 外層循環 n 次，內層最多 √n 個完全平方數</li>
+                    <li><strong>空間複雜度：</strong>O(n) - DP 陣列</li>
+                </ul>
+                
+                <div class="complexity-item" style="margin-top: 20px;">方法二：BFS</div>
+                <ul style="color: #78716c; margin: 10px 0 10px 30px;">
+                    <li><strong>時間複雜度：</strong>O(n × √n)</li>
+                    <li><strong>空間複雜度：</strong>O(n) - 隊列和 visited 集合</li>
+                </ul>
+                
+                <div class="complexity-item" style="margin-top: 20px;">方法三：數學定理</div>
+                <ul style="color: #78716c; margin: 10px 0 10px 30px;">
+                    <li><strong>時間複雜度：</strong>O(√n)</li>
+                    <li><strong>空間複雜度：</strong>O(1)</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">重點提示</h2>
+            <div class="complexity-box">
+                <ul>
+                    <li><strong>問題本質：</strong>完全背包問題，物品可以重複使用</li>
+                    <li><strong>DP 思路：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>dp[i] = 湊成 i 的最少完全平方數個數</li>
+                            <li>轉移：嘗試所有可能的完全平方數</li>
+                            <li>類似 Coin Change 問題</li>
+                        </ul>
+                    </li>
+                    <li><strong>BFS 思路：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>從 n 出發，每次減去一個完全平方數</li>
+                            <li>最先到達 0 的路徑就是最短的</li>
+                            <li>需要 visited 避免重複訪問</li>
+                        </ul>
+                    </li>
+                    <li><strong>三種方法比較：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>DP：穩定可靠，易理解</li>
+                            <li>BFS：也很直觀，性能相近</li>
+                            <li>數學：最快但需要數學知識</li>
+                        </ul>
+                    </li>
+                    <li><strong>優化技巧：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>預先計算所有完全平方數</li>
+                            <li>完全平方數最多 √n 個</li>
+                            <li>可以提前 break（square > i）</li>
+                        </ul>
+                    </li>
+                    <li><strong>數學定理（拉格朗日四平方和）：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>任何正整數都能表示為最多 4 個完全平方數的和</li>
+                            <li>答案只可能是 1, 2, 3, 或 4</li>
+                            <li>可以用來優化判斷</li>
+                        </ul>
+                    </li>
+                    <li><strong>邊界情況：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>n = 1 → 1 (1² = 1)</li>
+                            <li>n = 4 → 1 (2² = 4)</li>
+                            <li>n = 12 → 3 (4 + 4 + 4)</li>
+                            <li>n 本身是完全平方數 → 1</li>
+                        </ul>
+                    </li>
+                    <li><strong>常見錯誤：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>DP 初始值設置錯誤</li>
+                            <li>忘記預先計算完全平方數</li>
+                            <li>BFS 忘記使用 visited</li>
+                        </ul>
+                    </li>
+                    <li><strong>面試技巧：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>先說 DP 解法（最常見）</li>
+                            <li>可以提到 BFS 的思路</li>
+                            <li>展示 DP 表格填充過程</li>
+                            <li>如果知道數學定理可以加分</li>
+                        </ul>
+                    </li>
+                    <li><strong>延伸思考：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>如何列出所有可能的組合？</li>
+                            <li>如果要求具體方案而非最少數量？</li>
+                            <li>如果限制只能用某些完全平方數？</li>
+                        </ul>
+                    </li>
+                    <li><strong>變形題：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>Coin Change (#322) - 硬幣找零</li>
+                            <li>Coin Change II (#518) - 組合數</li>
+                            <li>Ugly Number II (#264) - 醜數</li>
+                        </ul>
+                    </li>
+                    <li><strong>實際應用：</strong>數字分解、組合優化、資源分配</li>
+                    <li><strong>相似題目：</strong>Coin Change (322), Word Break (139)</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        hljs.highlightAll();
+        
+        function showLanguage(lang) {
+            document.querySelectorAll('.code-container').forEach(container => {
+                container.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.getElementById(lang).classList.add('active');
+            event.target.classList.add('active');
+        }
+    </script>
+</body>
+</html>

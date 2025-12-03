@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>124. Binary Tree Maximum Path Sum - LeetCode 學習平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f8fafc; line-height: 1.8; color: #334155; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .header { background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%); color: white; padding: 40px; border-radius: 16px; margin-bottom: 30px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .back-btn { display: inline-block; color: white; text-decoration: none; background: rgba(255,255,255,0.2); padding: 10px 20px; border-radius: 8px; margin-bottom: 20px; transition: all 0.3s; }
+        .back-btn:hover { background: rgba(255,255,255,0.3); }
+        .problem-title { font-size: 2.5em; font-weight: 800; margin-bottom: 15px; }
+        .difficulty { display: inline-block; background: rgba(255,255,255,0.3); padding: 8px 20px; border-radius: 20px; font-weight: 600; font-size: 0.9em; }
+        .content-section { background: white; padding: 40px; border-radius: 16px; margin-bottom: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .section-title { font-size: 1.8em; color: #1e293b; margin-bottom: 25px; font-weight: 700; padding-bottom: 10px; border-bottom: 3px solid #dc2626; }
+        .description { font-size: 1.1em; line-height: 1.9; color: #475569; margin-bottom: 20px; }
+        .example-box { background: #fee2e2; border-left: 4px solid #dc2626; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .example-title { font-weight: 700; color: #991b1b; margin-bottom: 10px; font-size: 1.1em; }
+        .approach-box { background: #eff6ff; border-left: 4px solid #3b82f6; padding: 25px; border-radius: 8px; margin: 25px 0; }
+        .approach-title { font-weight: 700; color: #1e40af; margin-bottom: 15px; font-size: 1.3em; }
+        .complexity-box { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .complexity-item { margin: 10px 0; font-weight: 600; color: #92400e; }
+        .language-tabs { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+        .tab-btn { padding: 12px 28px; border: 2px solid #dc2626; background: white; color: #dc2626; border-radius: 8px; cursor: pointer; font-weight: 600; transition: all 0.3s; font-size: 1em; }
+        .tab-btn:hover { background: #fee2e2; }
+        .tab-btn.active { background: #dc2626; color: white; }
+        .code-container { display: none; margin-top: 20px; }
+        .code-container.active { display: block; }
+        pre { background: #282c34 !important; padding: 25px !important; border-radius: 12px; overflow-x: auto; margin: 0; }
+        code { font-family: 'Fira Code', 'Consolas', monospace; font-size: 0.95em; line-height: 1.6; }
+        ol, ul { margin-left: 30px; margin-top: 15px; }
+        li { margin: 12px 0; line-height: 1.8; }
+        strong { color: #1e293b; font-weight: 700; }
+        .visual-box { background: #f0f9ff; border: 2px solid #3b82f6; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        
+        @media (max-width: 768px) {
+            .container { padding: 10px; }
+            .header { padding: 25px; }
+            .problem-title { font-size: 1.8em; }
+            .content-section { padding: 25px; }
+            .tab-btn { padding: 10px 20px; font-size: 0.9em; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="../index.html" class="back-btn">← 返回題目列表</a>
+            <div class="problem-title">124. Binary Tree Maximum Path Sum</div>
+            <span class="difficulty">Hard</span>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">題目描述</h2>
+            <div class="description">
+                <p>二元樹中的<strong>路徑</strong>被定義為一條從樹中任意節點出發，沿父節點-子節點連接，達到任意節點的序列。同一個節點在一條路徑序列中<strong>至多出現一次</strong>。該路徑<strong>至少包含一個</strong>節點，且不一定經過根節點。</p>
+                <p style="margin-top: 15px;"><strong>路徑和</strong>是路徑中各節點值的總和。</p>
+                <p style="margin-top: 15px;">給你一個二元樹的根節點 <code>root</code>，返回其<strong>最大路徑和</strong>。</p>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例 1:</div>
+                <pre><code>輸入: root = [1,2,3]
+輸出: 6
+解釋: 最優路徑是 2 -> 1 -> 3 ，路徑和為 2 + 1 + 3 = 6</code></pre>
+                <div style="margin-top: 10px; text-align: center;">
+                    <svg width="200" height="150" style="background: white; border-radius: 8px; padding: 10px;">
+                        <circle cx="100" cy="30" r="20" fill="#fca5a5" stroke="#dc2626" stroke-width="2"/>
+                        <text x="100" y="37" font-size="16" text-anchor="middle" font-weight="bold">1</text>
+                        
+                        <line x1="85" y1="45" x2="55" y2="75" stroke="#64748b" stroke-width="2"/>
+                        <circle cx="50" cy="90" r="20" fill="#fca5a5" stroke="#dc2626" stroke-width="2"/>
+                        <text x="50" y="97" font-size="16" text-anchor="middle" font-weight="bold">2</text>
+                        
+                        <line x1="115" y1="45" x2="145" y2="75" stroke="#64748b" stroke-width="2"/>
+                        <circle cx="150" cy="90" r="20" fill="#fca5a5" stroke="#dc2626" stroke-width="2"/>
+                        <text x="150" y="97" font-size="16" text-anchor="middle" font-weight="bold">3</text>
+                        
+                        <text x="100" y="135" font-size="14" fill="#dc2626" text-anchor="middle" font-weight="bold">路徑: 2→1→3, 和=6</text>
+                    </svg>
+                </div>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例 2:</div>
+                <pre><code>輸入: root = [-10,9,20,null,null,15,7]
+輸出: 42
+解釋: 最優路徑是 15 -> 20 -> 7 ，路徑和為 15 + 20 + 7 = 42</code></pre>
+                <div style="margin-top: 10px; text-align: center;">
+                    <svg width="280" height="180" style="background: white; border-radius: 8px; padding: 10px;">
+                        <circle cx="140" cy="30" r="20" fill="#ddd" stroke="#666" stroke-width="2"/>
+                        <text x="140" y="37" font-size="14" text-anchor="middle">-10</text>
+                        
+                        <line x1="125" y1="45" x2="75" y2="75" stroke="#64748b" stroke-width="2"/>
+                        <circle cx="70" cy="90" r="20" fill="#ddd" stroke="#666" stroke-width="2"/>
+                        <text x="70" y="97" font-size="16" text-anchor="middle">9</text>
+                        
+                        <line x1="155" y1="45" x2="205" y2="75" stroke="#dc2626" stroke-width="3"/>
+                        <circle cx="210" cy="90" r="20" fill="#fca5a5" stroke="#dc2626" stroke-width="2"/>
+                        <text x="210" y="97" font-size="16" text-anchor="middle" font-weight="bold">20</text>
+                        
+                        <line x1="195" y1="105" x2="165" y2="135" stroke="#dc2626" stroke-width="3"/>
+                        <circle cx="160" cy="150" r="20" fill="#fca5a5" stroke="#dc2626" stroke-width="2"/>
+                        <text x="160" y="157" font-size="16" text-anchor="middle" font-weight="bold">15</text>
+                        
+                        <line x1="225" y1="105" x2="255" y2="135" stroke="#dc2626" stroke-width="3"/>
+                        <circle cx="260" cy="150" r="20" fill="#fca5a5" stroke="#dc2626" stroke-width="2"/>
+                        <text x="260" y="157" font-size="16" text-anchor="middle" font-weight="bold">7</text>
+                    </svg>
+                </div>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">限制條件:</div>
+                <pre><code>樹中節點數目範圍是 [1, 3 * 10^4]
+-1000 <= Node.val <= 1000</code></pre>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">解題思路</h2>
+            
+            <div class="approach-box">
+                <div class="approach-title">核心觀察</div>
+                <p>這是一個經典的<strong>樹形 DP 後序遍歷</strong>問題：</p>
+                <ul>
+                    <li>路徑可以從任意節點開始和結束</li>
+                    <li>路徑不一定經過根節點</li>
+                    <li>每個節點最多在路徑中出現一次</li>
+                    <li>需要考慮負數節點（可以選擇不包含）</li>
+                </ul>
+                <p style="margin-top: 15px; color: #dc2626; font-weight: 600;">
+                    關鍵：對於每個節點，路徑可能的形狀有兩種
+                </p>
+            </div>
+            
+            <div class="approach-box">
+                <div class="approach-title">方法：遞迴 + DFS（推薦）⭐⭐⭐</div>
+                <p>使用後序遍歷，計算每個節點作為路徑「轉折點」時的最大路徑和。</p>
+                
+                <p style="margin-top: 15px;"><strong>核心思想：</strong></p>
+                <p>對於每個節點，有兩個概念：</p>
+                <ul>
+                    <li><strong>最大貢獻值：</strong>節點到葉子的最大路徑和（單邊路徑）</li>
+                    <li><strong>最大路徑和：</strong>以該節點為轉折點的最大路徑和（可能跨越左右子樹）</li>
+                </ul>
+                
+                <p style="margin-top: 15px;"><strong>遞迴函數設計：</strong></p>
+                <ul>
+                    <li><strong>返回值：</strong>當前節點的最大貢獻值（給父節點用）</li>
+                    <li><strong>副作用：</strong>更新全域最大路徑和</li>
+                </ul>
+                
+                <p style="margin-top: 15px;"><strong>步驟：</strong></p>
+                <ol>
+                    <li>後序遍歷（先處理左右子樹）</li>
+                    <li>計算左子樹的最大貢獻值（< 0 則不選）</li>
+                    <li>計算右子樹的最大貢獻值（< 0 則不選）</li>
+                    <li>計算以當前節點為轉折點的路徑和：
+                        <ul>
+                            <li>路徑和 = 左貢獻 + 節點值 + 右貢獻</li>
+                            <li>更新全域最大值</li>
+                        </ul>
+                    </li>
+                    <li>返回當前節點的最大貢獻值：
+                        <ul>
+                            <li>節點值 + max(左貢獻, 右貢獻)</li>
+                        </ul>
+                    </li>
+                </ol>
+                
+                <div class="visual-box">
+                    <p><strong>視覺化範例：root = [-10,9,20,null,null,15,7]</strong></p>
+                    <pre style="background: white; padding: 15px; border-radius: 5px; margin-top: 10px;"><code>        -10
+        /  \
+       9   20
+          /  \
+         15   7
+
+處理節點 15:
+  左子樹: null → 貢獻 0
+  右子樹: null → 貢獻 0
+  當前路徑和: 0 + 15 + 0 = 15
+  更新 max_sum = 15
+  返回貢獻值: 15 + max(0, 0) = 15
+
+處理節點 7:
+  左子樹: null → 貢獻 0
+  右子樹: null → 貢獻 0
+  當前路徑和: 0 + 7 + 0 = 7
+  max_sum 保持 15
+  返回貢獻值: 7 + max(0, 0) = 7
+
+處理節點 20:
+  左子樹: 15 → 貢獻 15
+  右子樹: 7 → 貢獻 7
+  當前路徑和: 15 + 20 + 7 = 42 ✓ 最大！
+  更新 max_sum = 42
+  返回貢獻值: 20 + max(15, 7) = 35
+
+處理節點 9:
+  左子樹: null → 貢獻 0
+  右子樹: null → 貢獻 0
+  當前路徑和: 0 + 9 + 0 = 9
+  max_sum 保持 42
+  返回貢獻值: 9 + max(0, 0) = 9
+
+處理節點 -10:
+  左子樹: 9 → 貢獻 9
+  右子樹: 35 → 貢獻 35
+  當前路徑和: 9 + (-10) + 35 = 34
+  max_sum 保持 42
+  返回貢獻值: -10 + max(9, 35) = 25
+
+最終答案: 42</code></pre>
+                </div>
+                
+                <div class="visual-box">
+                    <p><strong>關鍵理解：兩種路徑形狀</strong></p>
+                    <pre style="background: white; padding: 15px; border-radius: 5px; margin-top: 10px;"><code>1. 單邊路徑（最大貢獻值）：
+   用於返回給父節點
+       A
+      /
+     B
+    /
+   C
+   路徑: A->B->C
+
+2. 跨越路徑（以節點為轉折點）：
+   用於更新全域最大值
+       A
+      / \
+     B   C
+    /     \
+   D       E
+   路徑: D->B->A->C->E
+
+每個節點都會考慮這兩種可能！</code></pre>
+                </div>
+            </div>
+
+            <div class="approach-box">
+                <div class="approach-title">處理負數的技巧</div>
+                <ul style="margin-top: 10px;">
+                    <li>如果子樹貢獻為負數，選擇不包含（設為 0）</li>
+                    <li>使用 max(0, child_gain) 自動處理</li>
+                    <li>單個節點本身可以是負數（題目允許）</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">程式碼實現</h2>
+            
+            <div class="language-tabs">
+                <button class="tab-btn active" onclick="showLanguage('python')">Python</button>
+                <button class="tab-btn" onclick="showLanguage('cpp')">C++</button>
+                <button class="tab-btn" onclick="showLanguage('java')">Java</button>
+            </div>
+
+            <div id="python" class="code-container active">
+                <pre><code class="language-python"># Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+
+class Solution:
+    def maxPathSum(self, root: Optional[TreeNode]) -> int:
+        """
+        方法：遞迴 + DFS（後序遍歷）
+        時間複雜度: O(n)
+        空間複雜度: O(h)，h 是樹高
+        """
+        self.max_sum = float('-inf')
+        
+        def max_gain(node):
+            """
+            計算節點的最大貢獻值
+            同時更新全域最大路徑和
+            """
+            if not node:
+                return 0
+            
+            # 遞迴計算左右子樹的最大貢獻值
+            # 如果貢獻為負，則不選擇該子樹
+            left_gain = max(max_gain(node.left), 0)
+            right_gain = max(max_gain(node.right), 0)
+            
+            # 計算以當前節點為轉折點的路徑和
+            current_path_sum = node.val + left_gain + right_gain
+            
+            # 更新全域最大路徑和
+            self.max_sum = max(self.max_sum, current_path_sum)
+            
+            # 返回當前節點的最大貢獻值（單邊路徑）
+            # 只能選擇左邊或右邊，不能同時選
+            return node.val + max(left_gain, right_gain)
+        
+        max_gain(root)
+        return self.max_sum
+    
+    def maxPathSum_clean(self, root: Optional[TreeNode]) -> int:
+        """
+        簡潔版本
+        """
+        def dfs(node):
+            if not node:
+                return 0, float('-inf')
+            
+            left_gain, left_max = dfs(node.left)
+            right_gain, right_max = dfs(node.right)
+            
+            left_gain = max(0, left_gain)
+            right_gain = max(0, right_gain)
+            
+            current_max = node.val + left_gain + right_gain
+            subtree_max = max(left_max, right_max, current_max)
+            
+            return node.val + max(left_gain, right_gain), subtree_max
+        
+        _, result = dfs(root)
+        return result</code></pre>
+            </div>
+
+            <div id="cpp" class="code-container">
+                <pre><code class="language-cpp">/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+
+class Solution {
+private:
+    int maxSum;
+    
+    int maxGain(TreeNode* node) {
+        if (!node) return 0;
+        
+        // 計算左右子樹的最大貢獻值
+        int leftGain = max(maxGain(node->left), 0);
+        int rightGain = max(maxGain(node->right), 0);
+        
+        // 計算以當前節點為轉折點的路徑和
+        int currentPathSum = node->val + leftGain + rightGain;
+        
+        // 更新全域最大值
+        maxSum = max(maxSum, currentPathSum);
+        
+        // 返回當前節點的最大貢獻值
+        return node->val + max(leftGain, rightGain);
+    }
+    
+public:
+    /**
+     * 方法：遞迴 + DFS
+     * 時間複雜度: O(n)
+     * 空間複雜度: O(h)
+     */
+    int maxPathSum(TreeNode* root) {
+        maxSum = INT_MIN;
+        maxGain(root);
+        return maxSum;
+    }
+};</code></pre>
+            </div>
+
+            <div id="java" class="code-container">
+                <pre><code class="language-java">/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+
+class Solution {
+    private int maxSum;
+    
+    /**
+     * 方法：遞迴 + DFS
+     * 時間複雜度: O(n)
+     * 空間複雜度: O(h)
+     */
+    public int maxPathSum(TreeNode root) {
+        maxSum = Integer.MIN_VALUE;
+        maxGain(root);
+        return maxSum;
+    }
+    
+    private int maxGain(TreeNode node) {
+        if (node == null) {
+            return 0;
+        }
+        
+        // 計算左右子樹的最大貢獻值
+        int leftGain = Math.max(maxGain(node.left), 0);
+        int rightGain = Math.max(maxGain(node.right), 0);
+        
+        // 計算以當前節點為轉折點的路徑和
+        int currentPathSum = node.val + leftGain + rightGain;
+        
+        // 更新全域最大值
+        maxSum = Math.max(maxSum, currentPathSum);
+        
+        // 返回當前節點的最大貢獻值
+        return node.val + Math.max(leftGain, rightGain);
+    }
+}</code></pre>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">複雜度分析</h2>
+            <div class="complexity-box">
+                <div class="complexity-item">時間複雜度: O(n)</div>
+                <p style="color: #78716c; margin: 10px 0;">
+                    需要訪問每個節點一次，n 是節點總數。
+                </p>
+                
+                <div class="complexity-item" style="margin-top: 20px;">空間複雜度: O(h)</div>
+                <p style="color: #78716c; margin: 10px 0;">
+                    遞迴調用棧的深度等於樹高 h。
+                    最壞情況（鏈狀樹）：O(n)，平衡樹：O(log n)。
+                </p>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">重點提示</h2>
+            <div class="complexity-box">
+                <ul>
+                    <li><strong>樹形 DP 經典題：</strong>後序遍歷 + 狀態更新</li>
+                    <li><strong>兩個關鍵概念：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li><strong>最大貢獻值：</strong>返回給父節點，單邊路徑</li>
+                            <li><strong>最大路徑和：</strong>以節點為轉折點，可跨越左右</li>
+                            <li>分別計算，各有用途</li>
+                        </ul>
+                    </li>
+                    <li><strong>負數處理：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>使用 max(0, child_gain) 自動忽略負貢獻</li>
+                            <li>節點本身可以是負數</li>
+                            <li>不選負貢獻的子樹</li>
+                        </ul>
+                    </li>
+                    <li><strong>為什麼是後序遍歷？</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>需要先知道子樹的信息</li>
+                            <li>從葉子到根計算</li>
+                            <li>符合「自下而上」的 DP 思想</li>
+                        </ul>
+                    </li>
+                    <li><strong>返回值設計：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>返回：節點 + max(左貢獻, 右貢獻)</li>
+                            <li>只能選一邊（因為要連接到父節點）</li>
+                            <li>不能同時選左右（會形成分叉）</li>
+                        </ul>
+                    </li>
+                    <li><strong>邊界情況：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>只有一個節點 → 返回該節點值</li>
+                            <li>所有節點都是負數 → 返回最大的負數</li>
+                            <li>空樹 → 題目保證至少一個節點</li>
+                        </ul>
+                    </li>
+                    <li><strong>常見錯誤：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>忘記處理負數貢獻</li>
+                            <li>返回值計算錯誤（同時選左右）</li>
+                            <li>全域變數初始化錯誤</li>
+                            <li>混淆「貢獻值」和「路徑和」</li>
+                        </ul>
+                    </li>
+                    <li><strong>面試技巧：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>先畫樹的示意圖</li>
+                            <li>說明兩種路徑形狀</li>
+                            <li>展示遞迴計算過程</li>
+                            <li>強調負數處理</li>
+                            <li>舉例說明返回值的意義</li>
+                        </ul>
+                    </li>
+                    <li><strong>模板應用：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>這是樹形 DP 的標準模板</li>
+                            <li>後序遍歷 + 狀態更新</li>
+                            <li>返回值給父節點，副作用更新全域</li>
+                        </ul>
+                    </li>
+                    <li><strong>延伸思考：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>如何追蹤實際的路徑？（記錄節點）</li>
+                            <li>如果路徑必須經過根節點？（簡化版）</li>
+                            <li>如果有 k 叉樹？（選最大的兩個子樹）</li>
+                        </ul>
+                    </li>
+                    <li><strong>變形題：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>Diameter of Binary Tree (#543) - 路徑長度</li>
+                            <li>Path Sum III (#437) - 路徑和等於目標</li>
+                            <li>Longest Univalue Path (#687) - 相同值路徑</li>
+                        </ul>
+                    </li>
+                    <li><strong>實際應用：</strong>網路路由優化、社交網絡分析</li>
+                    <li><strong>相似題目：</strong>House Robber III (337), Maximum Depth (104)</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        hljs.highlightAll();
+        
+        function showLanguage(lang) {
+            document.querySelectorAll('.code-container').forEach(container => {
+                container.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.getElementById(lang).classList.add('active');
+            event.target.classList.add('active');
+        }
+    </script>
+</body>
+</html>

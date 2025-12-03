@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>72. Edit Distance - LeetCode 學習平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f8fafc; line-height: 1.8; color: #334155; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .header { background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%); color: white; padding: 40px; border-radius: 16px; margin-bottom: 30px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .back-btn { display: inline-block; color: white; text-decoration: none; background: rgba(255,255,255,0.2); padding: 10px 20px; border-radius: 8px; margin-bottom: 20px; transition: all 0.3s; }
+        .back-btn:hover { background: rgba(255,255,255,0.3); }
+        .problem-title { font-size: 2.5em; font-weight: 800; margin-bottom: 15px; }
+        .difficulty { display: inline-block; background: rgba(255,255,255,0.3); padding: 8px 20px; border-radius: 20px; font-weight: 600; font-size: 0.9em; }
+        .content-section { background: white; padding: 40px; border-radius: 16px; margin-bottom: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .section-title { font-size: 1.8em; color: #1e293b; margin-bottom: 25px; font-weight: 700; padding-bottom: 10px; border-bottom: 3px solid #dc2626; }
+        .description { font-size: 1.1em; line-height: 1.9; color: #475569; margin-bottom: 20px; }
+        .example-box { background: #fee2e2; border-left: 4px solid #dc2626; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .example-title { font-weight: 700; color: #991b1b; margin-bottom: 10px; font-size: 1.1em; }
+        .approach-box { background: #eff6ff; border-left: 4px solid #3b82f6; padding: 25px; border-radius: 8px; margin: 25px 0; }
+        .approach-title { font-weight: 700; color: #1e40af; margin-bottom: 15px; font-size: 1.3em; }
+        .complexity-box { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .complexity-item { margin: 10px 0; font-weight: 600; color: #92400e; }
+        .language-tabs { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+        .tab-btn { padding: 12px 28px; border: 2px solid #dc2626; background: white; color: #dc2626; border-radius: 8px; cursor: pointer; font-weight: 600; transition: all 0.3s; font-size: 1em; }
+        .tab-btn:hover { background: #fee2e2; }
+        .tab-btn.active { background: #dc2626; color: white; }
+        .code-container { display: none; margin-top: 20px; }
+        .code-container.active { display: block; }
+        pre { background: #282c34 !important; padding: 25px !important; border-radius: 12px; overflow-x: auto; margin: 0; }
+        code { font-family: 'Fira Code', 'Consolas', monospace; font-size: 0.95em; line-height: 1.6; }
+        ol, ul { margin-left: 30px; margin-top: 15px; }
+        li { margin: 12px 0; line-height: 1.8; }
+        strong { color: #1e293b; font-weight: 700; }
+        .visual-box { background: #f0f9ff; border: 2px solid #3b82f6; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        
+        @media (max-width: 768px) {
+            .container { padding: 10px; }
+            .header { padding: 25px; }
+            .problem-title { font-size: 1.8em; }
+            .content-section { padding: 25px; }
+            .tab-btn { padding: 10px 20px; font-size: 0.9em; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="../index.html" class="back-btn">← 返回題目列表</a>
+            <div class="problem-title">72. Edit Distance</div>
+            <span class="difficulty">Hard</span>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">題目描述</h2>
+            <div class="description">
+                <p>給你兩個單詞 <code>word1</code> 和 <code>word2</code>，請返回將 <code>word1</code> 轉換成 <code>word2</code> 所使用的最少操作數。</p>
+                <p style="margin-top: 15px;">你可以對一個單詞進行如下三種操作：</p>
+                <ul style="margin-top: 10px;">
+                    <li><strong>插入</strong>一個字符</li>
+                    <li><strong>刪除</strong>一個字符</li>
+                    <li><strong>替換</strong>一個字符</li>
+                </ul>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例 1:</div>
+                <pre><code>輸入: word1 = "horse", word2 = "ros"
+輸出: 3
+解釋: 
+horse -> rorse (將 'h' 替換為 'r')
+rorse -> rose (刪除 'r')
+rose -> ros (刪除 'e')</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例 2:</div>
+                <pre><code>輸入: word1 = "intention", word2 = "execution"
+輸出: 5
+解釋: 
+intention -> inention (刪除 't')
+inention -> enention (將 'i' 替換為 'e')
+enention -> exention (將 'n' 替換為 'x')
+exention -> exection (將 'n' 替換為 'c')
+exection -> execution (插入 'u')</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">限制條件:</div>
+                <pre><code>0 <= word1.length, word2.length <= 500
+word1 和 word2 由小寫英文字母組成</code></pre>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">解題思路</h2>
+            
+            <div class="approach-box">
+                <div class="approach-title">核心觀察</div>
+                <p>這是一個經典的<strong>編輯距離（Levenshtein Distance）</strong>問題：</p>
+                <ul>
+                    <li>三種操作：插入、刪除、替換</li>
+                    <li>需要找到最少操作次數</li>
+                    <li>使用動態規劃求解</li>
+                </ul>
+                <p style="margin-top: 15px; color: #dc2626; font-weight: 600;">
+                    關鍵：dp[i][j] 表示 word1 前 i 個字符轉換為 word2 前 j 個字符的最少操作數
+                </p>
+            </div>
+            
+            <div class="approach-box">
+                <div class="approach-title">方法：動態規劃（推薦）⭐⭐⭐</div>
+                <p>使用二維 DP 記錄每個子問題的最優解。</p>
+                
+                <p style="margin-top: 15px;"><strong>狀態定義：</strong></p>
+                <ul>
+                    <li><strong>dp[i][j]：</strong>word1 前 i 個字符轉換為 word2 前 j 個字符的最少操作數</li>
+                    <li><strong>初始狀態：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>dp[0][j] = j（空字串轉換為 word2 前 j 個字符，需要插入 j 次）</li>
+                            <li>dp[i][0] = i（word1 前 i 個字符轉換為空字串，需要刪除 i 次）</li>
+                        </ul>
+                    </li>
+                    <li><strong>轉移方程：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>如果 word1[i-1] == word2[j-1]：
+                                <ul>
+                                    <li>dp[i][j] = dp[i-1][j-1]（不需要操作）</li>
+                                </ul>
+                            </li>
+                            <li>否則，取三種操作的最小值：
+                                <ul>
+                                    <li><strong>插入：</strong>dp[i][j-1] + 1</li>
+                                    <li><strong>刪除：</strong>dp[i-1][j] + 1</li>
+                                    <li><strong>替換：</strong>dp[i-1][j-1] + 1</li>
+                                    <li>dp[i][j] = min(插入, 刪除, 替換)</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+                
+                <div class="visual-box">
+                    <p><strong>視覺化範例：word1 = "horse", word2 = "ros"</strong></p>
+                    <pre style="background: white; padding: 15px; border-radius: 5px; margin-top: 10px;"><code>DP 表格（行=word1, 列=word2）:
+
+       ""  r   o   s
+    ┌───┬───┬───┬───┐
+""  │ 0 │ 1 │ 2 │ 3 │
+    ├───┼───┼───┼───┤
+h   │ 1 │ 1 │ 2 │ 3 │
+    ├───┼───┼───┼───┤
+o   │ 2 │ 2 │ 1 │ 2 │
+    ├───┼───┼───┼───┤
+r   │ 3 │ 2 │ 2 │ 2 │
+    ├───┼───┼───┼───┤
+s   │ 4 │ 3 │ 3 │ 2 │
+    ├───┼───┼───┼───┤
+e   │ 5 │ 4 │ 4 │ 3 │
+    └───┴───┴───┴───┘
+
+計算過程：
+
+dp[1][1]: h vs r
+  不相等，取 min:
+  插入: dp[1][0] + 1 = 2
+  刪除: dp[0][1] + 1 = 2
+  替換: dp[0][0] + 1 = 1 ✓
+  dp[1][1] = 1
+
+dp[2][2]: ho vs ro
+  o == o，相等！
+  dp[2][2] = dp[1][1] = 1
+
+dp[3][1]: hor vs r
+  r == r，相等！
+  dp[3][1] = dp[2][0] = 2
+
+...繼續填充表格...
+
+最終答案: dp[5][3] = 3</code></pre>
+                </div>
+                
+                <div class="visual-box">
+                    <p><strong>三種操作的理解：</strong></p>
+                    <pre style="background: white; padding: 15px; border-radius: 5px; margin-top: 10px;"><code>假設目前比較 word1[i] 和 word2[j]
+
+1. 插入操作：dp[i][j-1] + 1
+   - 將 word1[0..i] 轉換為 word2[0..j-1]
+   - 然後插入 word2[j]
+
+2. 刪除操作：dp[i-1][j] + 1
+   - 先刪除 word1[i]
+   - 然後將 word1[0..i-1] 轉換為 word2[0..j]
+
+3. 替換操作：dp[i-1][j-1] + 1
+   - 將 word1[0..i-1] 轉換為 word2[0..j-1]
+   - 然後將 word1[i] 替換為 word2[j]</code></pre>
+                </div>
+            </div>
+
+            <div class="approach-box">
+                <div class="approach-title">空間優化</div>
+                <p>觀察到 dp[i][j] 只依賴 dp[i-1][...] 和 dp[i][...]，可以用一維陣列優化。</p>
+                <ul style="margin-top: 10px;">
+                    <li>只需保存當前行和上一行</li>
+                    <li>空間從 O(m×n) 降到 O(n)</li>
+                    <li>需要額外變數記錄左上角的值</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">程式碼實現</h2>
+            
+            <div class="language-tabs">
+                <button class="tab-btn active" onclick="showLanguage('python')">Python</button>
+                <button class="tab-btn" onclick="showLanguage('cpp')">C++</button>
+                <button class="tab-btn" onclick="showLanguage('java')">Java</button>
+            </div>
+
+            <div id="python" class="code-container active">
+                <pre><code class="language-python">class Solution:
+    def minDistance(self, word1: str, word2: str) -> int:
+        """
+        方法：動態規劃
+        時間複雜度: O(m * n)
+        空間複雜度: O(m * n)
+        """
+        m, n = len(word1), len(word2)
+        
+        # 創建 DP 表格
+        dp = [[0] * (n + 1) for _ in range(m + 1)]
+        
+        # 初始化：空字串轉換
+        for i in range(m + 1):
+            dp[i][0] = i  # 刪除 i 個字符
+        for j in range(n + 1):
+            dp[0][j] = j  # 插入 j 個字符
+        
+        # 填充 DP 表格
+        for i in range(1, m + 1):
+            for j in range(1, n + 1):
+                if word1[i-1] == word2[j-1]:
+                    # 字符相同，不需要操作
+                    dp[i][j] = dp[i-1][j-1]
+                else:
+                    # 取三種操作的最小值
+                    insert = dp[i][j-1] + 1      # 插入
+                    delete = dp[i-1][j] + 1      # 刪除
+                    replace = dp[i-1][j-1] + 1   # 替換
+                    dp[i][j] = min(insert, delete, replace)
+        
+        return dp[m][n]
+    
+    def minDistance_optimized(self, word1: str, word2: str) -> int:
+        """
+        空間優化版本
+        時間複雜度: O(m * n)
+        空間複雜度: O(n)
+        """
+        m, n = len(word1), len(word2)
+        
+        # 只保存一行
+        prev = list(range(n + 1))
+        
+        for i in range(1, m + 1):
+            curr = [i]  # 當前行的第一個元素
+            for j in range(1, n + 1):
+                if word1[i-1] == word2[j-1]:
+                    curr.append(prev[j-1])
+                else:
+                    curr.append(min(
+                        curr[j-1] + 1,    # 插入
+                        prev[j] + 1,      # 刪除
+                        prev[j-1] + 1     # 替換
+                    ))
+            prev = curr
+        
+        return prev[n]
+    
+    def minDistance_1d(self, word1: str, word2: str) -> int:
+        """
+        進一步優化：原地更新
+        """
+        m, n = len(word1), len(word2)
+        dp = list(range(n + 1))
+        
+        for i in range(1, m + 1):
+            prev = dp[0]
+            dp[0] = i
+            for j in range(1, n + 1):
+                temp = dp[j]
+                if word1[i-1] == word2[j-1]:
+                    dp[j] = prev
+                else:
+                    dp[j] = min(dp[j-1], dp[j], prev) + 1
+                prev = temp
+        
+        return dp[n]</code></pre>
+            </div>
+
+            <div id="cpp" class="code-container">
+                <pre><code class="language-cpp">#include &lt;string&gt;
+#include &lt;vector&gt;
+#include &lt;algorithm&gt;
+using namespace std;
+
+class Solution {
+public:
+    /**
+     * 方法：動態規劃
+     * 時間複雜度: O(m * n)
+     * 空間複雜度: O(m * n)
+     */
+    int minDistance(string word1, string word2) {
+        int m = word1.length(), n = word2.length();
+        
+        vector<vector<int>> dp(m + 1, vector<int>(n + 1));
+        
+        // 初始化
+        for (int i = 0; i <= m; i++) {
+            dp[i][0] = i;
+        }
+        for (int j = 0; j <= n; j++) {
+            dp[0][j] = j;
+        }
+        
+        // 填充表格
+        for (int i = 1; i <= m; i++) {
+            for (int j = 1; j <= n; j++) {
+                if (word1[i-1] == word2[j-1]) {
+                    dp[i][j] = dp[i-1][j-1];
+                } else {
+                    dp[i][j] = min({
+                        dp[i][j-1] + 1,      // 插入
+                        dp[i-1][j] + 1,      // 刪除
+                        dp[i-1][j-1] + 1     // 替換
+                    });
+                }
+            }
+        }
+        
+        return dp[m][n];
+    }
+    
+    /**
+     * 空間優化版本
+     * 時間複雜度: O(m * n)
+     * 空間複雜度: O(n)
+     */
+    int minDistance_optimized(string word1, string word2) {
+        int m = word1.length(), n = word2.length();
+        vector<int> dp(n + 1);
+        
+        for (int j = 0; j <= n; j++) {
+            dp[j] = j;
+        }
+        
+        for (int i = 1; i <= m; i++) {
+            int prev = dp[0];
+            dp[0] = i;
+            for (int j = 1; j <= n; j++) {
+                int temp = dp[j];
+                if (word1[i-1] == word2[j-1]) {
+                    dp[j] = prev;
+                } else {
+                    dp[j] = min({dp[j-1], dp[j], prev}) + 1;
+                }
+                prev = temp;
+            }
+        }
+        
+        return dp[n];
+    }
+};</code></pre>
+            </div>
+
+            <div id="java" class="code-container">
+                <pre><code class="language-java">class Solution {
+    /**
+     * 方法：動態規劃
+     * 時間複雜度: O(m * n)
+     * 空間複雜度: O(m * n)
+     */
+    public int minDistance(String word1, String word2) {
+        int m = word1.length(), n = word2.length();
+        
+        int[][] dp = new int[m + 1][n + 1];
+        
+        // 初始化
+        for (int i = 0; i <= m; i++) {
+            dp[i][0] = i;
+        }
+        for (int j = 0; j <= n; j++) {
+            dp[0][j] = j;
+        }
+        
+        // 填充表格
+        for (int i = 1; i <= m; i++) {
+            for (int j = 1; j <= n; j++) {
+                if (word1.charAt(i-1) == word2.charAt(j-1)) {
+                    dp[i][j] = dp[i-1][j-1];
+                } else {
+                    dp[i][j] = Math.min(
+                        Math.min(dp[i][j-1], dp[i-1][j]),
+                        dp[i-1][j-1]
+                    ) + 1;
+                }
+            }
+        }
+        
+        return dp[m][n];
+    }
+    
+    /**
+     * 空間優化版本
+     * 時間複雜度: O(m * n)
+     * 空間複雜度: O(n)
+     */
+    public int minDistance_optimized(String word1, String word2) {
+        int m = word1.length(), n = word2.length();
+        int[] dp = new int[n + 1];
+        
+        for (int j = 0; j <= n; j++) {
+            dp[j] = j;
+        }
+        
+        for (int i = 1; i <= m; i++) {
+            int prev = dp[0];
+            dp[0] = i;
+            for (int j = 1; j <= n; j++) {
+                int temp = dp[j];
+                if (word1.charAt(i-1) == word2.charAt(j-1)) {
+                    dp[j] = prev;
+                } else {
+                    dp[j] = Math.min(Math.min(dp[j-1], dp[j]), prev) + 1;
+                }
+                prev = temp;
+            }
+        }
+        
+        return dp[n];
+    }
+}</code></pre>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">複雜度分析</h2>
+            <div class="complexity-box">
+                <div class="complexity-item">時間複雜度: O(m × n)</div>
+                <p style="color: #78716c; margin: 10px 0;">
+                    需要填充 m × n 的 DP 表格，每個格子的計算是 O(1)。
+                </p>
+                
+                <div class="complexity-item" style="margin-top: 20px;">空間複雜度: O(m × n) 或 O(n)</div>
+                <p style="color: #78716c; margin: 10px 0;">
+                    基本版本：O(m × n) 二維陣列。
+                    優化版本：O(n) 一維陣列。
+                </p>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">重點提示</h2>
+            <div class="complexity-box">
+                <ul>
+                    <li><strong>經典 DP 問題：</strong>編輯距離是字串 DP 的代表題</li>
+                    <li><strong>三種操作的理解：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li><strong>插入：</strong>在 word1 中插入 word2[j]</li>
+                            <li><strong>刪除：</strong>刪除 word1[i]</li>
+                            <li><strong>替換：</strong>將 word1[i] 替換為 word2[j]</li>
+                            <li>關鍵：理解每種操作對應的子問題</li>
+                        </ul>
+                    </li>
+                    <li><strong>狀態轉移關鍵：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>字符相同：dp[i][j] = dp[i-1][j-1]</li>
+                            <li>字符不同：取三種操作的最小值 + 1</li>
+                            <li>初始化很重要（邊界條件）</li>
+                        </ul>
+                    </li>
+                    <li><strong>DP 表格理解：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>行代表 word1 的前綴</li>
+                            <li>列代表 word2 的前綴</li>
+                            <li>dp[i][j] = word1[0..i-1] 轉換為 word2[0..j-1]</li>
+                        </ul>
+                    </li>
+                    <li><strong>初始化邊界：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>dp[0][j] = j（空串 → word2[0..j-1]，插入 j 次）</li>
+                            <li>dp[i][0] = i（word1[0..i-1] → 空串，刪除 i 次）</li>
+                            <li>dp[0][0] = 0（空串 → 空串，0 次操作）</li>
+                        </ul>
+                    </li>
+                    <li><strong>空間優化技巧：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>只需當前行和上一行</li>
+                            <li>使用滾動陣列</li>
+                            <li>需要額外變數保存左上角值（prev）</li>
+                        </ul>
+                    </li>
+                    <li><strong>邊界情況：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>兩個空字串 → 0</li>
+                            <li>一個空字串 → 另一個的長度</li>
+                            <li>兩個相同字串 → 0</li>
+                            <li>完全不同的字串 → max(m, n)</li>
+                        </ul>
+                    </li>
+                    <li><strong>常見錯誤：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>索引混亂（dp 索引 vs 字串索引）</li>
+                            <li>初始化邊界錯誤</li>
+                            <li>狀態轉移方程寫錯</li>
+                            <li>空間優化時 prev 變數處理錯誤</li>
+                        </ul>
+                    </li>
+                    <li><strong>面試技巧：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>先畫 DP 表格示意圖</li>
+                            <li>說明三種操作的含義</li>
+                            <li>展示狀態轉移過程</li>
+                            <li>可以提到空間優化</li>
+                            <li>舉小例子驗證邏輯</li>
+                        </ul>
+                    </li>
+                    <li><strong>延伸思考：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>如何追蹤實際的操作序列？（記錄選擇）</li>
+                            <li>如果不同操作有不同代價？（加權編輯距離）</li>
+                            <li>如何處理更複雜的操作（如交換）？</li>
+                        </ul>
+                    </li>
+                    <li><strong>實際應用：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>拼寫檢查與糾正</li>
+                            <li>DNA 序列比對</li>
+                            <li>文本相似度計算</li>
+                            <li>版本控制中的 diff 算法</li>
+                            <li>自然語言處理</li>
+                        </ul>
+                    </li>
+                    <li><strong>變形題：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>Delete Operation for Two Strings (#583)</li>
+                            <li>Minimum ASCII Delete Sum (#712)</li>
+                            <li>One Edit Distance (#161)</li>
+                        </ul>
+                    </li>
+                    <li><strong>相似題目：</strong>Longest Common Subsequence (1143), Distinct Subsequences (115)</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        hljs.highlightAll();
+        
+        function showLanguage(lang) {
+            document.querySelectorAll('.code-container').forEach(container => {
+                container.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.getElementById(lang).classList.add('active');
+            event.target.classList.add('active');
+        }
+    </script>
+</body>
+</html>

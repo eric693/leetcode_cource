@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>139. Word Break - LeetCode 學習平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f8fafc; line-height: 1.8; color: #334155; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .header { background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: white; padding: 40px; border-radius: 16px; margin-bottom: 30px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .back-btn { display: inline-block; color: white; text-decoration: none; background: rgba(255,255,255,0.2); padding: 10px 20px; border-radius: 8px; margin-bottom: 20px; transition: all 0.3s; }
+        .back-btn:hover { background: rgba(255,255,255,0.3); }
+        .problem-title { font-size: 2.5em; font-weight: 800; margin-bottom: 15px; }
+        .difficulty { display: inline-block; background: rgba(255,255,255,0.3); padding: 8px 20px; border-radius: 20px; font-weight: 600; font-size: 0.9em; }
+        .content-section { background: white; padding: 40px; border-radius: 16px; margin-bottom: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .section-title { font-size: 1.8em; color: #1e293b; margin-bottom: 25px; font-weight: 700; padding-bottom: 10px; border-bottom: 3px solid #f59e0b; }
+        .description { font-size: 1.1em; line-height: 1.9; color: #475569; margin-bottom: 20px; }
+        .example-box { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .example-title { font-weight: 700; color: #d97706; margin-bottom: 10px; font-size: 1.1em; }
+        .approach-box { background: #eff6ff; border-left: 4px solid #3b82f6; padding: 25px; border-radius: 8px; margin: 25px 0; }
+        .approach-title { font-weight: 700; color: #1e40af; margin-bottom: 15px; font-size: 1.3em; }
+        .complexity-box { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .complexity-item { margin: 10px 0; font-weight: 600; color: #92400e; }
+        .language-tabs { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+        .tab-btn { padding: 12px 28px; border: 2px solid #f59e0b; background: white; color: #f59e0b; border-radius: 8px; cursor: pointer; font-weight: 600; transition: all 0.3s; font-size: 1em; }
+        .tab-btn:hover { background: #fef3c7; }
+        .tab-btn.active { background: #f59e0b; color: white; }
+        .code-container { display: none; margin-top: 20px; }
+        .code-container.active { display: block; }
+        pre { background: #282c34 !important; padding: 25px !important; border-radius: 12px; overflow-x: auto; margin: 0; }
+        code { font-family: 'Fira Code', 'Consolas', monospace; font-size: 0.95em; line-height: 1.6; }
+        ol, ul { margin-left: 30px; margin-top: 15px; }
+        li { margin: 12px 0; line-height: 1.8; }
+        strong { color: #1e293b; font-weight: 700; }
+        .visual-box { background: #f0f9ff; border: 2px solid #3b82f6; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        
+        @media (max-width: 768px) {
+            .container { padding: 10px; }
+            .header { padding: 25px; }
+            .problem-title { font-size: 1.8em; }
+            .content-section { padding: 25px; }
+            .tab-btn { padding: 10px 20px; font-size: 0.9em; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="../index.html" class="back-btn">← 返回題目列表</a>
+            <div class="problem-title">139. Word Break</div>
+            <span class="difficulty">Medium</span>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">題目描述</h2>
+            <div class="description">
+                <p>給定一個字串 <code>s</code> 和一個字串字典 <code>wordDict</code>，如果 <code>s</code> 可以被空格分割成一個或多個字典中出現的單詞，則返回 <code>true</code>。</p>
+                <p style="margin-top: 15px;"><strong>注意：</strong>字典中的同一個單詞可能在分割中被重複使用多次。</p>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例 1:</div>
+                <pre><code>輸入: s = "leetcode", wordDict = ["leet","code"]
+輸出: true
+解釋: "leetcode" 可以分割為 "leet code"。</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例 2:</div>
+                <pre><code>輸入: s = "applepenapple", wordDict = ["apple","pen"]
+輸出: true
+解釋: "applepenapple" 可以分割為 "apple pen apple"。
+     注意你可以重複使用字典中的單詞。</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例 3:</div>
+                <pre><code>輸入: s = "catsandog", wordDict = ["cats","dog","sand","and","cat"]
+輸出: false</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">限制條件:</div>
+                <pre><code>1 <= s.length <= 300
+1 <= wordDict.length <= 1000
+1 <= wordDict[i].length <= 20
+s 和 wordDict[i] 僅由小寫英文字母組成
+wordDict 中的所有字串互不相同</code></pre>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">解題思路</h2>
+            
+            <div class="approach-box">
+                <div class="approach-title">方法一：動態規劃（推薦）⭐⭐</div>
+                <p>使用動態規劃，dp[i] 表示字串前 i 個字符能否被字典中的單詞分割。</p>
+                
+                <p style="margin-top: 15px;"><strong>核心思想：</strong></p>
+                <p>如果 dp[j] 為 true（前 j 個字符可以分割）且 s[j:i] 在字典中，則 dp[i] 為 true。</p>
+                
+                <p style="margin-top: 15px;"><strong>狀態定義：</strong></p>
+                <ul>
+                    <li><strong>dp[i]：</strong>字串 s 的前 i 個字符能否被分割</li>
+                    <li><strong>初始狀態：</strong>dp[0] = true（空字串可以被分割）</li>
+                    <li><strong>轉移方程：</strong>dp[i] = dp[j] && (s[j:i] in wordDict)，其中 0 ≤ j < i</li>
+                </ul>
+                
+                <p style="margin-top: 15px;"><strong>步驟：</strong></p>
+                <ol>
+                    <li>創建 dp 陣列，長度為 n+1，初始化 dp[0] = true</li>
+                    <li>將 wordDict 轉為 Set 加速查找</li>
+                    <li>雙重循環：
+                        <ul>
+                            <li>外層：i 從 1 到 n</li>
+                            <li>內層：j 從 0 到 i-1</li>
+                            <li>如果 dp[j] && s[j:i] in wordSet，則 dp[i] = true</li>
+                        </ul>
+                    </li>
+                    <li>返回 dp[n]</li>
+                </ol>
+                
+                <div class="visual-box">
+                    <p><strong>視覺化範例：s = "leetcode", wordDict = ["leet","code"]</strong></p>
+                    <pre style="background: white; padding: 15px; border-radius: 5px; margin-top: 10px;"><code>字串: l e e t c o d e
+索引: 0 1 2 3 4 5 6 7 8
+
+初始: dp = [T, F, F, F, F, F, F, F, F]
+           ↑
+           空字串
+
+i=1: "l" 不在字典
+     dp = [T, F, F, F, F, F, F, F, F]
+
+i=2: "le" 不在字典
+     dp = [T, F, F, F, F, F, F, F, F]
+
+i=3: "lee" 不在字典
+     dp = [T, F, F, F, F, F, F, F, F]
+
+i=4: "leet" 在字典中！
+     dp[0]=T && "leet" in dict
+     dp = [T, F, F, F, T, F, F, F, F]
+                     ↑
+
+i=5: 檢查所有可能的分割點
+     dp = [T, F, F, F, T, F, F, F, F]
+
+i=6: 檢查所有可能的分割點
+     dp = [T, F, F, F, T, F, F, F, F]
+
+i=7: 檢查所有可能的分割點
+     dp = [T, F, F, F, T, F, F, F, F]
+
+i=8: dp[4]=T && "code" in dict ✓
+     dp = [T, F, F, F, T, F, F, F, T]
+                                 ↑
+
+結果: dp[8] = true</code></pre>
+                </div>
+            </div>
+
+            <div class="approach-box">
+                <div class="approach-title">方法二：記憶化搜尋（DFS + Memo）</div>
+                <p>使用 DFS 遞迴搜尋，配合記憶化避免重複計算。</p>
+                
+                <p style="margin-top: 15px;"><strong>思路：</strong></p>
+                <ul>
+                    <li>從索引 start 開始，嘗試所有可能的單詞</li>
+                    <li>如果 s[start:end] 在字典中，遞迴檢查剩餘部分</li>
+                    <li>使用 memo 記錄已計算的結果</li>
+                </ul>
+            </div>
+
+            <div class="approach-box">
+                <div class="approach-title">優化技巧</div>
+                <ul>
+                    <li><strong>使用 Set：</strong>將 wordDict 轉為 Set，查找時間 O(1)</li>
+                    <li><strong>提前終止：</strong>找到一個可行分割即可 break</li>
+                    <li><strong>最大長度優化：</strong>記錄字典中最長單詞，限制內層循環範圍</li>
+                    <li><strong>BFS 方法：</strong>也可以使用 BFS + Queue 實現</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">程式碼實現</h2>
+            
+            <div class="language-tabs">
+                <button class="tab-btn active" onclick="showLanguage('python')">Python</button>
+                <button class="tab-btn" onclick="showLanguage('cpp')">C++</button>
+                <button class="tab-btn" onclick="showLanguage('java')">Java</button>
+            </div>
+
+            <div id="python" class="code-container active">
+                <pre><code class="language-python">class Solution:
+    def wordBreak(self, s: str, wordDict: List[str]) -> bool:
+        """
+        方法一：動態規劃（推薦）
+        時間複雜度: O(n^2 * m)，n 是字串長度，m 是平均單詞長度
+        空間複雜度: O(n)
+        """
+        n = len(s)
+        # 轉為 Set 加速查找
+        word_set = set(wordDict)
+        
+        # dp[i] 表示 s[0:i] 能否被分割
+        dp = [False] * (n + 1)
+        dp[0] = True  # 空字串
+        
+        # 遍歷所有位置
+        for i in range(1, n + 1):
+            # 嘗試所有可能的分割點
+            for j in range(i):
+                # 如果前 j 個字符可以分割，且 s[j:i] 在字典中
+                if dp[j] and s[j:i] in word_set:
+                    dp[i] = True
+                    break  # 找到一個即可
+        
+        return dp[n]
+    
+    def wordBreak_optimized(self, s: str, wordDict: List[str]) -> bool:
+        """
+        優化版：限制內層循環範圍
+        時間複雜度: O(n * max_len * m)
+        """
+        n = len(s)
+        word_set = set(wordDict)
+        max_len = max(len(word) for word in wordDict)
+        
+        dp = [False] * (n + 1)
+        dp[0] = True
+        
+        for i in range(1, n + 1):
+            # 只檢查最大單詞長度範圍內的分割點
+            for j in range(max(0, i - max_len), i):
+                if dp[j] and s[j:i] in word_set:
+                    dp[i] = True
+                    break
+        
+        return dp[n]
+    
+    def wordBreak_dfs(self, s: str, wordDict: List[str]) -> bool:
+        """
+        方法二：DFS + 記憶化
+        時間複雜度: O(n^2 * m)
+        空間複雜度: O(n)
+        """
+        word_set = set(wordDict)
+        memo = {}
+        
+        def dfs(start):
+            # 已到達字串末尾
+            if start == len(s):
+                return True
+            
+            # 已計算過
+            if start in memo:
+                return memo[start]
+            
+            # 嘗試所有可能的單詞
+            for end in range(start + 1, len(s) + 1):
+                if s[start:end] in word_set:
+                    if dfs(end):
+                        memo[start] = True
+                        return True
+            
+            memo[start] = False
+            return False
+        
+        return dfs(0)
+    
+    def wordBreak_bfs(self, s: str, wordDict: List[str]) -> bool:
+        """
+        方法三：BFS
+        時間複雜度: O(n^2 * m)
+        空間複雜度: O(n)
+        """
+        from collections import deque
+        
+        word_set = set(wordDict)
+        queue = deque([0])
+        visited = {0}
+        
+        while queue:
+            start = queue.popleft()
+            
+            # 已到達末尾
+            if start == len(s):
+                return True
+            
+            # 嘗試所有可能的結束位置
+            for end in range(start + 1, len(s) + 1):
+                if end in visited:
+                    continue
+                    
+                if s[start:end] in word_set:
+                    if end == len(s):
+                        return True
+                    queue.append(end)
+                    visited.add(end)
+        
+        return False</code></pre>
+            </div>
+
+            <div id="cpp" class="code-container">
+                <pre><code class="language-cpp">#include &lt;vector&gt;
+#include &lt;string&gt;
+#include &lt;unordered_set&gt;
+using namespace std;
+
+class Solution {
+public:
+    /**
+     * 方法一：動態規劃
+     * 時間複雜度: O(n^2 * m)
+     * 空間複雜度: O(n)
+     */
+    bool wordBreak(string s, vector<string>& wordDict) {
+        int n = s.length();
+        unordered_set<string> wordSet(wordDict.begin(), wordDict.end());
+        
+        vector<bool> dp(n + 1, false);
+        dp[0] = true;
+        
+        for (int i = 1; i <= n; i++) {
+            for (int j = 0; j < i; j++) {
+                if (dp[j] && wordSet.count(s.substr(j, i - j))) {
+                    dp[i] = true;
+                    break;
+                }
+            }
+        }
+        
+        return dp[n];
+    }
+    
+    /**
+     * 優化版：限制內層循環範圍
+     */
+    bool wordBreak_optimized(string s, vector<string>& wordDict) {
+        int n = s.length();
+        unordered_set<string> wordSet(wordDict.begin(), wordDict.end());
+        
+        // 找出最長單詞長度
+        int maxLen = 0;
+        for (const string& word : wordDict) {
+            maxLen = max(maxLen, (int)word.length());
+        }
+        
+        vector<bool> dp(n + 1, false);
+        dp[0] = true;
+        
+        for (int i = 1; i <= n; i++) {
+            for (int j = max(0, i - maxLen); j < i; j++) {
+                if (dp[j] && wordSet.count(s.substr(j, i - j))) {
+                    dp[i] = true;
+                    break;
+                }
+            }
+        }
+        
+        return dp[n];
+    }
+};</code></pre>
+            </div>
+
+            <div id="java" class="code-container">
+                <pre><code class="language-java">import java.util.*;
+
+class Solution {
+    /**
+     * 方法一：動態規劃
+     * 時間複雜度: O(n^2 * m)
+     * 空間複雜度: O(n)
+     */
+    public boolean wordBreak(String s, List<String> wordDict) {
+        int n = s.length();
+        Set<String> wordSet = new HashSet<>(wordDict);
+        
+        boolean[] dp = new boolean[n + 1];
+        dp[0] = true;
+        
+        for (int i = 1; i <= n; i++) {
+            for (int j = 0; j < i; j++) {
+                if (dp[j] && wordSet.contains(s.substring(j, i))) {
+                    dp[i] = true;
+                    break;
+                }
+            }
+        }
+        
+        return dp[n];
+    }
+    
+    /**
+     * 優化版：限制內層循環範圍
+     */
+    public boolean wordBreak_optimized(String s, List<String> wordDict) {
+        int n = s.length();
+        Set<String> wordSet = new HashSet<>(wordDict);
+        
+        // 找出最長單詞長度
+        int maxLen = 0;
+        for (String word : wordDict) {
+            maxLen = Math.max(maxLen, word.length());
+        }
+        
+        boolean[] dp = new boolean[n + 1];
+        dp[0] = true;
+        
+        for (int i = 1; i <= n; i++) {
+            for (int j = Math.max(0, i - maxLen); j < i; j++) {
+                if (dp[j] && wordSet.contains(s.substring(j, i))) {
+                    dp[i] = true;
+                    break;
+                }
+            }
+        }
+        
+        return dp[n];
+    }
+}</code></pre>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">複雜度分析</h2>
+            <div class="complexity-box">
+                <div class="complexity-item">時間複雜度: O(n² × m)</div>
+                <p style="color: #78716c; margin: 10px 0;">
+                    n 是字串長度，m 是平均單詞長度。雙重循環 O(n²)，substring 比較 O(m)。
+                    優化後可以降到 O(n × max_len × m)。
+                </p>
+                
+                <div class="complexity-item" style="margin-top: 20px;">空間複雜度: O(n)</div>
+                <p style="color: #78716c; margin: 10px 0;">
+                    dp 陣列需要 O(n) 空間，wordSet 需要 O(k × m) 空間（k 是字典大小）。
+                </p>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">重點提示</h2>
+            <div class="complexity-box">
+                <ul>
+                    <li><strong>動態規劃思路：</strong>從前往後，檢查每個位置是否可以被分割</li>
+                    <li><strong>關鍵優化：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>將 wordDict 轉為 Set，查找 O(1)</li>
+                            <li>使用 break 提前終止內層循環</li>
+                            <li>記錄最大單詞長度，限制搜尋範圍</li>
+                        </ul>
+                    </li>
+                    <li><strong>三種解法比較：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>DP：最容易理解，效率高</li>
+                            <li>DFS + Memo：代碼簡潔，但可能棧溢出</li>
+                            <li>BFS：適合找最短分割</li>
+                        </ul>
+                    </li>
+                    <li><strong>邊界情況：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>空字串 → true</li>
+                            <li>字典為空 → false（除非 s 為空）</li>
+                            <li>單詞可以重複使用</li>
+                            <li>s 比所有單詞都長</li>
+                        </ul>
+                    </li>
+                    <li><strong>常見錯誤：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>忘記 dp[0] = true</li>
+                            <li>substring 邊界處理錯誤</li>
+                            <li>沒有使用 Set 導致超時</li>
+                        </ul>
+                    </li>
+                    <li><strong>面試技巧：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>先說 DP 思路：dp[i] 的定義</li>
+                            <li>畫圖展示狀態轉移</li>
+                            <li>提到優化：Set、break、最大長度</li>
+                            <li>可以討論其他解法（DFS、BFS）</li>
+                        </ul>
+                    </li>
+                    <li><strong>變形題：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>Word Break II (#140) - 返回所有可能的分割</li>
+                            <li>Concatenated Words (#472) - 由其他單詞組成</li>
+                        </ul>
+                    </li>
+                    <li><strong>實際應用：</strong>自然語言處理、分詞系統、拼寫檢查</li>
+                    <li><strong>相似題目：</strong>Coin Change (322), Climbing Stairs (70)</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        hljs.highlightAll();
+        
+        function showLanguage(lang) {
+            document.querySelectorAll('.code-container').forEach(container => {
+                container.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.getElementById(lang).classList.add('active');
+            event.target.classList.add('active');
+        }
+    </script>
+</body>
+</html>

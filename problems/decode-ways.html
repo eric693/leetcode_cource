@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>91. Decode Ways - LeetCode 學習平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f8fafc; line-height: 1.8; color: #334155; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .header { background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: white; padding: 40px; border-radius: 16px; margin-bottom: 30px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .back-btn { display: inline-block; color: white; text-decoration: none; background: rgba(255,255,255,0.2); padding: 10px 20px; border-radius: 8px; margin-bottom: 20px; transition: all 0.3s; }
+        .back-btn:hover { background: rgba(255,255,255,0.3); }
+        .problem-title { font-size: 2.5em; font-weight: 800; margin-bottom: 15px; }
+        .difficulty { display: inline-block; background: rgba(255,255,255,0.3); padding: 8px 20px; border-radius: 20px; font-weight: 600; font-size: 0.9em; }
+        .content-section { background: white; padding: 40px; border-radius: 16px; margin-bottom: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .section-title { font-size: 1.8em; color: #1e293b; margin-bottom: 25px; font-weight: 700; padding-bottom: 10px; border-bottom: 3px solid #f59e0b; }
+        .description { font-size: 1.1em; line-height: 1.9; color: #475569; margin-bottom: 20px; }
+        .example-box { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .example-title { font-weight: 700; color: #d97706; margin-bottom: 10px; font-size: 1.1em; }
+        .approach-box { background: #eff6ff; border-left: 4px solid #3b82f6; padding: 25px; border-radius: 8px; margin: 25px 0; }
+        .approach-title { font-weight: 700; color: #1e40af; margin-bottom: 15px; font-size: 1.3em; }
+        .complexity-box { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .complexity-item { margin: 10px 0; font-weight: 600; color: #92400e; }
+        .language-tabs { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+        .tab-btn { padding: 12px 28px; border: 2px solid #f59e0b; background: white; color: #f59e0b; border-radius: 8px; cursor: pointer; font-weight: 600; transition: all 0.3s; font-size: 1em; }
+        .tab-btn:hover { background: #fef3c7; }
+        .tab-btn.active { background: #f59e0b; color: white; }
+        .code-container { display: none; margin-top: 20px; }
+        .code-container.active { display: block; }
+        pre { background: #282c34 !important; padding: 25px !important; border-radius: 12px; overflow-x: auto; margin: 0; }
+        code { font-family: 'Fira Code', 'Consolas', monospace; font-size: 0.95em; line-height: 1.6; }
+        ol, ul { margin-left: 30px; margin-top: 15px; }
+        li { margin: 12px 0; line-height: 1.8; }
+        strong { color: #1e293b; font-weight: 700; }
+        .visual-box { background: #f0f9ff; border: 2px solid #3b82f6; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        
+        @media (max-width: 768px) {
+            .container { padding: 10px; }
+            .header { padding: 25px; }
+            .problem-title { font-size: 1.8em; }
+            .content-section { padding: 25px; }
+            .tab-btn { padding: 10px 20px; font-size: 0.9em; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="../index.html" class="back-btn">← 返回題目列表</a>
+            <div class="problem-title">91. Decode Ways</div>
+            <span class="difficulty">Medium</span>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">題目描述</h2>
+            <div class="description">
+                <p>一條包含字母 <code>A-Z</code> 的消息通過以下映射進行編碼：</p>
+                <pre style="background: #f1f5f9; padding: 15px; border-radius: 8px; margin: 15px 0;"><code>'A' -> "1"
+'B' -> "2"
+...
+'Z' -> "26"</code></pre>
+                <p>要<strong>解碼</strong>已編碼的消息，所有數字必須基於上述映射的方法，反向映射回字母（可能有多種方法）。例如，<code>"11106"</code> 可以解碼為：</p>
+                <ul>
+                    <li><code>"AAJF"</code> (1 1 10 6)</li>
+                    <li><code>"KJF"</code> (11 10 6)</li>
+                </ul>
+                <p style="margin-top: 15px;">注意，消息不能分組為 <code>(1 11 06)</code>，因為 <code>"06"</code> 不能映射為 <code>"F"</code>（因為 <code>"6"</code> 和 <code>"06"</code> 並不相同）。</p>
+                <p style="margin-top: 15px;">給你一個只含數字的<strong>非空</strong>字串 <code>s</code>，請計算並返回<strong>解碼</strong>方法的<strong>總數</strong>。</p>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例 1:</div>
+                <pre><code>輸入: s = "12"
+輸出: 2
+解釋: 它可以解碼為 "AB"（1 2）或者 "L"（12）。</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例 2:</div>
+                <pre><code>輸入: s = "226"
+輸出: 3
+解釋: 它可以解碼為 "BZ" (2 26), "VF" (22 6), 或者 "BBF" (2 2 6)。</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例 3:</div>
+                <pre><code>輸入: s = "06"
+輸出: 0
+解釋: "06" 無法映射到 "F"，因為有前導零（"6" 和 "06" 並不相同）。</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">限制條件:</div>
+                <pre><code>1 <= s.length <= 100
+s 只包含數字，並且可能包含前導零</code></pre>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">解題思路</h2>
+            
+            <div class="approach-box">
+                <div class="approach-title">核心觀察</div>
+                <p>這是一個典型的<strong>動態規劃</strong>問題，類似爬樓梯：</p>
+                <ul>
+                    <li>每次可以解碼 1 位數字（1-9）</li>
+                    <li>或解碼 2 位數字（10-26）</li>
+                    <li>需要統計所有可能的解碼方式</li>
+                </ul>
+                <p style="margin-top: 15px; color: #dc2626; font-weight: 600;">
+                    關鍵：dp[i] 表示解碼前 i 個字符的方法數
+                </p>
+            </div>
+            
+            <div class="approach-box">
+                <div class="approach-title">方法一：動態規劃（推薦）⭐⭐</div>
+                <p>使用 DP 記錄每個位置的解碼方法數。</p>
+                
+                <p style="margin-top: 15px;"><strong>狀態定義：</strong></p>
+                <ul>
+                    <li><strong>dp[i]：</strong>字串前 i 個字符的解碼方法數</li>
+                    <li><strong>初始狀態：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>dp[0] = 1（空字串，一種方法）</li>
+                            <li>dp[1] = 1 如果 s[0] != '0'，否則 0</li>
+                        </ul>
+                    </li>
+                    <li><strong>轉移方程：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>單獨解碼第 i 個字符：如果 s[i-1] 是 '1'-'9'，dp[i] += dp[i-1]</li>
+                            <li>和前一個字符一起解碼：如果 s[i-2:i] 是 '10'-'26'，dp[i] += dp[i-2]</li>
+                        </ul>
+                    </li>
+                </ul>
+                
+                <div class="visual-box">
+                    <p><strong>視覺化範例：s = "226"</strong></p>
+                    <pre style="background: white; padding: 15px; border-radius: 5px; margin-top: 10px;"><code>字串: 2  2  6
+索引: 0  1  2
+
+初始化:
+dp[0] = 1 (空字串)
+dp[1] = 1 (s[0]='2' 可以解碼為 'B')
+
+計算 dp[2] (前2個字符 "22"):
+  - 單獨 '2': s[1]='2' ✓ → dp[2] += dp[1] = 1
+  - 組合 '22': "22" 在 [10,26] ✓ → dp[2] += dp[0] = 1
+  dp[2] = 2 (可以是 "BB" 或 "V")
+
+計算 dp[3] (前3個字符 "226"):
+  - 單獨 '6': s[2]='6' ✓ → dp[3] += dp[2] = 2
+  - 組合 '26': "26" 在 [10,26] ✓ → dp[3] += dp[1] = 1
+  dp[3] = 3
+
+結果: 3 種解碼方式
+  1. "BBF" (2, 2, 6)
+  2. "VF"  (22, 6)
+  3. "BZ"  (2, 26)</code></pre>
+                </div>
+            </div>
+
+            <div class="approach-box">
+                <div class="approach-title">方法二：空間優化（O(1) 空間）⭐</div>
+                <p>觀察到 dp[i] 只依賴 dp[i-1] 和 dp[i-2]，可以用兩個變數優化空間。</p>
+                
+                <div class="visual-box">
+                    <p><strong>滾動變數示意：s = "226"</strong></p>
+                    <pre style="background: white; padding: 15px; border-radius: 5px; margin-top: 10px;"><code>初始: prev2=1, prev1=1
+
+處理 s[1]='2':
+  current = 0
+  單獨: '2' ✓ → current += prev1 = 1
+  組合: '22' ✓ → current += prev2 = 1
+  current = 2
+  更新: prev2=1, prev1=2
+
+處理 s[2]='6':
+  current = 0
+  單獨: '6' ✓ → current += prev1 = 2
+  組合: '26' ✓ → current += prev2 = 1
+  current = 3
+  
+結果: 3</code></pre>
+                </div>
+            </div>
+
+            <div class="approach-box">
+                <div class="approach-title">邊界情況處理</div>
+                <ul>
+                    <li><strong>'0' 的處理：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>'0' 不能單獨解碼</li>
+                            <li>'10' 和 '20' 可以解碼</li>
+                            <li>'30', '40'... 無法解碼 → 返回 0</li>
+                            <li>前導零：如 "06" → 返回 0</li>
+                        </ul>
+                    </li>
+                    <li><strong>兩位數判斷：</strong>必須在 [10, 26] 範圍內</li>
+                    <li><strong>連續的 '0'：</strong>如 "100" 需要特別處理</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">程式碼實現</h2>
+            
+            <div class="language-tabs">
+                <button class="tab-btn active" onclick="showLanguage('python')">Python</button>
+                <button class="tab-btn" onclick="showLanguage('cpp')">C++</button>
+                <button class="tab-btn" onclick="showLanguage('java')">Java</button>
+            </div>
+
+            <div id="python" class="code-container active">
+                <pre><code class="language-python">class Solution:
+    def numDecodings(self, s: str) -> int:
+        """
+        方法一：動態規劃
+        時間複雜度: O(n)
+        空間複雜度: O(n)
+        """
+        if not s or s[0] == '0':
+            return 0
+        
+        n = len(s)
+        dp = [0] * (n + 1)
+        dp[0] = 1  # 空字串
+        dp[1] = 1  # 第一個字符（已確認不是 '0'）
+        
+        for i in range(2, n + 1):
+            # 檢查單個字符（第 i 個字符，索引 i-1）
+            one_digit = int(s[i-1])
+            if 1 <= one_digit <= 9:
+                dp[i] += dp[i-1]
+            
+            # 檢查兩個字符
+            two_digits = int(s[i-2:i])
+            if 10 <= two_digits <= 26:
+                dp[i] += dp[i-2]
+        
+        return dp[n]
+    
+    def numDecodings_optimized(self, s: str) -> int:
+        """
+        方法二：空間優化（O(1) 空間）
+        時間複雜度: O(n)
+        空間複雜度: O(1)
+        """
+        if not s or s[0] == '0':
+            return 0
+        
+        n = len(s)
+        # prev2 = dp[i-2], prev1 = dp[i-1]
+        prev2, prev1 = 1, 1
+        
+        for i in range(2, n + 1):
+            current = 0
+            
+            # 單個字符
+            one_digit = int(s[i-1])
+            if 1 <= one_digit <= 9:
+                current += prev1
+            
+            # 兩個字符
+            two_digits = int(s[i-2:i])
+            if 10 <= two_digits <= 26:
+                current += prev2
+            
+            # 滾動更新
+            prev2, prev1 = prev1, current
+        
+        return prev1
+    
+    def numDecodings_clean(self, s: str) -> int:
+        """
+        簡潔版本
+        """
+        if not s or s[0] == '0':
+            return 0
+        
+        prev2, prev1 = 1, 1
+        
+        for i in range(1, len(s)):
+            current = 0
+            
+            # 單個字符
+            if s[i] != '0':
+                current += prev1
+            
+            # 兩個字符
+            two_digits = int(s[i-1:i+1])
+            if 10 <= two_digits <= 26:
+                current += prev2
+            
+            # 如果 current 仍為 0，說明無法解碼
+            if current == 0:
+                return 0
+            
+            prev2, prev1 = prev1, current
+        
+        return prev1</code></pre>
+            </div>
+
+            <div id="cpp" class="code-container">
+                <pre><code class="language-cpp">#include &lt;string&gt;
+#include &lt;vector&gt;
+using namespace std;
+
+class Solution {
+public:
+    /**
+     * 方法一：動態規劃
+     * 時間複雜度: O(n)
+     * 空間複雜度: O(n)
+     */
+    int numDecodings(string s) {
+        if (s.empty() || s[0] == '0') {
+            return 0;
+        }
+        
+        int n = s.length();
+        vector<int> dp(n + 1, 0);
+        dp[0] = 1;
+        dp[1] = 1;
+        
+        for (int i = 2; i <= n; i++) {
+            // 單個字符
+            int oneDigit = s[i-1] - '0';
+            if (oneDigit >= 1 && oneDigit <= 9) {
+                dp[i] += dp[i-1];
+            }
+            
+            // 兩個字符
+            int twoDigits = stoi(s.substr(i-2, 2));
+            if (twoDigits >= 10 && twoDigits <= 26) {
+                dp[i] += dp[i-2];
+            }
+        }
+        
+        return dp[n];
+    }
+    
+    /**
+     * 方法二：空間優化
+     * 時間複雜度: O(n)
+     * 空間複雜度: O(1)
+     */
+    int numDecodings_optimized(string s) {
+        if (s.empty() || s[0] == '0') {
+            return 0;
+        }
+        
+        int n = s.length();
+        int prev2 = 1, prev1 = 1;
+        
+        for (int i = 2; i <= n; i++) {
+            int current = 0;
+            
+            // 單個字符
+            int oneDigit = s[i-1] - '0';
+            if (oneDigit >= 1 && oneDigit <= 9) {
+                current += prev1;
+            }
+            
+            // 兩個字符
+            int twoDigits = stoi(s.substr(i-2, 2));
+            if (twoDigits >= 10 && twoDigits <= 26) {
+                current += prev2;
+            }
+            
+            prev2 = prev1;
+            prev1 = current;
+        }
+        
+        return prev1;
+    }
+};</code></pre>
+            </div>
+
+            <div id="java" class="code-container">
+                <pre><code class="language-java">class Solution {
+    /**
+     * 方法一：動態規劃
+     * 時間複雜度: O(n)
+     * 空間複雜度: O(n)
+     */
+    public int numDecodings(String s) {
+        if (s == null || s.length() == 0 || s.charAt(0) == '0') {
+            return 0;
+        }
+        
+        int n = s.length();
+        int[] dp = new int[n + 1];
+        dp[0] = 1;
+        dp[1] = 1;
+        
+        for (int i = 2; i <= n; i++) {
+            // 單個字符
+            int oneDigit = s.charAt(i-1) - '0';
+            if (oneDigit >= 1 && oneDigit <= 9) {
+                dp[i] += dp[i-1];
+            }
+            
+            // 兩個字符
+            int twoDigits = Integer.parseInt(s.substring(i-2, i));
+            if (twoDigits >= 10 && twoDigits <= 26) {
+                dp[i] += dp[i-2];
+            }
+        }
+        
+        return dp[n];
+    }
+    
+    /**
+     * 方法二：空間優化
+     * 時間複雜度: O(n)
+     * 空間複雜度: O(1)
+     */
+    public int numDecodings_optimized(String s) {
+        if (s == null || s.length() == 0 || s.charAt(0) == '0') {
+            return 0;
+        }
+        
+        int n = s.length();
+        int prev2 = 1, prev1 = 1;
+        
+        for (int i = 2; i <= n; i++) {
+            int current = 0;
+            
+            // 單個字符
+            int oneDigit = s.charAt(i-1) - '0';
+            if (oneDigit >= 1 && oneDigit <= 9) {
+                current += prev1;
+            }
+            
+            // 兩個字符
+            int twoDigits = Integer.parseInt(s.substring(i-2, i));
+            if (twoDigits >= 10 && twoDigits <= 26) {
+                current += prev2;
+            }
+            
+            prev2 = prev1;
+            prev1 = current;
+        }
+        
+        return prev1;
+    }
+}</code></pre>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">複雜度分析</h2>
+            <div class="complexity-box">
+                <div class="complexity-item">時間複雜度: O(n)</div>
+                <p style="color: #78716c; margin: 10px 0;">
+                    只需遍歷字串一次，n 是字串長度。
+                </p>
+                
+                <div class="complexity-item" style="margin-top: 20px;">空間複雜度: O(n) 或 O(1)</div>
+                <p style="color: #78716c; margin: 10px 0;">
+                    基本 DP：O(n) 陣列空間。
+                    優化版本：O(1) 只用兩個變數。
+                </p>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">重點提示</h2>
+            <div class="complexity-box">
+                <ul>
+                    <li><strong>DP 思路：</strong>類似爬樓梯，每次可以走 1 步或 2 步</li>
+                    <li><strong>關鍵判斷：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>單個字符：必須是 '1'-'9'（不能是 '0'）</li>
+                            <li>兩個字符：必須在 [10, 26] 範圍內</li>
+                        </ul>
+                    </li>
+                    <li><strong>'0' 的陷阱：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>'0' 不能單獨解碼</li>
+                            <li>'10' 和 '20' 可以，其他如 '30' 不行</li>
+                            <li>前導零直接返回 0</li>
+                            <li>連續零如 "100" 要小心處理</li>
+                        </ul>
+                    </li>
+                    <li><strong>邊界情況：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>空字串或首字符為 '0' → 0</li>
+                            <li>只有一個字符 → 1（如果不是 '0'）</li>
+                            <li>全是 '1' → 斐波那契數列</li>
+                            <li>"27"、"91" 等超過 26 的兩位數</li>
+                        </ul>
+                    </li>
+                    <li><strong>常見錯誤：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>忘記檢查 '0' 的特殊情況</li>
+                            <li>兩位數範圍寫成 [1, 26] 而非 [10, 26]</li>
+                            <li>字串索引和 dp 索引搞混</li>
+                        </ul>
+                    </li>
+                    <li><strong>面試技巧：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>先舉例說明：如 "226" 的三種解碼</li>
+                            <li>說明 dp[i] 的定義</li>
+                            <li>畫圖展示狀態轉移</li>
+                            <li>提到空間優化（滾動變數）</li>
+                            <li>討論 '0' 的特殊處理</li>
+                        </ul>
+                    </li>
+                    <li><strong>變形題：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>Decode Ways II (#639) - 包含 '*' 萬用字符</li>
+                            <li>Number of Ways to Decode (#1977)</li>
+                        </ul>
+                    </li>
+                    <li><strong>實際應用：</strong>密碼學、編碼解碼、通訊協議</li>
+                    <li><strong>相似題目：</strong>Climbing Stairs (70), Fibonacci Number (509)</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        hljs.highlightAll();
+        
+        function showLanguage(lang) {
+            document.querySelectorAll('.code-container').forEach(container => {
+                container.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.getElementById(lang).classList.add('active');
+            event.target.classList.add('active');
+        }
+    </script>
+</body>
+</html>

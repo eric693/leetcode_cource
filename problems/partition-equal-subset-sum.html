@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>416. Partition Equal Subset Sum - LeetCode 學習平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f8fafc; line-height: 1.8; color: #334155; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .header { background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: white; padding: 40px; border-radius: 16px; margin-bottom: 30px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .back-btn { display: inline-block; color: white; text-decoration: none; background: rgba(255,255,255,0.2); padding: 10px 20px; border-radius: 8px; margin-bottom: 20px; transition: all 0.3s; }
+        .back-btn:hover { background: rgba(255,255,255,0.3); }
+        .problem-title { font-size: 2.5em; font-weight: 800; margin-bottom: 15px; }
+        .difficulty { display: inline-block; background: rgba(255,255,255,0.3); padding: 8px 20px; border-radius: 20px; font-weight: 600; font-size: 0.9em; }
+        .content-section { background: white; padding: 40px; border-radius: 16px; margin-bottom: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .section-title { font-size: 1.8em; color: #1e293b; margin-bottom: 25px; font-weight: 700; padding-bottom: 10px; border-bottom: 3px solid #f59e0b; }
+        .description { font-size: 1.1em; line-height: 1.9; color: #475569; margin-bottom: 20px; }
+        .example-box { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .example-title { font-weight: 700; color: #d97706; margin-bottom: 10px; font-size: 1.1em; }
+        .approach-box { background: #eff6ff; border-left: 4px solid #3b82f6; padding: 25px; border-radius: 8px; margin: 25px 0; }
+        .approach-title { font-weight: 700; color: #1e40af; margin-bottom: 15px; font-size: 1.3em; }
+        .complexity-box { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .complexity-item { margin: 10px 0; font-weight: 600; color: #92400e; }
+        .language-tabs { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+        .tab-btn { padding: 12px 28px; border: 2px solid #f59e0b; background: white; color: #f59e0b; border-radius: 8px; cursor: pointer; font-weight: 600; transition: all 0.3s; font-size: 1em; }
+        .tab-btn:hover { background: #fef3c7; }
+        .tab-btn.active { background: #f59e0b; color: white; }
+        .code-container { display: none; margin-top: 20px; }
+        .code-container.active { display: block; }
+        pre { background: #282c34 !important; padding: 25px !important; border-radius: 12px; overflow-x: auto; margin: 0; }
+        code { font-family: 'Fira Code', 'Consolas', monospace; font-size: 0.95em; line-height: 1.6; }
+        ol, ul { margin-left: 30px; margin-top: 15px; }
+        li { margin: 12px 0; line-height: 1.8; }
+        strong { color: #1e293b; font-weight: 700; }
+        .visual-box { background: #f0f9ff; border: 2px solid #3b82f6; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        
+        @media (max-width: 768px) {
+            .container { padding: 10px; }
+            .header { padding: 25px; }
+            .problem-title { font-size: 1.8em; }
+            .content-section { padding: 25px; }
+            .tab-btn { padding: 10px 20px; font-size: 0.9em; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="../index.html" class="back-btn">← 返回題目列表</a>
+            <div class="problem-title">416. Partition Equal Subset Sum</div>
+            <span class="difficulty">Medium</span>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">題目描述</h2>
+            <div class="description">
+                <p>給定一個<strong>只包含正整數</strong>的<strong>非空</strong>陣列 <code>nums</code>，判斷是否可以將這個陣列分割成兩個子集，使得兩個子集的元素和相等。</p>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例 1:</div>
+                <pre><code>輸入: nums = [1,5,11,5]
+輸出: true
+解釋: 陣列可以分割成 [1, 5, 5] 和 [11]。</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例 2:</div>
+                <pre><code>輸入: nums = [1,2,3,5]
+輸出: false
+解釋: 陣列不能分割成兩個和相等的子集。</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">限制條件:</div>
+                <pre><code>1 <= nums.length <= 200
+1 <= nums[i] <= 100</code></pre>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">解題思路</h2>
+            
+            <div class="approach-box">
+                <div class="approach-title">核心觀察</div>
+                <p>這題可以轉化為經典的<strong>0/1 背包問題</strong>：</p>
+                <ul>
+                    <li>如果陣列總和為奇數 → 不可能平分 → 返回 false</li>
+                    <li>如果陣列總和為偶數 → 問題變成：能否從陣列中選出元素，使其和等於 total/2</li>
+                </ul>
+                <p style="margin-top: 15px; color: #dc2626; font-weight: 600;">
+                    轉化後問題：能否在陣列中找到子集，使其和等於 target = sum(nums) / 2
+                </p>
+            </div>
+            
+            <div class="approach-box">
+                <div class="approach-title">方法一：二維動態規劃（推薦理解）⭐</div>
+                <p>使用二維 DP，dp[i][j] 表示使用前 i 個數字，能否湊出和為 j。</p>
+                
+                <p style="margin-top: 15px;"><strong>狀態定義：</strong></p>
+                <ul>
+                    <li><strong>dp[i][j]：</strong>使用前 i 個數字，能否湊出和為 j</li>
+                    <li><strong>初始狀態：</strong>dp[i][0] = true（和為 0，不選任何數字）</li>
+                    <li><strong>轉移方程：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>不選第 i 個數：dp[i][j] = dp[i-1][j]</li>
+                            <li>選第 i 個數：dp[i][j] = dp[i-1][j-nums[i]]（如果 j >= nums[i]）</li>
+                            <li>兩者取 OR：dp[i][j] = dp[i-1][j] || dp[i-1][j-nums[i]]</li>
+                        </ul>
+                    </li>
+                </ul>
+                
+                <div class="visual-box">
+                    <p><strong>視覺化範例：nums = [1,5,11,5], target = 11</strong></p>
+                    <pre style="background: white; padding: 15px; border-radius: 5px; margin-top: 10px;"><code>陣列: [1, 5, 11, 5]
+總和: 22，目標: 11
+
+DP 表格（行=前i個數，列=目標和j）:
+
+       0   1   2   3   4   5   6   7   8   9  10  11
+    ┌───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┐
+  0 │ T │ F │ F │ F │ F │ F │ F │ F │ F │ F │ F │ F │
+    ├───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┤
+  1 │ T │ T │ F │ F │ F │ F │ F │ F │ F │ F │ F │ F │ (加入1)
+    ├───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┤
+  5 │ T │ T │ F │ F │ F │ T │ T │ F │ F │ F │ F │ F │ (加入5)
+    ├───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┤
+ 11 │ T │ T │ F │ F │ F │ T │ T │ F │ F │ F │ F │ T │ (加入11)
+    ├───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┤
+  5 │ T │ T │ F │ F │ F │ T │ T │ F │ F │ F │ T │ T │ (加入5)
+    └───┴───┴───┴───┴───┴───┴───┴───┴───┴───┴───┴───┘
+
+dp[4][11] = T，可以湊出 11！
+方案：[1, 5, 5] 或 [11]</code></pre>
+                </div>
+            </div>
+
+            <div class="approach-box">
+                <div class="approach-title">方法二：一維動態規劃（空間優化）⭐⭐</div>
+                <p>觀察到 dp[i] 只依賴 dp[i-1]，可以用一維陣列優化空間。</p>
+                
+                <p style="margin-top: 15px;"><strong>關鍵技巧：</strong></p>
+                <ul>
+                    <li>從右往左更新（避免覆蓋還需要使用的值）</li>
+                    <li>dp[j] = dp[j] || dp[j - num]</li>
+                </ul>
+                
+                <div class="visual-box">
+                    <p><strong>一維 DP 過程：nums = [1,5,11,5], target = 11</strong></p>
+                    <pre style="background: white; padding: 15px; border-radius: 5px; margin-top: 10px;"><code>初始: dp = [T, F, F, F, F, F, F, F, F, F, F, F]
+
+處理 1:
+     dp = [T, T, F, F, F, F, F, F, F, F, F, F]
+           ↑  ↑ (j=1時，dp[1] = dp[1] || dp[0])
+
+處理 5:
+     dp = [T, T, F, F, F, T, T, F, F, F, F, F]
+                       ↑  ↑ (可以湊出5和6)
+
+處理 11:
+     dp = [T, T, F, F, F, T, T, F, F, F, F, T]
+                                         ↑ (可以湊出11)
+
+處理 5:
+     dp = [T, T, F, F, F, T, T, F, F, F, T, T]
+                                   ↑ (可以湊出10)
+
+結果: dp[11] = T</code></pre>
+                </div>
+            </div>
+
+            <div class="approach-box">
+                <div class="approach-title">提前終止優化</div>
+                <ul>
+                    <li><strong>總和為奇數：</strong>直接返回 false</li>
+                    <li><strong>最大元素 > target：</strong>不可能分割</li>
+                    <li><strong>找到答案：</strong>dp[target] = true 時可以立即返回</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">程式碼實現</h2>
+            
+            <div class="language-tabs">
+                <button class="tab-btn active" onclick="showLanguage('python')">Python</button>
+                <button class="tab-btn" onclick="showLanguage('cpp')">C++</button>
+                <button class="tab-btn" onclick="showLanguage('java')">Java</button>
+            </div>
+
+            <div id="python" class="code-container active">
+                <pre><code class="language-python">class Solution:
+    def canPartition(self, nums: List[int]) -> bool:
+        """
+        方法：一維動態規劃（推薦）
+        時間複雜度: O(n * target)
+        空間複雜度: O(target)
+        """
+        total = sum(nums)
+        
+        # 總和為奇數，不可能平分
+        if total % 2 != 0:
+            return False
+        
+        target = total // 2
+        
+        # dp[j] 表示能否湊出和為 j
+        dp = [False] * (target + 1)
+        dp[0] = True  # 和為 0
+        
+        # 遍歷每個數字
+        for num in nums:
+            # 從右往左更新（避免重複使用同一個數）
+            for j in range(target, num - 1, -1):
+                dp[j] = dp[j] or dp[j - num]
+        
+        return dp[target]
+    
+    def canPartition_2d(self, nums: List[int]) -> bool:
+        """
+        方法：二維動態規劃（更容易理解）
+        時間複雜度: O(n * target)
+        空間複雜度: O(n * target)
+        """
+        total = sum(nums)
+        
+        if total % 2 != 0:
+            return False
+        
+        target = total // 2
+        n = len(nums)
+        
+        # dp[i][j] 表示使用前 i 個數能否湊出和 j
+        dp = [[False] * (target + 1) for _ in range(n + 1)]
+        
+        # 初始化：和為 0 總是可以（不選任何數）
+        for i in range(n + 1):
+            dp[i][0] = True
+        
+        # 填充 DP 表
+        for i in range(1, n + 1):
+            for j in range(1, target + 1):
+                # 不選第 i 個數
+                dp[i][j] = dp[i-1][j]
+                
+                # 選第 i 個數（如果可以）
+                if j >= nums[i-1]:
+                    dp[i][j] = dp[i][j] or dp[i-1][j - nums[i-1]]
+        
+        return dp[n][target]
+    
+    def canPartition_optimized(self, nums: List[int]) -> bool:
+        """
+        優化版：加入提前終止
+        """
+        total = sum(nums)
+        
+        if total % 2 != 0:
+            return False
+        
+        target = total // 2
+        max_num = max(nums)
+        
+        # 如果最大數大於目標，無法分割
+        if max_num > target:
+            return False
+        
+        # 如果最大數等於目標，直接成功
+        if max_num == target:
+            return True
+        
+        dp = [False] * (target + 1)
+        dp[0] = True
+        
+        for num in nums:
+            for j in range(target, num - 1, -1):
+                dp[j] = dp[j] or dp[j - num]
+                # 提前終止
+                if dp[target]:
+                    return True
+        
+        return dp[target]
+    
+    def canPartition_set(self, nums: List[int]) -> bool:
+        """
+        使用 Set 的簡潔寫法
+        """
+        total = sum(nums)
+        
+        if total % 2:
+            return False
+        
+        target = total // 2
+        possible = {0}  # 可能湊出的和
+        
+        for num in nums:
+            # 更新所有可能的和
+            possible = possible | {p + num for p in possible}
+            
+            # 提前終止
+            if target in possible:
+                return True
+        
+        return target in possible</code></pre>
+            </div>
+
+            <div id="cpp" class="code-container">
+                <pre><code class="language-cpp">#include &lt;vector&gt;
+#include &lt;numeric&gt;
+using namespace std;
+
+class Solution {
+public:
+    /**
+     * 方法：一維動態規劃
+     * 時間複雜度: O(n * target)
+     * 空間複雜度: O(target)
+     */
+    bool canPartition(vector<int>& nums) {
+        int total = accumulate(nums.begin(), nums.end(), 0);
+        
+        // 總和為奇數
+        if (total % 2 != 0) {
+            return false;
+        }
+        
+        int target = total / 2;
+        vector<bool> dp(target + 1, false);
+        dp[0] = true;
+        
+        for (int num : nums) {
+            // 從右往左更新
+            for (int j = target; j >= num; j--) {
+                dp[j] = dp[j] || dp[j - num];
+            }
+        }
+        
+        return dp[target];
+    }
+    
+    /**
+     * 優化版：加入提前終止
+     */
+    bool canPartition_optimized(vector<int>& nums) {
+        int total = accumulate(nums.begin(), nums.end(), 0);
+        
+        if (total % 2 != 0) {
+            return false;
+        }
+        
+        int target = total / 2;
+        int maxNum = *max_element(nums.begin(), nums.end());
+        
+        if (maxNum > target) {
+            return false;
+        }
+        
+        if (maxNum == target) {
+            return true;
+        }
+        
+        vector<bool> dp(target + 1, false);
+        dp[0] = true;
+        
+        for (int num : nums) {
+            for (int j = target; j >= num; j--) {
+                dp[j] = dp[j] || dp[j - num];
+                if (dp[target]) {
+                    return true;
+                }
+            }
+        }
+        
+        return dp[target];
+    }
+};</code></pre>
+            </div>
+
+            <div id="java" class="code-container">
+                <pre><code class="language-java">import java.util.Arrays;
+
+class Solution {
+    /**
+     * 方法：一維動態規劃
+     * 時間複雜度: O(n * target)
+     * 空間複雜度: O(target)
+     */
+    public boolean canPartition(int[] nums) {
+        int total = 0;
+        for (int num : nums) {
+            total += num;
+        }
+        
+        // 總和為奇數
+        if (total % 2 != 0) {
+            return false;
+        }
+        
+        int target = total / 2;
+        boolean[] dp = new boolean[target + 1];
+        dp[0] = true;
+        
+        for (int num : nums) {
+            // 從右往左更新
+            for (int j = target; j >= num; j--) {
+                dp[j] = dp[j] || dp[j - num];
+            }
+        }
+        
+        return dp[target];
+    }
+    
+    /**
+     * 優化版：加入提前終止
+     */
+    public boolean canPartition_optimized(int[] nums) {
+        int total = 0;
+        int maxNum = 0;
+        
+        for (int num : nums) {
+            total += num;
+            maxNum = Math.max(maxNum, num);
+        }
+        
+        if (total % 2 != 0) {
+            return false;
+        }
+        
+        int target = total / 2;
+        
+        if (maxNum > target) {
+            return false;
+        }
+        
+        if (maxNum == target) {
+            return true;
+        }
+        
+        boolean[] dp = new boolean[target + 1];
+        dp[0] = true;
+        
+        for (int num : nums) {
+            for (int j = target; j >= num; j--) {
+                dp[j] = dp[j] || dp[j - num];
+                if (dp[target]) {
+                    return true;
+                }
+            }
+        }
+        
+        return dp[target];
+    }
+}</code></pre>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">複雜度分析</h2>
+            <div class="complexity-box">
+                <div class="complexity-item">時間複雜度: O(n × target)</div>
+                <p style="color: #78716c; margin: 10px 0;">
+                    n 是陣列長度，target = sum(nums) / 2。需要填充 n × target 個狀態。
+                    最壞情況下 target 可達 10000（200個數，每個100）。
+                </p>
+                
+                <div class="complexity-item" style="margin-top: 20px;">空間複雜度: O(target)</div>
+                <p style="color: #78716c; margin: 10px 0;">
+                    一維 DP 陣列需要 O(target) 空間。
+                    二維 DP 需要 O(n × target) 空間。
+                </p>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">重點提示</h2>
+            <div class="complexity-box">
+                <ul>
+                    <li><strong>問題轉化：</strong>分割問題 → 0/1 背包問題</li>
+                    <li><strong>關鍵觀察：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>總和為奇數 → 必定無法平分</li>
+                            <li>只需要找到一個子集和 = total/2</li>
+                            <li>這是典型的 0/1 背包（每個數只能用一次）</li>
+                        </ul>
+                    </li>
+                    <li><strong>DP 狀態設計：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>二維：dp[i][j] = 前 i 個數能否湊出 j</li>
+                            <li>一維：dp[j] = 能否湊出 j</li>
+                            <li>一維必須從右往左更新！</li>
+                        </ul>
+                    </li>
+                    <li><strong>為什麼從右往左：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>保證每個數只用一次</li>
+                            <li>避免用更新後的值再次更新</li>
+                            <li>相當於滾動陣列優化</li>
+                        </ul>
+                    </li>
+                    <li><strong>優化技巧：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>檢查總和奇偶性</li>
+                            <li>檢查最大元素</li>
+                            <li>找到答案立即返回</li>
+                            <li>排序後從大到小處理（可能更快找到答案）</li>
+                        </ul>
+                    </li>
+                    <li><strong>邊界情況：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>只有一個元素 → false</li>
+                            <li>兩個相同元素 → true</li>
+                            <li>所有元素相同 → 看個數奇偶</li>
+                            <li>target = 0 → true（但題目保證正整數）</li>
+                        </ul>
+                    </li>
+                    <li><strong>常見錯誤：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>一維 DP 從左往右更新</li>
+                            <li>忘記檢查總和奇偶性</li>
+                            <li>dp[0] 沒有初始化為 true</li>
+                        </ul>
+                    </li>
+                    <li><strong>面試技巧：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>先說明問題轉化：分割 → 背包</li>
+                            <li>解釋為什麼檢查 sum/2</li>
+                            <li>從二維 DP 推導到一維優化</li>
+                            <li>強調從右往左的重要性</li>
+                        </ul>
+                    </li>
+                    <li><strong>變形題：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>Partition to K Equal Sum Subsets (#698)</li>
+                            <li>Target Sum (#494)</li>
+                            <li>Last Stone Weight II (#1049)</li>
+                        </ul>
+                    </li>
+                    <li><strong>實際應用：</strong>資源分配、負載均衡、公平分組</li>
+                    <li><strong>相似題目：</strong>Coin Change (322), 0/1 Knapsack Problem</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        hljs.highlightAll();
+        
+        function showLanguage(lang) {
+            document.querySelectorAll('.code-container').forEach(container => {
+                container.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.getElementById(lang).classList.add('active');
+            event.target.classList.add('active');
+        }
+    </script>
+</body>
+</html>

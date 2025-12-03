@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LeetCode 學習平台 - 47 題完整版</title>
+    <title>LeetCode 學習平台 - 完整版</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f8fafc; min-height: 100vh; color: #1e293b; }
@@ -49,12 +49,12 @@
     <div class="container">
         <header>
             <h1>LeetCode 學習平台</h1>
-            <p>精選 47 題 | Python & C++ & Java 詳解</p>
+            <p>精選 65 題 | Python & C++ & Java 詳解</p>
         </header>
 
         <div class="stats-bar">
             <div class="stat-item">
-                <div class="stat-number">47</div>
+                <div class="stat-number">65</div>
                 <div class="stat-label">總題數</div>
             </div>
             <div class="stat-item">
@@ -62,11 +62,11 @@
                 <div class="stat-label">Easy</div>
             </div>
             <div class="stat-item">
-                <div class="stat-number">20</div>
+                <div class="stat-number">28</div>
                 <div class="stat-label">Medium</div>
             </div>
             <div class="stat-item">
-                <div class="stat-number">8</div>
+                <div class="stat-number">18</div>
                 <div class="stat-label">Hard</div>
             </div>
         </div>
@@ -104,6 +104,16 @@
                         <div class="problem-title">Contains Duplicate</div>
                         <div class="problem-description">判斷陣列中是否存在重複元素。</div>
                         <div class="problem-tags"><span class="tag">Array</span><span class="tag">Hash Table</span></div>
+                    </div>
+
+                    <div class="problem-card" data-difficulty="medium" onclick="location.href='problems/find-the-duplicate-number.html'">
+                        <div class="problem-header">
+                            <div class="problem-number">#287</div>
+                            <div class="difficulty-badge medium">Medium</div>
+                        </div>
+                        <div class="problem-title">Find the Duplicate Number</div>
+                        <div class="problem-description">找出陣列中唯一重複的數字，使用快慢指標（Floyd's Cycle Detection）。</div>
+                        <div class="problem-tags"><span class="tag">Array</span><span class="tag">Two Pointers</span></div>
                     </div>
 
                     <div class="problem-card" data-difficulty="easy" onclick="location.href='problems/valid-anagram.html'">
@@ -166,6 +176,16 @@
                         <div class="problem-tags"><span class="tag">Array</span><span class="tag">Prefix Sum</span></div>
                     </div>
 
+                    <div class="problem-card" data-difficulty="medium" onclick="location.href='problems/search-a-2d-matrix-ii.html'">
+                        <div class="problem-header">
+                            <div class="problem-number">#240</div>
+                            <div class="difficulty-badge medium">Medium</div>
+                        </div>
+                        <div class="problem-title">Search a 2D Matrix II</div>
+                        <div class="problem-description">在行列都已排序的矩陣中搜尋目標值，使用階梯搜尋法。</div>
+                        <div class="problem-tags"><span class="tag">Array</span><span class="tag">Binary Search</span></div>
+                    </div>
+
                     <div class="problem-card" data-difficulty="medium" onclick="location.href='problems/top-k-frequent.html'">
                         <div class="problem-header">
                             <div class="problem-number">#347</div>
@@ -184,6 +204,16 @@
                         <div class="problem-title">First Missing Positive</div>
                         <div class="problem-description">找出未出現在陣列中的最小正整數，要求 O(n) 時間和 O(1) 空間。</div>
                         <div class="problem-tags"><span class="tag">Array</span><span class="tag">Hash Table</span></div>
+                    </div>
+
+                    <div class="problem-card" data-difficulty="hard" onclick="location.href='problems/minimum-window-substring.html'">
+                        <div class="problem-header">
+                            <div class="problem-number">#76</div>
+                            <div class="difficulty-badge hard">Hard</div>
+                        </div>
+                        <div class="problem-title">Minimum Window Substring</div>
+                        <div class="problem-description">找出字串中包含另一字串所有字符的最小子串，使用滑動窗口。</div>
+                        <div class="problem-tags"><span class="tag">String</span><span class="tag">Sliding Window</span></div>
                     </div>
                 </div>
             </div>
@@ -242,6 +272,16 @@
                         <div class="problem-tags"><span class="tag">Array</span><span class="tag">Two Pointers</span></div>
                     </div>
 
+                    <div class="problem-card" data-difficulty="hard" onclick="location.href='problems/longest-valid-parentheses.html'">
+                        <div class="problem-header">
+                            <div class="problem-number">#32</div>
+                            <div class="difficulty-badge hard">Hard</div>
+                        </div>
+                        <div class="problem-title">Longest Valid Parentheses</div>
+                        <div class="problem-description">找出最長有效括號子串長度，使用動態規劃或棧。</div>
+                        <div class="problem-tags"><span class="tag">String</span><span class="tag">DP</span><span class="tag">Stack</span></div>
+                    </div>
+
                     <div class="problem-card" data-difficulty="hard" onclick="location.href='problems/trapping-rain-water.html'">
                         <div class="problem-header">
                             <div class="problem-number">#42</div>
@@ -295,6 +335,16 @@
                         </div>
                         <div class="problem-title">Daily Temperatures</div>
                         <div class="problem-description">給定每日溫度列表,返回需要等待多少天才會有更高的溫度。</div>
+                        <div class="problem-tags"><span class="tag">Array</span><span class="tag">Stack</span></div>
+                    </div>
+
+                    <div class="problem-card" data-difficulty="hard" onclick="location.href='problems/largest-rectangle-in-histogram.html'">
+                        <div class="problem-header">
+                            <div class="problem-number">#84</div>
+                            <div class="difficulty-badge hard">Hard</div>
+                        </div>
+                        <div class="problem-title">Largest Rectangle in Histogram</div>
+                        <div class="problem-description">找出柱狀圖中最大的矩形面積，使用單調遞增棧。</div>
                         <div class="problem-tags"><span class="tag">Array</span><span class="tag">Stack</span></div>
                     </div>
                 </div>
@@ -416,6 +466,16 @@
                         <div class="problem-tags"><span class="tag">Linked List</span><span class="tag">Two Pointers</span></div>
                     </div>
 
+                    <div class="problem-card" data-difficulty="medium" onclick="location.href='problems/longest-consecutive-sequence.html'">
+                        <div class="problem-header">
+                            <div class="problem-number">#128</div>
+                            <div class="difficulty-badge medium">Medium</div>
+                        </div>
+                        <div class="problem-title">Longest Consecutive Sequence</div>
+                        <div class="problem-description">找出未排序陣列中最長連續序列的長度，要求 O(n) 時間。</div>
+                        <div class="problem-tags"><span class="tag">Array</span><span class="tag">Hash Table</span></div>
+                    </div>
+
                     <div class="problem-card" data-difficulty="easy" onclick="location.href='problems/reverse-linked-list.html'">
                         <div class="problem-header">
                             <div class="problem-number">#206</div>
@@ -491,6 +551,26 @@
                         <div class="problem-description">返回二元樹的層序遍歷結果，從左到右逐層遍歷。</div>
                         <div class="problem-tags"><span class="tag">Tree</span><span class="tag">BFS</span></div>
                     </div>
+
+                    <div class="problem-card" data-difficulty="hard" onclick="location.href='problems/binary-tree-maximum-path-sum.html'">
+                        <div class="problem-header">
+                            <div class="problem-number">#124</div>
+                            <div class="difficulty-badge hard">Hard</div>
+                        </div>
+                        <div class="problem-title">Binary Tree Maximum Path Sum</div>
+                        <div class="problem-description">找出二元樹中最大路徑和，使用後序遍歷和樹形 DP。</div>
+                        <div class="problem-tags"><span class="tag">Tree</span><span class="tag">DFS</span><span class="tag">DP</span></div>
+                    </div>
+
+                    <div class="problem-card" data-difficulty="hard" onclick="location.href='problems/serialize-and-deserialize-binary-tree.html'">
+                        <div class="problem-header">
+                            <div class="problem-number">#297</div>
+                            <div class="difficulty-badge hard">Hard</div>
+                        </div>
+                        <div class="problem-title">Serialize and Deserialize Binary Tree</div>
+                        <div class="problem-description">實現二元樹的序列化與反序列化，使用前序遍歷或層序遍歷。</div>
+                        <div class="problem-tags"><span class="tag">Tree</span><span class="tag">Design</span></div>
+                    </div>
                 </div>
             </div>
 
@@ -508,6 +588,36 @@
                         <div class="problem-tags"><span class="tag">Math</span><span class="tag">DP</span></div>
                     </div>
 
+                    <div class="problem-card" data-difficulty="medium" onclick="location.href='problems/unique-paths.html'">
+                        <div class="problem-header">
+                            <div class="problem-number">#62</div>
+                            <div class="difficulty-badge medium">Medium</div>
+                        </div>
+                        <div class="problem-title">Unique Paths</div>
+                        <div class="problem-description">計算從左上角到右下角的不同路徑數量，只能向右或向下移動。</div>
+                        <div class="problem-tags"><span class="tag">Math</span><span class="tag">DP</span></div>
+                    </div>
+
+                    <div class="problem-card" data-difficulty="medium" onclick="location.href='problems/minimum-path-sum.html'">
+                        <div class="problem-header">
+                            <div class="problem-number">#64</div>
+                            <div class="difficulty-badge medium">Medium</div>
+                        </div>
+                        <div class="problem-title">Minimum Path Sum</div>
+                        <div class="problem-description">找出從左上角到右下角的最小路徑和，使用動態規劃。</div>
+                        <div class="problem-tags"><span class="tag">Array</span><span class="tag">DP</span></div>
+                    </div>
+
+                    <div class="problem-card" data-difficulty="medium" onclick="location.href='problems/decode-ways.html'">
+                        <div class="problem-header">
+                            <div class="problem-number">#91</div>
+                            <div class="difficulty-badge medium">Medium</div>
+                        </div>
+                        <div class="problem-title">Decode Ways</div>
+                        <div class="problem-description">計算數字字串有多少種解碼方法，類似爬樓梯的變形。</div>
+                        <div class="problem-tags"><span class="tag">String</span><span class="tag">DP</span></div>
+                    </div>
+
                     <div class="problem-card" data-difficulty="easy" onclick="location.href='problems/best-time-to-buy-sell-stock.html'">
                         <div class="problem-header">
                             <div class="problem-number">#121</div>
@@ -516,6 +626,36 @@
                         <div class="problem-title">Best Time to Buy and Sell Stock</div>
                         <div class="problem-description">選擇某一天買入股票並在未來某一天賣出,計算能獲得的最大利潤。</div>
                         <div class="problem-tags"><span class="tag">Array</span><span class="tag">DP</span></div>
+                    </div>
+
+                    <div class="problem-card" data-difficulty="medium" onclick="location.href='problems/word-break.html'">
+                        <div class="problem-header">
+                            <div class="problem-number">#139</div>
+                            <div class="difficulty-badge medium">Medium</div>
+                        </div>
+                        <div class="problem-title">Word Break</div>
+                        <div class="problem-description">判斷字串是否可以拆分為字典中的單詞，使用動態規劃。</div>
+                        <div class="problem-tags"><span class="tag">String</span><span class="tag">DP</span></div>
+                    </div>
+
+                    <div class="problem-card" data-difficulty="medium" onclick="location.href='problems/house-robber.html'">
+                        <div class="problem-header">
+                            <div class="problem-number">#198</div>
+                            <div class="difficulty-badge medium">Medium</div>
+                        </div>
+                        <div class="problem-title">House Robber</div>
+                        <div class="problem-description">偷竊問題：不能偷相鄰的房子，求最大金額，使用動態規劃。</div>
+                        <div class="problem-tags"><span class="tag">Array</span><span class="tag">DP</span></div>
+                    </div>
+
+                    <div class="problem-card" data-difficulty="medium" onclick="location.href='problems/perfect-squares.html'">
+                        <div class="problem-header">
+                            <div class="problem-number">#279</div>
+                            <div class="difficulty-badge medium">Medium</div>
+                        </div>
+                        <div class="problem-title">Perfect Squares</div>
+                        <div class="problem-description">找出和為 n 的完全平方數的最少數量，使用 DP 或 BFS。</div>
+                        <div class="problem-tags"><span class="tag">Math</span><span class="tag">DP</span><span class="tag">BFS</span></div>
                     </div>
 
                     <div class="problem-card" data-difficulty="medium" onclick="location.href='problems/maximum-subarray.html'">
@@ -556,6 +696,26 @@
                         <div class="problem-title">Longest Increasing Subsequence</div>
                         <div class="problem-description">找出給定序列中最長遞增子序列的長度。</div>
                         <div class="problem-tags"><span class="tag">Array</span><span class="tag">DP</span></div>
+                    </div>
+
+                    <div class="problem-card" data-difficulty="medium" onclick="location.href='problems/partition-equal-subset-sum.html'">
+                        <div class="problem-header">
+                            <div class="problem-number">#416</div>
+                            <div class="difficulty-badge medium">Medium</div>
+                        </div>
+                        <div class="problem-title">Partition Equal Subset Sum</div>
+                        <div class="problem-description">判斷是否可以將陣列分割成兩個和相等的子集，使用 0/1 背包 DP。</div>
+                        <div class="problem-tags"><span class="tag">Array</span><span class="tag">DP</span></div>
+                    </div>
+
+                    <div class="problem-card" data-difficulty="hard" onclick="location.href='problems/edit-distance.html'">
+                        <div class="problem-header">
+                            <div class="problem-number">#72</div>
+                            <div class="difficulty-badge hard">Hard</div>
+                        </div>
+                        <div class="problem-title">Edit Distance</div>
+                        <div class="problem-description">計算兩個字串之間的編輯距離（最少操作次數），使用二維 DP。</div>
+                        <div class="problem-tags"><span class="tag">String</span><span class="tag">DP</span></div>
                     </div>
                 </div>
             </div>
@@ -622,7 +782,7 @@
 
         <footer>
             <p>LeetCode 學習平台 | 專注於演算法與資料結構</p>
-            <p style="margin-top: 10px; opacity: 0.8;">© 2025 All Rights Reserved | 47 題精選收錄</p>
+            <p style="margin-top: 10px; opacity: 0.8;">© 2025 All Rights Reserved | 65 題精選收錄</p>
         </footer>
     </div>
 

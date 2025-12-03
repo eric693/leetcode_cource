@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>76. Minimum Window Substring - LeetCode 學習平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f8fafc; line-height: 1.8; color: #334155; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .header { background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%); color: white; padding: 40px; border-radius: 16px; margin-bottom: 30px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .back-btn { display: inline-block; color: white; text-decoration: none; background: rgba(255,255,255,0.2); padding: 10px 20px; border-radius: 8px; margin-bottom: 20px; transition: all 0.3s; }
+        .back-btn:hover { background: rgba(255,255,255,0.3); }
+        .problem-title { font-size: 2.5em; font-weight: 800; margin-bottom: 15px; }
+        .difficulty { display: inline-block; background: rgba(255,255,255,0.3); padding: 8px 20px; border-radius: 20px; font-weight: 600; font-size: 0.9em; }
+        .content-section { background: white; padding: 40px; border-radius: 16px; margin-bottom: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .section-title { font-size: 1.8em; color: #1e293b; margin-bottom: 25px; font-weight: 700; padding-bottom: 10px; border-bottom: 3px solid #dc2626; }
+        .description { font-size: 1.1em; line-height: 1.9; color: #475569; margin-bottom: 20px; }
+        .example-box { background: #fee2e2; border-left: 4px solid #dc2626; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .example-title { font-weight: 700; color: #991b1b; margin-bottom: 10px; font-size: 1.1em; }
+        .approach-box { background: #eff6ff; border-left: 4px solid #3b82f6; padding: 25px; border-radius: 8px; margin: 25px 0; }
+        .approach-title { font-weight: 700; color: #1e40af; margin-bottom: 15px; font-size: 1.3em; }
+        .complexity-box { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .complexity-item { margin: 10px 0; font-weight: 600; color: #92400e; }
+        .language-tabs { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+        .tab-btn { padding: 12px 28px; border: 2px solid #dc2626; background: white; color: #dc2626; border-radius: 8px; cursor: pointer; font-weight: 600; transition: all 0.3s; font-size: 1em; }
+        .tab-btn:hover { background: #fee2e2; }
+        .tab-btn.active { background: #dc2626; color: white; }
+        .code-container { display: none; margin-top: 20px; }
+        .code-container.active { display: block; }
+        pre { background: #282c34 !important; padding: 25px !important; border-radius: 12px; overflow-x: auto; margin: 0; }
+        code { font-family: 'Fira Code', 'Consolas', monospace; font-size: 0.95em; line-height: 1.6; }
+        ol, ul { margin-left: 30px; margin-top: 15px; }
+        li { margin: 12px 0; line-height: 1.8; }
+        strong { color: #1e293b; font-weight: 700; }
+        .visual-box { background: #f0f9ff; border: 2px solid #3b82f6; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        
+        @media (max-width: 768px) {
+            .container { padding: 10px; }
+            .header { padding: 25px; }
+            .problem-title { font-size: 1.8em; }
+            .content-section { padding: 25px; }
+            .tab-btn { padding: 10px 20px; font-size: 0.9em; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="../index.html" class="back-btn">← 返回題目列表</a>
+            <div class="problem-title">76. Minimum Window Substring</div>
+            <span class="difficulty">Hard</span>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">題目描述</h2>
+            <div class="description">
+                <p>給你一個字串 <code>s</code>、一個字串 <code>t</code>。返回 <code>s</code> 中涵蓋 <code>t</code> 所有字符的最小子串。如果 <code>s</code> 中不存在涵蓋 <code>t</code> 所有字符的子串，則返回空字串 <code>""</code>。</p>
+                <p style="margin-top: 15px;"><strong>注意：</strong></p>
+                <ul style="margin-top: 10px;">
+                    <li>對於 <code>t</code> 中重複字符，我們尋找的子字串中該字符數量必須不少於 <code>t</code> 中該字符數量。</li>
+                    <li>如果 <code>s</code> 中存在這樣的子串，我們保證它是唯一的答案。</li>
+                </ul>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例 1:</div>
+                <pre><code>輸入: s = "ADOBECODEBANC", t = "ABC"
+輸出: "BANC"
+解釋: 最小覆蓋子串 "BANC" 包含來自字串 t 的 'A'、'B' 和 'C'。</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例 2:</div>
+                <pre><code>輸入: s = "a", t = "a"
+輸出: "a"
+解釋: 整個字串 s 是最小覆蓋子串。</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例 3:</div>
+                <pre><code>輸入: s = "a", t = "aa"
+輸出: ""
+解釋: t 中兩個字符 'a' 均應包含在 s 的子串中，因此沒有符合條件的子字串，返回空字串。</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">限制條件:</div>
+                <pre><code>m == s.length
+n == t.length
+1 <= m, n <= 10^5
+s 和 t 由英文字母組成
+
+進階：你能設計一個在 O(m + n) 時間內解決此問題的算法嗎？</code></pre>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">解題思路</h2>
+            
+            <div class="approach-box">
+                <div class="approach-title">核心觀察</div>
+                <p>這是一個經典的<strong>滑動窗口</strong>問題：</p>
+                <ul>
+                    <li>需要找到包含 t 所有字符的最小子串</li>
+                    <li>使用雙指標（左右邊界）維護窗口</li>
+                    <li>右指標擴展窗口，左指標收縮窗口</li>
+                </ul>
+                <p style="margin-top: 15px; color: #dc2626; font-weight: 600;">
+                    關鍵：用 HashMap 記錄字符頻率，用計數器追蹤滿足條件的字符數
+                </p>
+            </div>
+            
+            <div class="approach-box">
+                <div class="approach-title">方法：滑動窗口（推薦）⭐⭐⭐</div>
+                <p>使用可伸縮的滑動窗口，動態調整窗口大小。</p>
+                
+                <p style="margin-top: 15px;"><strong>核心思想：</strong></p>
+                <ul>
+                    <li><strong>右指標：</strong>向右擴展，增加字符到窗口</li>
+                    <li><strong>左指標：</strong>當窗口滿足條件時，嘗試收縮</li>
+                    <li><strong>記錄：</strong>每次滿足條件時，更新最小窗口</li>
+                </ul>
+                
+                <p style="margin-top: 15px;"><strong>步驟：</strong></p>
+                <ol>
+                    <li>創建 HashMap 記錄 t 中每個字符的頻率</li>
+                    <li>初始化 left = 0, right = 0, required = t 中不同字符的數量</li>
+                    <li>右指標向右移動：
+                        <ul>
+                            <li>將 s[right] 加入窗口</li>
+                            <li>如果 s[right] 的頻率滿足要求，formed++</li>
+                        </ul>
+                    </li>
+                    <li>當 formed == required（窗口滿足條件）：
+                        <ul>
+                            <li>記錄當前窗口大小</li>
+                            <li>嘗試收縮左邊界（left++）</li>
+                            <li>更新窗口內的字符頻率</li>
+                        </ul>
+                    </li>
+                    <li>返回最小窗口子串</li>
+                </ol>
+                
+                <div class="visual-box">
+                    <p><strong>視覺化範例：s = "ADOBECODEBANC", t = "ABC"</strong></p>
+                    <pre style="background: white; padding: 15px; border-radius: 5px; margin-top: 10px;"><code>目標: 找到包含 A, B, C 的最小子串
+
+初始: need = {A:1, B:1, C:1}, required = 3
+
+步驟 1-5: 擴展右邊界，尋找第一個有效窗口
+A D O B E C O D E B A N C
+[A D O B E C] ← 找到！包含 A, B, C
+ ↑         ↑
+left      right
+
+步驟 6-8: 嘗試收縮左邊界
+A D O B E C O D E B A N C
+  [D O B E C] ← 不包含 A，停止
+   ↑       ↑
+
+繼續擴展...
+
+A D O B E C O D E B A N C
+            [C O D E B A] ← 包含 A, B, C
+             ↑         ↑
+
+收縮左邊界...
+A D O B E C O D E B A N C
+              [D E B A] ← 不包含 C
+               ↑     ↑
+
+繼續擴展...
+A D O B E C O D E B A N C
+                  [B A N C] ← 包含 A, B, C
+                   ↑     ↑
+
+收縮左邊界...
+A D O B E C O D E B A N C
+                    [A N C] ← 不包含 B
+                     ↑   ↑
+
+繼續...最終找到
+A D O B E C O D E B A N C
+                      [BANC] ← 最小！長度 4
+                       ↑  ↑
+
+答案: "BANC"</code></pre>
+                </div>
+            </div>
+
+            <div class="approach-box">
+                <div class="approach-title">優化技巧</div>
+                <ul>
+                    <li><strong>過濾字符：</strong>預先過濾出 s 中在 t 中出現的字符，減少無效檢查</li>
+                    <li><strong>計數器：</strong>使用 formed 變數追蹤滿足條件的字符種類數</li>
+                    <li><strong>提前終止：</strong>如果 s 長度 < t 長度，直接返回 ""</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">程式碼實現</h2>
+            
+            <div class="language-tabs">
+                <button class="tab-btn active" onclick="showLanguage('python')">Python</button>
+                <button class="tab-btn" onclick="showLanguage('cpp')">C++</button>
+                <button class="tab-btn" onclick="showLanguage('java')">Java</button>
+            </div>
+
+            <div id="python" class="code-container active">
+                <pre><code class="language-python">from collections import Counter
+
+class Solution:
+    def minWindow(self, s: str, t: str) -> str:
+        """
+        方法：滑動窗口
+        時間複雜度: O(m + n)
+        空間複雜度: O(m + n)
+        """
+        if not s or not t or len(s) < len(t):
+            return ""
+        
+        # 統計 t 中每個字符的頻率
+        need = Counter(t)
+        required = len(need)  # 需要滿足的不同字符數
+        
+        # 窗口內字符頻率
+        window = {}
+        formed = 0  # 已滿足要求的字符種類數
+        
+        # 結果
+        min_len = float('inf')
+        min_left = 0
+        
+        # 雙指標
+        left, right = 0, 0
+        
+        while right < len(s):
+            # 擴展右邊界
+            char = s[right]
+            window[char] = window.get(char, 0) + 1
+            
+            # 檢查是否滿足該字符的要求
+            if char in need and window[char] == need[char]:
+                formed += 1
+            
+            # 嘗試收縮左邊界
+            while left <= right and formed == required:
+                # 更新結果
+                if right - left + 1 < min_len:
+                    min_len = right - left + 1
+                    min_left = left
+                
+                # 移除左邊界字符
+                char = s[left]
+                window[char] -= 1
+                if char in need and window[char] < need[char]:
+                    formed -= 1
+                
+                left += 1
+            
+            right += 1
+        
+        return "" if min_len == float('inf') else s[min_left:min_left + min_len]
+    
+    def minWindow_optimized(self, s: str, t: str) -> str:
+        """
+        優化版本：過濾字符
+        """
+        if not s or not t:
+            return ""
+        
+        need = Counter(t)
+        
+        # 過濾 s，只保留在 t 中出現的字符
+        filtered_s = [(i, char) for i, char in enumerate(s) if char in need]
+        
+        if not filtered_s:
+            return ""
+        
+        window = {}
+        formed = 0
+        required = len(need)
+        
+        min_len = float('inf')
+        min_left = 0
+        
+        left, right = 0, 0
+        
+        while right < len(filtered_s):
+            char = filtered_s[right][1]
+            window[char] = window.get(char, 0) + 1
+            
+            if window[char] == need[char]:
+                formed += 1
+            
+            while left <= right and formed == required:
+                start = filtered_s[left][0]
+                end = filtered_s[right][0]
+                
+                if end - start + 1 < min_len:
+                    min_len = end - start + 1
+                    min_left = start
+                
+                char = filtered_s[left][1]
+                window[char] -= 1
+                if window[char] < need[char]:
+                    formed -= 1
+                
+                left += 1
+            
+            right += 1
+        
+        return "" if min_len == float('inf') else s[min_left:min_left + min_len]</code></pre>
+            </div>
+
+            <div id="cpp" class="code-container">
+                <pre><code class="language-cpp">#include &lt;string&gt;
+#include &lt;unordered_map&gt;
+#include &lt;climits&gt;
+using namespace std;
+
+class Solution {
+public:
+    /**
+     * 方法：滑動窗口
+     * 時間複雜度: O(m + n)
+     * 空間複雜度: O(m + n)
+     */
+    string minWindow(string s, string t) {
+        if (s.empty() || t.empty() || s.length() < t.length()) {
+            return "";
+        }
+        
+        // 統計 t 中字符頻率
+        unordered_map<char, int> need;
+        for (char c : t) {
+            need[c]++;
+        }
+        int required = need.size();
+        
+        // 窗口內字符頻率
+        unordered_map<char, int> window;
+        int formed = 0;
+        
+        // 結果
+        int minLen = INT_MAX;
+        int minLeft = 0;
+        
+        // 雙指標
+        int left = 0, right = 0;
+        
+        while (right < s.length()) {
+            // 擴展右邊界
+            char c = s[right];
+            window[c]++;
+            
+            if (need.count(c) && window[c] == need[c]) {
+                formed++;
+            }
+            
+            // 嘗試收縮左邊界
+            while (left <= right && formed == required) {
+                // 更新結果
+                if (right - left + 1 < minLen) {
+                    minLen = right - left + 1;
+                    minLeft = left;
+                }
+                
+                // 移除左邊界
+                char c = s[left];
+                window[c]--;
+                if (need.count(c) && window[c] < need[c]) {
+                    formed--;
+                }
+                
+                left++;
+            }
+            
+            right++;
+        }
+        
+        return minLen == INT_MAX ? "" : s.substr(minLeft, minLen);
+    }
+};</code></pre>
+            </div>
+
+            <div id="java" class="code-container">
+                <pre><code class="language-java">import java.util.HashMap;
+import java.util.Map;
+
+class Solution {
+    /**
+     * 方法：滑動窗口
+     * 時間複雜度: O(m + n)
+     * 空間複雜度: O(m + n)
+     */
+    public String minWindow(String s, String t) {
+        if (s == null || t == null || s.length() < t.length()) {
+            return "";
+        }
+        
+        // 統計 t 中字符頻率
+        Map<Character, Integer> need = new HashMap<>();
+        for (char c : t.toCharArray()) {
+            need.put(c, need.getOrDefault(c, 0) + 1);
+        }
+        int required = need.size();
+        
+        // 窗口內字符頻率
+        Map<Character, Integer> window = new HashMap<>();
+        int formed = 0;
+        
+        // 結果
+        int minLen = Integer.MAX_VALUE;
+        int minLeft = 0;
+        
+        // 雙指標
+        int left = 0, right = 0;
+        
+        while (right < s.length()) {
+            // 擴展右邊界
+            char c = s.charAt(right);
+            window.put(c, window.getOrDefault(c, 0) + 1);
+            
+            if (need.containsKey(c) && window.get(c).intValue() == need.get(c).intValue()) {
+                formed++;
+            }
+            
+            // 嘗試收縮左邊界
+            while (left <= right && formed == required) {
+                // 更新結果
+                if (right - left + 1 < minLen) {
+                    minLen = right - left + 1;
+                    minLeft = left;
+                }
+                
+                // 移除左邊界
+                char leftChar = s.charAt(left);
+                window.put(leftChar, window.get(leftChar) - 1);
+                if (need.containsKey(leftChar) && window.get(leftChar) < need.get(leftChar)) {
+                    formed--;
+                }
+                
+                left++;
+            }
+            
+            right++;
+        }
+        
+        return minLen == Integer.MAX_VALUE ? "" : s.substring(minLeft, minLeft + minLen);
+    }
+}</code></pre>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">複雜度分析</h2>
+            <div class="complexity-box">
+                <div class="complexity-item">時間複雜度: O(m + n)</div>
+                <p style="color: #78716c; margin: 10px 0;">
+                    m 是 s 的長度，n 是 t 的長度。左右指標各遍歷 s 一次，每個字符最多被訪問兩次。
+                </p>
+                
+                <div class="complexity-item" style="margin-top: 20px;">空間複雜度: O(m + n)</div>
+                <p style="color: #78716c; margin: 10px 0;">
+                    need 和 window 兩個 HashMap 的空間，最壞情況下存儲所有不同字符。
+                </p>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">重點提示</h2>
+            <div class="complexity-box">
+                <ul>
+                    <li><strong>滑動窗口模板：</strong>這是滑動窗口問題的標準解法</li>
+                    <li><strong>雙指標技巧：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>右指標：擴展窗口，尋找可行解</li>
+                            <li>左指標：收縮窗口，優化解</li>
+                            <li>兩個指標都只向右移動，不回退</li>
+                        </ul>
+                    </li>
+                    <li><strong>計數器的妙用：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>need: 記錄目標字符頻率</li>
+                            <li>window: 記錄當前窗口字符頻率</li>
+                            <li>formed: 追蹤已滿足的字符種類數</li>
+                            <li>required: 總共需要滿足的字符種類數</li>
+                        </ul>
+                    </li>
+                    <li><strong>為什麼用 formed？</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>避免每次都遍歷 HashMap 檢查</li>
+                            <li>O(1) 時間判斷窗口是否滿足條件</li>
+                            <li>關鍵優化點</li>
+                        </ul>
+                    </li>
+                    <li><strong>邊界情況：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>s 或 t 為空 → ""</li>
+                            <li>s 長度 < t 長度 → ""</li>
+                            <li>t 有重複字符 → 需要滿足頻率要求</li>
+                            <li>s = t → 返回 s</li>
+                        </ul>
+                    </li>
+                    <li><strong>常見錯誤：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>忘記處理字符頻率（不只是出現與否）</li>
+                            <li>formed 計數邏輯錯誤</li>
+                            <li>窗口收縮條件判斷錯誤</li>
+                            <li>最小窗口更新時機錯誤</li>
+                        </ul>
+                    </li>
+                    <li><strong>面試技巧：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>先說明滑動窗口思路</li>
+                            <li>畫圖展示窗口移動過程</li>
+                            <li>解釋 formed 計數器的作用</li>
+                            <li>強調 O(m+n) 線性時間</li>
+                            <li>可以提到優化版本（字符過濾）</li>
+                        </ul>
+                    </li>
+                    <li><strong>滑動窗口三要素：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>何時擴展右邊界？（一直擴展）</li>
+                            <li>何時收縮左邊界？（滿足條件時）</li>
+                            <li>何時更新結果？（收縮過程中）</li>
+                        </ul>
+                    </li>
+                    <li><strong>延伸思考：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>如果要找所有滿足條件的子串？</li>
+                            <li>如果 t 中字符不重複？（簡化版本）</li>
+                            <li>如何處理 Unicode 字符？</li>
+                        </ul>
+                    </li>
+                    <li><strong>變形題：</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>Longest Substring Without Repeating Characters (#3)</li>
+                            <li>Substring with Concatenation of All Words (#30)</li>
+                            <li>Minimum Size Subarray Sum (#209)</li>
+                            <li>Find All Anagrams in a String (#438)</li>
+                        </ul>
+                    </li>
+                    <li><strong>實際應用：</strong>文本搜尋、模式匹配、DNA 序列分析</li>
+                    <li><strong>相似題目：</strong>Longest Substring (3), Permutation in String (567)</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        hljs.highlightAll();
+        
+        function showLanguage(lang) {
+            document.querySelectorAll('.code-container').forEach(container => {
+                container.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.getElementById(lang).classList.add('active');
+            event.target.classList.add('active');
+        }
+    </script>
+</body>
+</html>
