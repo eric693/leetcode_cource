@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>83. Remove Duplicates from Sorted List - LeetCode 學習平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f8fafc; line-height: 1.8; color: #334155; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .header { background: linear-gradient(135deg, #16a34a 0%, #15803d 100%); color: white; padding: 40px; border-radius: 16px; margin-bottom: 30px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .back-btn { display: inline-block; color: white; text-decoration: none; background: rgba(255,255,255,0.2); padding: 10px 20px; border-radius: 8px; margin-bottom: 20px; transition: all 0.3s; }
+        .back-btn:hover { background: rgba(255,255,255,0.3); }
+        .problem-title { font-size: 2.5em; font-weight: 800; margin-bottom: 15px; }
+        .difficulty { display: inline-block; background: rgba(255,255,255,0.3); padding: 8px 20px; border-radius: 20px; font-weight: 600; font-size: 0.9em; }
+        .content-section { background: white; padding: 40px; border-radius: 16px; margin-bottom: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .section-title { font-size: 1.8em; color: #1e293b; margin-bottom: 25px; font-weight: 700; padding-bottom: 10px; border-bottom: 3px solid #16a34a; }
+        .description { font-size: 1.1em; line-height: 1.9; color: #475569; margin-bottom: 20px; }
+        .example-box { background: #dcfce7; border-left: 4px solid #16a34a; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .example-title { font-weight: 700; color: #166534; margin-bottom: 10px; font-size: 1.1em; }
+        .approach-box { background: #eff6ff; border-left: 4px solid #3b82f6; padding: 25px; border-radius: 8px; margin: 25px 0; }
+        .approach-title { font-weight: 700; color: #1e40af; margin-bottom: 15px; font-size: 1.3em; }
+        .complexity-box { background: #dcfce7; border-left: 4px solid #16a34a; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .complexity-item { margin: 10px 0; font-weight: 600; color: #166534; }
+        .language-tabs { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+        .tab-btn { padding: 12px 28px; border: 2px solid #16a34a; background: white; color: #16a34a; border-radius: 8px; cursor: pointer; font-weight: 600; transition: all 0.3s; font-size: 1em; }
+        .tab-btn:hover { background: #dcfce7; }
+        .tab-btn.active { background: #16a34a; color: white; }
+        .code-container { display: none; margin-top: 20px; }
+        .code-container.active { display: block; }
+        pre { background: #282c34 !important; padding: 25px !important; border-radius: 12px; overflow-x: auto; margin: 0; }
+        code { font-family: 'Fira Code', 'Consolas', monospace; font-size: 0.95em; line-height: 1.6; }
+        ol, ul { margin-left: 30px; margin-top: 15px; }
+        li { margin: 12px 0; line-height: 1.8; }
+        strong { color: #1e293b; font-weight: 700; }
+        .visual-box { background: #f0f9ff; border: 2px solid #3b82f6; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        
+        @media (max-width: 768px) {
+            .container { padding: 10px; }
+            .header { padding: 25px; }
+            .problem-title { font-size: 1.8em; }
+            .content-section { padding: 25px; }
+            .tab-btn { padding: 10px 20px; font-size: 0.9em; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="../index.html" class="back-btn">← 返回題目列表</a>
+            <div class="problem-title">83. Remove Duplicates from Sorted List</div>
+            <span class="difficulty">Easy</span>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">題目描述</h2>
+            <div class="description">
+                <p>給定一個已排序的鏈表的頭 <code>head</code>，刪除所有重複的元素，使每個元素只出現一次。返回<strong>已排序的鏈表</strong>。</p>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例 1:</div>
+                <pre><code>輸入: head = [1,1,2]
+輸出: [1,2]</code></pre>
+                <div style="margin-top: 15px; text-align: center;">
+                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 100'%3E%3Crect x='10' y='30' width='60' height='40' fill='%2316a34a' rx='5'/%3E%3Ctext x='40' y='55' fill='white' font-size='20' text-anchor='middle'%3E1%3C/text%3E%3Cline x1='70' y1='50' x2='100' y2='50' stroke='%23334155' stroke-width='2'/%3E%3Crect x='100' y='30' width='60' height='40' fill='%23dc2626' rx='5'/%3E%3Ctext x='130' y='55' fill='white' font-size='20' text-anchor='middle'%3E1%3C/text%3E%3Cline x1='160' y1='50' x2='190' y2='50' stroke='%23334155' stroke-width='2'/%3E%3Crect x='190' y='30' width='60' height='40' fill='%2316a34a' rx='5'/%3E%3Ctext x='220' y='55' fill='white' font-size='20' text-anchor='middle'%3E2%3C/text%3E%3C/svg%3E" alt="Example 1" style="max-width: 400px; width: 100%;">
+                </div>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例 2:</div>
+                <pre><code>輸入: head = [1,1,2,3,3]
+輸出: [1,2,3]</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">限制條件:</div>
+                <pre><code>鏈表中節點數目在範圍 [0, 300] 內
+-100 <= Node.val <= 100
+題目保證鏈表已經按升序排列</code></pre>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">解題思路</h2>
+            
+            <div class="approach-box">
+                <div class="approach-title">核心觀察</div>
+                <p>由於鏈表已排序，重複元素一定相鄰：</p>
+                <ul>
+                    <li>只需比較當前節點和下一個節點</li>
+                    <li>如果值相同，跳過下一個節點</li>
+                    <li>如果不同，繼續前進</li>
+                </ul>
+                <p style="margin-top: 15px; color: #16a34a; font-weight: 600;">
+                    關鍵：單指標遍歷，比較相鄰節點
+                </p>
+            </div>
+            
+            <div class="approach-box">
+                <div class="approach-title">方法：單指標遍歷 ⭐⭐⭐</div>
+                <p>從頭開始遍歷，刪除重複節點。</p>
+                
+                <p style="margin-top: 15px;"><strong>算法步驟：</strong></p>
+                <ol>
+                    <li>從頭節點開始</li>
+                    <li>比較當前節點和下一個節點的值</li>
+                    <li>如果相同，跳過下一個節點（current.next = current.next.next）</li>
+                    <li>如果不同，移動到下一個節點</li>
+                    <li>重複直到鏈表結束</li>
+                </ol>
+                
+                <div class="visual-box">
+                    <p><strong>視覺化範例：[1,1,2,3,3]</strong></p>
+                    <pre style="background: white; padding: 15px; border-radius: 5px; margin-top: 10px;"><code>初始: 1 → 1 → 2 → 3 → 3 → null
+      ^
+   current
+
+步驟 1: current.val(1) == current.next.val(1)
+       刪除下一個
+       1 → 2 → 3 → 3 → null
+       ^
+    current
+
+步驟 2: current.val(1) != current.next.val(2)
+       移動指標
+       1 → 2 → 3 → 3 → null
+           ^
+        current
+
+步驟 3: current.val(2) != current.next.val(3)
+       移動指標
+       1 → 2 → 3 → 3 → null
+               ^
+            current
+
+步驟 4: current.val(3) == current.next.val(3)
+       刪除下一個
+       1 → 2 → 3 → null
+               ^
+            current
+
+步驟 5: current.next == null，結束
+
+最終: 1 → 2 → 3 → null ✓</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">程式碼實現</h2>
+            
+            <div class="language-tabs">
+                <button class="tab-btn active" onclick="showLanguage('python')">Python</button>
+                <button class="tab-btn" onclick="showLanguage('cpp')">C++</button>
+                <button class="tab-btn" onclick="showLanguage('java')">Java</button>
+            </div>
+
+            <div id="python" class="code-container active">
+                <pre><code class="language-python"># Definition for singly-linked list.
+class ListNode:
+    def __init__(self, val=0, next=None):
+        self.val = val
+        self.next = next
+
+class Solution:
+    def deleteDuplicates(self, head: ListNode) -> ListNode:
+        """
+        單指標遍歷
+        時間複雜度: O(n)
+        空間複雜度: O(1)
+        """
+        # 處理空鏈表
+        if not head:
+            return head
+        
+        current = head
+        
+        while current and current.next:
+            if current.val == current.next.val:
+                # 跳過重複節點
+                current.next = current.next.next
+            else:
+                # 移動到下一個節點
+                current = current.next
+        
+        return head
+    
+    def deleteDuplicates_v2(self, head: ListNode) -> ListNode:
+        """
+        遞迴版本
+        """
+        if not head or not head.next:
+            return head
+        
+        head.next = self.deleteDuplicates_v2(head.next)
+        
+        # 如果當前和下一個值相同，返回下一個
+        return head.next if head.val == head.next.val else head</code></pre>
+            </div>
+
+            <div id="cpp" class="code-container">
+                <pre><code class="language-cpp">/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* deleteDuplicates(ListNode* head) {
+        if (!head) return head;
+        
+        ListNode* current = head;
+        
+        while (current && current->next) {
+            if (current->val == current->next->val) {
+                // 跳過重複節點
+                ListNode* duplicate = current->next;
+                current->next = current->next->next;
+                delete duplicate;  // 釋放記憶體
+            } else {
+                // 移動到下一個節點
+                current = current->next;
+            }
+        }
+        
+        return head;
+    }
+};</code></pre>
+            </div>
+
+            <div id="java" class="code-container">
+                <pre><code class="language-java">/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+    public ListNode deleteDuplicates(ListNode head) {
+        if (head == null) return head;
+        
+        ListNode current = head;
+        
+        while (current != null && current.next != null) {
+            if (current.val == current.next.val) {
+                // 跳過重複節點
+                current.next = current.next.next;
+            } else {
+                // 移動到下一個節點
+                current = current.next;
+            }
+        }
+        
+        return head;
+    }
+}</code></pre>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">複雜度分析</h2>
+            <div class="complexity-box">
+                <div class="complexity-item">時間複雜度: O(n)</div>
+                <p style="color: #166534; margin: 10px 0;">
+                    遍歷鏈表一次，n 是節點數量
+                </p>
+                
+                <div class="complexity-item" style="margin-top: 20px;">空間複雜度: O(1)</div>
+                <p style="color: #166534; margin: 10px 0;">
+                    只使用常數個指標
+                </p>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">重點提示</h2>
+            <div class="complexity-box">
+                <ul>
+                    <li><strong>已排序的優勢：</strong>重複元素必定相鄰</li>
+                    <li><strong>指標操作：</strong>current.next = current.next.next</li>
+                    <li><strong>何時移動指標：</strong>只有在值不同時才移動</li>
+                    <li><strong>邊界情況：</strong>空鏈表、單節點、全部重複</li>
+                    <li><strong>循環條件：</strong>while current and current.next</li>
+                    <li><strong>記憶體管理：</strong>C++ 需要手動釋放記憶體</li>
+                    <li><strong>vs 陣列版本：</strong>Remove Duplicates from Sorted Array (#26)</li>
+                    <li><strong>變形題：</strong>Remove Duplicates from Sorted List II (#82) - 刪除所有重複</li>
+                    <li><strong>遞迴思路：</strong>也可以用遞迴實現</li>
+                    <li><strong>記憶口訣：</strong>「相同跳過，不同前進」</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        hljs.highlightAll();
+        
+        function showLanguage(lang) {
+            document.querySelectorAll('.code-container').forEach(container => {
+                container.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.getElementById(lang).classList.add('active');
+            event.target.classList.add('active');
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>101. Symmetric Tree - LeetCode 學習平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f8fafc; line-height: 1.8; color: #334155; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .header { background: linear-gradient(135deg, #16a34a 0%, #15803d 100%); color: white; padding: 40px; border-radius: 16px; margin-bottom: 30px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .back-btn { display: inline-block; color: white; text-decoration: none; background: rgba(255,255,255,0.2); padding: 10px 20px; border-radius: 8px; margin-bottom: 20px; transition: all 0.3s; }
+        .back-btn:hover { background: rgba(255,255,255,0.3); }
+        .problem-title { font-size: 2.5em; font-weight: 800; margin-bottom: 15px; }
+        .difficulty { display: inline-block; background: rgba(255,255,255,0.3); padding: 8px 20px; border-radius: 20px; font-weight: 600; font-size: 0.9em; }
+        .content-section { background: white; padding: 40px; border-radius: 16px; margin-bottom: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .section-title { font-size: 1.8em; color: #1e293b; margin-bottom: 25px; font-weight: 700; padding-bottom: 10px; border-bottom: 3px solid #16a34a; }
+        .description { font-size: 1.1em; line-height: 1.9; color: #475569; margin-bottom: 20px; }
+        .example-box { background: #dcfce7; border-left: 4px solid #16a34a; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .example-title { font-weight: 700; color: #166534; margin-bottom: 10px; font-size: 1.1em; }
+        .approach-box { background: #eff6ff; border-left: 4px solid #3b82f6; padding: 25px; border-radius: 8px; margin: 25px 0; }
+        .approach-title { font-weight: 700; color: #1e40af; margin-bottom: 15px; font-size: 1.3em; }
+        .complexity-box { background: #dcfce7; border-left: 4px solid #16a34a; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .complexity-item { margin: 10px 0; font-weight: 600; color: #166534; }
+        .language-tabs { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+        .tab-btn { padding: 12px 28px; border: 2px solid #16a34a; background: white; color: #16a34a; border-radius: 8px; cursor: pointer; font-weight: 600; transition: all 0.3s; font-size: 1em; }
+        .tab-btn:hover { background: #dcfce7; }
+        .tab-btn.active { background: #16a34a; color: white; }
+        .code-container { display: none; margin-top: 20px; }
+        .code-container.active { display: block; }
+        pre { background: #282c34 !important; padding: 25px !important; border-radius: 12px; overflow-x: auto; margin: 0; }
+        code { font-family: 'Fira Code', 'Consolas', monospace; font-size: 0.95em; line-height: 1.6; }
+        ol, ul { margin-left: 30px; margin-top: 15px; }
+        li { margin: 12px 0; line-height: 1.8; }
+        strong { color: #1e293b; font-weight: 700; }
+        .visual-box { background: #f0f9ff; border: 2px solid #3b82f6; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        
+        @media (max-width: 768px) {
+            .container { padding: 10px; }
+            .header { padding: 25px; }
+            .problem-title { font-size: 1.8em; }
+            .content-section { padding: 25px; }
+            .tab-btn { padding: 10px 20px; font-size: 0.9em; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="../index.html" class="back-btn">← 返回題目列表</a>
+            <div class="problem-title">101. Symmetric Tree</div>
+            <span class="difficulty">Easy</span>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">題目描述</h2>
+            <div class="description">
+                <p>給你一個二元樹的根節點 <code>root</code>，檢查它是否軸對稱。</p>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例 1:</div>
+                <pre><code>輸入: root = [1,2,2,3,4,4,3]
+輸出: true</code></pre>
+                <pre style="background: #f1f5f9; padding: 15px; border-radius: 8px; margin-top: 10px;"><code>    1
+   / \
+  2   2
+ / \ / \
+3  4 4  3</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例 2:</div>
+                <pre><code>輸入: root = [1,2,2,null,3,null,3]
+輸出: false</code></pre>
+                <pre style="background: #f1f5f9; padding: 15px; border-radius: 8px; margin-top: 10px;"><code>    1
+   / \
+  2   2
+   \   \
+   3    3</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">限制條件:</div>
+                <pre><code>樹中節點數目在範圍 [1, 1000] 內
+-100 <= Node.val <= 100</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">進階:</div>
+                <p>你可以運用遞迴和迭代兩種方法解決這個問題嗎？</p>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">解題思路</h2>
+            
+            <div class="approach-box">
+                <div class="approach-title">核心觀察</div>
+                <p>對稱樹的特點：</p>
+                <ul>
+                    <li>左子樹和右子樹是鏡像對稱的</li>
+                    <li>左子樹的左節點 = 右子樹的右節點</li>
+                    <li>左子樹的右節點 = 右子樹的左節點</li>
+                </ul>
+                <p style="margin-top: 15px; color: #16a34a; font-weight: 600;">
+                    關鍵：同時遍歷左右子樹，比較鏡像位置
+                </p>
+            </div>
+            
+            <div class="approach-box">
+                <div class="approach-title">方法一：遞迴 ⭐⭐⭐</div>
+                <p>檢查兩棵樹是否互為鏡像。</p>
+                
+                <p style="margin-top: 15px;"><strong>鏡像條件：</strong></p>
+                <ol>
+                    <li>兩個節點值相同</li>
+                    <li>left.left 和 right.right 是鏡像</li>
+                    <li>left.right 和 right.left 是鏡像</li>
+                </ol>
+                
+                <div class="visual-box">
+                    <p><strong>視覺化檢查過程：</strong></p>
+                    <pre style="background: white; padding: 15px; border-radius: 5px; margin-top: 10px;"><code>       1
+      / \
+     2   2
+    / \ / \
+   3  4 4  3
+
+檢查步驟:
+1. 根節點的左右子樹
+   左: 2, 右: 2 ✓
+
+2. 檢查 left(2) 和 right(2) 的子節點
+   left.left(3) vs right.right(3) ✓
+   left.right(4) vs right.left(4) ✓
+
+3. 檢查葉子節點
+   都是 null ✓
+
+結果: 對稱 ✓</code></pre>
+                </div>
+                
+                <div class="visual-box">
+                    <p><strong>非對稱範例：</strong></p>
+                    <pre style="background: white; padding: 15px; border-radius: 5px; margin-top: 10px;"><code>       1
+      / \
+     2   2
+      \   \
+      3    3
+
+檢查步驟:
+1. 根節點的左右子樹
+   左: 2, 右: 2 ✓
+
+2. 檢查 left(2) 和 right(2) 的子節點
+   left.left(null) vs right.right(3) ✗
+   
+結果: 不對稱 ✗</code></pre>
+                </div>
+            </div>
+
+            <div class="approach-box">
+                <div class="approach-title">方法二：迭代（使用佇列）⭐⭐</div>
+                <p>使用 BFS 同時遍歷左右子樹。</p>
+                
+                <p style="margin-top: 15px;"><strong>核心思想：</strong></p>
+                <ul>
+                    <li>使用佇列同時處理左右子樹的節點</li>
+                    <li>每次從佇列取出兩個節點比較</li>
+                    <li>按鏡像順序加入子節點</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">程式碼實現</h2>
+            
+            <div class="language-tabs">
+                <button class="tab-btn active" onclick="showLanguage('python')">Python</button>
+                <button class="tab-btn" onclick="showLanguage('cpp')">C++</button>
+                <button class="tab-btn" onclick="showLanguage('java')">Java</button>
+            </div>
+
+            <div id="python" class="code-container active">
+                <pre><code class="language-python"># Definition for a binary tree node.
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+class Solution:
+    def isSymmetric(self, root: TreeNode) -> bool:
+        """
+        方法一：遞迴
+        時間複雜度: O(n)
+        空間複雜度: O(h)，h 是樹的高度
+        """
+        if not root:
+            return True
+        
+        return self.isMirror(root.left, root.right)
+    
+    def isMirror(self, left: TreeNode, right: TreeNode) -> bool:
+        """檢查兩棵樹是否互為鏡像"""
+        # 兩個都是空
+        if not left and not right:
+            return True
+        
+        # 只有一個是空
+        if not left or not right:
+            return False
+        
+        # 值不同
+        if left.val != right.val:
+            return False
+        
+        # 遞迴檢查：
+        # left 的左子樹 vs right 的右子樹
+        # left 的右子樹 vs right 的左子樹
+        return (self.isMirror(left.left, right.right) and 
+                self.isMirror(left.right, right.left))
+    
+    def isSymmetric_v2(self, root: TreeNode) -> bool:
+        """
+        方法二：迭代（使用佇列）
+        時間複雜度: O(n)
+        空間複雜度: O(n)
+        """
+        if not root:
+            return True
+        
+        from collections import deque
+        queue = deque([(root.left, root.right)])
+        
+        while queue:
+            left, right = queue.popleft()
+            
+            # 兩個都是空
+            if not left and not right:
+                continue
+            
+            # 只有一個是空或值不同
+            if not left or not right or left.val != right.val:
+                return False
+            
+            # 按鏡像順序加入
+            queue.append((left.left, right.right))
+            queue.append((left.right, right.left))
+        
+        return True</code></pre>
+            </div>
+
+            <div id="cpp" class="code-container">
+                <pre><code class="language-cpp">/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+#include <queue>
+using namespace std;
+
+class Solution {
+public:
+    bool isSymmetric(TreeNode* root) {
+        if (!root) return true;
+        return isMirror(root->left, root->right);
+    }
+    
+private:
+    bool isMirror(TreeNode* left, TreeNode* right) {
+        if (!left && !right) return true;
+        if (!left || !right) return false;
+        if (left->val != right->val) return false;
+        
+        return isMirror(left->left, right->right) && 
+               isMirror(left->right, right->left);
+    }
+    
+public:
+    // 迭代版本
+    bool isSymmetric_v2(TreeNode* root) {
+        if (!root) return true;
+        
+        queue<pair<TreeNode*, TreeNode*>> q;
+        q.push({root->left, root->right});
+        
+        while (!q.empty()) {
+            auto [left, right] = q.front();
+            q.pop();
+            
+            if (!left && !right) continue;
+            if (!left || !right || left->val != right->val) 
+                return false;
+            
+            q.push({left->left, right->right});
+            q.push({left->right, right->left});
+        }
+        
+        return true;
+    }
+};</code></pre>
+            </div>
+
+            <div id="java" class="code-container">
+                <pre><code class="language-java">/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+import java.util.LinkedList;
+import java.util.Queue;
+
+class Solution {
+    public boolean isSymmetric(TreeNode root) {
+        if (root == null) return true;
+        return isMirror(root.left, root.right);
+    }
+    
+    private boolean isMirror(TreeNode left, TreeNode right) {
+        if (left == null && right == null) return true;
+        if (left == null || right == null) return false;
+        if (left.val != right.val) return false;
+        
+        return isMirror(left.left, right.right) && 
+               isMirror(left.right, right.left);
+    }
+    
+    // 迭代版本
+    public boolean isSymmetric_v2(TreeNode root) {
+        if (root == null) return true;
+        
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.offer(root.left);
+        queue.offer(root.right);
+        
+        while (!queue.isEmpty()) {
+            TreeNode left = queue.poll();
+            TreeNode right = queue.poll();
+            
+            if (left == null && right == null) continue;
+            if (left == null || right == null || left.val != right.val) 
+                return false;
+            
+            queue.offer(left.left);
+            queue.offer(right.right);
+            queue.offer(left.right);
+            queue.offer(right.left);
+        }
+        
+        return true;
+    }
+}</code></pre>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">複雜度分析</h2>
+            <div class="complexity-box">
+                <div class="complexity-item">時間複雜度: O(n)</div>
+                <p style="color: #166534; margin: 10px 0;">
+                    需要遍歷所有節點，n 是節點數量
+                </p>
+                
+                <div class="complexity-item" style="margin-top: 20px;">空間複雜度: O(h) / O(n)</div>
+                <p style="color: #166534; margin: 10px 0;">
+                    遞迴：O(h) 棧空間，h 是樹高；迭代：O(n) 佇列空間
+                </p>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">重點提示</h2>
+            <div class="complexity-box">
+                <ul>
+                    <li><strong>對稱定義：</strong>左子樹和右子樹互為鏡像</li>
+                    <li><strong>鏡像檢查：</strong>left.left vs right.right, left.right vs right.left</li>
+                    <li><strong>邊界情況：</strong>空樹、單節點、只有一側子樹</li>
+                    <li><strong>遞迴 vs 迭代：</strong>遞迴更簡潔，迭代避免棧溢位</li>
+                    <li><strong>佇列順序：</strong>必須成對取出節點</li>
+                    <li><strong>三種情況：</strong>都空（繼續）、一空（false）、值不同（false）</li>
+                    <li><strong>常見錯誤：</strong>忘記檢查結構對稱（只檢查值）</li>
+                    <li><strong>相關題目：</strong>Same Tree (#100)、Invert Binary Tree (#226)</li>
+                    <li><strong>面試技巧：</strong>先說遞迴，再提迭代優化</li>
+                    <li><strong>記憶口訣：</strong>「鏡像檢查，交叉比較」</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        hljs.highlightAll();
+        
+        function showLanguage(lang) {
+            document.querySelectorAll('.code-container').forEach(container => {
+                container.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.getElementById(lang).classList.add('active');
+            event.target.classList.add('active');
+        }
+    </script>
+</body>
+</html>

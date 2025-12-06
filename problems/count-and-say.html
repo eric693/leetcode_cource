@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>38. Count and Say - LeetCode 學習平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f8fafc; line-height: 1.8; color: #334155; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .header { background: linear-gradient(135deg, #16a34a 0%, #15803d 100%); color: white; padding: 40px; border-radius: 16px; margin-bottom: 30px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .back-btn { display: inline-block; color: white; text-decoration: none; background: rgba(255,255,255,0.2); padding: 10px 20px; border-radius: 8px; margin-bottom: 20px; transition: all 0.3s; }
+        .back-btn:hover { background: rgba(255,255,255,0.3); }
+        .problem-title { font-size: 2.5em; font-weight: 800; margin-bottom: 15px; }
+        .difficulty { display: inline-block; background: rgba(255,255,255,0.3); padding: 8px 20px; border-radius: 20px; font-weight: 600; font-size: 0.9em; }
+        .content-section { background: white; padding: 40px; border-radius: 16px; margin-bottom: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .section-title { font-size: 1.8em; color: #1e293b; margin-bottom: 25px; font-weight: 700; padding-bottom: 10px; border-bottom: 3px solid #16a34a; }
+        .description { font-size: 1.1em; line-height: 1.9; color: #475569; margin-bottom: 20px; }
+        .example-box { background: #dcfce7; border-left: 4px solid #16a34a; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .example-title { font-weight: 700; color: #166534; margin-bottom: 10px; font-size: 1.1em; }
+        .approach-box { background: #eff6ff; border-left: 4px solid #3b82f6; padding: 25px; border-radius: 8px; margin: 25px 0; }
+        .approach-title { font-weight: 700; color: #1e40af; margin-bottom: 15px; font-size: 1.3em; }
+        .complexity-box { background: #dcfce7; border-left: 4px solid #16a34a; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .complexity-item { margin: 10px 0; font-weight: 600; color: #166534; }
+        .language-tabs { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+        .tab-btn { padding: 12px 28px; border: 2px solid #16a34a; background: white; color: #16a34a; border-radius: 8px; cursor: pointer; font-weight: 600; transition: all 0.3s; font-size: 1em; }
+        .tab-btn:hover { background: #dcfce7; }
+        .tab-btn.active { background: #16a34a; color: white; }
+        .code-container { display: none; margin-top: 20px; }
+        .code-container.active { display: block; }
+        pre { background: #282c34 !important; padding: 25px !important; border-radius: 12px; overflow-x: auto; margin: 0; }
+        code { font-family: 'Fira Code', 'Consolas', monospace; font-size: 0.95em; line-height: 1.6; }
+        ol, ul { margin-left: 30px; margin-top: 15px; }
+        li { margin: 12px 0; line-height: 1.8; }
+        strong { color: #1e293b; font-weight: 700; }
+        .visual-box { background: #f0f9ff; border: 2px solid #3b82f6; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        
+        @media (max-width: 768px) {
+            .container { padding: 10px; }
+            .header { padding: 25px; }
+            .problem-title { font-size: 1.8em; }
+            .content-section { padding: 25px; }
+            .tab-btn { padding: 10px 20px; font-size: 0.9em; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="../index.html" class="back-btn">← 返回題目列表</a>
+            <div class="problem-title">38. Count and Say</div>
+            <span class="difficulty">Easy</span>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">題目描述</h2>
+            <div class="description">
+                <p><strong>外觀數列</strong>（Look-and-Say sequence）是一個整數序列，從數字 <code>1</code> 開始，序列中的每一項都是對前一項的描述。</p>
+                <p style="margin-top: 15px;">前五項如下：</p>
+                <pre style="background: #f1f5f9; padding: 15px; border-radius: 8px; margin: 15px 0;"><code>1.     1
+2.     11
+3.     21
+4.     1211
+5.     111221</code></pre>
+                <p style="margin-top: 15px;"><code>1</code> 被讀作 <code>"one 1"</code> (<code>"一個一"</code>) , 即 <code>11</code>。</p>
+                <p><code>11</code> 被讀作 <code>"two 1s"</code> (<code>"兩個一"</code>), 即 <code>21</code>。</p>
+                <p><code>21</code> 被讀作 <code>"one 2"</code>, <code>"one 1"</code> (<code>"一個二"</code>, <code>"一個一"</code>) , 即 <code>1211</code>。</p>
+                <p style="margin-top: 15px;">給定一個正整數 <code>n</code>，輸出外觀數列的第 <code>n</code> 項。</p>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例 1:</div>
+                <pre><code>輸入: n = 1
+輸出: "1"
+解釋: 這是序列的基礎情況</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例 2:</div>
+                <pre><code>輸入: n = 4
+輸出: "1211"
+解釋:
+countAndSay(1) = "1"
+countAndSay(2) = "11" (讀作 "一個一")
+countAndSay(3) = "21" (讀作 "兩個一")
+countAndSay(4) = "1211" (讀作 "一個二，一個一")</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">限制條件:</div>
+                <pre><code>1 <= n <= 30</code></pre>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">解題思路</h2>
+            
+            <div class="approach-box">
+                <div class="approach-title">核心觀察</div>
+                <p>這是一個遞推問題：</p>
+                <ul>
+                    <li>每一項都是對前一項的「朗讀」</li>
+                    <li>需要統計連續相同數字的個數</li>
+                    <li>然後說出「個數 + 數字」</li>
+                </ul>
+                <p style="margin-top: 15px; color: #16a34a; font-weight: 600;">
+                    關鍵：遍歷字串，統計連續相同字符
+                </p>
+            </div>
+            
+            <div class="approach-box">
+                <div class="approach-title">方法：迭代生成 ⭐⭐⭐</div>
+                <p>從 "1" 開始，迭代 n-1 次。</p>
+                
+                <p style="margin-top: 15px;"><strong>算法步驟：</strong></p>
+                <ol>
+                    <li>從 "1" 開始</li>
+                    <li>對於每一項，遍歷字串</li>
+                    <li>統計連續相同字符的個數</li>
+                    <li>生成 "個數 + 字符" 的描述</li>
+                    <li>重複 n-1 次</li>
+                </ol>
+                
+                <div class="visual-box">
+                    <p><strong>視覺化過程：n = 5</strong></p>
+                    <pre style="background: white; padding: 15px; border-radius: 5px; margin-top: 10px;"><code>第 1 項: "1"
+
+第 2 項: 讀 "1"
+  看到 1 個 '1' → "11"
+
+第 3 項: 讀 "11"
+  看到 2 個 '1' → "21"
+
+第 4 項: 讀 "21"
+  看到 1 個 '2' → "12"
+  看到 1 個 '1' → "11"
+  結果: "1211"
+
+第 5 項: 讀 "1211"
+  看到 1 個 '1' → "11"
+  看到 1 個 '2' → "12"
+  看到 2 個 '1' → "21"
+  結果: "111221" ✓</code></pre>
+                </div>
+                
+                <div class="visual-box">
+                    <p><strong>統計連續字符的方法：</strong></p>
+                    <pre style="background: white; padding: 15px; border-radius: 5px; margin-top: 10px;"><code>對於字串 "1211":
+
+i=0: char='1', count=1
+     下一個不同 → 說 "11"
+
+i=1: char='2', count=1
+     下一個不同 → 說 "12"
+
+i=2: char='1', count=1
+i=3: char='1', count=2
+     到達末尾 → 說 "21"
+
+最終: "111221"</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">程式碼實現</h2>
+            
+            <div class="language-tabs">
+                <button class="tab-btn active" onclick="showLanguage('python')">Python</button>
+                <button class="tab-btn" onclick="showLanguage('cpp')">C++</button>
+                <button class="tab-btn" onclick="showLanguage('java')">Java</button>
+            </div>
+
+            <div id="python" class="code-container active">
+                <pre><code class="language-python">class Solution:
+    def countAndSay(self, n: int) -> str:
+        """
+        迭代生成法
+        時間複雜度: O(n * m)，m 是字串長度
+        空間複雜度: O(m)
+        """
+        result = "1"
+        
+        # 迭代 n-1 次
+        for _ in range(n - 1):
+            result = self.getNext(result)
+        
+        return result
+    
+    def getNext(self, s: str) -> str:
+        """生成下一項"""
+        result = []
+        i = 0
+        
+        while i < len(s):
+            char = s[i]
+            count = 1
+            
+            # 統計連續相同字符
+            while i + 1 < len(s) and s[i + 1] == char:
+                count += 1
+                i += 1
+            
+            # 說出 "個數 + 字符"
+            result.append(str(count) + char)
+            i += 1
+        
+        return ''.join(result)
+    
+    def countAndSay_v2(self, n: int) -> str:
+        """
+        使用 itertools.groupby
+        """
+        from itertools import groupby
+        
+        result = "1"
+        
+        for _ in range(n - 1):
+            result = ''.join(str(len(list(group))) + digit 
+                           for digit, group in groupby(result))
+        
+        return result</code></pre>
+            </div>
+
+            <div id="cpp" class="code-container">
+                <pre><code class="language-cpp">#include &lt;string&gt;
+using namespace std;
+
+class Solution {
+public:
+    string countAndSay(int n) {
+        string result = "1";
+        
+        // 迭代 n-1 次
+        for (int i = 1; i < n; i++) {
+            result = getNext(result);
+        }
+        
+        return result;
+    }
+    
+private:
+    string getNext(const string& s) {
+        string result = "";
+        int i = 0;
+        
+        while (i < s.length()) {
+            char digit = s[i];
+            int count = 1;
+            
+            // 統計連續相同字符
+            while (i + 1 < s.length() && s[i + 1] == digit) {
+                count++;
+                i++;
+            }
+            
+            // 說出 "個數 + 字符"
+            result += to_string(count) + digit;
+            i++;
+        }
+        
+        return result;
+    }
+};</code></pre>
+            </div>
+
+            <div id="java" class="code-container">
+                <pre><code class="language-java">class Solution {
+    public String countAndSay(int n) {
+        String result = "1";
+        
+        // 迭代 n-1 次
+        for (int i = 1; i < n; i++) {
+            result = getNext(result);
+        }
+        
+        return result;
+    }
+    
+    private String getNext(String s) {
+        StringBuilder result = new StringBuilder();
+        int i = 0;
+        
+        while (i < s.length()) {
+            char digit = s.charAt(i);
+            int count = 1;
+            
+            // 統計連續相同字符
+            while (i + 1 < s.length() && s.charAt(i + 1) == digit) {
+                count++;
+                i++;
+            }
+            
+            // 說出 "個數 + 字符"
+            result.append(count).append(digit);
+            i++;
+        }
+        
+        return result.toString();
+    }
+}</code></pre>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">複雜度分析</h2>
+            <div class="complexity-box">
+                <div class="complexity-item">時間複雜度: O(n × m)</div>
+                <p style="color: #166534; margin: 10px 0;">
+                    n 是輸入，m 是字串長度（會隨迭代增長）
+                </p>
+                
+                <div class="complexity-item" style="margin-top: 20px;">空間複雜度: O(m)</div>
+                <p style="color: #166534; margin: 10px 0;">
+                    每次生成新字串需要的空間
+                </p>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">重點提示</h2>
+            <div class="complexity-box">
+                <ul>
+                    <li><strong>理解題意：</strong>這是「朗讀」前一項，不是數學計算</li>
+                    <li><strong>統計技巧：</strong>使用雙指標統計連續相同字符</li>
+                    <li><strong>順序：</strong>先說個數，再說數字</li>
+                    <li><strong>Python 技巧：</strong>可用 itertools.groupby 簡化</li>
+                    <li><strong>字串增長：</strong>長度會隨 n 快速增長</li>
+                    <li><strong>不會出現的數字：</strong>永遠不會出現 4 以上的數字</li>
+                    <li><strong>Conway 序列：</strong>這個序列也被稱為 Conway 序列</li>
+                    <li><strong>有趣性質：</strong>數字只會是 1、2、3，不會出現 4 或更大</li>
+                    <li><strong>相關題目：</strong>String 操作、遞推生成</li>
+                    <li><strong>記憶口訣：</strong>「數個數，說數字」</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        hljs.highlightAll();
+        
+        function showLanguage(lang) {
+            document.querySelectorAll('.code-container').forEach(container => {
+                container.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.getElementById(lang).classList.add('active');
+            event.target.classList.add('active');
+        }
+    </script>
+</body>
+</html>

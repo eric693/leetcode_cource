@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>119. Pascal's Triangle II - LeetCode 學習平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f8fafc; line-height: 1.8; color: #334155; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .header { background: linear-gradient(135deg, #16a34a 0%, #15803d 100%); color: white; padding: 40px; border-radius: 16px; margin-bottom: 30px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .back-btn { display: inline-block; color: white; text-decoration: none; background: rgba(255,255,255,0.2); padding: 10px 20px; border-radius: 8px; margin-bottom: 20px; transition: all 0.3s; }
+        .back-btn:hover { background: rgba(255,255,255,0.3); }
+        .problem-title { font-size: 2.5em; font-weight: 800; margin-bottom: 15px; }
+        .difficulty { display: inline-block; background: rgba(255,255,255,0.3); padding: 8px 20px; border-radius: 20px; font-weight: 600; font-size: 0.9em; }
+        .content-section { background: white; padding: 40px; border-radius: 16px; margin-bottom: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .section-title { font-size: 1.8em; color: #1e293b; margin-bottom: 25px; font-weight: 700; padding-bottom: 10px; border-bottom: 3px solid #16a34a; }
+        .description { font-size: 1.1em; line-height: 1.9; color: #475569; margin-bottom: 20px; }
+        .example-box { background: #dcfce7; border-left: 4px solid #16a34a; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .example-title { font-weight: 700; color: #166534; margin-bottom: 10px; font-size: 1.1em; }
+        .approach-box { background: #eff6ff; border-left: 4px solid #3b82f6; padding: 25px; border-radius: 8px; margin: 25px 0; }
+        .approach-title { font-weight: 700; color: #1e40af; margin-bottom: 15px; font-size: 1.3em; }
+        .complexity-box { background: #dcfce7; border-left: 4px solid #16a34a; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .complexity-item { margin: 10px 0; font-weight: 600; color: #166534; }
+        .language-tabs { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+        .tab-btn { padding: 12px 28px; border: 2px solid #16a34a; background: white; color: #16a34a; border-radius: 8px; cursor: pointer; font-weight: 600; transition: all 0.3s; font-size: 1em; }
+        .tab-btn:hover { background: #dcfce7; }
+        .tab-btn.active { background: #16a34a; color: white; }
+        .code-container { display: none; margin-top: 20px; }
+        .code-container.active { display: block; }
+        pre { background: #282c34 !important; padding: 25px !important; border-radius: 12px; overflow-x: auto; margin: 0; }
+        code { font-family: 'Fira Code', 'Consolas', monospace; font-size: 0.95em; line-height: 1.6; }
+        ol, ul { margin-left: 30px; margin-top: 15px; }
+        li { margin: 12px 0; line-height: 1.8; }
+        strong { color: #1e293b; font-weight: 700; }
+        .visual-box { background: #f0f9ff; border: 2px solid #3b82f6; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        
+        @media (max-width: 768px) {
+            .container { padding: 10px; }
+            .header { padding: 25px; }
+            .problem-title { font-size: 1.8em; }
+            .content-section { padding: 25px; }
+            .tab-btn { padding: 10px 20px; font-size: 0.9em; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="../index.html" class="back-btn">← 返回題目列表</a>
+            <div class="problem-title">119. Pascal's Triangle II</div>
+            <span class="difficulty">Easy</span>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">題目描述</h2>
+            <div class="description">
+                <p>給定一個非負整數 <code>rowIndex</code>，返回<strong>楊輝三角</strong>的第 <code>rowIndex</code> 行。</p>
+                <p style="margin-top: 15px;">在<strong>楊輝三角</strong>中，每個數是它左上方和右上方的數的和。</p>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">楊輝三角示意圖:</div>
+                <pre style="background: #f1f5f9; padding: 15px; border-radius: 8px;"><code>     1
+    1 1
+   1 2 1
+  1 3 3 1
+ 1 4 6 4 1</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例 1:</div>
+                <pre><code>輸入: rowIndex = 3
+輸出: [1,3,3,1]</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例 2:</div>
+                <pre><code>輸入: rowIndex = 0
+輸出: [1]</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例 3:</div>
+                <pre><code>輸入: rowIndex = 1
+輸出: [1,1]</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">限制條件:</div>
+                <pre><code>0 <= rowIndex <= 33</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">進階:</div>
+                <p>你可以優化你的算法到 <code>O(rowIndex)</code> 空間複雜度嗎？</p>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">解題思路</h2>
+            
+            <div class="approach-box">
+                <div class="approach-title">核心觀察</div>
+                <p>楊輝三角的性質：</p>
+                <ul>
+                    <li>每行首尾都是 1</li>
+                    <li>中間元素 = 上一行對應位置 + 上一行前一個位置</li>
+                    <li>第 n 行有 n+1 個元素</li>
+                    <li>row[i] = row[i-1] + row[i]（從右往左更新）</li>
+                </ul>
+                <p style="margin-top: 15px; color: #16a34a; font-weight: 600;">
+                    關鍵：使用一個陣列，從右往左原地更新
+                </p>
+            </div>
+            
+            <div class="approach-box">
+                <div class="approach-title">方法一：逐行生成 ⭐⭐</div>
+                <p>生成前 rowIndex+1 行，返回最後一行。</p>
+                
+                <p style="margin-top: 15px;"><strong>缺點：</strong></p>
+                <ul>
+                    <li>空間複雜度 O(rowIndex²)</li>
+                    <li>生成了不需要的中間行</li>
+                </ul>
+            </div>
+
+            <div class="approach-box">
+                <div class="approach-title">方法二：原地更新（最優解）⭐⭐⭐</div>
+                <p>只使用一個陣列，不斷更新。</p>
+                
+                <p style="margin-top: 15px;"><strong>核心思想：</strong></p>
+                <ol>
+                    <li>初始化陣列為 [1]</li>
+                    <li>對於每一行，從右往左更新</li>
+                    <li>row[j] = row[j] + row[j-1]</li>
+                    <li>最後在末尾加 1</li>
+                </ol>
+                
+                <div class="visual-box">
+                    <p><strong>為什麼從右往左？</strong></p>
+                    <pre style="background: white; padding: 15px; border-radius: 5px; margin-top: 10px;"><code>錯誤：從左往右
+當前: [1, 2, 1]
+更新 row[1] = row[1] + row[0] = 2 + 1 = 3
+      [1, 3, 1]  ← row[0] 已被覆蓋！
+更新 row[2] = row[2] + row[1] = 1 + 3 = 4 ✗
+      [1, 3, 4]  錯誤！
+
+正確：從右往左
+當前: [1, 2, 1]
+更新 row[2] = row[2] + row[1] = 1 + 2 = 3
+      [1, 2, 3]
+更新 row[1] = row[1] + row[0] = 2 + 1 = 3
+      [1, 3, 3]
+加入 1: [1, 3, 3, 1] ✓</code></pre>
+                </div>
+                
+                <div class="visual-box">
+                    <p><strong>完整過程：生成第 4 行</strong></p>
+                    <pre style="background: white; padding: 15px; border-radius: 5px; margin-top: 10px;"><code>初始: [1]
+
+第 1 行:
+  [1] + 1 = [1, 1]
+
+第 2 行:
+  從右往左: [1, 1]
+  row[1] = row[1] + row[0] = 1 + 1 = 2
+  [1, 2] + 1 = [1, 2, 1]
+
+第 3 行:
+  從右往左: [1, 2, 1]
+  row[2] = row[2] + row[1] = 1 + 2 = 3
+  row[1] = row[1] + row[0] = 2 + 1 = 3
+  [1, 3, 3] + 1 = [1, 3, 3, 1]
+
+第 4 行:
+  從右往左: [1, 3, 3, 1]
+  row[3] = row[3] + row[2] = 1 + 3 = 4
+  row[2] = row[2] + row[1] = 3 + 3 = 6
+  row[1] = row[1] + row[0] = 3 + 1 = 4
+  [1, 4, 6, 4] + 1 = [1, 4, 6, 4, 1] ✓</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">程式碼實現</h2>
+            
+            <div class="language-tabs">
+                <button class="tab-btn active" onclick="showLanguage('python')">Python</button>
+                <button class="tab-btn" onclick="showLanguage('cpp')">C++</button>
+                <button class="tab-btn" onclick="showLanguage('java')">Java</button>
+            </div>
+
+            <div id="python" class="code-container active">
+                <pre><code class="language-python">class Solution:
+    def getRow(self, rowIndex: int) -> List[int]:
+        """
+        方法：原地更新（最優解）
+        時間複雜度: O(rowIndex²)
+        空間複雜度: O(1)，不計算輸出空間
+        """
+        row = [1]
+        
+        for i in range(rowIndex):
+            # 從右往左更新
+            for j in range(len(row) - 1, 0, -1):
+                row[j] = row[j] + row[j - 1]
+            # 在末尾加 1
+            row.append(1)
+        
+        return row
+    
+    def getRow_v2(self, rowIndex: int) -> List[int]:
+        """
+        使用組合數公式
+        C(n, k) = n! / (k! * (n-k)!)
+        C(n, k) = C(n, k-1) * (n-k+1) / k
+        """
+        row = [1]
+        for k in range(1, rowIndex + 1):
+            # C(rowIndex, k) = C(rowIndex, k-1) * (rowIndex - k + 1) / k
+            row.append(row[-1] * (rowIndex - k + 1) // k)
+        return row</code></pre>
+            </div>
+
+            <div id="cpp" class="code-container">
+                <pre><code class="language-cpp">#include &lt;vector&gt;
+using namespace std;
+
+class Solution {
+public:
+    vector<int> getRow(int rowIndex) {
+        vector<int> row = {1};
+        
+        for (int i = 0; i < rowIndex; i++) {
+            // 從右往左更新
+            for (int j = row.size() - 1; j > 0; j--) {
+                row[j] = row[j] + row[j - 1];
+            }
+            // 在末尾加 1
+            row.push_back(1);
+        }
+        
+        return row;
+    }
+};</code></pre>
+            </div>
+
+            <div id="java" class="code-container">
+                <pre><code class="language-java">import java.util.ArrayList;
+import java.util.List;
+
+class Solution {
+    public List<Integer> getRow(int rowIndex) {
+        List<Integer> row = new ArrayList<>();
+        row.add(1);
+        
+        for (int i = 0; i < rowIndex; i++) {
+            // 從右往左更新
+            for (int j = row.size() - 1; j > 0; j--) {
+                row.set(j, row.get(j) + row.get(j - 1));
+            }
+            // 在末尾加 1
+            row.add(1);
+        }
+        
+        return row;
+    }
+}</code></pre>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">複雜度分析</h2>
+            <div class="complexity-box">
+                <div class="complexity-item">時間複雜度: O(rowIndex²)</div>
+                <p style="color: #166534; margin: 10px 0;">
+                    外層循環 rowIndex 次，內層循環平均 rowIndex/2 次
+                </p>
+                
+                <div class="complexity-item" style="margin-top: 20px;">空間複雜度: O(1)</div>
+                <p style="color: #166534; margin: 10px 0;">
+                    只使用一個陣列，不計算輸出空間
+                </p>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">重點提示</h2>
+            <div class="complexity-box">
+                <ul>
+                    <li><strong>從右往左：</strong>避免覆蓋需要的舊值</li>
+                    <li><strong>更新公式：</strong>row[j] = row[j] + row[j-1]</li>
+                    <li><strong>索引範圍：</strong>j 從 len(row)-1 到 1</li>
+                    <li><strong>每行末尾：</strong>別忘記加 1</li>
+                    <li><strong>初始化：</strong>[1] 代表第 0 行</li>
+                    <li><strong>組合數公式：</strong>C(n,k) = C(n,k-1) * (n-k+1) / k</li>
+                    <li><strong>vs Pascal's Triangle I：</strong>#118 返回所有行</li>
+                    <li><strong>數學性質：</strong>第 n 行是二項式係數</li>
+                    <li><strong>對稱性：</strong>每行是對稱的</li>
+                    <li><strong>記憶口訣：</strong>「從右往左，加左成新」</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        hljs.highlightAll();
+        
+        function showLanguage(lang) {
+            document.querySelectorAll('.code-container').forEach(container => {
+                container.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.getElementById(lang).classList.add('active');
+            event.target.classList.add('active');
+        }
+    </script>
+</body>
+</html>

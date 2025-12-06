@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>88. Merge Sorted Array - LeetCode 學習平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f8fafc; line-height: 1.8; color: #334155; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .header { background: linear-gradient(135deg, #16a34a 0%, #15803d 100%); color: white; padding: 40px; border-radius: 16px; margin-bottom: 30px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .back-btn { display: inline-block; color: white; text-decoration: none; background: rgba(255,255,255,0.2); padding: 10px 20px; border-radius: 8px; margin-bottom: 20px; transition: all 0.3s; }
+        .back-btn:hover { background: rgba(255,255,255,0.3); }
+        .problem-title { font-size: 2.5em; font-weight: 800; margin-bottom: 15px; }
+        .difficulty { display: inline-block; background: rgba(255,255,255,0.3); padding: 8px 20px; border-radius: 20px; font-weight: 600; font-size: 0.9em; }
+        .content-section { background: white; padding: 40px; border-radius: 16px; margin-bottom: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .section-title { font-size: 1.8em; color: #1e293b; margin-bottom: 25px; font-weight: 700; padding-bottom: 10px; border-bottom: 3px solid #16a34a; }
+        .description { font-size: 1.1em; line-height: 1.9; color: #475569; margin-bottom: 20px; }
+        .example-box { background: #dcfce7; border-left: 4px solid #16a34a; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .example-title { font-weight: 700; color: #166534; margin-bottom: 10px; font-size: 1.1em; }
+        .approach-box { background: #eff6ff; border-left: 4px solid #3b82f6; padding: 25px; border-radius: 8px; margin: 25px 0; }
+        .approach-title { font-weight: 700; color: #1e40af; margin-bottom: 15px; font-size: 1.3em; }
+        .complexity-box { background: #dcfce7; border-left: 4px solid #16a34a; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .complexity-item { margin: 10px 0; font-weight: 600; color: #166534; }
+        .language-tabs { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+        .tab-btn { padding: 12px 28px; border: 2px solid #16a34a; background: white; color: #16a34a; border-radius: 8px; cursor: pointer; font-weight: 600; transition: all 0.3s; font-size: 1em; }
+        .tab-btn:hover { background: #dcfce7; }
+        .tab-btn.active { background: #16a34a; color: white; }
+        .code-container { display: none; margin-top: 20px; }
+        .code-container.active { display: block; }
+        pre { background: #282c34 !important; padding: 25px !important; border-radius: 12px; overflow-x: auto; margin: 0; }
+        code { font-family: 'Fira Code', 'Consolas', monospace; font-size: 0.95em; line-height: 1.6; }
+        ol, ul { margin-left: 30px; margin-top: 15px; }
+        li { margin: 12px 0; line-height: 1.8; }
+        strong { color: #1e293b; font-weight: 700; }
+        .visual-box { background: #f0f9ff; border: 2px solid #3b82f6; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        
+        @media (max-width: 768px) {
+            .container { padding: 10px; }
+            .header { padding: 25px; }
+            .problem-title { font-size: 1.8em; }
+            .content-section { padding: 25px; }
+            .tab-btn { padding: 10px 20px; font-size: 0.9em; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="../index.html" class="back-btn">← 返回題目列表</a>
+            <div class="problem-title">88. Merge Sorted Array</div>
+            <span class="difficulty">Easy</span>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">題目描述</h2>
+            <div class="description">
+                <p>給你兩個按<strong>非遞減順序</strong>排列的整數陣列 <code>nums1</code> 和 <code>nums2</code>，另有兩個整數 <code>m</code> 和 <code>n</code>，分別表示 <code>nums1</code> 和 <code>nums2</code> 中的元素數目。</p>
+                <p style="margin-top: 15px;">請你<strong>合併</strong> <code>nums2</code> 到 <code>nums1</code> 中，使合併後的陣列同樣按<strong>非遞減順序</strong>排列。</p>
+                <p style="margin-top: 15px;"><strong>注意：</strong>最終，合併後陣列不應由函數返回，而是存儲在陣列 <code>nums1</code> 中。為了應對這種情況，<code>nums1</code> 的初始長度為 <code>m + n</code>，其中前 <code>m</code> 個元素表示應合併的元素，後 <code>n</code> 個元素為 <code>0</code>，應忽略。<code>nums2</code> 的長度為 <code>n</code>。</p>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例 1:</div>
+                <pre><code>輸入: nums1 = [1,2,3,0,0,0], m = 3, nums2 = [2,5,6], n = 3
+輸出: [1,2,2,3,5,6]
+解釋: 需要合併 [1,2,3] 和 [2,5,6]
+合併結果是 [1,2,2,3,5,6]</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例 2:</div>
+                <pre><code>輸入: nums1 = [1], m = 1, nums2 = [], n = 0
+輸出: [1]
+解釋: 需要合併 [1] 和 []，合併結果是 [1]</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例 3:</div>
+                <pre><code>輸入: nums1 = [0], m = 0, nums2 = [1], n = 1
+輸出: [1]
+解釋: 需要合併的陣列是 [] 和 [1]
+注意，因為 m = 0，所以 nums1 中沒有元素，0 只是為了確保合併結果可以順利存放到 nums1 中</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">限制條件:</div>
+                <pre><code>nums1.length == m + n
+nums2.length == n
+0 <= m, n <= 200
+1 <= m + n <= 200
+-10⁹ <= nums1[i], nums2[j] <= 10⁹</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">進階:</div>
+                <p>你可以設計一個時間複雜度為 <code>O(m + n)</code> 的算法來解決這個問題嗎？</p>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">解題思路</h2>
+            
+            <div class="approach-box">
+                <div class="approach-title">核心觀察</div>
+                <p>這道題的關鍵在於：</p>
+                <ul>
+                    <li>nums1 有足夠的空間容納所有元素</li>
+                    <li>兩個陣列都已排序</li>
+                    <li>需要原地操作，不能用額外陣列</li>
+                </ul>
+                <p style="margin-top: 15px; color: #16a34a; font-weight: 600;">
+                    關鍵：從後往前填充，避免覆蓋
+                </p>
+            </div>
+            
+            <div class="approach-box">
+                <div class="approach-title">方法一：從後往前合併（最優解）⭐⭐⭐</div>
+                <p>利用 nums1 尾部的空間，從後往前填充。</p>
+                
+                <p style="margin-top: 15px;"><strong>為什麼從後往前？</strong></p>
+                <ul>
+                    <li>從前往後會覆蓋 nums1 的元素</li>
+                    <li>從後往前，尾部是空的，不會覆蓋</li>
+                    <li>每次比較兩個陣列的最大值</li>
+                </ul>
+                
+                <p style="margin-top: 15px;"><strong>算法步驟：</strong></p>
+                <ol>
+                    <li>設置三個指標：i (nums1 最後元素)、j (nums2 最後元素)、k (合併後最後位置)</li>
+                    <li>比較 nums1[i] 和 nums2[j]</li>
+                    <li>較大的放到 nums1[k]</li>
+                    <li>移動對應指標</li>
+                    <li>重複直到處理完所有元素</li>
+                </ol>
+                
+                <div class="visual-box">
+                    <p><strong>視覺化範例：nums1=[1,2,3,0,0,0], m=3, nums2=[2,5,6], n=3</strong></p>
+                    <pre style="background: white; padding: 15px; border-radius: 5px; margin-top: 10px;"><code>初始狀態:
+nums1: [1, 2, 3, 0, 0, 0]
+        ↑i          ↑k
+nums2: [2, 5, 6]
+              ↑j
+
+步驟 1: 比較 nums1[i]=3 vs nums2[j]=6
+       6 較大 → nums1[k]=6
+nums1: [1, 2, 3, 0, 0, 6]
+        ↑i       ↑k
+nums2: [2, 5, 6]
+           ↑j
+
+步驟 2: 比較 nums1[i]=3 vs nums2[j]=5
+       5 較大 → nums1[k]=5
+nums1: [1, 2, 3, 0, 5, 6]
+        ↑i    ↑k
+nums2: [2, 5, 6]
+        ↑j
+
+步驟 3: 比較 nums1[i]=3 vs nums2[j]=2
+       3 較大 → nums1[k]=3
+nums1: [1, 2, 3, 3, 5, 6]
+     ↑i    ↑k
+nums2: [2, 5, 6]
+        ↑j
+
+步驟 4: 比較 nums1[i]=2 vs nums2[j]=2
+       相等，任選一個 → nums1[k]=2
+nums1: [1, 2, 2, 3, 5, 6]
+     ↑i ↑k
+nums2: [2, 5, 6]
+     ↑j
+
+步驟 5: 比較 nums1[i]=2 vs nums2[j]=2
+       (已處理) → nums1[k]=2
+nums1: [1, 2, 2, 3, 5, 6]
+  ↑i↑k
+nums2: [2, 5, 6]
+     (j < 0)
+
+步驟 6: nums1[i]=1 直接放入
+nums1: [1, 2, 2, 3, 5, 6] ✓
+↑i,k
+
+完成！</code></pre>
+                </div>
+            </div>
+
+            <div class="approach-box">
+                <div class="approach-title">方法二：合併後排序</div>
+                <p>簡單但不是最優解。</p>
+                <ul>
+                    <li>將 nums2 複製到 nums1 後面</li>
+                    <li>對整個 nums1 排序</li>
+                    <li>時間複雜度：O((m+n) log(m+n))</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">程式碼實現</h2>
+            
+            <div class="language-tabs">
+                <button class="tab-btn active" onclick="showLanguage('python')">Python</button>
+                <button class="tab-btn" onclick="showLanguage('cpp')">C++</button>
+                <button class="tab-btn" onclick="showLanguage('java')">Java</button>
+            </div>
+
+            <div id="python" class="code-container active">
+                <pre><code class="language-python">class Solution:
+    def merge(self, nums1: List[int], m: int, nums2: List[int], n: int) -> None:
+        """
+        方法一：從後往前合併（最優解）
+        時間複雜度: O(m + n)
+        空間複雜度: O(1)
+        """
+        # 三個指標：i 指向 nums1 最後元素，j 指向 nums2 最後元素，k 指向合併後最後位置
+        i = m - 1
+        j = n - 1
+        k = m + n - 1
+        
+        # 從後往前合併
+        while i >= 0 and j >= 0:
+            if nums1[i] > nums2[j]:
+                nums1[k] = nums1[i]
+                i -= 1
+            else:
+                nums1[k] = nums2[j]
+                j -= 1
+            k -= 1
+        
+        # 如果 nums2 還有剩餘，複製到 nums1
+        # 注意：如果 nums1 有剩餘，已經在正確位置了
+        while j >= 0:
+            nums1[k] = nums2[j]
+            j -= 1
+            k -= 1
+    
+    def merge_v2(self, nums1: List[int], m: int, nums2: List[int], n: int) -> None:
+        """
+        方法二：合併後排序
+        時間複雜度: O((m+n) log(m+n))
+        空間複雜度: O(1)
+        """
+        # 複製 nums2 到 nums1 後面
+        nums1[m:] = nums2
+        # 排序
+        nums1.sort()</code></pre>
+            </div>
+
+            <div id="cpp" class="code-container">
+                <pre><code class="language-cpp">#include &lt;vector&gt;
+using namespace std;
+
+class Solution {
+public:
+    void merge(vector<int>& nums1, int m, vector<int>& nums2, int n) {
+        int i = m - 1;  // nums1 最後元素
+        int j = n - 1;  // nums2 最後元素
+        int k = m + n - 1;  // 合併後最後位置
+        
+        // 從後往前合併
+        while (i >= 0 && j >= 0) {
+            if (nums1[i] > nums2[j]) {
+                nums1[k] = nums1[i];
+                i--;
+            } else {
+                nums1[k] = nums2[j];
+                j--;
+            }
+            k--;
+        }
+        
+        // 如果 nums2 還有剩餘
+        while (j >= 0) {
+            nums1[k] = nums2[j];
+            j--;
+            k--;
+        }
+    }
+};</code></pre>
+            </div>
+
+            <div id="java" class="code-container">
+                <pre><code class="language-java">class Solution {
+    public void merge(int[] nums1, int m, int[] nums2, int n) {
+        int i = m - 1;  // nums1 最後元素
+        int j = n - 1;  // nums2 最後元素
+        int k = m + n - 1;  // 合併後最後位置
+        
+        // 從後往前合併
+        while (i >= 0 && j >= 0) {
+            if (nums1[i] > nums2[j]) {
+                nums1[k] = nums1[i];
+                i--;
+            } else {
+                nums1[k] = nums2[j];
+                j--;
+            }
+            k--;
+        }
+        
+        // 如果 nums2 還有剩餘
+        while (j >= 0) {
+            nums1[k] = nums2[j];
+            j--;
+            k--;
+        }
+    }
+}</code></pre>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">複雜度分析</h2>
+            <div class="complexity-box">
+                <div class="complexity-item">時間複雜度: O(m + n)</div>
+                <p style="color: #166534; margin: 10px 0;">
+                    每個元素最多被處理一次
+                </p>
+                
+                <div class="complexity-item" style="margin-top: 20px;">空間複雜度: O(1)</div>
+                <p style="color: #166534; margin: 10px 0;">
+                    只使用常數個變數，原地操作
+                </p>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">重點提示</h2>
+            <div class="complexity-box">
+                <ul>
+                    <li><strong>為什麼從後往前？</strong>避免覆蓋 nums1 的元素</li>
+                    <li><strong>三個指標：</strong>i (nums1)、j (nums2)、k (結果位置)</li>
+                    <li><strong>處理剩餘：</strong>只需處理 nums2 的剩餘（nums1 已在正確位置）</li>
+                    <li><strong>初始化：</strong>i=m-1, j=n-1, k=m+n-1</li>
+                    <li><strong>比較方向：</strong>從大到小</li>
+                    <li><strong>邊界情況：</strong>m=0 或 n=0</li>
+                    <li><strong>常見錯誤：</strong>忘記處理 nums2 的剩餘元素</li>
+                    <li><strong>vs 鏈表版本：</strong>Merge Two Sorted Lists (#21)</li>
+                    <li><strong>相關題目：</strong>Merge Sorted Array 系列</li>
+                    <li><strong>記憶口訣：</strong>「從後往前，大者先放」</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        hljs.highlightAll();
+        
+        function showLanguage(lang) {
+            document.querySelectorAll('.code-container').forEach(container => {
+                container.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.getElementById(lang).classList.add('active');
+            event.target.classList.add('active');
+        }
+    </script>
+</body>
+</html>

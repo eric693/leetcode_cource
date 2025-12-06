@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>112. Path Sum - LeetCode 學習平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f8fafc; line-height: 1.8; color: #334155; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .header { background: linear-gradient(135deg, #16a34a 0%, #15803d 100%); color: white; padding: 40px; border-radius: 16px; margin-bottom: 30px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .back-btn { display: inline-block; color: white; text-decoration: none; background: rgba(255,255,255,0.2); padding: 10px 20px; border-radius: 8px; margin-bottom: 20px; transition: all 0.3s; }
+        .back-btn:hover { background: rgba(255,255,255,0.3); }
+        .problem-title { font-size: 2.5em; font-weight: 800; margin-bottom: 15px; }
+        .difficulty { display: inline-block; background: rgba(255,255,255,0.3); padding: 8px 20px; border-radius: 20px; font-weight: 600; font-size: 0.9em; }
+        .content-section { background: white; padding: 40px; border-radius: 16px; margin-bottom: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .section-title { font-size: 1.8em; color: #1e293b; margin-bottom: 25px; font-weight: 700; padding-bottom: 10px; border-bottom: 3px solid #16a34a; }
+        .description { font-size: 1.1em; line-height: 1.9; color: #475569; margin-bottom: 20px; }
+        .example-box { background: #dcfce7; border-left: 4px solid #16a34a; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .example-title { font-weight: 700; color: #166534; margin-bottom: 10px; font-size: 1.1em; }
+        .approach-box { background: #eff6ff; border-left: 4px solid #3b82f6; padding: 25px; border-radius: 8px; margin: 25px 0; }
+        .approach-title { font-weight: 700; color: #1e40af; margin-bottom: 15px; font-size: 1.3em; }
+        .complexity-box { background: #dcfce7; border-left: 4px solid #16a34a; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .complexity-item { margin: 10px 0; font-weight: 600; color: #166534; }
+        .language-tabs { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+        .tab-btn { padding: 12px 28px; border: 2px solid #16a34a; background: white; color: #16a34a; border-radius: 8px; cursor: pointer; font-weight: 600; transition: all 0.3s; font-size: 1em; }
+        .tab-btn:hover { background: #dcfce7; }
+        .tab-btn.active { background: #16a34a; color: white; }
+        .code-container { display: none; margin-top: 20px; }
+        .code-container.active { display: block; }
+        pre { background: #282c34 !important; padding: 25px !important; border-radius: 12px; overflow-x: auto; margin: 0; }
+        code { font-family: 'Fira Code', 'Consolas', monospace; font-size: 0.95em; line-height: 1.6; }
+        ol, ul { margin-left: 30px; margin-top: 15px; }
+        li { margin: 12px 0; line-height: 1.8; }
+        strong { color: #1e293b; font-weight: 700; }
+        .visual-box { background: #f0f9ff; border: 2px solid #3b82f6; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        
+        @media (max-width: 768px) {
+            .container { padding: 10px; }
+            .header { padding: 25px; }
+            .problem-title { font-size: 1.8em; }
+            .content-section { padding: 25px; }
+            .tab-btn { padding: 10px 20px; font-size: 0.9em; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="../index.html" class="back-btn">← 返回題目列表</a>
+            <div class="problem-title">112. Path Sum</div>
+            <span class="difficulty">Easy</span>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">題目描述</h2>
+            <div class="description">
+                <p>給你二元樹的根節點 <code>root</code> 和一個表示目標和的整數 <code>targetSum</code>。判斷該樹中是否存在<strong>根節點到葉子節點</strong>的路徑，這條路徑上所有節點值相加等於目標和 <code>targetSum</code>。如果存在，返回 <code>true</code>；否則，返回 <code>false</code>。</p>
+                <p style="margin-top: 15px;"><strong>葉子節點</strong>是指沒有子節點的節點。</p>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例 1:</div>
+                <pre><code>輸入: root = [5,4,8,11,null,13,4,7,2,null,null,null,1], targetSum = 22
+輸出: true
+解釋: 路徑 5 → 4 → 11 → 2 的和為 22</code></pre>
+                <pre style="background: #f1f5f9; padding: 15px; border-radius: 8px; margin-top: 10px;"><code>        5
+       / \
+      4   8
+     /   / \
+    11  13  4
+   / \       \
+  7   2       1
+
+路徑: 5 → 4 → 11 → 2 = 22 ✓</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例 2:</div>
+                <pre><code>輸入: root = [1,2,3], targetSum = 5
+輸出: false
+解釋: 沒有路徑的和等於 5</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例 3:</div>
+                <pre><code>輸入: root = [], targetSum = 0
+輸出: false
+解釋: 空樹沒有路徑</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">限制條件:</div>
+                <pre><code>樹中節點的數目在範圍 [0, 5000] 內
+-1000 <= Node.val <= 1000
+-1000 <= targetSum <= 1000</code></pre>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">解題思路</h2>
+            
+            <div class="approach-box">
+                <div class="approach-title">核心觀察</div>
+                <p>關鍵點：</p>
+                <ul>
+                    <li>必須是<strong>根節點到葉子節點</strong>的路徑</li>
+                    <li>不能在中間節點停止</li>
+                    <li>使用遞迴減法：targetSum - node.val</li>
+                </ul>
+                <p style="margin-top: 15px; color: #16a34a; font-weight: 600;">
+                    關鍵：遞迴減去當前值，在葉子節點檢查剩餘是否為 0
+                </p>
+            </div>
+            
+            <div class="approach-box">
+                <div class="approach-title">方法一：遞迴 DFS ⭐⭐⭐</div>
+                <p>從根節點開始，不斷減去節點值。</p>
+                
+                <p style="margin-top: 15px;"><strong>算法步驟：</strong></p>
+                <ol>
+                    <li>如果是葉子節點，檢查 targetSum == node.val</li>
+                    <li>否則遞迴檢查左右子樹</li>
+                    <li>傳遞 targetSum - node.val 給子樹</li>
+                    <li>只要有一條路徑滿足即可</li>
+                </ol>
+                
+                <div class="visual-box">
+                    <p><strong>視覺化範例：targetSum = 22</strong></p>
+                    <pre style="background: white; padding: 15px; border-radius: 5px; margin-top: 10px;"><code>        5 (剩餘 22)
+       / \
+      /   \
+     4     8 (剩餘 17)
+    /     / \
+   11    13  4 (剩餘 14)
+  / \         \
+ 7   2         1 (剩餘 10)
+
+遞迴過程:
+1. 根節點 5, 剩餘 = 22 - 5 = 17
+   
+2. 左子樹: 節點 4, 剩餘 = 17 - 4 = 13
+   
+3. 左子樹: 節點 11, 剩餘 = 13 - 11 = 2
+   
+4. 左子樹: 節點 7 (葉子), 剩餘 = 2 - 7 = -5 ✗
+   
+5. 右子樹: 節點 2 (葉子), 剩餘 = 2 - 2 = 0 ✓
+
+找到路徑! 5 → 4 → 11 → 2 = 22</code></pre>
+                </div>
+            </div>
+
+            <div class="approach-box">
+                <div class="approach-title">方法二：迭代（使用棧）⭐⭐</div>
+                <p>使用棧保存節點和剩餘和。</p>
+                
+                <p style="margin-top: 15px;"><strong>核心思想：</strong></p>
+                <ul>
+                    <li>棧中保存 (節點, 剩餘和) 的配對</li>
+                    <li>遇到葉子節點檢查剩餘和是否為 0</li>
+                    <li>非葉子節點將子節點加入棧</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">程式碼實現</h2>
+            
+            <div class="language-tabs">
+                <button class="tab-btn active" onclick="showLanguage('python')">Python</button>
+                <button class="tab-btn" onclick="showLanguage('cpp')">C++</button>
+                <button class="tab-btn" onclick="showLanguage('java')">Java</button>
+            </div>
+
+            <div id="python" class="code-container active">
+                <pre><code class="language-python"># Definition for a binary tree node.
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+class Solution:
+    def hasPathSum(self, root: TreeNode, targetSum: int) -> bool:
+        """
+        方法一：遞迴 DFS
+        時間複雜度: O(n)
+        空間複雜度: O(h)，h 是樹高
+        """
+        # 空樹
+        if not root:
+            return False
+        
+        # 葉子節點：檢查剩餘和是否等於節點值
+        if not root.left and not root.right:
+            return targetSum == root.val
+        
+        # 非葉子節點：檢查左右子樹
+        # 減去當前節點值後繼續遞迴
+        return (self.hasPathSum(root.left, targetSum - root.val) or 
+                self.hasPathSum(root.right, targetSum - root.val))
+    
+    def hasPathSum_v2(self, root: TreeNode, targetSum: int) -> bool:
+        """
+        方法二：迭代（使用棧）
+        時間複雜度: O(n)
+        空間複雜度: O(n)
+        """
+        if not root:
+            return False
+        
+        stack = [(root, targetSum)]
+        
+        while stack:
+            node, remaining = stack.pop()
+            
+            # 葉子節點
+            if not node.left and not node.right:
+                if remaining == node.val:
+                    return True
+            
+            # 加入子節點
+            if node.right:
+                stack.append((node.right, remaining - node.val))
+            if node.left:
+                stack.append((node.left, remaining - node.val))
+        
+        return False</code></pre>
+            </div>
+
+            <div id="cpp" class="code-container">
+                <pre><code class="language-cpp">/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+#include <stack>
+using namespace std;
+
+class Solution {
+public:
+    bool hasPathSum(TreeNode* root, int targetSum) {
+        if (!root) return false;
+        
+        // 葉子節點
+        if (!root->left && !root->right) {
+            return targetSum == root->val;
+        }
+        
+        // 遞迴檢查左右子樹
+        return hasPathSum(root->left, targetSum - root->val) || 
+               hasPathSum(root->right, targetSum - root->val);
+    }
+    
+    // 迭代版本
+    bool hasPathSum_v2(TreeNode* root, int targetSum) {
+        if (!root) return false;
+        
+        stack<pair<TreeNode*, int>> stk;
+        stk.push({root, targetSum});
+        
+        while (!stk.empty()) {
+            auto [node, remaining] = stk.top();
+            stk.pop();
+            
+            if (!node->left && !node->right) {
+                if (remaining == node->val) return true;
+            }
+            
+            if (node->right) 
+                stk.push({node->right, remaining - node->val});
+            if (node->left) 
+                stk.push({node->left, remaining - node->val});
+        }
+        
+        return false;
+    }
+};</code></pre>
+            </div>
+
+            <div id="java" class="code-container">
+                <pre><code class="language-java">/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+import java.util.Stack;
+
+class Solution {
+    public boolean hasPathSum(TreeNode root, int targetSum) {
+        if (root == null) return false;
+        
+        // 葉子節點
+        if (root.left == null && root.right == null) {
+            return targetSum == root.val;
+        }
+        
+        // 遞迴檢查左右子樹
+        return hasPathSum(root.left, targetSum - root.val) || 
+               hasPathSum(root.right, targetSum - root.val);
+    }
+}</code></pre>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">複雜度分析</h2>
+            <div class="complexity-box">
+                <div class="complexity-item">時間複雜度: O(n)</div>
+                <p style="color: #166534; margin: 10px 0;">
+                    最壞情況需要遍歷所有節點
+                </p>
+                
+                <div class="complexity-item" style="margin-top: 20px;">空間複雜度: O(h) / O(n)</div>
+                <p style="color: #166534; margin: 10px 0;">
+                    遞迴：O(h) 棧空間；迭代：O(n) 最壞情況
+                </p>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">重點提示</h2>
+            <div class="complexity-box">
+                <ul>
+                    <li><strong>必須到葉子節點：</strong>不能在中間節點停止</li>
+                    <li><strong>葉子節點判斷：</strong>left == null && right == null</li>
+                    <li><strong>減法技巧：</strong>targetSum - node.val 傳給子樹</li>
+                    <li><strong>邊界情況：</strong>空樹、單節點、負數路徑</li>
+                    <li><strong>短路求值：</strong>使用 or，找到一條即可返回</li>
+                    <li><strong>常見錯誤：</strong>在非葉子節點也判斷 sum == 0</li>
+                    <li><strong>擴展問題：</strong>Path Sum II (#113) - 返回所有路徑</li>
+                    <li><strong>變形：</strong>Path Sum III (#437) - 不必從根開始</li>
+                    <li><strong>相關題目：</strong>Binary Tree Paths (#257)</li>
+                    <li><strong>記憶口訣：</strong>「減到葉子，檢查是否為零」</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        hljs.highlightAll();
+        
+        function showLanguage(lang) {
+            document.querySelectorAll('.code-container').forEach(container => {
+                container.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.getElementById(lang).classList.add('active');
+            event.target.classList.add('active');
+        }
+    </script>
+</body>
+</html>
