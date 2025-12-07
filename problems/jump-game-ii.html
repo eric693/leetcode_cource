@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>#45 Jump Game II | LeetCode 學習平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #333; background: #f8fafc; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .header { background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%); color: white; padding: 30px; border-radius: 12px; margin-bottom: 30px; box-shadow: 0 4px 6px rgba(220, 38, 38, 0.2); }
+        .header h1 { font-size: 2em; margin-bottom: 10px; }
+        .difficulty { display: inline-block; padding: 6px 16px; background: rgba(255,255,255,0.2); border-radius: 20px; font-size: 0.9em; font-weight: 600; }
+        .tags { margin-top: 15px; }
+        .tag { display: inline-block; background: rgba(255,255,255,0.15); padding: 4px 12px; border-radius: 6px; margin-right: 8px; font-size: 0.85em; }
+        .back-btn { display: inline-block; margin-bottom: 20px; padding: 10px 20px; background: #3b82f6; color: white; text-decoration: none; border-radius: 8px; transition: background 0.3s; }
+        .back-btn:hover { background: #2563eb; }
+        .section { background: white; padding: 30px; border-radius: 12px; margin-bottom: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .section h2 { color: #1e293b; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 3px solid #dc2626; }
+        .section h3 { color: #475569; margin: 25px 0 15px 0; font-size: 1.3em; }
+        .code-block { background: #282c34; border-radius: 8px; overflow: hidden; margin: 15px 0; }
+        .lang-tabs { display: flex; background: #21252b; border-bottom: 1px solid #181a1f; }
+        .lang-tab { padding: 12px 24px; cursor: pointer; color: #abb2bf; border: none; background: none; transition: all 0.3s; font-weight: 500; }
+        .lang-tab.active { color: #61afef; background: #282c34; border-bottom: 2px solid #61afef; }
+        .lang-tab:hover { color: #61afef; background: #2c313a; }
+        .code-content { display: none; }
+        .code-content.active { display: block; }
+        pre { margin: 0; }
+        code { font-family: 'Consolas', 'Monaco', 'Courier New', monospace; font-size: 0.9em; }
+        .example { background: #f0f9ff; border-left: 4px solid #3b82f6; padding: 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .example-title { font-weight: 700; color: #1e40af; margin-bottom: 12px; font-size: 1.05em; }
+        .visual-box { background: #fef3c7; border: 2px solid #f59e0b; padding: 20px; border-radius: 8px; margin: 15px 0; }
+        .visual-title { font-weight: 700; color: #92400e; margin-bottom: 12px; display: flex; align-items: center; font-size: 1.05em; }
+        .complexity { background: #f1f5f9; padding: 15px; border-radius: 8px; margin: 15px 0; }
+        .complexity-item { margin: 8px 0; color: #475569; }
+        .key-point { background: #dcfce7; border-left: 4px solid #16a34a; padding: 15px 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        ul, ol { margin-left: 25px; margin-top: 10px; }
+        li { margin: 8px 0; color: #475569; }
+        strong { color: #1e293b; }
+        .note { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 15px 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        @media (max-width: 768px) {
+            .container { padding: 10px; }
+            .header h1 { font-size: 1.5em; }
+            .section { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="../index.html" class="back-btn">← 返回題目列表</a>
+        
+        <div class="header">
+            <h1>#45 Jump Game II</h1>
+            <div class="difficulty">Hard</div>
+            <div class="tags">
+                <span class="tag">Array</span>
+                <span class="tag">Greedy</span>
+                <span class="tag">Dynamic Programming</span>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>題目描述</h2>
+            <p>給定一個非負整數陣列 nums，你最初位於陣列的第一個位置。</p>
+            <p style="margin-top: 15px;">陣列中的每個元素代表你在該位置可以跳躍的最大長度。</p>
+            <p style="margin-top: 15px;">你的目標是使用最少的跳躍次數到達陣列的最後一個位置。</p>
+            <p style="margin-top: 15px;"><strong>假設你總是可以到達陣列的最後一個位置。</strong></p>
+        </div>
+
+        <div class="section">
+            <h2>範例</h2>
+            
+            <div class="example">
+                <div class="example-title">範例 1：</div>
+                <strong>輸入：</strong>nums = [2,3,1,1,4]<br>
+                <strong>輸出：</strong>2<br>
+                <strong>解釋：</strong>跳到最後一個位置的最小跳躍數是 2。從索引 0 跳 1 步到索引 1，然後跳 3 步到最後一個位置。
+            </div>
+
+            <div class="example">
+                <div class="example-title">範例 2：</div>
+                <strong>輸入：</strong>nums = [2,3,0,1,4]<br>
+                <strong>輸出：</strong>2
+            </div>
+
+            <div class="example">
+                <div class="example-title">範例 3：</div>
+                <strong>輸入：</strong>nums = [1,2,3]<br>
+                <strong>輸出：</strong>2<br>
+                <strong>解釋：</strong>從索引 0 → 1 → 3
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>解題思路</h2>
+            
+            <div class="visual-box">
+                <div class="visual-title">💡 核心概念：貪心算法（Greedy）</div>
+                <p><strong>關鍵洞察：</strong>用最少的跳躍，每次跳盡可能遠。</p>
+                <ol style="margin-top: 10px;">
+                    <li>維護當前跳躍能到達的最遠位置</li>
+                    <li>遍歷當前跳躍範圍內的所有位置</li>
+                    <li>找出下一跳能到達的最遠位置</li>
+                    <li>當到達當前跳躍的邊界時，進行下一跳</li>
+                </ol>
+            </div>
+
+            <h3>詳細範例演示</h3>
+            <div class="visual-box">
+                <div class="visual-title">🔄 完整跳躍過程：nums = [2,3,1,1,4]</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+索引:  0   1   2   3   4
+數值: [2,  3,  1,  1,  4]
+       ↑
+     起點
+
+<strong>第 1 次跳躍:</strong>
+當前範圍: [0]
+- 從索引 0 出發，最多跳 2 步
+- 可到達: 索引 1, 2
+
+遍歷當前範圍:
+- i=0: 能到 max(0+2) = 2
+
+在範圍內找下一跳最遠:
+- i=0 → 能到 2
+下次跳躍最遠: 2
+
+索引:  0   1   2   3   4
+數值: [2,  3,  1,  1,  4]
+       *───→───→
+
+<strong>第 2 次跳躍:</strong>
+當前範圍: [1, 2]
+- 需要遍歷索引 1 和 2
+
+遍歷當前範圍:
+- i=1: 1+3=4 (能到索引 4) ✓
+- i=2: 2+1=3 (能到索引 3)
+
+下次跳躍最遠: 4 (已到達終點)
+
+索引:  0   1   2   3   4
+數值: [2,  3,  1,  1,  4]
+       *   *───────→───→ ✓
+
+<strong>總跳躍次數: 2</strong>
+路徑: 0 → 1 → 4
+                </pre>
+            </div>
+
+            <h3>貪心策略詳解</h3>
+            <div class="visual-box">
+                <div class="visual-title">🎯 三個關鍵變數</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+<strong>jumps:</strong> 當前跳躍次數
+<strong>current_end:</strong> 當前跳躍能到達的最遠邊界
+<strong>farthest:</strong> 下一次跳躍能到達的最遠位置
+
+策略:
+1. 遍歷陣列（不包括最後一個元素）
+2. 持續更新 farthest = max(farthest, i + nums[i])
+3. 當 i 到達 current_end 時:
+   - jumps += 1
+   - current_end = farthest
+
+為什麼不遍歷最後一個元素？
+→ 因為到達最後一個元素前，我們已經計算出所需跳躍數
+                </pre>
+            </div>
+
+            <h3>視覺化範例</h3>
+            <div class="visual-box">
+                <div class="visual-title">📊 跳躍範圍圖解</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+nums = [2, 3, 1, 1, 4]
+
+跳躍 0: 起點
+│
+├─ 範圍 1: [索引 1-2] ← 從索引 0 能到達
+│  │
+│  ├─ 索引 1: 1+3=4 ✓
+│  └─ 索引 2: 2+1=3
+│
+└─ 範圍 2: [索引 3-4] ← 從範圍 1 能到達
+   │
+   └─ 到達終點！
+
+總跳躍: 2 次
+                </pre>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>程式碼實現</h2>
+            
+            <div class="code-block">
+                <div class="lang-tabs">
+                    <button class="lang-tab active" onclick="switchLang(event, 'python')">Python</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'cpp')">C++</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'java')">Java</button>
+                </div>
+
+                <div id="python" class="code-content active">
+                    <pre><code class="language-python"># 方法一：貪心算法（最優解）
+class Solution:
+    def jump(self, nums: List[int]) -> int:
+        n = len(nums)
+        if n <= 1:
+            return 0
+        
+        jumps = 0           # 跳躍次數
+        current_end = 0     # 當前跳躍的邊界
+        farthest = 0        # 能到達的最遠位置
+        
+        # 不需要遍歷最後一個元素
+        for i in range(n - 1):
+            # 更新能到達的最遠位置
+            farthest = max(farthest, i + nums[i])
+            
+            # 到達當前跳躍的邊界
+            if i == current_end:
+                jumps += 1
+                current_end = farthest
+                
+                # 優化：如果已經能到達終點，提前退出
+                if current_end >= n - 1:
+                    break
+        
+        return jumps
+
+
+# 方法二：BFS 思想
+class Solution:
+    def jump(self, nums: List[int]) -> int:
+        """
+        把每次跳躍看作 BFS 的一層
+        """
+        n = len(nums)
+        if n <= 1:
+            return 0
+        
+        jumps = 0
+        current_level_end = 0
+        next_level_end = 0
+        
+        for i in range(n - 1):
+            next_level_end = max(next_level_end, i + nums[i])
+            
+            if i == current_level_end:
+                jumps += 1
+                current_level_end = next_level_end
+        
+        return jumps
+
+
+# 方法三：動態規劃（較慢，但易理解）
+class Solution:
+    def jump(self, nums: List[int]) -> int:
+        """
+        時間複雜度: O(n²)
+        空間複雜度: O(n)
+        """
+        n = len(nums)
+        dp = [float('inf')] * n
+        dp[0] = 0
+        
+        for i in range(n):
+            # 從位置 i 能跳到的所有位置
+            for j in range(1, nums[i] + 1):
+                if i + j < n:
+                    dp[i + j] = min(dp[i + j], dp[i] + 1)
+        
+        return dp[n - 1]
+
+
+# 方法四：詳細註解版本
+class Solution:
+    def jump(self, nums: List[int]) -> int:
+        """
+        貪心策略詳解版
+        
+        核心思想：
+        每次跳躍時，我們在當前能到達的範圍內
+        選擇能讓我們跳得最遠的位置
+        """
+        n = len(nums)
+        
+        # 邊界情況
+        if n <= 1:
+            return 0
+        
+        jumps = 0        # 跳躍次數
+        current_end = 0  # 當前這一跳能到達的最遠邊界
+        farthest = 0     # 在當前範圍內，下一跳能到達的最遠位置
+        
+        # 遍歷到倒數第二個位置即可
+        # 因為最後一個位置是目標，不需要再跳
+        for i in range(n - 1):
+            # 更新在當前範圍內，下一跳能到達的最遠位置
+            farthest = max(farthest, i + nums[i])
+            
+            # 到達當前這一跳的邊界了
+            if i == current_end:
+                # 必須進行下一跳
+                jumps += 1
+                # 更新邊界為下一跳能到達的最遠位置
+                current_end = farthest
+                
+                # 提前退出優化
+                if current_end >= n - 1:
+                    break
+        
+        return jumps
+
+
+# 方法五：反向貪心（從後往前）
+class Solution:
+    def jump(self, nums: List[int]) -> int:
+        """
+        從終點反向找，每次找能到達當前位置的最遠起點
+        時間複雜度: O(n²)，較慢
+        """
+        n = len(nums)
+        jumps = 0
+        position = n - 1
+        
+        while position > 0:
+            # 找最左邊能一步到達 position 的位置
+            for i in range(position):
+                if i + nums[i] >= position:
+                    position = i
+                    jumps += 1
+                    break
+        
+        return jumps
+</code></pre>
+                </div>
+
+                <div id="cpp" class="code-content">
+                    <pre><code class="language-cpp">// 方法一：貪心算法（最優解）
+class Solution {
+public:
+    int jump(vector<int>& nums) {
+        int n = nums.size();
+        if (n <= 1) return 0;
+        
+        int jumps = 0;
+        int currentEnd = 0;
+        int farthest = 0;
+        
+        for (int i = 0; i < n - 1; i++) {
+            farthest = max(farthest, i + nums[i]);
+            
+            if (i == currentEnd) {
+                jumps++;
+                currentEnd = farthest;
+                
+                if (currentEnd >= n - 1) break;
+            }
+        }
+        
+        return jumps;
+    }
+};
+
+
+// 方法二：動態規劃
+class Solution {
+public:
+    int jump(vector<int>& nums) {
+        int n = nums.size();
+        vector<int> dp(n, INT_MAX);
+        dp[0] = 0;
+        
+        for (int i = 0; i < n; i++) {
+            for (int j = 1; j <= nums[i] && i + j < n; j++) {
+                dp[i + j] = min(dp[i + j], dp[i] + 1);
+            }
+        }
+        
+        return dp[n - 1];
+    }
+};
+</code></pre>
+                </div>
+
+                <div id="java" class="code-content">
+                    <pre><code class="language-java">// 方法一：貪心算法（最優解）
+class Solution {
+    public int jump(int[] nums) {
+        int n = nums.length;
+        if (n <= 1) return 0;
+        
+        int jumps = 0;
+        int currentEnd = 0;
+        int farthest = 0;
+        
+        for (int i = 0; i < n - 1; i++) {
+            farthest = Math.max(farthest, i + nums[i]);
+            
+            if (i == currentEnd) {
+                jumps++;
+                currentEnd = farthest;
+                
+                if (currentEnd >= n - 1) break;
+            }
+        }
+        
+        return jumps;
+    }
+}
+
+
+// 方法二：動態規劃
+class Solution {
+    public int jump(int[] nums) {
+        int n = nums.length;
+        int[] dp = new int[n];
+        Arrays.fill(dp, Integer.MAX_VALUE);
+        dp[0] = 0;
+        
+        for (int i = 0; i < n; i++) {
+            for (int j = 1; j <= nums[i] && i + j < n; j++) {
+                dp[i + j] = Math.min(dp[i + j], dp[i] + 1);
+            }
+        }
+        
+        return dp[n - 1];
+    }
+}
+</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>複雜度分析</h2>
+            <div class="complexity">
+                <div class="complexity-item">
+                    <strong>貪心算法：</strong>
+                    <ul>
+                        <li>時間複雜度：O(n) - 只遍歷一次陣列</li>
+                        <li>空間複雜度：O(1) - 只用常數個變數</li>
+                    </ul>
+                </div>
+                <div class="complexity-item">
+                    <strong>動態規劃：</strong>
+                    <ul>
+                        <li>時間複雜度：O(n²) - 雙層循環</li>
+                        <li>空間複雜度：O(n) - DP 陣列</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>重點提示</h2>
+            
+            <div class="key-point">
+                <strong>💡 關鍵技巧 1：不遍歷最後一個元素</strong>
+                <p>range(n-1) 而非 range(n)，因為到達終點前已知答案。</p>
+            </div>
+
+            <div class="key-point">
+                <strong>💡 關鍵技巧 2：邊界更新時機</strong>
+                <p>當 i == current_end 時才跳躍，確保最少次數。</p>
+            </div>
+
+            <div class="key-point">
+                <strong>💡 關鍵技巧 3：提前退出優化</strong>
+                <p>如果 current_end >= n-1，可以提前結束。</p>
+            </div>
+
+            <div class="note">
+                <strong>⚠️ 常見錯誤：</strong>
+                <ul>
+                    <li>遍歷到最後一個元素（會多算一次跳躍）</li>
+                    <li>忘記更新 farthest（導致貪心策略失效）</li>
+                    <li>邊界條件處理不當（n=1 的情況）</li>
+                    <li>混淆 current_end 和 farthest 的作用</li>
+                </ul>
+            </div>
+
+            <div class="visual-box">
+                <div class="visual-title">🎯 為什麼貪心策略是對的？</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+<strong>證明：</strong>
+1. 每次跳躍時，我們選擇當前範圍內能到達最遠的位置
+2. 這保證了下一次跳躍的選擇範圍最大
+3. 因此能用最少的跳躍次數到達終點
+
+<strong>反例思考：</strong>
+如果不選擇能到達最遠的位置，
+那麼下一次的選擇範圍會變小，
+可能需要更多次跳躍。
+
+因此貪心策略是最優的。
+                </pre>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>相關題目</h2>
+            <ul>
+                <li><strong>#55 Jump Game</strong> - 跳躍遊戲 I（判斷能否到達）</li>
+                <li><strong>#1306 Jump Game III</strong> - 跳躍遊戲 III</li>
+                <li><strong>#1345 Jump Game IV</strong> - 跳躍遊戲 IV</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>補充說明</h2>
+            
+            <h3>BFS vs 貪心</h3>
+            <div class="visual-box">
+                <div class="visual-title">🔍 兩種思路對比</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+<strong>BFS 思路：</strong>
+把每次跳躍看作 BFS 的一層
+第 k 層包含所有用 k 次跳躍能到達的位置
+
+<strong>貪心思路：</strong>
+直接計算每次跳躍的範圍
+不需要顯式維護層級
+
+兩者本質相同，但貪心實現更簡潔
+                </pre>
+            </div>
+
+            <h3>與 Jump Game I 的區別</h3>
+            <ul>
+                <li><strong>#55：</strong>判斷能否到達（布林值）</li>
+                <li><strong>#45：</strong>計算最少跳躍次數（整數）</li>
+                <li><strong>共同點：</strong>都可以用貪心解決</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        function switchLang(event, lang) {
+            const tabs = document.querySelectorAll('.lang-tab');
+            const contents = document.querySelectorAll('.code-content');
+            
+            tabs.forEach(tab => tab.classList.remove('active'));
+            contents.forEach(content => content.classList.remove('active'));
+            
+            event.target.classList.add('active');
+            document.getElementById(lang).classList.add('active');
+        }
+        
+        hljs.highlightAll();
+    </script>
+</body>
+</html>

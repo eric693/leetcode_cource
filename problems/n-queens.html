@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>#51 N-Queens | LeetCode 學習平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #333; background: #f8fafc; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .header { background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%); color: white; padding: 30px; border-radius: 12px; margin-bottom: 30px; box-shadow: 0 4px 6px rgba(220, 38, 38, 0.2); }
+        .header h1 { font-size: 2em; margin-bottom: 10px; }
+        .difficulty { display: inline-block; padding: 6px 16px; background: rgba(255,255,255,0.2); border-radius: 20px; font-size: 0.9em; font-weight: 600; }
+        .tags { margin-top: 15px; }
+        .tag { display: inline-block; background: rgba(255,255,255,0.15); padding: 4px 12px; border-radius: 6px; margin-right: 8px; font-size: 0.85em; }
+        .back-btn { display: inline-block; margin-bottom: 20px; padding: 10px 20px; background: #3b82f6; color: white; text-decoration: none; border-radius: 8px; transition: background 0.3s; }
+        .back-btn:hover { background: #2563eb; }
+        .section { background: white; padding: 30px; border-radius: 12px; margin-bottom: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .section h2 { color: #1e293b; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 3px solid #dc2626; }
+        .section h3 { color: #475569; margin: 25px 0 15px 0; font-size: 1.3em; }
+        .code-block { background: #282c34; border-radius: 8px; overflow: hidden; margin: 15px 0; }
+        .lang-tabs { display: flex; background: #21252b; border-bottom: 1px solid #181a1f; }
+        .lang-tab { padding: 12px 24px; cursor: pointer; color: #abb2bf; border: none; background: none; transition: all 0.3s; font-weight: 500; }
+        .lang-tab.active { color: #61afef; background: #282c34; border-bottom: 2px solid #61afef; }
+        .lang-tab:hover { color: #61afef; background: #2c313a; }
+        .code-content { display: none; }
+        .code-content.active { display: block; }
+        pre { margin: 0; }
+        code { font-family: 'Consolas', 'Monaco', 'Courier New', monospace; font-size: 0.9em; }
+        .example { background: #f0f9ff; border-left: 4px solid #3b82f6; padding: 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .example-title { font-weight: 700; color: #1e40af; margin-bottom: 12px; font-size: 1.05em; }
+        .visual-box { background: #fef3c7; border: 2px solid #f59e0b; padding: 20px; border-radius: 8px; margin: 15px 0; }
+        .visual-title { font-weight: 700; color: #92400e; margin-bottom: 12px; display: flex; align-items: center; font-size: 1.05em; }
+        .complexity { background: #f1f5f9; padding: 15px; border-radius: 8px; margin: 15px 0; }
+        .complexity-item { margin: 8px 0; color: #475569; }
+        .key-point { background: #dcfce7; border-left: 4px solid #16a34a; padding: 15px 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        ul, ol { margin-left: 25px; margin-top: 10px; }
+        li { margin: 8px 0; color: #475569; }
+        strong { color: #1e293b; }
+        .note { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 15px 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        @media (max-width: 768px) {
+            .container { padding: 10px; }
+            .header h1 { font-size: 1.5em; }
+            .section { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="../index.html" class="back-btn">← 返回題目列表</a>
+        
+        <div class="header">
+            <h1>#51 N-Queens</h1>
+            <div class="difficulty">Hard</div>
+            <div class="tags">
+                <span class="tag">Backtracking</span>
+                <span class="tag">Array</span>
+                <span class="tag">Recursion</span>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>題目描述</h2>
+            <p>n 皇后問題研究的是如何將 n 個皇后放置在 n×n 的棋盤上，並且使皇后彼此之間不能相互攻擊。</p>
+            <p style="margin-top: 15px;"><strong>皇后的攻擊規則：</strong></p>
+            <ul>
+                <li>同一行不能有兩個皇后</li>
+                <li>同一列不能有兩個皇后</li>
+                <li>同一對角線（正斜線和反斜線）不能有兩個皇后</li>
+            </ul>
+            <p style="margin-top: 15px;">給定整數 n，返回所有不同的 n 皇后問題的解決方案。</p>
+        </div>
+
+        <div class="section">
+            <h2>範例</h2>
+            
+            <div class="example">
+                <div class="example-title">範例 1：</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+<strong>輸入：</strong>n = 4
+
+<strong>輸出：</strong>
+[
+ [".Q..",  // 解法 1
+  "...Q",
+  "Q...",
+  "..Q."],
+
+ ["..Q.",  // 解法 2
+  "Q...",
+  "...Q",
+  ".Q.."]
+]
+
+<strong>解釋：</strong>4 皇后問題有兩個不同的解法。
+                </pre>
+            </div>
+
+            <div class="example">
+                <div class="example-title">範例 2：</div>
+                <strong>輸入：</strong>n = 1<br>
+                <strong>輸出：</strong>[["Q"]]
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>解題思路</h2>
+            
+            <div class="visual-box">
+                <div class="visual-title">💡 核心概念：回溯法（Backtracking）</div>
+                <p><strong>策略：</strong>逐行放置皇后，每次檢查是否合法，不合法就回溯。</p>
+                <ol style="margin-top: 10px;">
+                    <li>從第 0 行開始，依次嘗試在每一列放置皇后</li>
+                    <li>檢查當前位置是否與已放置的皇后衝突</li>
+                    <li>如果合法，放置皇后並遞迴處理下一行</li>
+                    <li>如果所有行都放置完畢，記錄解答</li>
+                    <li>回溯，嘗試其他位置</li>
+                </ol>
+            </div>
+
+            <h3>衝突檢測優化</h3>
+            <div class="visual-box">
+                <div class="visual-title">🎯 使用集合快速檢測衝突</div>
+                <p>使用三個集合分別記錄：</p>
+                <ul style="margin-top: 10px;">
+                    <li><strong>cols：</strong>已佔用的列</li>
+                    <li><strong>diag1：</strong>已佔用的正斜線（row - col）</li>
+                    <li><strong>diag2：</strong>已佔用的反斜線（row + col）</li>
+                </ul>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+對角線的數學規律：
+- 正斜線（↗）：row - col 相同
+  例如：(0,0), (1,1), (2,2) → row-col = 0
+       (0,1), (1,2), (2,3) → row-col = -1
+
+- 反斜線（↘）：row + col 相同
+  例如：(0,3), (1,2), (2,1) → row+col = 3
+       (0,2), (1,1), (2,0) → row+col = 2
+                </pre>
+            </div>
+
+            <h3>回溯過程詳解（n=4）</h3>
+            <div class="visual-box">
+                <div class="visual-title">🔄 完整搜尋樹</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+第 0 行：嘗試列 0, 1, 2, 3
+│
+├─ (0,0) 放置 Q
+│  │
+│  └─ 第 1 行：嘗試列 0✗, 1✗, 2✓, 3✗
+│     │
+│     └─ (1,2) 放置 Q
+│        │
+│        └─ 第 2 行：嘗試列 0✗, 1✗, 2✗, 3✗
+│           └─ 回溯到 (1,2)
+│  
+│  └─ 回溯到 (0,0)，移除 Q
+│
+├─ (0,1) 放置 Q
+│  │
+│  └─ 第 1 行：嘗試列 0✗, 1✗, 2✗, 3✓
+│     │
+│     └─ (1,3) 放置 Q
+│        │
+│        └─ 第 2 行：嘗試列 0✓, 1✗, 2✗, 3✗
+│           │
+│           └─ (2,0) 放置 Q
+│              │
+│              └─ 第 3 行：嘗試列 0✗, 1✗, 2✓, 3✗
+│                 │
+│                 └─ (3,2) 放置 Q ✓ 找到解法 1！
+
+繼續搜尋...最終找到解法 2
+                </pre>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>程式碼實現</h2>
+            
+            <div class="code-block">
+                <div class="lang-tabs">
+                    <button class="lang-tab active" onclick="switchLang(event, 'python')">Python</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'cpp')">C++</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'java')">Java</button>
+                </div>
+
+                <div id="python" class="code-content active">
+                    <pre><code class="language-python"># 方法一：使用集合優化（推薦）
+class Solution:
+    def solveNQueens(self, n: int) -> List[List[str]]:
+        result = []
+        board = [['.'] * n for _ in range(n)]
+        
+        # 使用集合記錄已佔用的列和對角線
+        cols = set()        # 已佔用的列
+        diag1 = set()       # 已佔用的正斜線 (row - col)
+        diag2 = set()       # 已佔用的反斜線 (row + col)
+        
+        def backtrack(row):
+            # 所有行都放置完畢
+            if row == n:
+                result.append([''.join(row) for row in board])
+                return
+            
+            # 嘗試在當前行的每一列放置皇后
+            for col in range(n):
+                # 檢查是否衝突
+                if (col in cols or 
+                    (row - col) in diag1 or 
+                    (row + col) in diag2):
+                    continue
+                
+                # 放置皇后
+                board[row][col] = 'Q'
+                cols.add(col)
+                diag1.add(row - col)
+                diag2.add(row + col)
+                
+                # 遞迴處理下一行
+                backtrack(row + 1)
+                
+                # 回溯，移除皇后
+                board[row][col] = '.'
+                cols.remove(col)
+                diag1.remove(row - col)
+                diag2.remove(row + col)
+        
+        backtrack(0)
+        return result
+
+
+# 方法二：使用陣列優化
+class Solution:
+    def solveNQueens(self, n: int) -> List[List[str]]:
+        result = []
+        queens = [-1] * n  # queens[i] 表示第 i 行皇后的列位置
+        
+        def is_valid(row, col):
+            """檢查在 (row, col) 放置皇后是否合法"""
+            for i in range(row):
+                # 檢查列衝突
+                if queens[i] == col:
+                    return False
+                # 檢查對角線衝突
+                if abs(row - i) == abs(col - queens[i]):
+                    return False
+            return True
+        
+        def backtrack(row):
+            if row == n:
+                # 構建解答
+                board = []
+                for i in range(n):
+                    row_str = '.' * queens[i] + 'Q' + '.' * (n - queens[i] - 1)
+                    board.append(row_str)
+                result.append(board)
+                return
+            
+            for col in range(n):
+                if is_valid(row, col):
+                    queens[row] = col
+                    backtrack(row + 1)
+                    queens[row] = -1  # 回溯
+        
+        backtrack(0)
+        return result
+
+
+# 方法三：詳細註解版本
+class Solution:
+    def solveNQueens(self, n: int) -> List[List[str]]:
+        """
+        使用回溯法解決 N 皇后問題
+        
+        時間複雜度：O(N!)
+        空間複雜度：O(N)
+        """
+        result = []
+        board = [['.'] * n for _ in range(n)]
+        
+        # 優化：使用集合 O(1) 檢查衝突
+        cols = set()    # 已佔用的列
+        diag1 = set()   # 已佔用的主對角線
+        diag2 = set()   # 已佔用的副對角線
+        
+        def backtrack(row):
+            """
+            在第 row 行放置皇后
+            """
+            # 基礎情況：所有行都處理完畢
+            if row == n:
+                # 將棋盤轉換為字串列表
+                result.append([''.join(row) for row in board])
+                return
+            
+            # 嘗試在當前行的每一列放置皇后
+            for col in range(n):
+                # 剪枝：檢查是否與已放置的皇后衝突
+                if col in cols:
+                    continue  # 列衝突
+                if (row - col) in diag1:
+                    continue  # 主對角線衝突
+                if (row + col) in diag2:
+                    continue  # 副對角線衝突
+                
+                # 做選擇：放置皇后
+                board[row][col] = 'Q'
+                cols.add(col)
+                diag1.add(row - col)
+                diag2.add(row + col)
+                
+                # 遞迴：處理下一行
+                backtrack(row + 1)
+                
+                # 撤銷選擇：回溯
+                board[row][col] = '.'
+                cols.remove(col)
+                diag1.remove(row - col)
+                diag2.remove(row + col)
+        
+        # 從第 0 行開始
+        backtrack(0)
+        return result
+</code></pre>
+                </div>
+
+                <div id="cpp" class="code-content">
+                    <pre><code class="language-cpp">class Solution {
+public:
+    vector<vector<string>> solveNQueens(int n) {
+        vector<vector<string>> result;
+        vector<string> board(n, string(n, '.'));
+        
+        unordered_set<int> cols;
+        unordered_set<int> diag1;
+        unordered_set<int> diag2;
+        
+        backtrack(0, n, board, result, cols, diag1, diag2);
+        return result;
+    }
+    
+private:
+    void backtrack(int row, int n, vector<string>& board,
+                   vector<vector<string>>& result,
+                   unordered_set<int>& cols,
+                   unordered_set<int>& diag1,
+                   unordered_set<int>& diag2) {
+        if (row == n) {
+            result.push_back(board);
+            return;
+        }
+        
+        for (int col = 0; col < n; col++) {
+            if (cols.count(col) || 
+                diag1.count(row - col) || 
+                diag2.count(row + col)) {
+                continue;
+            }
+            
+            board[row][col] = 'Q';
+            cols.insert(col);
+            diag1.insert(row - col);
+            diag2.insert(row + col);
+            
+            backtrack(row + 1, n, board, result, cols, diag1, diag2);
+            
+            board[row][col] = '.';
+            cols.erase(col);
+            diag1.erase(row - col);
+            diag2.erase(row + col);
+        }
+    }
+};
+</code></pre>
+                </div>
+
+                <div id="java" class="code-content">
+                    <pre><code class="language-java">class Solution {
+    public List<List<String>> solveNQueens(int n) {
+        List<List<String>> result = new ArrayList<>();
+        char[][] board = new char[n][n];
+        for (int i = 0; i < n; i++) {
+            Arrays.fill(board[i], '.');
+        }
+        
+        Set<Integer> cols = new HashSet<>();
+        Set<Integer> diag1 = new HashSet<>();
+        Set<Integer> diag2 = new HashSet<>();
+        
+        backtrack(0, n, board, result, cols, diag1, diag2);
+        return result;
+    }
+    
+    private void backtrack(int row, int n, char[][] board,
+                          List<List<String>> result,
+                          Set<Integer> cols,
+                          Set<Integer> diag1,
+                          Set<Integer> diag2) {
+        if (row == n) {
+            result.add(construct(board));
+            return;
+        }
+        
+        for (int col = 0; col < n; col++) {
+            if (cols.contains(col) || 
+                diag1.contains(row - col) || 
+                diag2.contains(row + col)) {
+                continue;
+            }
+            
+            board[row][col] = 'Q';
+            cols.add(col);
+            diag1.add(row - col);
+            diag2.add(row + col);
+            
+            backtrack(row + 1, n, board, result, cols, diag1, diag2);
+            
+            board[row][col] = '.';
+            cols.remove(col);
+            diag1.remove(row - col);
+            diag2.remove(row + col);
+        }
+    }
+    
+    private List<String> construct(char[][] board) {
+        List<String> result = new ArrayList<>();
+        for (char[] row : board) {
+            result.add(new String(row));
+        }
+        return result;
+    }
+}
+</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>複雜度分析</h2>
+            <div class="complexity">
+                <div class="complexity-item">
+                    <strong>時間複雜度：</strong>O(N!)
+                    <ul>
+                        <li>第一行有 N 種選擇</li>
+                        <li>第二行最多有 N-1 種選擇（排除衝突）</li>
+                        <li>依此類推，總共約 N! 種可能</li>
+                        <li>實際會因為剪枝而更少</li>
+                    </ul>
+                </div>
+                <div class="complexity-item">
+                    <strong>空間複雜度：</strong>O(N)
+                    <ul>
+                        <li>遞迴棧深度：O(N)</li>
+                        <li>集合空間：O(N)</li>
+                        <li>棋盤空間：O(N²)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>重點提示</h2>
+            
+            <div class="key-point">
+                <strong>💡 關鍵技巧 1：對角線公式</strong>
+                <p>正斜線 row-col 相同，反斜線 row+col 相同，記住這個規律！</p>
+            </div>
+
+            <div class="key-point">
+                <strong>💡 關鍵技巧 2：逐行放置</strong>
+                <p>每行只放一個皇后，可以避免行衝突，簡化問題。</p>
+            </div>
+
+            <div class="key-point">
+                <strong>💡 關鍵技巧 3：集合優化</strong>
+                <p>使用集合代替陣列檢查衝突，從 O(N) 優化到 O(1)。</p>
+            </div>
+
+            <div class="note">
+                <strong>⚠️ 常見錯誤：</strong>
+                <ul>
+                    <li>對角線公式記錯（row-col 和 row+col）</li>
+                    <li>回溯時忘記移除集合中的元素</li>
+                    <li>構建解答時沒有深拷貝棋盤</li>
+                    <li>邊界條件處理不當（n=1 的情況）</li>
+                </ul>
+            </div>
+
+            <div class="visual-box">
+                <div class="visual-title">🎯 解的數量規律</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+n = 1 → 1 個解
+n = 2 → 0 個解（無解）
+n = 3 → 0 個解（無解）
+n = 4 → 2 個解
+n = 5 → 10 個解
+n = 6 → 4 個解
+n = 7 → 40 個解
+n = 8 → 92 個解（經典的 8 皇后問題）
+                </pre>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>相關題目</h2>
+            <ul>
+                <li><strong>#52 N-Queens II</strong> - 只返回解的數量（更簡單）</li>
+                <li><strong>#37 Sudoku Solver</strong> - 數獨求解（類似回溯）</li>
+                <li><strong>#79 Word Search</strong> - 單詞搜尋（回溯應用）</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>補充說明</h2>
+            
+            <h3>回溯法模板</h3>
+            <div class="visual-box">
+                <div class="visual-title">📝 通用回溯模板</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+def backtrack(路徑, 選擇列表):
+    if 滿足結束條件:
+        result.add(路徑)
+        return
+    
+    for 選擇 in 選擇列表:
+        if 不符合條件:
+            continue  # 剪枝
+        
+        做選擇
+        backtrack(路徑, 選擇列表)
+        撤銷選擇  # 回溯
+                </pre>
+            </div>
+
+            <h3>N 皇后的變形</h3>
+            <ul>
+                <li>只計算解的數量 → #52 N-Queens II</li>
+                <li>要求返回一個解 → 找到第一個解就返回</li>
+                <li>棋盤上已有部分皇后 → 增加初始條件</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        function switchLang(event, lang) {
+            const tabs = document.querySelectorAll('.lang-tab');
+            const contents = document.querySelectorAll('.code-content');
+            
+            tabs.forEach(tab => tab.classList.remove('active'));
+            contents.forEach(content => content.classList.remove('active'));
+            
+            event.target.classList.add('active');
+            document.getElementById(lang).classList.add('active');
+        }
+        
+        hljs.highlightAll();
+    </script>
+</body>
+</html>

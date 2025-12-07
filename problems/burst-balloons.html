@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>#312 Burst Balloons | LeetCode 學習平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #333; background: #f8fafc; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .header { background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%); color: white; padding: 30px; border-radius: 12px; margin-bottom: 30px; box-shadow: 0 4px 6px rgba(220, 38, 38, 0.2); }
+        .header h1 { font-size: 2em; margin-bottom: 10px; }
+        .difficulty { display: inline-block; padding: 6px 16px; background: rgba(255,255,255,0.2); border-radius: 20px; font-size: 0.9em; font-weight: 600; }
+        .tags { margin-top: 15px; }
+        .tag { display: inline-block; background: rgba(255,255,255,0.15); padding: 4px 12px; border-radius: 6px; margin-right: 8px; font-size: 0.85em; }
+        .back-btn { display: inline-block; margin-bottom: 20px; padding: 10px 20px; background: #3b82f6; color: white; text-decoration: none; border-radius: 8px; transition: background 0.3s; }
+        .back-btn:hover { background: #2563eb; }
+        .section { background: white; padding: 30px; border-radius: 12px; margin-bottom: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .section h2 { color: #1e293b; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 3px solid #dc2626; }
+        .section h3 { color: #475569; margin: 25px 0 15px 0; font-size: 1.3em; }
+        .code-block { background: #282c34; border-radius: 8px; overflow: hidden; margin: 15px 0; }
+        .lang-tabs { display: flex; background: #21252b; border-bottom: 1px solid #181a1f; }
+        .lang-tab { padding: 12px 24px; cursor: pointer; color: #abb2bf; border: none; background: none; transition: all 0.3s; font-weight: 500; }
+        .lang-tab.active { color: #61afef; background: #282c34; border-bottom: 2px solid #61afef; }
+        .lang-tab:hover { color: #61afef; background: #2c313a; }
+        .code-content { display: none; }
+        .code-content.active { display: block; }
+        pre { margin: 0; }
+        code { font-family: 'Consolas', 'Monaco', 'Courier New', monospace; font-size: 0.9em; }
+        .example { background: #f0f9ff; border-left: 4px solid #3b82f6; padding: 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .example-title { font-weight: 700; color: #1e40af; margin-bottom: 12px; font-size: 1.05em; }
+        .visual-box { background: #fef3c7; border: 2px solid #f59e0b; padding: 20px; border-radius: 8px; margin: 15px 0; }
+        .visual-title { font-weight: 700; color: #92400e; margin-bottom: 12px; display: flex; align-items: center; font-size: 1.05em; }
+        .complexity { background: #f1f5f9; padding: 15px; border-radius: 8px; margin: 15px 0; }
+        .complexity-item { margin: 8px 0; color: #475569; }
+        .key-point { background: #dcfce7; border-left: 4px solid #16a34a; padding: 15px 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        ul, ol { margin-left: 25px; margin-top: 10px; }
+        li { margin: 8px 0; color: #475569; }
+        strong { color: #1e293b; }
+        .note { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 15px 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        @media (max-width: 768px) {
+            .container { padding: 10px; }
+            .header h1 { font-size: 1.5em; }
+            .section { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="../index.html" class="back-btn">← 返回題目列表</a>
+        
+        <div class="header">
+            <h1>#312 Burst Balloons</h1>
+            <div class="difficulty">Hard</div>
+            <div class="tags">
+                <span class="tag">Array</span>
+                <span class="tag">Dynamic Programming</span>
+                <span class="tag">Divide and Conquer</span>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>題目描述</h2>
+            <p>有 n 個氣球，編號為 0 到 n-1，每個氣球上都標有一個數字，這些數字存在陣列 nums 中。</p>
+            <p style="margin-top: 15px;">現在要求你戳破所有的氣球。戳破第 i 個氣球，你可以獲得 <strong>nums[i-1] × nums[i] × nums[i+1]</strong> 枚硬幣。</p>
+            <p style="margin-top: 15px;"><strong>規則：</strong></p>
+            <ul>
+                <li>如果 i-1 或 i+1 超出了陣列的邊界，那麼就當它是一個數字為 1 的氣球</li>
+                <li>戳破氣球 i 後，氣球 i-1 和 i+1 變成相鄰的氣球</li>
+            </ul>
+            <p style="margin-top: 15px;">求所能獲得硬幣的最大數量。</p>
+        </div>
+
+        <div class="section">
+            <h2>範例</h2>
+            
+            <div class="example">
+                <div class="example-title">範例 1：</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+<strong>輸入：</strong>nums = [3,1,5,8]
+
+<strong>輸出：</strong>167
+
+<strong>解釋：</strong>
+nums = [3, 1, 5, 8] → [3, 5, 8] → [3, 8] → [8] → []
+       戳破 1        戳破 5        戳破 3     戳破 8
+coins = 3×1×5    + 3×5×8    + 1×3×8   + 1×8×1
+      = 15       + 120      + 24      + 8
+      = 167
+                </pre>
+            </div>
+
+            <div class="example">
+                <div class="example-title">範例 2：</div>
+                <strong>輸入：</strong>nums = [1,5]<br>
+                <strong>輸出：</strong>10
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>解題思路</h2>
+            
+            <div class="visual-box">
+                <div class="visual-title">💡 核心概念：反向思考 + 區間 DP</div>
+                <p><strong>關鍵洞察：</strong>不要想「先戳哪個」，而要想「最後戳哪個」！</p>
+                <ol style="margin-top: 10px;">
+                    <li>假設最後戳破的是第 k 個氣球</li>
+                    <li>那麼此時左右兩側的氣球都已經被戳破了</li>
+                    <li>戳破 k 時，左右鄰居就是區間的邊界</li>
+                    <li>得分 = 左邊界 × nums[k] × 右邊界</li>
+                </ol>
+            </div>
+
+            <h3>為什麼正向思考很難？</h3>
+            <div class="visual-box">
+                <div class="visual-title">❌ 正向思考的困境</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+<strong>問題：</strong>戳破一個氣球後，陣列會改變
+
+nums = [3, 1, 5, 8]
+
+如果先戳 1:
+→ nums 變成 [3, 5, 8]
+→ 索引全部改變，很難定義子問題
+
+<strong>子問題難以定義：</strong>
+戳破氣球的順序會影響後續的選擇
+無法獨立求解子問題
+                </pre>
+            </div>
+
+            <h3>反向思考的妙處</h3>
+            <div class="visual-box">
+                <div class="visual-title">✅ 反向思考 = 最後戳破</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+<strong>思路轉換：</strong>
+不考慮「第一個戳哪個」
+而考慮「最後一個戳哪個」
+
+<strong>優勢：</strong>
+假設 k 是區間 [i, j] 中最後被戳破的氣球
+→ 戳破 k 時，[i, k-1] 和 [k+1, j] 都已經被戳破
+→ k 的左右鄰居就是 i-1 和 j+1
+→ 得分 = nums[i-1] × nums[k] × nums[j+1]
+
+<strong>子問題獨立：</strong>
+左邊區間 [i, k-1] 的最優解
+右邊區間 [k+1, j] 的最優解
+這兩個子問題互不影響！
+                </pre>
+            </div>
+
+            <h3>DP 狀態定義</h3>
+            <div class="visual-box">
+                <div class="visual-title">📊 狀態轉移方程</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+<strong>狀態定義：</strong>
+dp[i][j] = 戳破開區間 (i, j) 內所有氣球的最大硬幣數
+           （不包括 i 和 j 本身）
+
+<strong>邊界處理：</strong>
+在陣列兩端添加虛擬氣球 1
+nums = [1] + nums + [1]
+
+<strong>狀態轉移：</strong>
+假設 k 是 (i, j) 中最後被戳破的氣球
+
+dp[i][j] = max(
+    dp[i][k] + dp[k][j] + nums[i] × nums[k] × nums[j]
+)
+其中 k 從 i+1 到 j-1
+
+<strong>解釋：</strong>
+- dp[i][k]：左側子區間的最優解
+- dp[k][j]：右側子區間的最優解
+- nums[i] × nums[k] × nums[j]：最後戳破 k 的得分
+                </pre>
+            </div>
+
+            <h3>詳細範例演示</h3>
+            <div class="visual-box">
+                <div class="visual-title">🔄 完整 DP 過程：nums = [3,1,5,8]</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+<strong>添加虛擬邊界：</strong>
+nums = [1, 3, 1, 5, 8, 1]
+索引:   0  1  2  3  4  5
+
+<strong>初始化：</strong>
+長度為 1 的區間都是 0（沒有氣球可戳）
+
+<strong>計算長度為 2 的區間：</strong>
+(0,2): k=1, dp[0][2] = 1×3×1 = 3
+(1,3): k=2, dp[1][3] = 3×1×5 = 15
+(2,4): k=3, dp[2][4] = 1×5×8 = 40
+(3,5): k=4, dp[3][5] = 5×8×1 = 40
+
+<strong>計算長度為 3 的區間：</strong>
+(0,3): 
+  k=1: dp[0][1] + dp[1][3] + 1×3×5 = 0 + 15 + 15 = 30
+  k=2: dp[0][2] + dp[2][3] + 1×1×5 = 3 + 0 + 5 = 8
+  → dp[0][3] = 30
+
+(1,4):
+  k=2: dp[1][2] + dp[2][4] + 3×1×8 = 0 + 40 + 24 = 64
+  k=3: dp[1][3] + dp[3][4] + 3×5×8 = 15 + 0 + 120 = 135
+  → dp[1][4] = 135
+
+(2,5):
+  k=3: dp[2][3] + dp[3][5] + 1×5×1 = 0 + 40 + 5 = 45
+  k=4: dp[2][4] + dp[4][5] + 1×8×1 = 40 + 0 + 8 = 48
+  → dp[2][5] = 48
+
+<strong>計算長度為 4 的區間：</strong>
+(0,4):
+  k=1: 0 + 135 + 1×3×8 = 159
+  k=2: 3 + 40 + 1×1×8 = 51
+  k=3: 30 + 0 + 1×5×8 = 70
+  → dp[0][4] = 159
+
+(1,5):
+  k=2: 0 + 48 + 3×1×1 = 51
+  k=3: 15 + 40 + 3×5×1 = 70
+  k=4: 135 + 0 + 3×8×1 = 159
+  → dp[1][5] = 159
+
+<strong>最終答案 (0,5)：</strong>
+  k=1: 0 + 159 + 1×3×1 = 162
+  k=2: 3 + 48 + 1×1×1 = 52
+  k=3: 30 + 40 + 1×5×1 = 75
+  k=4: 159 + 0 + 1×8×1 = 167 ✓
+  → dp[0][5] = 167
+                </pre>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>程式碼實現</h2>
+            
+            <div class="code-block">
+                <div class="lang-tabs">
+                    <button class="lang-tab active" onclick="switchLang(event, 'python')">Python</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'cpp')">C++</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'java')">Java</button>
+                </div>
+
+                <div id="python" class="code-content active">
+                    <pre><code class="language-python"># 方法一：區間 DP（標準解法）
+class Solution:
+    def maxCoins(self, nums: List[int]) -> int:
+        # 添加虛擬邊界
+        nums = [1] + nums + [1]
+        n = len(nums)
+        
+        # dp[i][j] 表示戳破開區間 (i, j) 內所有氣球的最大硬幣數
+        dp = [[0] * n for _ in range(n)]
+        
+        # 按區間長度從小到大遍歷
+        for length in range(2, n):  # 長度從 2 開始
+            for i in range(n - length):
+                j = i + length
+                # 嘗試最後戳破 k
+                for k in range(i + 1, j):
+                    # 戳破 k 的得分 + 左右子區間的最優解
+                    coins = nums[i] * nums[k] * nums[j]
+                    dp[i][j] = max(dp[i][j], 
+                                   dp[i][k] + dp[k][j] + coins)
+        
+        # 返回整個區間的答案
+        return dp[0][n - 1]
+
+
+# 方法二：記憶化遞迴
+class Solution:
+    def maxCoins(self, nums: List[int]) -> int:
+        nums = [1] + nums + [1]
+        memo = {}
+        
+        def dp(i, j):
+            # 基礎情況：區間內沒有氣球
+            if i + 1 == j:
+                return 0
+            
+            # 記憶化
+            if (i, j) in memo:
+                return memo[(i, j)]
+            
+            max_coins = 0
+            # 嘗試最後戳破 k
+            for k in range(i + 1, j):
+                coins = nums[i] * nums[k] * nums[j]
+                total = dp(i, k) + dp(k, j) + coins
+                max_coins = max(max_coins, total)
+            
+            memo[(i, j)] = max_coins
+            return max_coins
+        
+        return dp(0, len(nums) - 1)
+
+
+# 方法三：詳細註解版本
+class Solution:
+    def maxCoins(self, nums: List[int]) -> int:
+        """
+        區間 DP 經典題目
+        
+        核心思想：反向思考
+        不考慮先戳哪個，而考慮最後戳哪個
+        """
+        # 添加虛擬邊界 1，簡化邊界處理
+        nums = [1] + nums + [1]
+        n = len(nums)
+        
+        # dp[i][j] = 戳破開區間 (i, j) 內所有氣球能獲得的最大硬幣
+        # 開區間意味著不包括 i 和 j
+        dp = [[0] * n for _ in range(n)]
+        
+        # 按區間長度遞增順序填表
+        # 長度為 1 的區間（相鄰氣球）不用計算，默認為 0
+        for length in range(2, n):
+            # 枚舉所有長度為 length 的區間
+            for i in range(n - length):
+                j = i + length
+                
+                # 在區間 (i, j) 中，嘗試每個位置作為最後戳破的氣球
+                for k in range(i + 1, j):
+                    # 假設 k 是最後被戳破的
+                    # 此時 (i, k) 和 (k, j) 內的氣球都已經被戳破
+                    # k 的左右鄰居就是 i 和 j
+                    
+                    # 戳破 k 獲得的硬幣
+                    coins = nums[i] * nums[k] * nums[j]
+                    
+                    # 總硬幣 = 左子區間 + 右子區間 + 戳破 k
+                    total = dp[i][k] + dp[k][j] + coins
+                    
+                    # 取最大值
+                    dp[i][j] = max(dp[i][j], total)
+        
+        # 答案是戳破開區間 (0, n-1) 內所有氣球
+        # 也就是原陣列的所有氣球
+        return dp[0][n - 1]
+
+
+# 方法四：打印 DP 表格（調試用）
+class Solution:
+    def maxCoins(self, nums: List[int]) -> int:
+        nums = [1] + nums + [1]
+        n = len(nums)
+        dp = [[0] * n for _ in range(n)]
+        
+        for length in range(2, n):
+            for i in range(n - length):
+                j = i + length
+                for k in range(i + 1, j):
+                    coins = nums[i] * nums[k] * nums[j]
+                    dp[i][j] = max(dp[i][j], 
+                                   dp[i][k] + dp[k][j] + coins)
+                
+                # 調試輸出
+                print(f"dp[{i}][{j}] = {dp[i][j]}")
+        
+        return dp[0][n - 1]
+</code></pre>
+                </div>
+
+                <div id="cpp" class="code-content">
+                    <pre><code class="language-cpp">class Solution {
+public:
+    int maxCoins(vector<int>& nums) {
+        // 添加虛擬邊界
+        nums.insert(nums.begin(), 1);
+        nums.push_back(1);
+        int n = nums.size();
+        
+        vector<vector<int>> dp(n, vector<int>(n, 0));
+        
+        // 按區間長度遞增
+        for (int len = 2; len < n; len++) {
+            for (int i = 0; i < n - len; i++) {
+                int j = i + len;
+                // 嘗試最後戳破 k
+                for (int k = i + 1; k < j; k++) {
+                    int coins = nums[i] * nums[k] * nums[j];
+                    dp[i][j] = max(dp[i][j], 
+                                   dp[i][k] + dp[k][j] + coins);
+                }
+            }
+        }
+        
+        return dp[0][n - 1];
+    }
+};
+</code></pre>
+                </div>
+
+                <div id="java" class="code-content">
+                    <pre><code class="language-java">class Solution {
+    public int maxCoins(int[] nums) {
+        int n = nums.length;
+        // 添加虛擬邊界
+        int[] newNums = new int[n + 2];
+        newNums[0] = 1;
+        newNums[n + 1] = 1;
+        for (int i = 0; i < n; i++) {
+            newNums[i + 1] = nums[i];
+        }
+        
+        int len = newNums.length;
+        int[][] dp = new int[len][len];
+        
+        // 按區間長度遞增
+        for (int length = 2; length < len; length++) {
+            for (int i = 0; i < len - length; i++) {
+                int j = i + length;
+                // 嘗試最後戳破 k
+                for (int k = i + 1; k < j; k++) {
+                    int coins = newNums[i] * newNums[k] * newNums[j];
+                    dp[i][j] = Math.max(dp[i][j], 
+                                        dp[i][k] + dp[k][j] + coins);
+                }
+            }
+        }
+        
+        return dp[0][len - 1];
+    }
+}
+</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>複雜度分析</h2>
+            <div class="complexity">
+                <div class="complexity-item">
+                    <strong>時間複雜度：</strong>O(n³)
+                    <ul>
+                        <li>三層循環：區間長度 O(n) × 起點 O(n) × 分割點 O(n)</li>
+                    </ul>
+                </div>
+                <div class="complexity-item">
+                    <strong>空間複雜度：</strong>O(n²)
+                    <ul>
+                        <li>DP 表格：O(n²)</li>
+                        <li>記憶化遞迴版本需要 O(n) 遞迴棧空間</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>重點提示</h2>
+            
+            <div class="key-point">
+                <strong>💡 關鍵技巧 1：反向思考</strong>
+                <p>不想「先戳哪個」，而想「最後戳哪個」，化難為易！</p>
+            </div>
+
+            <div class="key-point">
+                <strong>💡 關鍵技巧 2：虛擬邊界</strong>
+                <p>添加 [1, ..., 1] 簡化邊界處理，統一計算公式。</p>
+            </div>
+
+            <div class="key-point">
+                <strong>💡 關鍵技巧 3：開區間定義</strong>
+                <p>dp[i][j] 是開區間 (i, j)，不包括 i 和 j 本身。</p>
+            </div>
+
+            <div class="note">
+                <strong>⚠️ 常見錯誤：</strong>
+                <ul>
+                    <li>忘記添加虛擬邊界，導致邊界判斷複雜</li>
+                    <li>循環順序錯誤（必須先小區間再大區間）</li>
+                    <li>混淆開區間和閉區間的定義</li>
+                    <li>k 的範圍錯誤（應該是 i+1 到 j-1）</li>
+                </ul>
+            </div>
+
+            <div class="visual-box">
+                <div class="visual-title">🎯 為什麼要反向思考？</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+<strong>正向困境：</strong>
+先戳哪個？戳完後陣列改變，子問題難定義
+
+<strong>反向妙處：</strong>
+最後戳哪個？戳之前左右都已經清空，子問題獨立
+
+<strong>類比：</strong>
+這就像拆房子和蓋房子
+- 拆房子（正向）：先拆哪塊？順序影響結構
+- 蓋房子（反向）：最後蓋哪塊？之前的都已蓋好
+
+反向思考讓問題具有「最優子結構」！
+                </pre>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>相關題目</h2>
+            <ul>
+                <li><strong>#1000 Minimum Cost to Merge Stones</strong> - 合併石頭（類似區間 DP）</li>
+                <li><strong>#375 Guess Number Higher or Lower II</strong> - 猜數字遊戲</li>
+                <li><strong>#516 Longest Palindromic Subsequence</strong> - 最長回文子序列</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        function switchLang(event, lang) {
+            const tabs = document.querySelectorAll('.lang-tab');
+            const contents = document.querySelectorAll('.code-content');
+            
+            tabs.forEach(tab => tab.classList.remove('active'));
+            contents.forEach(content => content.classList.remove('active'));
+            
+            event.target.classList.add('active');
+            document.getElementById(lang).classList.add('active');
+        }
+        
+        hljs.highlightAll();
+    </script>
+</body>
+</html>

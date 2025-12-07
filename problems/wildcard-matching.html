@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>#44 Wildcard Matching | LeetCode 學習平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #333; background: #f8fafc; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .header { background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%); color: white; padding: 30px; border-radius: 12px; margin-bottom: 30px; box-shadow: 0 4px 6px rgba(220, 38, 38, 0.2); }
+        .header h1 { font-size: 2em; margin-bottom: 10px; }
+        .difficulty { display: inline-block; padding: 6px 16px; background: rgba(255,255,255,0.2); border-radius: 20px; font-size: 0.9em; font-weight: 600; }
+        .tags { margin-top: 15px; }
+        .tag { display: inline-block; background: rgba(255,255,255,0.15); padding: 4px 12px; border-radius: 6px; margin-right: 8px; font-size: 0.85em; }
+        .back-btn { display: inline-block; margin-bottom: 20px; padding: 10px 20px; background: #3b82f6; color: white; text-decoration: none; border-radius: 8px; transition: background 0.3s; }
+        .back-btn:hover { background: #2563eb; }
+        .section { background: white; padding: 30px; border-radius: 12px; margin-bottom: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .section h2 { color: #1e293b; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 3px solid #dc2626; }
+        .section h3 { color: #475569; margin: 25px 0 15px 0; font-size: 1.3em; }
+        .code-block { background: #282c34; border-radius: 8px; overflow: hidden; margin: 15px 0; }
+        .lang-tabs { display: flex; background: #21252b; border-bottom: 1px solid #181a1f; }
+        .lang-tab { padding: 12px 24px; cursor: pointer; color: #abb2bf; border: none; background: none; transition: all 0.3s; font-weight: 500; }
+        .lang-tab.active { color: #61afef; background: #282c34; border-bottom: 2px solid #61afef; }
+        .lang-tab:hover { color: #61afef; background: #2c313a; }
+        .code-content { display: none; }
+        .code-content.active { display: block; }
+        pre { margin: 0; }
+        code { font-family: 'Consolas', 'Monaco', 'Courier New', monospace; font-size: 0.9em; }
+        .example { background: #f0f9ff; border-left: 4px solid #3b82f6; padding: 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .example-title { font-weight: 700; color: #1e40af; margin-bottom: 12px; font-size: 1.05em; }
+        .visual-box { background: #fef3c7; border: 2px solid #f59e0b; padding: 20px; border-radius: 8px; margin: 15px 0; }
+        .visual-title { font-weight: 700; color: #92400e; margin-bottom: 12px; display: flex; align-items: center; font-size: 1.05em; }
+        .complexity { background: #f1f5f9; padding: 15px; border-radius: 8px; margin: 15px 0; }
+        .complexity-item { margin: 8px 0; color: #475569; }
+        .key-point { background: #dcfce7; border-left: 4px solid #16a34a; padding: 15px 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        ul, ol { margin-left: 25px; margin-top: 10px; }
+        li { margin: 8px 0; color: #475569; }
+        strong { color: #1e293b; }
+        .note { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 15px 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        table { width: 100%; border-collapse: collapse; margin: 15px 0; }
+        th, td { border: 1px solid #e2e8f0; padding: 12px; text-align: left; }
+        th { background: #f1f5f9; font-weight: 600; }
+        @media (max-width: 768px) {
+            .container { padding: 10px; }
+            .header h1 { font-size: 1.5em; }
+            .section { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="../index.html" class="back-btn">← 返回題目列表</a>
+        
+        <div class="header">
+            <h1>#44 Wildcard Matching</h1>
+            <div class="difficulty">Hard</div>
+            <div class="tags">
+                <span class="tag">String</span>
+                <span class="tag">Dynamic Programming</span>
+                <span class="tag">Greedy</span>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>題目描述</h2>
+            <p>給定一個字串 s 和一個字符模式 p，實現支援 '?' 和 '*' 萬用字符匹配的功能。</p>
+            <p style="margin-top: 15px;"><strong>萬用字符規則：</strong></p>
+            <ul>
+                <li><strong>'?'</strong>：匹配任意單個字符</li>
+                <li><strong>'*'</strong>：匹配任意字符序列（包括空序列）</li>
+            </ul>
+            <p style="margin-top: 15px;">匹配應該覆蓋整個字串 s（不是部分字串）。</p>
+        </div>
+
+        <div class="section">
+            <h2>範例</h2>
+            
+            <div class="example">
+                <div class="example-title">範例 1：</div>
+                <strong>輸入：</strong>s = "aa", p = "a"<br>
+                <strong>輸出：</strong>false<br>
+                <strong>解釋：</strong>"a" 無法匹配 "aa" 整個字串
+            </div>
+
+            <div class="example">
+                <div class="example-title">範例 2：</div>
+                <strong>輸入：</strong>s = "aa", p = "*"<br>
+                <strong>輸出：</strong>true<br>
+                <strong>解釋：</strong>'*' 可以匹配任意字串
+            </div>
+
+            <div class="example">
+                <div class="example-title">範例 3：</div>
+                <strong>輸入：</strong>s = "cb", p = "?a"<br>
+                <strong>輸出：</strong>false<br>
+                <strong>解釋：</strong>'?' 匹配 'c'，但第二個字符是 'b' 而不是 'a'
+            </div>
+
+            <div class="example">
+                <div class="example-title">範例 4：</div>
+                <strong>輸入：</strong>s = "adceb", p = "*a*b"<br>
+                <strong>輸出：</strong>true<br>
+                <strong>解釋：</strong>
+                <pre style="margin-top: 10px; background: white; padding: 10px; border-radius: 4px;">
+第一個 '*' 匹配空字串
+'a' 匹配 'a'
+第二個 '*' 匹配 "dce"
+'b' 匹配 'b'
+</pre>
+            </div>
+
+            <div class="example">
+                <div class="example-title">範例 5：</div>
+                <strong>輸入：</strong>s = "acdcb", p = "a*c?b"<br>
+                <strong>輸出：</strong>false
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>解題思路</h2>
+            
+            <div class="visual-box">
+                <div class="visual-title">💡 核心概念：動態規劃 vs 貪心 + 回溯</div>
+                這題有兩種主要解法：
+                <ol style="margin-top: 10px;">
+                    <li><strong>動態規劃</strong>：O(m×n) 時間，O(m×n) 空間（可優化到 O(n)）</li>
+                    <li><strong>貪心 + 回溯</strong>：O(m+n) 最佳情況，O(m×n) 最壞情況，O(1) 空間</li>
+                </ol>
+            </div>
+
+            <h3>方法一：動態規劃（DP）</h3>
+            <div class="visual-box">
+                <div class="visual-title">📊 DP 狀態定義</div>
+                <p><strong>dp[i][j]</strong>：s 的前 i 個字符是否能被 p 的前 j 個字符匹配</p>
+                <p style="margin-top: 10px;"><strong>狀態轉移：</strong></p>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+1️⃣ 如果 p[j-1] == s[i-1] 或 p[j-1] == '?'
+   dp[i][j] = dp[i-1][j-1]
+
+2️⃣ 如果 p[j-1] == '*'
+   dp[i][j] = dp[i][j-1]     // '*' 匹配空序列
+           || dp[i-1][j]     // '*' 匹配一個或多個字符
+
+3️⃣ 初始化：
+   dp[0][0] = true           // 空字串匹配空模式
+   dp[0][j] = dp[0][j-1] && p[j-1] == '*'  // 處理前導 '*'
+                </pre>
+            </div>
+
+            <h3>DP 表格範例</h3>
+            <p>s = "adceb", p = "*a*b"</p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>dp</th>
+                        <th>ε</th>
+                        <th>*</th>
+                        <th>a</th>
+                        <th>*</th>
+                        <th>b</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>ε</strong></td>
+                        <td style="background: #dcfce7;">T</td>
+                        <td style="background: #dcfce7;">T</td>
+                        <td>F</td>
+                        <td>F</td>
+                        <td>F</td>
+                    </tr>
+                    <tr>
+                        <td><strong>a</strong></td>
+                        <td>F</td>
+                        <td style="background: #dcfce7;">T</td>
+                        <td style="background: #dcfce7;">T</td>
+                        <td style="background: #dcfce7;">T</td>
+                        <td>F</td>
+                    </tr>
+                    <tr>
+                        <td><strong>d</strong></td>
+                        <td>F</td>
+                        <td style="background: #dcfce7;">T</td>
+                        <td>F</td>
+                        <td style="background: #dcfce7;">T</td>
+                        <td>F</td>
+                    </tr>
+                    <tr>
+                        <td><strong>c</strong></td>
+                        <td>F</td>
+                        <td style="background: #dcfce7;">T</td>
+                        <td>F</td>
+                        <td style="background: #dcfce7;">T</td>
+                        <td>F</td>
+                    </tr>
+                    <tr>
+                        <td><strong>e</strong></td>
+                        <td>F</td>
+                        <td style="background: #dcfce7;">T</td>
+                        <td>F</td>
+                        <td style="background: #dcfce7;">T</td>
+                        <td>F</td>
+                    </tr>
+                    <tr>
+                        <td><strong>b</strong></td>
+                        <td>F</td>
+                        <td style="background: #dcfce7;">T</td>
+                        <td>F</td>
+                        <td style="background: #dcfce7;">T</td>
+                        <td style="background: #dcfce7;">T</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>方法二：貪心 + 回溯（雙指標）</h3>
+            <div class="visual-box">
+                <div class="visual-title">🎯 貪心策略</div>
+                <p>核心思想：遇到 '*' 時，先假設它匹配空序列，如果後續匹配失敗，再回溯讓 '*' 多匹配一個字符。</p>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+使用四個指標：
+- sIndex：當前處理 s 的位置
+- pIndex：當前處理 p 的位置
+- starIndex：最近一個 '*' 在 p 中的位置
+- match：'*' 匹配到 s 的位置
+
+匹配過程：
+1. 如果字符匹配或 p[pIndex] == '?'：兩個指標都前進
+2. 如果 p[pIndex] == '*'：記錄位置，p 前進，s 不動
+3. 否則，如果之前遇到過 '*'：回溯，讓 '*' 多匹配一個字符
+4. 否則：匹配失敗
+                </pre>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>程式碼實現</h2>
+            
+            <div class="code-block">
+                <div class="lang-tabs">
+                    <button class="lang-tab active" onclick="switchLang(event, 'python')">Python</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'cpp')">C++</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'java')">Java</button>
+                </div>
+
+                <div id="python" class="code-content active">
+                    <pre><code class="language-python"># 方法一：動態規劃（二維）
+class Solution:
+    def isMatch(self, s: str, p: str) -> bool:
+        m, n = len(s), len(p)
+        
+        # dp[i][j]: s[:i] 是否匹配 p[:j]
+        dp = [[False] * (n + 1) for _ in range(m + 1)]
+        
+        # 初始化
+        dp[0][0] = True  # 空字串匹配空模式
+        
+        # 處理前導 '*'
+        for j in range(1, n + 1):
+            if p[j - 1] == '*':
+                dp[0][j] = dp[0][j - 1]
+        
+        # 填表
+        for i in range(1, m + 1):
+            for j in range(1, n + 1):
+                if p[j - 1] == '*':
+                    # '*' 匹配空序列 或 匹配一個或多個字符
+                    dp[i][j] = dp[i][j - 1] or dp[i - 1][j]
+                elif p[j - 1] == '?' or s[i - 1] == p[j - 1]:
+                    # 字符匹配
+                    dp[i][j] = dp[i - 1][j - 1]
+        
+        return dp[m][n]
+
+
+# 方法二：動態規劃（空間優化）
+class Solution:
+    def isMatch(self, s: str, p: str) -> bool:
+        m, n = len(s), len(p)
+        
+        # 只需要兩行：當前行和上一行
+        prev = [False] * (n + 1)
+        prev[0] = True
+        
+        # 處理前導 '*'
+        for j in range(1, n + 1):
+            if p[j - 1] == '*':
+                prev[j] = prev[j - 1]
+        
+        # 逐行更新
+        for i in range(1, m + 1):
+            curr = [False] * (n + 1)
+            for j in range(1, n + 1):
+                if p[j - 1] == '*':
+                    curr[j] = curr[j - 1] or prev[j]
+                elif p[j - 1] == '?' or s[i - 1] == p[j - 1]:
+                    curr[j] = prev[j - 1]
+            prev = curr
+        
+        return prev[n]
+
+
+# 方法三：貪心 + 回溯（最優）
+class Solution:
+    def isMatch(self, s: str, p: str) -> bool:
+        sIndex = pIndex = 0
+        starIndex = match = -1
+        
+        while sIndex < len(s):
+            # 情況 1：字符匹配或 '?'
+            if pIndex < len(p) and (p[pIndex] == '?' or s[sIndex] == p[pIndex]):
+                sIndex += 1
+                pIndex += 1
+            
+            # 情況 2：遇到 '*'，記錄位置
+            elif pIndex < len(p) and p[pIndex] == '*':
+                starIndex = pIndex
+                match = sIndex
+                pIndex += 1  # '*' 先匹配空序列
+            
+            # 情況 3：回溯，讓 '*' 多匹配一個字符
+            elif starIndex != -1:
+                pIndex = starIndex + 1
+                match += 1
+                sIndex = match
+            
+            # 情況 4：匹配失敗
+            else:
+                return False
+        
+        # 處理 p 中剩餘的 '*'
+        while pIndex < len(p) and p[pIndex] == '*':
+            pIndex += 1
+        
+        return pIndex == len(p)
+
+
+# 方法四：遞迴 + 記憶化
+class Solution:
+    def isMatch(self, s: str, p: str) -> bool:
+        memo = {}
+        
+        def dp(i, j):
+            # 已經計算過
+            if (i, j) in memo:
+                return memo[(i, j)]
+            
+            # 兩個都到達末尾
+            if i == len(s) and j == len(p):
+                return True
+            
+            # p 到達末尾，s 還有剩餘
+            if j == len(p):
+                return False
+            
+            # s 到達末尾，檢查 p 剩餘是否都是 '*'
+            if i == len(s):
+                result = all(c == '*' for c in p[j:])
+                memo[(i, j)] = result
+                return result
+            
+            # 字符匹配或 '?'
+            if p[j] == '?' or s[i] == p[j]:
+                result = dp(i + 1, j + 1)
+            # '*'
+            elif p[j] == '*':
+                # '*' 匹配空序列 或 匹配一個或多個字符
+                result = dp(i, j + 1) or dp(i + 1, j)
+            else:
+                result = False
+            
+            memo[(i, j)] = result
+            return result
+        
+        return dp(0, 0)
+</code></pre>
+                </div>
+
+                <div id="cpp" class="code-content">
+                    <pre><code class="language-cpp">// 方法一：動態規劃
+class Solution {
+public:
+    bool isMatch(string s, string p) {
+        int m = s.length(), n = p.length();
+        vector<vector<bool>> dp(m + 1, vector<bool>(n + 1, false));
+        
+        dp[0][0] = true;
+        
+        // 處理前導 '*'
+        for (int j = 1; j <= n; j++) {
+            if (p[j - 1] == '*') {
+                dp[0][j] = dp[0][j - 1];
+            }
+        }
+        
+        // 填表
+        for (int i = 1; i <= m; i++) {
+            for (int j = 1; j <= n; j++) {
+                if (p[j - 1] == '*') {
+                    dp[i][j] = dp[i][j - 1] || dp[i - 1][j];
+                } else if (p[j - 1] == '?' || s[i - 1] == p[j - 1]) {
+                    dp[i][j] = dp[i - 1][j - 1];
+                }
+            }
+        }
+        
+        return dp[m][n];
+    }
+};
+
+
+// 方法二：貪心 + 回溯（最優）
+class Solution {
+public:
+    bool isMatch(string s, string p) {
+        int sIndex = 0, pIndex = 0;
+        int starIndex = -1, match = -1;
+        
+        while (sIndex < s.length()) {
+            if (pIndex < p.length() && 
+                (p[pIndex] == '?' || s[sIndex] == p[pIndex])) {
+                sIndex++;
+                pIndex++;
+            }
+            else if (pIndex < p.length() && p[pIndex] == '*') {
+                starIndex = pIndex;
+                match = sIndex;
+                pIndex++;
+            }
+            else if (starIndex != -1) {
+                pIndex = starIndex + 1;
+                match++;
+                sIndex = match;
+            }
+            else {
+                return false;
+            }
+        }
+        
+        while (pIndex < p.length() && p[pIndex] == '*') {
+            pIndex++;
+        }
+        
+        return pIndex == p.length();
+    }
+};
+</code></pre>
+                </div>
+
+                <div id="java" class="code-content">
+                    <pre><code class="language-java">// 方法一：動態規劃
+class Solution {
+    public boolean isMatch(String s, String p) {
+        int m = s.length(), n = p.length();
+        boolean[][] dp = new boolean[m + 1][n + 1];
+        
+        dp[0][0] = true;
+        
+        // 處理前導 '*'
+        for (int j = 1; j <= n; j++) {
+            if (p.charAt(j - 1) == '*') {
+                dp[0][j] = dp[0][j - 1];
+            }
+        }
+        
+        // 填表
+        for (int i = 1; i <= m; i++) {
+            for (int j = 1; j <= n; j++) {
+                if (p.charAt(j - 1) == '*') {
+                    dp[i][j] = dp[i][j - 1] || dp[i - 1][j];
+                } else if (p.charAt(j - 1) == '?' || 
+                           s.charAt(i - 1) == p.charAt(j - 1)) {
+                    dp[i][j] = dp[i - 1][j - 1];
+                }
+            }
+        }
+        
+        return dp[m][n];
+    }
+}
+
+
+// 方法二：貪心 + 回溯（最優）
+class Solution {
+    public boolean isMatch(String s, String p) {
+        int sIndex = 0, pIndex = 0;
+        int starIndex = -1, match = -1;
+        
+        while (sIndex < s.length()) {
+            if (pIndex < p.length() && 
+                (p.charAt(pIndex) == '?' || s.charAt(sIndex) == p.charAt(pIndex))) {
+                sIndex++;
+                pIndex++;
+            }
+            else if (pIndex < p.length() && p.charAt(pIndex) == '*') {
+                starIndex = pIndex;
+                match = sIndex;
+                pIndex++;
+            }
+            else if (starIndex != -1) {
+                pIndex = starIndex + 1;
+                match++;
+                sIndex = match;
+            }
+            else {
+                return false;
+            }
+        }
+        
+        while (pIndex < p.length() && p.charAt(pIndex) == '*') {
+            pIndex++;
+        }
+        
+        return pIndex == p.length();
+    }
+}
+</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>複雜度分析</h2>
+            <div class="complexity">
+                <div class="complexity-item">
+                    <strong>動態規劃：</strong>
+                    <ul>
+                        <li>時間複雜度：O(m × n)，m 和 n 分別是 s 和 p 的長度</li>
+                        <li>空間複雜度：O(m × n) 或 O(n)（優化後）</li>
+                    </ul>
+                </div>
+                <div class="complexity-item">
+                    <strong>貪心 + 回溯：</strong>
+                    <ul>
+                        <li>時間複雜度：O(m + n) 最佳情況，O(m × n) 最壞情況</li>
+                        <li>空間複雜度：O(1)</li>
+                        <li>實際執行通常比 DP 快很多</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>重點提示</h2>
+            
+            <div class="key-point">
+                <strong>💡 關鍵技巧 1：理解 '*' 的貪心策略</strong>
+                <p>遇到 '*' 先假設匹配空序列，失敗時再回溯讓它多匹配字符。</p>
+            </div>
+
+            <div class="key-point">
+                <strong>💡 關鍵技巧 2：DP 狀態轉移</strong>
+                <p>p[j] == '*' 時，dp[i][j] = dp[i][j-1] || dp[i-1][j]</p>
+            </div>
+
+            <div class="key-point">
+                <strong>💡 關鍵技巧 3：初始化處理</strong>
+                <p>需要正確處理前導 '*' 的情況，它們可以匹配空字串。</p>
+            </div>
+
+            <div class="note">
+                <strong>⚠️ 常見錯誤：</strong>
+                <ul>
+                    <li>忘記處理 p 末尾的連續 '*'</li>
+                    <li>DP 初始化錯誤，特別是前導 '*' 的情況</li>
+                    <li>貪心解法忘記保存 '*' 的位置用於回溯</li>
+                    <li>混淆 '?' 和 '*' 的匹配規則</li>
+                </ul>
+            </div>
+
+            <div class="visual-box">
+                <div class="visual-title">🎯 貪心匹配詳細過程</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+s = "adceb", p = "*a*b"
+
+步驟 1: p[0]='*'，記錄 starIndex=0, match=0
+        sIndex=0, pIndex=1
+
+步驟 2: p[1]='a' 匹配 s[0]='a'
+        sIndex=1, pIndex=2
+
+步驟 3: p[2]='*'，記錄 starIndex=2, match=1
+        sIndex=1, pIndex=3
+
+步驟 4: p[3]='b' 不匹配 s[1]='d'
+        回溯到 starIndex=2, match=2
+        sIndex=2, pIndex=3
+
+步驟 5: p[3]='b' 不匹配 s[2]='c'
+        繼續回溯, match=3
+        sIndex=3, pIndex=3
+
+步驟 6: p[3]='b' 不匹配 s[3]='e'
+        繼續回溯, match=4
+        sIndex=4, pIndex=3
+
+步驟 7: p[3]='b' 匹配 s[4]='b'
+        sIndex=5, pIndex=4
+
+結束: sIndex=5=len(s), pIndex=4=len(p)
+      返回 True
+                </pre>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>相關題目</h2>
+            <ul>
+                <li><strong>#10 Regular Expression Matching</strong> - 正規表示式匹配（類似但更複雜）</li>
+                <li><strong>#72 Edit Distance</strong> - 編輯距離（DP 經典題）</li>
+                <li><strong>#115 Distinct Subsequences</strong> - 不同子序列（DP）</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>補充說明</h2>
+            
+            <h3>與 #10 Regular Expression Matching 的區別</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>特性</th>
+                        <th>#44 Wildcard</th>
+                        <th>#10 Regex</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>*</strong></td>
+                        <td>匹配任意字符序列</td>
+                        <td>匹配前一個字符 0 或多次</td>
+                    </tr>
+                    <tr>
+                        <td><strong>?</strong></td>
+                        <td>匹配任意單個字符</td>
+                        <td>不支持</td>
+                    </tr>
+                    <tr>
+                        <td><strong>.</strong></td>
+                        <td>不支持</td>
+                        <td>匹配任意單個字符</td>
+                    </tr>
+                    <tr>
+                        <td><strong>難度</strong></td>
+                        <td>Hard</td>
+                        <td>Hard（更難）</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>性能優化建議</h3>
+            <ul>
+                <li>優先使用貪心 + 回溯解法（O(1) 空間，實際更快）</li>
+                <li>如果使用 DP，可以優化空間到 O(n)</li>
+                <li>可以預處理連續的 '*' 合併為一個</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        function switchLang(event, lang) {
+            const tabs = document.querySelectorAll('.lang-tab');
+            const contents = document.querySelectorAll('.code-content');
+            
+            tabs.forEach(tab => tab.classList.remove('active'));
+            contents.forEach(content => content.classList.remove('active'));
+            
+            event.target.classList.add('active');
+            document.getElementById(lang).classList.add('active');
+        }
+        
+        hljs.highlightAll();
+    </script>
+</body>
+</html>

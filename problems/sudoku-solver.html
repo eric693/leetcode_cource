@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>#37 Sudoku Solver | LeetCode 學習平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #333; background: #f8fafc; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .header { background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%); color: white; padding: 30px; border-radius: 12px; margin-bottom: 30px; box-shadow: 0 4px 6px rgba(220, 38, 38, 0.2); }
+        .header h1 { font-size: 2em; margin-bottom: 10px; }
+        .difficulty { display: inline-block; padding: 6px 16px; background: rgba(255,255,255,0.2); border-radius: 20px; font-size: 0.9em; font-weight: 600; }
+        .tags { margin-top: 15px; }
+        .tag { display: inline-block; background: rgba(255,255,255,0.15); padding: 4px 12px; border-radius: 6px; margin-right: 8px; font-size: 0.85em; }
+        .back-btn { display: inline-block; margin-bottom: 20px; padding: 10px 20px; background: #3b82f6; color: white; text-decoration: none; border-radius: 8px; transition: background 0.3s; }
+        .back-btn:hover { background: #2563eb; }
+        .section { background: white; padding: 30px; border-radius: 12px; margin-bottom: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .section h2 { color: #1e293b; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 3px solid #dc2626; }
+        .section h3 { color: #475569; margin: 25px 0 15px 0; font-size: 1.3em; }
+        .code-block { background: #282c34; border-radius: 8px; overflow: hidden; margin: 15px 0; }
+        .lang-tabs { display: flex; background: #21252b; border-bottom: 1px solid #181a1f; }
+        .lang-tab { padding: 12px 24px; cursor: pointer; color: #abb2bf; border: none; background: none; transition: all 0.3s; font-weight: 500; }
+        .lang-tab.active { color: #61afef; background: #282c34; border-bottom: 2px solid #61afef; }
+        .lang-tab:hover { color: #61afef; background: #2c313a; }
+        .code-content { display: none; }
+        .code-content.active { display: block; }
+        pre { margin: 0; }
+        code { font-family: 'Consolas', 'Monaco', 'Courier New', monospace; font-size: 0.9em; }
+        .example { background: #f0f9ff; border-left: 4px solid #3b82f6; padding: 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .example-title { font-weight: 700; color: #1e40af; margin-bottom: 12px; font-size: 1.05em; }
+        .visual-box { background: #fef3c7; border: 2px solid #f59e0b; padding: 20px; border-radius: 8px; margin: 15px 0; }
+        .visual-title { font-weight: 700; color: #92400e; margin-bottom: 12px; display: flex; align-items: center; font-size: 1.05em; }
+        .complexity { background: #f1f5f9; padding: 15px; border-radius: 8px; margin: 15px 0; }
+        .complexity-item { margin: 8px 0; color: #475569; }
+        .key-point { background: #dcfce7; border-left: 4px solid #16a34a; padding: 15px 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        ul, ol { margin-left: 25px; margin-top: 10px; }
+        li { margin: 8px 0; color: #475569; }
+        strong { color: #1e293b; }
+        .note { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 15px 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        @media (max-width: 768px) {
+            .container { padding: 10px; }
+            .header h1 { font-size: 1.5em; }
+            .section { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="../index.html" class="back-btn">← 返回題目列表</a>
+        
+        <div class="header">
+            <h1>#37 Sudoku Solver</h1>
+            <div class="difficulty">Hard</div>
+            <div class="tags">
+                <span class="tag">Backtracking</span>
+                <span class="tag">Array</span>
+                <span class="tag">Hash Table</span>
+                <span class="tag">Matrix</span>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>題目描述</h2>
+            <p>編寫一個程序，通過填充空格來解決數獨問題。</p>
+            <p style="margin-top: 15px;"><strong>數獨規則：</strong></p>
+            <ul>
+                <li>數字 1-9 在每一行只能出現一次</li>
+                <li>數字 1-9 在每一列只能出現一次</li>
+                <li>數字 1-9 在每一個 3×3 宮格只能出現一次</li>
+            </ul>
+            <p style="margin-top: 15px;"><strong>說明：</strong></p>
+            <ul>
+                <li>空白格用 '.' 表示</li>
+                <li>給定的數獨序列只包含數字 1-9 和字符 '.'</li>
+                <li>給定數獨永遠是 9×9 形式的</li>
+                <li>給定的數獨只有唯一解</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>範例</h2>
+            
+            <div class="example">
+                <div class="example-title">範例：</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+<strong>輸入：</strong>
+board = [
+  ["5","3",".",".","7",".",".",".","."],
+  ["6",".",".","1","9","5",".",".","."],
+  [".","9","8",".",".",".",".","6","."],
+  ["8",".",".",".","6",".",".",".","3"],
+  ["4",".",".","8",".","3",".",".","1"],
+  ["7",".",".",".","2",".",".",".","6"],
+  [".","6",".",".",".",".","2","8","."],
+  [".",".",".","4","1","9",".",".","5"],
+  [".",".",".",".","8",".",".","7","9"]
+]
+
+<strong>輸出：</strong>
+[
+  ["5","3","4","6","7","8","9","1","2"],
+  ["6","7","2","1","9","5","3","4","8"],
+  ["1","9","8","3","4","2","5","6","7"],
+  ["8","5","9","7","6","1","4","2","3"],
+  ["4","2","6","8","5","3","7","9","1"],
+  ["7","1","3","9","2","4","8","5","6"],
+  ["9","6","1","5","3","7","2","8","4"],
+  ["2","8","7","4","1","9","6","3","5"],
+  ["3","4","5","2","8","6","1","7","9"]
+]
+                </pre>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>解題思路</h2>
+            
+            <div class="visual-box">
+                <div class="visual-title">💡 核心概念：回溯法 + 剪枝</div>
+                <p><strong>策略：</strong>逐個填入數字，遇到衝突就回溯。</p>
+                <ol style="margin-top: 10px;">
+                    <li>找到下一個空格（'.'）</li>
+                    <li>嘗試填入 1-9</li>
+                    <li>檢查是否符合數獨規則</li>
+                    <li>如果合法，遞迴填下一個空格</li>
+                    <li>如果無法繼續，回溯並嘗試其他數字</li>
+                </ol>
+            </div>
+
+            <h3>優化技巧</h3>
+            <div class="visual-box">
+                <div class="visual-title">🚀 三種優化策略</div>
+                <ol style="margin-top: 10px;">
+                    <li><strong>使用集合記錄：</strong>為每行、每列、每個宮格維護一個集合，O(1) 檢查衝突</li>
+                    <li><strong>位運算優化：</strong>使用位掩碼表示可用數字</li>
+                    <li><strong>選擇策略：</strong>優先填入候選數字最少的空格（更快剪枝）</li>
+                </ol>
+            </div>
+
+            <h3>3×3 宮格索引計算</h3>
+            <div class="visual-box">
+                <div class="visual-title">📊 宮格編號規則</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+數獨 9×9 劃分為 9 個 3×3 宮格：
+
+宮格編號：
+┌─────┬─────┬─────┐
+│  0  │  1  │  2  │
+├─────┼─────┼─────┤
+│  3  │  4  │  5  │
+├─────┼─────┼─────┤
+│  6  │  7  │  8  │
+└─────┴─────┴─────┘
+
+<strong>計算公式：</strong>
+box_index = (row // 3) * 3 + (col // 3)
+
+範例：
+位置 (0, 0) → box 0
+位置 (0, 5) → box 1
+位置 (4, 4) → box 4
+位置 (8, 8) → box 8
+                </pre>
+            </div>
+
+            <h3>回溯過程示意</h3>
+            <div class="visual-box">
+                <div class="visual-title">🔄 回溯搜尋樹</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+找到第一個空格 (0,2)
+│
+├─ 嘗試填 1 → 檢查規則 → 衝突 ✗
+├─ 嘗試填 2 → 檢查規則 → 衝突 ✗
+├─ 嘗試填 3 → 檢查規則 → 衝突 ✗
+├─ 嘗試填 4 → 檢查規則 → 合法 ✓
+│  │
+│  └─ 遞迴填下一個空格
+│     │
+│     ├─ 嘗試各種數字...
+│     └─ 如果無解 → 回溯到 (0,2)，嘗試 5
+│
+├─ 嘗試填 5 → ...
+└─ 最終找到完整解答
+                </pre>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>程式碼實現</h2>
+            
+            <div class="code-block">
+                <div class="lang-tabs">
+                    <button class="lang-tab active" onclick="switchLang(event, 'python')">Python</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'cpp')">C++</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'java')">Java</button>
+                </div>
+
+                <div id="python" class="code-content active">
+                    <pre><code class="language-python"># 方法一：回溯 + 集合優化（推薦）
+class Solution:
+    def solveSudoku(self, board: List[List[str]]) -> None:
+        """
+        Do not return anything, modify board in-place instead.
+        """
+        # 初始化集合，記錄每行、每列、每個宮格已使用的數字
+        rows = [set() for _ in range(9)]
+        cols = [set() for _ in range(9)]
+        boxes = [set() for _ in range(9)]
+        
+        # 預處理：記錄已有數字
+        for i in range(9):
+            for j in range(9):
+                if board[i][j] != '.':
+                    num = board[i][j]
+                    rows[i].add(num)
+                    cols[j].add(num)
+                    box_idx = (i // 3) * 3 + j // 3
+                    boxes[box_idx].add(num)
+        
+        def backtrack(pos):
+            # 基礎情況：已填完所有格子
+            if pos == 81:
+                return True
+            
+            row = pos // 9
+            col = pos % 9
+            
+            # 跳過已填數字
+            if board[row][col] != '.':
+                return backtrack(pos + 1)
+            
+            box_idx = (row // 3) * 3 + col // 3
+            
+            # 嘗試填入 1-9
+            for num in '123456789':
+                # 檢查是否合法
+                if (num in rows[row] or 
+                    num in cols[col] or 
+                    num in boxes[box_idx]):
+                    continue
+                
+                # 做選擇
+                board[row][col] = num
+                rows[row].add(num)
+                cols[col].add(num)
+                boxes[box_idx].add(num)
+                
+                # 遞迴
+                if backtrack(pos + 1):
+                    return True
+                
+                # 撤銷選擇
+                board[row][col] = '.'
+                rows[row].remove(num)
+                cols[col].remove(num)
+                boxes[box_idx].remove(num)
+            
+            return False
+        
+        backtrack(0)
+
+
+# 方法二：基礎回溯版本（易理解）
+class Solution:
+    def solveSudoku(self, board: List[List[str]]) -> None:
+        def is_valid(row, col, num):
+            """檢查在 (row, col) 填入 num 是否合法"""
+            # 檢查行
+            if num in board[row]:
+                return False
+            
+            # 檢查列
+            if num in [board[i][col] for i in range(9)]:
+                return False
+            
+            # 檢查 3×3 宮格
+            box_row, box_col = 3 * (row // 3), 3 * (col // 3)
+            for i in range(box_row, box_row + 3):
+                for j in range(box_col, box_col + 3):
+                    if board[i][j] == num:
+                        return False
+            
+            return True
+        
+        def backtrack():
+            for i in range(9):
+                for j in range(9):
+                    if board[i][j] == '.':
+                        for num in '123456789':
+                            if is_valid(i, j, num):
+                                board[i][j] = num
+                                
+                                if backtrack():
+                                    return True
+                                
+                                board[i][j] = '.'
+                        
+                        return False
+            
+            return True
+        
+        backtrack()
+
+
+# 方法三：位運算優化版本
+class Solution:
+    def solveSudoku(self, board: List[List[str]]) -> None:
+        # 使用位掩碼表示可用數字（1-9）
+        rows = [0] * 9
+        cols = [0] * 9
+        boxes = [0] * 9
+        
+        # 預處理
+        for i in range(9):
+            for j in range(9):
+                if board[i][j] != '.':
+                    digit = int(board[i][j]) - 1
+                    box_idx = (i // 3) * 3 + j // 3
+                    # 設置對應位為 1
+                    rows[i] |= (1 << digit)
+                    cols[j] |= (1 << digit)
+                    boxes[box_idx] |= (1 << digit)
+        
+        def backtrack(pos):
+            if pos == 81:
+                return True
+            
+            row, col = pos // 9, pos % 9
+            
+            if board[row][col] != '.':
+                return backtrack(pos + 1)
+            
+            box_idx = (row // 3) * 3 + col // 3
+            # 計算可用數字（未被使用的位為 1）
+            mask = ~(rows[row] | cols[col] | boxes[box_idx]) & 0x1ff
+            
+            while mask:
+                # 獲取最低位的 1
+                digit = (mask & -mask).bit_length() - 1
+                num = str(digit + 1)
+                
+                # 做選擇
+                board[row][col] = num
+                rows[row] |= (1 << digit)
+                cols[col] |= (1 << digit)
+                boxes[box_idx] |= (1 << digit)
+                
+                if backtrack(pos + 1):
+                    return True
+                
+                # 撤銷
+                board[row][col] = '.'
+                rows[row] ^= (1 << digit)
+                cols[col] ^= (1 << digit)
+                boxes[box_idx] ^= (1 << digit)
+                
+                # 清除最低位的 1
+                mask &= (mask - 1)
+            
+            return False
+        
+        backtrack(0)
+</code></pre>
+                </div>
+
+                <div id="cpp" class="code-content">
+                    <pre><code class="language-cpp">class Solution {
+public:
+    void solveSudoku(vector<vector<char>>& board) {
+        vector<unordered_set<char>> rows(9);
+        vector<unordered_set<char>> cols(9);
+        vector<unordered_set<char>> boxes(9);
+        
+        // 預處理
+        for (int i = 0; i < 9; i++) {
+            for (int j = 0; j < 9; j++) {
+                if (board[i][j] != '.') {
+                    char num = board[i][j];
+                    rows[i].insert(num);
+                    cols[j].insert(num);
+                    int boxIdx = (i / 3) * 3 + j / 3;
+                    boxes[boxIdx].insert(num);
+                }
+            }
+        }
+        
+        backtrack(board, 0, rows, cols, boxes);
+    }
+    
+private:
+    bool backtrack(vector<vector<char>>& board, int pos,
+                   vector<unordered_set<char>>& rows,
+                   vector<unordered_set<char>>& cols,
+                   vector<unordered_set<char>>& boxes) {
+        if (pos == 81) return true;
+        
+        int row = pos / 9;
+        int col = pos % 9;
+        
+        if (board[row][col] != '.') {
+            return backtrack(board, pos + 1, rows, cols, boxes);
+        }
+        
+        int boxIdx = (row / 3) * 3 + col / 3;
+        
+        for (char num = '1'; num <= '9'; num++) {
+            if (rows[row].count(num) || 
+                cols[col].count(num) || 
+                boxes[boxIdx].count(num)) {
+                continue;
+            }
+            
+            board[row][col] = num;
+            rows[row].insert(num);
+            cols[col].insert(num);
+            boxes[boxIdx].insert(num);
+            
+            if (backtrack(board, pos + 1, rows, cols, boxes)) {
+                return true;
+            }
+            
+            board[row][col] = '.';
+            rows[row].erase(num);
+            cols[col].erase(num);
+            boxes[boxIdx].erase(num);
+        }
+        
+        return false;
+    }
+};
+</code></pre>
+                </div>
+
+                <div id="java" class="code-content">
+                    <pre><code class="language-java">class Solution {
+    public void solveSudoku(char[][] board) {
+        Set<Character>[] rows = new HashSet[9];
+        Set<Character>[] cols = new HashSet[9];
+        Set<Character>[] boxes = new HashSet[9];
+        
+        for (int i = 0; i < 9; i++) {
+            rows[i] = new HashSet<>();
+            cols[i] = new HashSet<>();
+            boxes[i] = new HashSet<>();
+        }
+        
+        // 預處理
+        for (int i = 0; i < 9; i++) {
+            for (int j = 0; j < 9; j++) {
+                if (board[i][j] != '.') {
+                    char num = board[i][j];
+                    rows[i].add(num);
+                    cols[j].add(num);
+                    int boxIdx = (i / 3) * 3 + j / 3;
+                    boxes[boxIdx].add(num);
+                }
+            }
+        }
+        
+        backtrack(board, 0, rows, cols, boxes);
+    }
+    
+    private boolean backtrack(char[][] board, int pos,
+                             Set<Character>[] rows,
+                             Set<Character>[] cols,
+                             Set<Character>[] boxes) {
+        if (pos == 81) return true;
+        
+        int row = pos / 9;
+        int col = pos % 9;
+        
+        if (board[row][col] != '.') {
+            return backtrack(board, pos + 1, rows, cols, boxes);
+        }
+        
+        int boxIdx = (row / 3) * 3 + col / 3;
+        
+        for (char num = '1'; num <= '9'; num++) {
+            if (rows[row].contains(num) || 
+                cols[col].contains(num) || 
+                boxes[boxIdx].contains(num)) {
+                continue;
+            }
+            
+            board[row][col] = num;
+            rows[row].add(num);
+            cols[col].add(num);
+            boxes[boxIdx].add(num);
+            
+            if (backtrack(board, pos + 1, rows, cols, boxes)) {
+                return true;
+            }
+            
+            board[row][col] = '.';
+            rows[row].remove(num);
+            cols[col].remove(num);
+            boxes[boxIdx].remove(num);
+        }
+        
+        return false;
+    }
+}
+</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>複雜度分析</h2>
+            <div class="complexity">
+                <div class="complexity-item">
+                    <strong>時間複雜度：</strong>O(9^m)，m 是空格數量
+                    <ul>
+                        <li>最壞情況下每個空格嘗試 9 個數字</li>
+                        <li>實際因剪枝會快很多</li>
+                    </ul>
+                </div>
+                <div class="complexity-item">
+                    <strong>空間複雜度：</strong>O(1)
+                    <ul>
+                        <li>遞迴深度最多 81（9×9）</li>
+                        <li>集合空間固定（9 行 + 9 列 + 9 宮格）</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>重點提示</h2>
+            
+            <div class="key-point">
+                <strong>💡 關鍵技巧 1：宮格索引公式</strong>
+                <p>box_index = (row // 3) * 3 + (col // 3)，必須記住！</p>
+            </div>
+
+            <div class="key-point">
+                <strong>💡 關鍵技巧 2：集合優化</strong>
+                <p>使用集合記錄已用數字，檢查從 O(9) 優化到 O(1)。</p>
+            </div>
+
+            <div class="key-point">
+                <strong>💡 關鍵技巧 3：預處理</strong>
+                <p>開始前先將已有數字加入集合，避免重複檢查。</p>
+            </div>
+
+            <div class="note">
+                <strong>⚠️ 常見錯誤：</strong>
+                <ul>
+                    <li>宮格索引計算錯誤</li>
+                    <li>回溯時忘記從集合中移除數字</li>
+                    <li>遍歷方式低效（應該用位置索引而非雙層循環）</li>
+                    <li>沒有檢查題目是否有解（本題保證有唯一解）</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>相關題目</h2>
+            <ul>
+                <li><strong>#36 Valid Sudoku</strong> - 驗證數獨是否有效（更簡單）</li>
+                <li><strong>#51 N-Queens</strong> - N 皇后問題（類似回溯）</li>
+                <li><strong>#52 N-Queens II</strong> - N 皇后 II</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        function switchLang(event, lang) {
+            const tabs = document.querySelectorAll('.lang-tab');
+            const contents = document.querySelectorAll('.code-content');
+            
+            tabs.forEach(tab => tab.classList.remove('active'));
+            contents.forEach(content => content.classList.remove('active'));
+            
+            event.target.classList.add('active');
+            document.getElementById(lang).classList.add('active');
+        }
+        
+        hljs.highlightAll();
+    </script>
+</body>
+</html>

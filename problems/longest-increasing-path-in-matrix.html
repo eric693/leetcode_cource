@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>#329 Longest Increasing Path in a Matrix | LeetCode 學習平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #333; background: #f8fafc; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .header { background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%); color: white; padding: 30px; border-radius: 12px; margin-bottom: 30px; box-shadow: 0 4px 6px rgba(220, 38, 38, 0.2); }
+        .header h1 { font-size: 2em; margin-bottom: 10px; }
+        .difficulty { display: inline-block; padding: 6px 16px; background: rgba(255,255,255,0.2); border-radius: 20px; font-size: 0.9em; font-weight: 600; }
+        .tags { margin-top: 15px; }
+        .tag { display: inline-block; background: rgba(255,255,255,0.15); padding: 4px 12px; border-radius: 6px; margin-right: 8px; font-size: 0.85em; }
+        .back-btn { display: inline-block; margin-bottom: 20px; padding: 10px 20px; background: #3b82f6; color: white; text-decoration: none; border-radius: 8px; transition: background 0.3s; }
+        .back-btn:hover { background: #2563eb; }
+        .section { background: white; padding: 30px; border-radius: 12px; margin-bottom: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .section h2 { color: #1e293b; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 3px solid #dc2626; }
+        .section h3 { color: #475569; margin: 25px 0 15px 0; font-size: 1.3em; }
+        .code-block { background: #282c34; border-radius: 8px; overflow: hidden; margin: 15px 0; }
+        .lang-tabs { display: flex; background: #21252b; border-bottom: 1px solid #181a1f; }
+        .lang-tab { padding: 12px 24px; cursor: pointer; color: #abb2bf; border: none; background: none; transition: all 0.3s; font-weight: 500; }
+        .lang-tab.active { color: #61afef; background: #282c34; border-bottom: 2px solid #61afef; }
+        .lang-tab:hover { color: #61afef; background: #2c313a; }
+        .code-content { display: none; }
+        .code-content.active { display: block; }
+        pre { margin: 0; }
+        code { font-family: 'Consolas', 'Monaco', 'Courier New', monospace; font-size: 0.9em; }
+        .example { background: #f0f9ff; border-left: 4px solid #3b82f6; padding: 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .example-title { font-weight: 700; color: #1e40af; margin-bottom: 12px; font-size: 1.05em; }
+        .visual-box { background: #fef3c7; border: 2px solid #f59e0b; padding: 20px; border-radius: 8px; margin: 15px 0; }
+        .visual-title { font-weight: 700; color: #92400e; margin-bottom: 12px; display: flex; align-items: center; font-size: 1.05em; }
+        .complexity { background: #f1f5f9; padding: 15px; border-radius: 8px; margin: 15px 0; }
+        .complexity-item { margin: 8px 0; color: #475569; }
+        .key-point { background: #dcfce7; border-left: 4px solid #16a34a; padding: 15px 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        ul, ol { margin-left: 25px; margin-top: 10px; }
+        li { margin: 8px 0; color: #475569; }
+        strong { color: #1e293b; }
+        .note { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 15px 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        @media (max-width: 768px) {
+            .container { padding: 10px; }
+            .header h1 { font-size: 1.5em; }
+            .section { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="../index.html" class="back-btn">← 返回題目列表</a>
+        
+        <div class="header">
+            <h1>#329 Longest Increasing Path in a Matrix</h1>
+            <div class="difficulty">Hard</div>
+            <div class="tags">
+                <span class="tag">Array</span>
+                <span class="tag">Dynamic Programming</span>
+                <span class="tag">DFS</span>
+                <span class="tag">Memoization</span>
+                <span class="tag">Matrix</span>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>題目描述</h2>
+            <p>給定一個 m × n 整數矩陣 matrix，找出其中最長遞增路徑的長度。</p>
+            <p style="margin-top: 15px;"><strong>路徑規則：</strong></p>
+            <ul>
+                <li>可以從任何單元格開始</li>
+                <li>可以朝上、下、左、右四個方向移動</li>
+                <li>不能斜向移動或移動到邊界外</li>
+                <li>必須嚴格遞增（下一個值必須大於當前值）</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>範例</h2>
+            
+            <div class="example">
+                <div class="example-title">範例 1：</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+<strong>輸入：</strong>
+matrix = [
+  [9,9,4],
+  [6,6,8],
+  [2,1,1]
+]
+
+<strong>輸出：</strong>4
+
+<strong>解釋：</strong>最長遞增路徑為 [1, 2, 6, 9]
+路徑：(2,1) → (2,0) → (1,0) → (0,0)
+      1    →   2    →   6    →   9
+                </pre>
+            </div>
+
+            <div class="example">
+                <div class="example-title">範例 2：</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+<strong>輸入：</strong>
+matrix = [
+  [3,4,5],
+  [3,2,6],
+  [2,2,1]
+]
+
+<strong>輸出：</strong>4
+
+<strong>解釋：</strong>最長遞增路徑為 [3, 4, 5, 6]
+不能沿著 [3, 2, 1] 走，因為不是遞增的
+                </pre>
+            </div>
+
+            <div class="example">
+                <div class="example-title">範例 3：</div>
+                <strong>輸入：</strong>matrix = [[1]]<br>
+                <strong>輸出：</strong>1
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>解題思路</h2>
+            
+            <div class="visual-box">
+                <div class="visual-title">💡 核心概念：DFS + 記憶化搜尋</div>
+                <p><strong>策略：</strong>從每個點出發 DFS 搜索，用記憶化避免重複計算。</p>
+                <ol style="margin-top: 10px;">
+                    <li>對每個格子進行 DFS</li>
+                    <li>探索四個方向的鄰居</li>
+                    <li>只能走到更大的數字</li>
+                    <li>記錄每個格子的最長路徑長度</li>
+                    <li>取所有格子的最大值</li>
+                </ol>
+            </div>
+
+            <h3>為什麼需要記憶化？</h3>
+            <div class="visual-box">
+                <div class="visual-title">🔍 避免重複計算</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+<strong>問題：</strong>
+同一個格子可能被多次訪問
+
+例如矩陣：
+[1, 2, 3]
+[4, 5, 6]
+
+從 (0,0) 出發可以走到 (0,1)
+從 (1,0) 出發也可以走到 (0,1)
+
+如果每次都重新計算 (0,1) 的最長路徑，會很浪費時間
+
+<strong>解決：</strong>
+用 memo[i][j] 記錄從 (i,j) 出發的最長路徑
+計算過一次就不用再算了
+                </pre>
+            </div>
+
+            <h3>DFS 遞迴關係</h3>
+            <div class="visual-box">
+                <div class="visual-title">📊 狀態定義</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+<strong>定義：</strong>
+dfs(i, j) = 從位置 (i,j) 出發的最長遞增路徑長度
+
+<strong>遞迴關係：</strong>
+dfs(i, j) = 1 + max(
+    dfs(i-1, j),  // 上
+    dfs(i+1, j),  // 下
+    dfs(i, j-1),  // 左
+    dfs(i, j+1)   // 右
+)
+其中只考慮值更大的鄰居
+
+<strong>基礎情況：</strong>
+如果四周沒有更大的值，返回 1（只有自己）
+                </pre>
+            </div>
+
+            <h3>詳細範例演示</h3>
+            <div class="visual-box">
+                <div class="visual-title">🔄 完整 DFS 過程</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+matrix = [
+  [9, 9, 4],
+  [6, 6, 8],
+  [2, 1, 1]
+]
+
+<strong>從 (2,1) = 1 開始：</strong>
+1 → 可以走到 2 (2,0)
+    2 → 可以走到 6 (1,0)
+        6 → 可以走到 9 (0,0)
+            9 → 沒有更大的鄰居
+            memo[0][0] = 1
+        memo[1][0] = 1 + memo[0][0] = 2
+    memo[2][0] = 1 + memo[1][0] = 3
+memo[2][1] = 1 + memo[2][0] = 4 ✓
+
+<strong>從 (0,2) = 4 開始：</strong>
+4 → 可以走到 8 (1,2)
+    8 → 可以走到 9 (0,1)
+        9 → 沒有更大的鄰居
+        memo[0][1] = 1
+    memo[1][2] = 1 + memo[0][1] = 2
+memo[0][2] = 1 + memo[1][2] = 3
+
+<strong>最終答案：</strong>max(所有 memo 值) = 4
+                </pre>
+            </div>
+
+            <h3>拓撲排序解法（進階）</h3>
+            <div class="visual-box">
+                <div class="visual-title">🎯 另一種思路</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+<strong>思路：</strong>
+把矩陣看作有向圖
+邊：從小的數字指向大的數字
+問題 = 找最長路徑
+
+<strong>步驟：</strong>
+1. 計算每個點的出度
+2. 從出度為 0 的點開始（局部最大值）
+3. 反向 BFS，逐層剝離
+4. 層數 = 最長路徑長度
+                </pre>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>程式碼實現</h2>
+            
+            <div class="code-block">
+                <div class="lang-tabs">
+                    <button class="lang-tab active" onclick="switchLang(event, 'python')">Python</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'cpp')">C++</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'java')">Java</button>
+                </div>
+
+                <div id="python" class="code-content active">
+                    <pre><code class="language-python"># 方法一：DFS + 記憶化（推薦）
+class Solution:
+    def longestIncreasingPath(self, matrix: List[List[int]]) -> int:
+        if not matrix or not matrix[0]:
+            return 0
+        
+        m, n = len(matrix), len(matrix[0])
+        memo = [[0] * n for _ in range(m)]
+        directions = [(-1, 0), (1, 0), (0, -1), (0, 1)]
+        
+        def dfs(i, j):
+            # 已經計算過
+            if memo[i][j] != 0:
+                return memo[i][j]
+            
+            # 至少自己算一個長度
+            max_length = 1
+            
+            # 探索四個方向
+            for di, dj in directions:
+                ni, nj = i + di, j + dj
+                # 檢查邊界和遞增條件
+                if 0 <= ni < m and 0 <= nj < n and matrix[ni][nj] > matrix[i][j]:
+                    length = 1 + dfs(ni, nj)
+                    max_length = max(max_length, length)
+            
+            memo[i][j] = max_length
+            return max_length
+        
+        # 從每個點出發
+        result = 0
+        for i in range(m):
+            for j in range(n):
+                result = max(result, dfs(i, j))
+        
+        return result
+
+
+# 方法二：拓撲排序（BFS）
+class Solution:
+    def longestIncreasingPath(self, matrix: List[List[int]]) -> int:
+        if not matrix or not matrix[0]:
+            return 0
+        
+        m, n = len(matrix), len(matrix[0])
+        directions = [(-1, 0), (1, 0), (0, -1), (0, 1)]
+        
+        # 計算出度
+        out_degree = [[0] * n for _ in range(m)]
+        for i in range(m):
+            for j in range(n):
+                for di, dj in directions:
+                    ni, nj = i + di, j + dj
+                    if 0 <= ni < m and 0 <= nj < n and matrix[ni][nj] > matrix[i][j]:
+                        out_degree[i][j] += 1
+        
+        # 從出度為 0 的點開始（局部最大值）
+        queue = deque()
+        for i in range(m):
+            for j in range(n):
+                if out_degree[i][j] == 0:
+                    queue.append((i, j))
+        
+        # BFS 逐層剝離
+        length = 0
+        while queue:
+            length += 1
+            size = len(queue)
+            for _ in range(size):
+                i, j = queue.popleft()
+                for di, dj in directions:
+                    ni, nj = i + di, j + dj
+                    if 0 <= ni < m and 0 <= nj < n and matrix[ni][nj] < matrix[i][j]:
+                        out_degree[ni][nj] -= 1
+                        if out_degree[ni][nj] == 0:
+                            queue.append((ni, nj))
+        
+        return length
+
+
+# 方法三：詳細註解版本
+class Solution:
+    def longestIncreasingPath(self, matrix: List[List[int]]) -> int:
+        """
+        DFS + 記憶化搜尋
+        
+        時間複雜度：O(m*n)，每個格子只訪問一次
+        空間複雜度：O(m*n)，記憶化數組和遞迴棧
+        """
+        if not matrix or not matrix[0]:
+            return 0
+        
+        m, n = len(matrix), len(matrix[0])
+        # memo[i][j] 表示從 (i,j) 出發的最長路徑
+        memo = [[0] * n for _ in range(m)]
+        # 四個方向：上下左右
+        directions = [(-1, 0), (1, 0), (0, -1), (0, 1)]
+        
+        def dfs(i, j):
+            """從 (i,j) 出發的最長遞增路徑長度"""
+            # 記憶化：已經計算過了
+            if memo[i][j] != 0:
+                return memo[i][j]
+            
+            # 初始長度為 1（只有自己）
+            max_length = 1
+            
+            # 嘗試四個方向
+            for di, dj in directions:
+                ni, nj = i + di, j + dj
+                
+                # 檢查邊界
+                if not (0 <= ni < m and 0 <= nj < n):
+                    continue
+                
+                # 檢查遞增條件
+                if matrix[ni][nj] <= matrix[i][j]:
+                    continue
+                
+                # 遞迴搜尋鄰居
+                length = 1 + dfs(ni, nj)
+                max_length = max(max_length, length)
+            
+            # 記憶化
+            memo[i][j] = max_length
+            return max_length
+        
+        # 從每個格子出發，找最大值
+        result = 0
+        for i in range(m):
+            for j in range(n):
+                result = max(result, dfs(i, j))
+        
+        return result
+
+
+# 方法四：使用 @lru_cache 裝飾器
+from functools import lru_cache
+
+class Solution:
+    def longestIncreasingPath(self, matrix: List[List[int]]) -> int:
+        if not matrix or not matrix[0]:
+            return 0
+        
+        m, n = len(matrix), len(matrix[0])
+        directions = [(-1, 0), (1, 0), (0, -1), (0, 1)]
+        
+        @lru_cache(None)
+        def dfs(i, j):
+            max_length = 1
+            for di, dj in directions:
+                ni, nj = i + di, j + dj
+                if 0 <= ni < m and 0 <= nj < n and matrix[ni][nj] > matrix[i][j]:
+                    max_length = max(max_length, 1 + dfs(ni, nj))
+            return max_length
+        
+        return max(dfs(i, j) for i in range(m) for j in range(n))
+</code></pre>
+                </div>
+
+                <div id="cpp" class="code-content">
+                    <pre><code class="language-cpp">class Solution {
+public:
+    int longestIncreasingPath(vector<vector<int>>& matrix) {
+        if (matrix.empty() || matrix[0].empty()) return 0;
+        
+        int m = matrix.size(), n = matrix[0].size();
+        vector<vector<int>> memo(m, vector<int>(n, 0));
+        int result = 0;
+        
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                result = max(result, dfs(matrix, memo, i, j));
+            }
+        }
+        
+        return result;
+    }
+    
+private:
+    vector<vector<int>> directions = {{-1,0}, {1,0}, {0,-1}, {0,1}};
+    
+    int dfs(vector<vector<int>>& matrix, 
+            vector<vector<int>>& memo, 
+            int i, int j) {
+        if (memo[i][j] != 0) return memo[i][j];
+        
+        int m = matrix.size(), n = matrix[0].size();
+        int maxLength = 1;
+        
+        for (auto& dir : directions) {
+            int ni = i + dir[0];
+            int nj = j + dir[1];
+            
+            if (ni >= 0 && ni < m && nj >= 0 && nj < n && 
+                matrix[ni][nj] > matrix[i][j]) {
+                maxLength = max(maxLength, 1 + dfs(matrix, memo, ni, nj));
+            }
+        }
+        
+        memo[i][j] = maxLength;
+        return maxLength;
+    }
+};
+</code></pre>
+                </div>
+
+                <div id="java" class="code-content">
+                    <pre><code class="language-java">class Solution {
+    private int[][] directions = {{-1,0}, {1,0}, {0,-1}, {0,1}};
+    private int[][] memo;
+    
+    public int longestIncreasingPath(int[][] matrix) {
+        if (matrix.length == 0 || matrix[0].length == 0) return 0;
+        
+        int m = matrix.length, n = matrix[0].length;
+        memo = new int[m][n];
+        int result = 0;
+        
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                result = Math.max(result, dfs(matrix, i, j));
+            }
+        }
+        
+        return result;
+    }
+    
+    private int dfs(int[][] matrix, int i, int j) {
+        if (memo[i][j] != 0) return memo[i][j];
+        
+        int m = matrix.length, n = matrix[0].length;
+        int maxLength = 1;
+        
+        for (int[] dir : directions) {
+            int ni = i + dir[0];
+            int nj = j + dir[1];
+            
+            if (ni >= 0 && ni < m && nj >= 0 && nj < n && 
+                matrix[ni][nj] > matrix[i][j]) {
+                maxLength = Math.max(maxLength, 1 + dfs(matrix, ni, nj));
+            }
+        }
+        
+        memo[i][j] = maxLength;
+        return maxLength;
+    }
+}
+</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>複雜度分析</h2>
+            <div class="complexity">
+                <div class="complexity-item">
+                    <strong>DFS + 記憶化：</strong>
+                    <ul>
+                        <li>時間複雜度：O(m × n)，每個格子只訪問一次</li>
+                        <li>空間複雜度：O(m × n)，記憶化數組 + 遞迴棧</li>
+                    </ul>
+                </div>
+                <div class="complexity-item">
+                    <strong>拓撲排序：</strong>
+                    <ul>
+                        <li>時間複雜度：O(m × n)，BFS 遍歷所有格子</li>
+                        <li>空間複雜度：O(m × n)，出度數組 + 隊列</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>重點提示</h2>
+            
+            <div class="key-point">
+                <strong>💡 關鍵技巧 1：記憶化必須</strong>
+                <p>不加記憶化會超時（Time Limit Exceeded）。</p>
+            </div>
+
+            <div class="key-point">
+                <strong>💡 關鍵技巧 2：遞增條件</strong>
+                <p>只能走到嚴格大於當前值的格子，這保證了無環。</p>
+            </div>
+
+            <div class="key-point">
+                <strong>💡 關鍵技巧 3：從每個點出發</strong>
+                <p>不知道起點在哪，所以要嘗試所有格子。</p>
+            </div>
+
+            <div class="note">
+                <strong>⚠️ 常見錯誤：</strong>
+                <ul>
+                    <li>忘記記憶化，導致 TLE</li>
+                    <li>遞增條件寫錯（應該是嚴格大於 >，不是 ≥）</li>
+                    <li>邊界檢查遺漏</li>
+                    <li>返回值忘記加 1（自己也算一個長度）</li>
+                </ul>
+            </div>
+
+            <div class="visual-box">
+                <div class="visual-title">🎯 為什麼保證無環？</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+<strong>關鍵：</strong>嚴格遞增 = 不會回頭
+
+因為只能走到更大的數字
+所以路徑是單向的，不可能形成環
+
+例如：1 → 2 → 3
+不可能 3 → 1，因為 1 < 3
+
+這保證了 DFS 不會無限遞迴
+也不需要 visited 數組！
+                </pre>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>相關題目</h2>
+            <ul>
+                <li><strong>#200 Number of Islands</strong> - 島嶼數量（DFS 基礎）</li>
+                <li><strong>#130 Surrounded Regions</strong> - 被圍繞的區域</li>
+                <li><strong>#542 01 Matrix</strong> - 01 矩陣（BFS）</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        function switchLang(event, lang) {
+            const tabs = document.querySelectorAll('.lang-tab');
+            const contents = document.querySelectorAll('.code-content');
+            
+            tabs.forEach(tab => tab.classList.remove('active'));
+            contents.forEach(content => content.classList.remove('active'));
+            
+            event.target.classList.add('active');
+            document.getElementById(lang).classList.add('active');
+        }
+        
+        hljs.highlightAll();
+    </script>
+</body>
+</html>

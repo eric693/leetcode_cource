@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>#135 Candy | LeetCode 學習平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #333; background: #f8fafc; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .header { background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%); color: white; padding: 30px; border-radius: 12px; margin-bottom: 30px; box-shadow: 0 4px 6px rgba(220, 38, 38, 0.2); }
+        .header h1 { font-size: 2em; margin-bottom: 10px; }
+        .difficulty { display: inline-block; padding: 6px 16px; background: rgba(255,255,255,0.2); border-radius: 20px; font-size: 0.9em; font-weight: 600; }
+        .tags { margin-top: 15px; }
+        .tag { display: inline-block; background: rgba(255,255,255,0.15); padding: 4px 12px; border-radius: 6px; margin-right: 8px; font-size: 0.85em; }
+        .back-btn { display: inline-block; margin-bottom: 20px; padding: 10px 20px; background: #3b82f6; color: white; text-decoration: none; border-radius: 8px; transition: background 0.3s; }
+        .back-btn:hover { background: #2563eb; }
+        .section { background: white; padding: 30px; border-radius: 12px; margin-bottom: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .section h2 { color: #1e293b; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 3px solid #dc2626; }
+        .section h3 { color: #475569; margin: 25px 0 15px 0; font-size: 1.3em; }
+        .code-block { background: #282c34; border-radius: 8px; overflow: hidden; margin: 15px 0; }
+        .lang-tabs { display: flex; background: #21252b; border-bottom: 1px solid #181a1f; }
+        .lang-tab { padding: 12px 24px; cursor: pointer; color: #abb2bf; border: none; background: none; transition: all 0.3s; font-weight: 500; }
+        .lang-tab.active { color: #61afef; background: #282c34; border-bottom: 2px solid #61afef; }
+        .lang-tab:hover { color: #61afef; background: #2c313a; }
+        .code-content { display: none; }
+        .code-content.active { display: block; }
+        pre { margin: 0; }
+        code { font-family: 'Consolas', 'Monaco', 'Courier New', monospace; font-size: 0.9em; }
+        .example { background: #f0f9ff; border-left: 4px solid #3b82f6; padding: 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .example-title { font-weight: 700; color: #1e40af; margin-bottom: 12px; font-size: 1.05em; }
+        .visual-box { background: #fef3c7; border: 2px solid #f59e0b; padding: 20px; border-radius: 8px; margin: 15px 0; }
+        .visual-title { font-weight: 700; color: #92400e; margin-bottom: 12px; display: flex; align-items: center; font-size: 1.05em; }
+        .complexity { background: #f1f5f9; padding: 15px; border-radius: 8px; margin: 15px 0; }
+        .complexity-item { margin: 8px 0; color: #475569; }
+        .key-point { background: #dcfce7; border-left: 4px solid #16a34a; padding: 15px 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        ul, ol { margin-left: 25px; margin-top: 10px; }
+        li { margin: 8px 0; color: #475569; }
+        strong { color: #1e293b; }
+        .note { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 15px 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        @media (max-width: 768px) {
+            .container { padding: 10px; }
+            .header h1 { font-size: 1.5em; }
+            .section { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="../index.html" class="back-btn">← 返回題目列表</a>
+        
+        <div class="header">
+            <h1>#135 Candy</h1>
+            <div class="difficulty">Hard</div>
+            <div class="tags">
+                <span class="tag">Array</span>
+                <span class="tag">Greedy</span>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>題目描述</h2>
+            <p>有 n 個孩子站成一排。給你一個整數陣列 ratings 表示每個孩子的評分。</p>
+            <p style="margin-top: 15px;"><strong>分糖果的規則：</strong></p>
+            <ul>
+                <li>每個孩子至少分配到 1 個糖果</li>
+                <li>評分更高的孩子必須比他兩側評分低的鄰居獲得更多的糖果</li>
+            </ul>
+            <p style="margin-top: 15px;">請計算並返回需要準備的最少糖果數目。</p>
+        </div>
+
+        <div class="section">
+            <h2>範例</h2>
+            
+            <div class="example">
+                <div class="example-title">範例 1：</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+<strong>輸入：</strong>ratings = [1,0,2]
+
+<strong>輸出：</strong>5
+
+<strong>解釋：</strong>
+孩子們的糖果分配：[2, 1, 2]
+- 索引 0（評分 1）：2 顆糖（因為比右邊的 0 高）
+- 索引 1（評分 0）：1 顆糖（最低評分）
+- 索引 2（評分 2）：2 顆糖（因為比左邊的 0 高）
+總計：2 + 1 + 2 = 5
+                </pre>
+            </div>
+
+            <div class="example">
+                <div class="example-title">範例 2：</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+<strong>輸入：</strong>ratings = [1,2,2]
+
+<strong>輸出：</strong>4
+
+<strong>解釋：</strong>
+孩子們的糖果分配：[1, 2, 1]
+- 索引 0（評分 1）：1 顆糖
+- 索引 1（評分 2）：2 顆糖（比左邊高）
+- 索引 2（評分 2）：1 顆糖（和左邊相等，不需要更多）
+總計：1 + 2 + 1 = 4
+                </pre>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>解題思路</h2>
+            
+            <div class="visual-box">
+                <div class="visual-title">💡 核心概念：兩次掃描（貪心策略）</div>
+                <p><strong>關鍵洞察：</strong>左右規則可以分開處理！</p>
+                <ol style="margin-top: 10px;">
+                    <li>第一次從左到右：處理「比左邊高」的情況</li>
+                    <li>第二次從右到左：處理「比右邊高」的情況</li>
+                    <li>每個位置取兩次掃描的最大值</li>
+                </ol>
+            </div>
+
+            <h3>為什麼需要兩次掃描？</h3>
+            <div class="visual-box">
+                <div class="visual-title">🔍 問題分析</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+<strong>規則拆解：</strong>
+原規則：評分高的孩子比「兩側」評分低的鄰居獲得更多糖果
+
+可以拆成兩個獨立規則：
+1. 如果 ratings[i] > ratings[i-1]，則 candy[i] > candy[i-1]
+2. 如果 ratings[i] > ratings[i+1]，則 candy[i] > candy[i+1]
+
+<strong>為什麼一次掃描不行？</strong>
+從左到右掃描時，無法知道右邊的情況
+從右到左掃描時，無法知道左邊的情況
+
+<strong>解決方案：</strong>
+兩次掃描，分別處理左右關係
+最後取兩者的最大值（同時滿足兩個規則）
+                </pre>
+            </div>
+
+            <h3>詳細範例演示</h3>
+            <div class="visual-box">
+                <div class="visual-title">🔄 完整掃描過程：ratings = [1,2,87,87,87,2,1]</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+ratings = [1, 2, 87, 87, 87, 2, 1]
+索引:      0  1   2   3   4  5  6
+
+<strong>初始化：</strong>
+left  = [1, 1, 1, 1, 1, 1, 1]  每人先給 1 顆
+
+<strong>第一次掃描（從左到右）：</strong>
+處理規則：如果比左邊高，糖果 = 左邊 + 1
+
+i=1: ratings[1]=2 > ratings[0]=1  → left[1] = left[0] + 1 = 2
+i=2: ratings[2]=87 > ratings[1]=2 → left[2] = left[1] + 1 = 3
+i=3: ratings[3]=87 = ratings[2]=87 → left[3] = 1（相等不增加）
+i=4: ratings[4]=87 = ratings[3]=87 → left[4] = 1
+i=5: ratings[5]=2 < ratings[4]=87  → left[5] = 1（更低重置為 1）
+i=6: ratings[6]=1 < ratings[5]=2   → left[6] = 1
+
+結果: left = [1, 2, 3, 1, 1, 1, 1]
+
+<strong>第二次掃描（從右到左）：</strong>
+處理規則：如果比右邊高，糖果 = 右邊 + 1
+
+right = [1, 1, 1, 1, 1, 1, 1]  重新初始化
+
+i=5: ratings[5]=2 > ratings[6]=1  → right[5] = right[6] + 1 = 2
+i=4: ratings[4]=87 > ratings[5]=2 → right[4] = right[5] + 1 = 3
+i=3: ratings[3]=87 = ratings[4]=87 → right[3] = 1
+i=2: ratings[2]=87 = ratings[3]=87 → right[2] = 1
+i=1: ratings[1]=2 < ratings[2]=87  → right[1] = 1
+i=0: ratings[0]=1 < ratings[1]=2   → right[0] = 1
+
+結果: right = [1, 1, 1, 1, 3, 2, 1]
+
+<strong>取最大值（同時滿足左右規則）：</strong>
+candy[i] = max(left[i], right[i])
+
+candy = [max(1,1), max(2,1), max(3,1), max(1,1), max(1,3), max(1,2), max(1,1)]
+      = [1, 2, 3, 1, 3, 2, 1]
+
+<strong>總糖果數：</strong>1 + 2 + 3 + 1 + 3 + 2 + 1 = 13
+                </pre>
+            </div>
+
+            <h3>優化：單陣列版本</h3>
+            <div class="visual-box">
+                <div class="visual-title">🚀 空間優化</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+<strong>觀察：</strong>
+不需要存儲兩個陣列 left 和 right
+可以在第一個陣列上直接更新
+
+<strong>步驟：</strong>
+1. 從左到右掃描，更新 candy 陣列
+2. 從右到左掃描，取 max(當前值, 右邊+1)
+
+<strong>優勢：</strong>
+空間複雜度從 O(2n) 降到 O(n)
+                </pre>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>程式碼實現</h2>
+            
+            <div class="code-block">
+                <div class="lang-tabs">
+                    <button class="lang-tab active" onclick="switchLang(event, 'python')">Python</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'cpp')">C++</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'java')">Java</button>
+                </div>
+
+                <div id="python" class="code-content active">
+                    <pre><code class="language-python"># 方法一：兩次掃描（最優解）
+class Solution:
+    def candy(self, ratings: List[int]) -> int:
+        n = len(ratings)
+        if n <= 1:
+            return n
+        
+        # 初始化，每個孩子先給 1 顆糖
+        candies = [1] * n
+        
+        # 第一次掃描：從左到右
+        # 如果比左邊評分高，糖果 = 左邊 + 1
+        for i in range(1, n):
+            if ratings[i] > ratings[i - 1]:
+                candies[i] = candies[i - 1] + 1
+        
+        # 第二次掃描：從右到左
+        # 如果比右邊評分高，糖果 = max(當前, 右邊 + 1)
+        for i in range(n - 2, -1, -1):
+            if ratings[i] > ratings[i + 1]:
+                candies[i] = max(candies[i], candies[i + 1] + 1)
+        
+        return sum(candies)
+
+
+# 方法二：兩個陣列版本（更清晰）
+class Solution:
+    def candy(self, ratings: List[int]) -> int:
+        n = len(ratings)
+        if n <= 1:
+            return n
+        
+        left = [1] * n
+        right = [1] * n
+        
+        # 從左到右
+        for i in range(1, n):
+            if ratings[i] > ratings[i - 1]:
+                left[i] = left[i - 1] + 1
+        
+        # 從右到左
+        for i in range(n - 2, -1, -1):
+            if ratings[i] > ratings[i + 1]:
+                right[i] = right[i + 1] + 1
+        
+        # 取最大值
+        return sum(max(l, r) for l, r in zip(left, right))
+
+
+# 方法三：詳細註解版本
+class Solution:
+    def candy(self, ratings: List[int]) -> int:
+        """
+        貪心策略：兩次掃描
+        
+        核心思想：
+        左右規則可以分開處理，最後取最大值
+        """
+        n = len(ratings)
+        
+        # 邊界情況
+        if n <= 1:
+            return n
+        
+        # 每個孩子至少 1 顆糖
+        candies = [1] * n
+        
+        # 第一次掃描：處理「比左邊高」的情況
+        # 從左到右遍歷
+        for i in range(1, n):
+            # 如果當前孩子評分比左邊高
+            if ratings[i] > ratings[i - 1]:
+                # 糖果數 = 左邊孩子 + 1
+                candies[i] = candies[i - 1] + 1
+            # 如果評分不比左邊高，保持 1 顆（已初始化）
+        
+        # 第二次掃描：處理「比右邊高」的情況
+        # 從右到左遍歷
+        for i in range(n - 2, -1, -1):
+            # 如果當前孩子評分比右邊高
+            if ratings[i] > ratings[i + 1]:
+                # 需要滿足：
+                # 1. 比右邊孩子多（右邊 + 1）
+                # 2. 同時保持之前從左掃描得到的值
+                # 所以取兩者最大值
+                candies[i] = max(candies[i], candies[i + 1] + 1)
+        
+        # 返回總糖果數
+        return sum(candies)
+
+
+# 方法四：一次掃描（進階，較複雜）
+class Solution:
+    def candy(self, ratings: List[int]) -> int:
+        """
+        優化版本：只掃描一次
+        時間 O(n)，空間 O(1)
+        """
+        n = len(ratings)
+        if n <= 1:
+            return n
+        
+        total = 1
+        up = 0      # 上升序列長度
+        down = 0    # 下降序列長度
+        peak = 0    # 峰值糖果數
+        
+        for i in range(1, n):
+            if ratings[i] > ratings[i - 1]:
+                # 上升
+                up += 1
+                down = 0
+                peak = up + 1
+                total += peak
+            elif ratings[i] == ratings[i - 1]:
+                # 相等，重置
+                up = down = peak = 0
+                total += 1
+            else:
+                # 下降
+                up = 0
+                down += 1
+                # 如果下降序列長度超過峰值，需要調整峰值
+                total += down + (1 if down >= peak else 0)
+        
+        return total
+</code></pre>
+                </div>
+
+                <div id="cpp" class="code-content">
+                    <pre><code class="language-cpp">// 方法一：兩次掃描（最優解）
+class Solution {
+public:
+    int candy(vector<int>& ratings) {
+        int n = ratings.size();
+        if (n <= 1) return n;
+        
+        vector<int> candies(n, 1);
+        
+        // 從左到右
+        for (int i = 1; i < n; i++) {
+            if (ratings[i] > ratings[i - 1]) {
+                candies[i] = candies[i - 1] + 1;
+            }
+        }
+        
+        // 從右到左
+        for (int i = n - 2; i >= 0; i--) {
+            if (ratings[i] > ratings[i + 1]) {
+                candies[i] = max(candies[i], candies[i + 1] + 1);
+            }
+        }
+        
+        return accumulate(candies.begin(), candies.end(), 0);
+    }
+};
+</code></pre>
+                </div>
+
+                <div id="java" class="code-content">
+                    <pre><code class="language-java">// 方法一：兩次掃描（最優解）
+class Solution {
+    public int candy(int[] ratings) {
+        int n = ratings.length;
+        if (n <= 1) return n;
+        
+        int[] candies = new int[n];
+        Arrays.fill(candies, 1);
+        
+        // 從左到右
+        for (int i = 1; i < n; i++) {
+            if (ratings[i] > ratings[i - 1]) {
+                candies[i] = candies[i - 1] + 1;
+            }
+        }
+        
+        // 從右到左
+        int total = candies[n - 1];
+        for (int i = n - 2; i >= 0; i--) {
+            if (ratings[i] > ratings[i + 1]) {
+                candies[i] = Math.max(candies[i], candies[i + 1] + 1);
+            }
+            total += candies[i];
+        }
+        
+        return total;
+    }
+}
+</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>複雜度分析</h2>
+            <div class="complexity">
+                <div class="complexity-item">
+                    <strong>兩次掃描解法：</strong>
+                    <ul>
+                        <li>時間複雜度：O(n) - 兩次遍歷</li>
+                        <li>空間複雜度：O(n) - 糖果陣列</li>
+                    </ul>
+                </div>
+                <div class="complexity-item">
+                    <strong>一次掃描解法：</strong>
+                    <ul>
+                        <li>時間複雜度：O(n)</li>
+                        <li>空間複雜度：O(1) - 只用常數變數</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>重點提示</h2>
+            
+            <div class="key-point">
+                <strong>💡 關鍵技巧 1：規則拆分</strong>
+                <p>把「兩側」規則拆成「左邊」和「右邊」兩個獨立規則。</p>
+            </div>
+
+            <div class="key-point">
+                <strong>💡 關鍵技巧 2：取最大值</strong>
+                <p>同時滿足左右規則 = 取兩次掃描結果的最大值。</p>
+            </div>
+
+            <div class="key-point">
+                <strong>💡 關鍵技巧 3：相等情況</strong>
+                <p>評分相等時不需要更多糖果，保持當前值即可。</p>
+            </div>
+
+            <div class="note">
+                <strong>⚠️ 常見錯誤：</strong>
+                <ul>
+                    <li>只掃描一次（無法同時處理左右關係）</li>
+                    <li>相等時也增加糖果（題目要求是「更高」才需要更多）</li>
+                    <li>第二次掃描忘記取 max（需要同時滿足兩個規則）</li>
+                    <li>初始化不是 1（題目要求每人至少 1 顆）</li>
+                </ul>
+            </div>
+
+            <div class="visual-box">
+                <div class="visual-title">🎯 為什麼兩次掃描是對的？</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+<strong>證明：</strong>
+規則：評分高的孩子比「兩側」評分低的鄰居多
+
+等價於：
+1. 如果比左邊高，要比左邊多
+2. 如果比右邊高，要比右邊多
+
+<strong>兩次掃描保證：</strong>
+- 第一次掃描：滿足規則 1
+- 第二次掃描：在保持規則 1 的前提下，滿足規則 2
+- 取 max 確保兩個規則同時滿足
+
+因此是正確的最優解！
+                </pre>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>相關題目</h2>
+            <ul>
+                <li><strong>#42 Trapping Rain Water</strong> - 接雨水（類似雙向掃描）</li>
+                <li><strong>#123 Best Time to Buy and Sell Stock III</strong> - 股票 III（雙向 DP）</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        function switchLang(event, lang) {
+            const tabs = document.querySelectorAll('.lang-tab');
+            const contents = document.querySelectorAll('.code-content');
+            
+            tabs.forEach(tab => tab.classList.remove('active'));
+            contents.forEach(content => content.classList.remove('active'));
+            
+            event.target.classList.add('active');
+            document.getElementById(lang).classList.add('active');
+        }
+        
+        hljs.highlightAll();
+    </script>
+</body>
+</html>

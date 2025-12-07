@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>#25 Reverse Nodes in k-Group | LeetCode 學習平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #333; background: #f8fafc; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .header { background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%); color: white; padding: 30px; border-radius: 12px; margin-bottom: 30px; box-shadow: 0 4px 6px rgba(220, 38, 38, 0.2); }
+        .header h1 { font-size: 2em; margin-bottom: 10px; }
+        .difficulty { display: inline-block; padding: 6px 16px; background: rgba(255,255,255,0.2); border-radius: 20px; font-size: 0.9em; font-weight: 600; }
+        .tags { margin-top: 15px; }
+        .tag { display: inline-block; background: rgba(255,255,255,0.15); padding: 4px 12px; border-radius: 6px; margin-right: 8px; font-size: 0.85em; }
+        .back-btn { display: inline-block; margin-bottom: 20px; padding: 10px 20px; background: #3b82f6; color: white; text-decoration: none; border-radius: 8px; transition: background 0.3s; }
+        .back-btn:hover { background: #2563eb; }
+        .section { background: white; padding: 30px; border-radius: 12px; margin-bottom: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .section h2 { color: #1e293b; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 3px solid #dc2626; }
+        .section h3 { color: #475569; margin: 25px 0 15px 0; font-size: 1.3em; }
+        .code-block { background: #282c34; border-radius: 8px; overflow: hidden; margin: 15px 0; }
+        .lang-tabs { display: flex; background: #21252b; border-bottom: 1px solid #181a1f; }
+        .lang-tab { padding: 12px 24px; cursor: pointer; color: #abb2bf; border: none; background: none; transition: all 0.3s; font-weight: 500; }
+        .lang-tab.active { color: #61afef; background: #282c34; border-bottom: 2px solid #61afef; }
+        .lang-tab:hover { color: #61afef; background: #2c313a; }
+        .code-content { display: none; }
+        .code-content.active { display: block; }
+        pre { margin: 0; }
+        code { font-family: 'Consolas', 'Monaco', 'Courier New', monospace; font-size: 0.9em; }
+        .example { background: #f0f9ff; border-left: 4px solid #3b82f6; padding: 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .example-title { font-weight: 700; color: #1e40af; margin-bottom: 12px; font-size: 1.05em; }
+        .visual-box { background: #fef3c7; border: 2px solid #f59e0b; padding: 20px; border-radius: 8px; margin: 15px 0; }
+        .visual-title { font-weight: 700; color: #92400e; margin-bottom: 12px; display: flex; align-items: center; font-size: 1.05em; }
+        .complexity { background: #f1f5f9; padding: 15px; border-radius: 8px; margin: 15px 0; }
+        .complexity-item { margin: 8px 0; color: #475569; }
+        .key-point { background: #dcfce7; border-left: 4px solid #16a34a; padding: 15px 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        ul, ol { margin-left: 25px; margin-top: 10px; }
+        li { margin: 8px 0; color: #475569; }
+        strong { color: #1e293b; }
+        .note { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 15px 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        @media (max-width: 768px) {
+            .container { padding: 10px; }
+            .header h1 { font-size: 1.5em; }
+            .section { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="../index.html" class="back-btn">← 返回題目列表</a>
+        
+        <div class="header">
+            <h1>#25 Reverse Nodes in k-Group</h1>
+            <div class="difficulty">Hard</div>
+            <div class="tags">
+                <span class="tag">Linked List</span>
+                <span class="tag">Recursion</span>
+                <span class="tag">Iteration</span>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>題目描述</h2>
+            <p>給定一個鏈表，每 k 個節點一組進行翻轉，返回翻轉後的鏈表。</p>
+            <p style="margin-top: 15px;"><strong>限制條件：</strong></p>
+            <ul>
+                <li>k 是一個正整數，它的值小於或等於鏈表的長度</li>
+                <li>如果節點總數不是 k 的整數倍，那麼請將最後剩餘的節點保持原有順序</li>
+                <li>你不能只是單純的改變節點內部的值，而是需要實際進行節點交換</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>範例</h2>
+            
+            <div class="example">
+                <div class="example-title">範例 1：</div>
+                <strong>輸入：</strong>head = [1,2,3,4,5], k = 2<br>
+                <strong>輸出：</strong>[2,1,4,3,5]<br>
+                <strong>解釋：</strong>
+                <pre style="margin-top: 10px; background: white; padding: 10px; border-radius: 4px;">
+原始: 1 → 2 → 3 → 4 → 5
+      └───┘   └───┘   │
+      翻轉    翻轉    保持
+
+結果: 2 → 1 → 4 → 3 → 5
+</pre>
+            </div>
+
+            <div class="example">
+                <div class="example-title">範例 2：</div>
+                <strong>輸入：</strong>head = [1,2,3,4,5], k = 3<br>
+                <strong>輸出：</strong>[3,2,1,4,5]<br>
+                <strong>解釋：</strong>
+                <pre style="margin-top: 10px; background: white; padding: 10px; border-radius: 4px;">
+原始: 1 → 2 → 3 → 4 → 5
+      └───────┘   └───┘
+         翻轉      不足3個，保持
+
+結果: 3 → 2 → 1 → 4 → 5
+</pre>
+            </div>
+
+            <div class="example">
+                <div class="example-title">範例 3：</div>
+                <strong>輸入：</strong>head = [1,2,3,4,5], k = 1<br>
+                <strong>輸出：</strong>[1,2,3,4,5]<br>
+                <strong>解釋：</strong>k = 1 時不需要翻轉
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>解題思路</h2>
+            
+            <div class="visual-box">
+                <div class="visual-title">💡 核心概念：分組翻轉 + 連接</div>
+                這題是 #206 Reverse Linked List 的進階版，需要：
+                <ol style="margin-top: 10px;">
+                    <li><strong>檢查長度</strong>：確保有 k 個節點才翻轉</li>
+                    <li><strong>局部翻轉</strong>：翻轉當前 k 個節點</li>
+                    <li><strong>連接組別</strong>：將翻轉後的組與前後節點連接</li>
+                    <li><strong>遞迴或迭代</strong>：處理下一組</li>
+                </ol>
+            </div>
+
+            <h3>方法一：遞迴解法（最優雅）</h3>
+            <div class="visual-box">
+                <div class="visual-title">🔄 遞迴步驟詳解</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+1️⃣ 檢查是否有 k 個節點
+   head → 1 → 2 → 3 → 4 → 5
+   計數: 1   2   3   (有3個，可以翻轉)
+
+2️⃣ 翻轉前 k 個節點
+   翻轉前: 1 → 2 → 3 → 4 → 5
+   翻轉後: 3 → 2 → 1 → 4 → 5
+           ↑       ↑   ↑
+         newHead tail next
+
+3️⃣ 遞迴處理剩餘部分
+   tail.next = reverseKGroup(next, k)
+   
+4️⃣ 返回新頭節點
+   return newHead (即原來的第 k 個節點)
+                </pre>
+            </div>
+
+            <h3>方法二：迭代解法</h3>
+            <p>使用 dummy node 和四個指標來追蹤：</p>
+            <ul>
+                <li><strong>prevGroup：</strong>上一組的尾節點</li>
+                <li><strong>groupStart：</strong>當前組的第一個節點</li>
+                <li><strong>groupEnd：</strong>當前組的最後一個節點</li>
+                <li><strong>nextGroup：</strong>下一組的第一個節點</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>程式碼實現</h2>
+            
+            <div class="code-block">
+                <div class="lang-tabs">
+                    <button class="lang-tab active" onclick="switchLang(event, 'python')">Python</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'cpp')">C++</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'java')">Java</button>
+                </div>
+
+                <div id="python" class="code-content active">
+                    <pre><code class="language-python"># 方法一：遞迴解法
+class Solution:
+    def reverseKGroup(self, head: Optional[ListNode], k: int) -> Optional[ListNode]:
+        # 1. 檢查是否有 k 個節點
+        curr = head
+        count = 0
+        while curr and count < k:
+            curr = curr.next
+            count += 1
+        
+        # 不足 k 個，直接返回
+        if count < k:
+            return head
+        
+        # 2. 翻轉前 k 個節點
+        prev = None
+        curr = head
+        next_node = None
+        
+        for i in range(k):
+            next_node = curr.next
+            curr.next = prev
+            prev = curr
+            curr = next_node
+        
+        # 3. 遞迴處理剩餘部分
+        # prev 現在是翻轉後的頭節點
+        # head 現在是翻轉後的尾節點
+        # curr 是下一組的開始
+        head.next = self.reverseKGroup(curr, k)
+        
+        # 4. 返回新頭節點
+        return prev
+
+
+# 方法二：迭代解法
+class Solution:
+    def reverseKGroup(self, head: Optional[ListNode], k: int) -> Optional[ListNode]:
+        # 輔助函數：翻轉鏈表的一段 [start, end]
+        def reverseSegment(start, end):
+            prev = None
+            curr = start
+            while prev != end:
+                next_node = curr.next
+                curr.next = prev
+                prev = curr
+                curr = next_node
+            return end, start  # 返回新頭和新尾
+        
+        dummy = ListNode(0)
+        dummy.next = head
+        prevGroup = dummy
+        
+        while True:
+            # 找到當前組的第 k 個節點
+            groupEnd = prevGroup
+            for i in range(k):
+                groupEnd = groupEnd.next
+                if not groupEnd:
+                    return dummy.next  # 不足 k 個
+            
+            groupStart = prevGroup.next
+            nextGroup = groupEnd.next
+            
+            # 翻轉當前組
+            newGroupHead, newGroupTail = reverseSegment(groupStart, groupEnd)
+            
+            # 連接前後
+            prevGroup.next = newGroupHead
+            newGroupTail.next = nextGroup
+            
+            # 移動到下一組
+            prevGroup = newGroupTail
+
+
+# 方法三：簡潔的遞迴版本
+class Solution:
+    def reverseKGroup(self, head: Optional[ListNode], k: int) -> Optional[ListNode]:
+        # 檢查長度
+        node = head
+        for i in range(k):
+            if not node:
+                return head
+            node = node.next
+        
+        # 翻轉 k 個節點
+        prev, curr = None, head
+        for i in range(k):
+            curr.next, prev, curr = prev, curr, curr.next
+        
+        # 遞迴處理下一組
+        head.next = self.reverseKGroup(curr, k)
+        
+        return prev
+</code></pre>
+                </div>
+
+                <div id="cpp" class="code-content">
+                    <pre><code class="language-cpp">// 方法一：遞迴解法
+class Solution {
+public:
+    ListNode* reverseKGroup(ListNode* head, int k) {
+        // 1. 檢查是否有 k 個節點
+        ListNode* curr = head;
+        int count = 0;
+        while (curr && count < k) {
+            curr = curr->next;
+            count++;
+        }
+        
+        // 不足 k 個，直接返回
+        if (count < k) return head;
+        
+        // 2. 翻轉前 k 個節點
+        ListNode* prev = nullptr;
+        curr = head;
+        ListNode* nextNode = nullptr;
+        
+        for (int i = 0; i < k; i++) {
+            nextNode = curr->next;
+            curr->next = prev;
+            prev = curr;
+            curr = nextNode;
+        }
+        
+        // 3. 遞迴處理剩餘部分
+        head->next = reverseKGroup(curr, k);
+        
+        // 4. 返回新頭節點
+        return prev;
+    }
+};
+
+
+// 方法二：迭代解法
+class Solution {
+public:
+    ListNode* reverseKGroup(ListNode* head, int k) {
+        ListNode dummy(0);
+        dummy.next = head;
+        ListNode* prevGroup = &dummy;
+        
+        while (true) {
+            // 找到第 k 個節點
+            ListNode* groupEnd = prevGroup;
+            for (int i = 0; i < k; i++) {
+                groupEnd = groupEnd->next;
+                if (!groupEnd) return dummy.next;
+            }
+            
+            ListNode* groupStart = prevGroup->next;
+            ListNode* nextGroup = groupEnd->next;
+            
+            // 翻轉當前組
+            ListNode* prev = nextGroup;
+            ListNode* curr = groupStart;
+            
+            while (curr != nextGroup) {
+                ListNode* next = curr->next;
+                curr->next = prev;
+                prev = curr;
+                curr = next;
+            }
+            
+            // 連接
+            prevGroup->next = groupEnd;
+            prevGroup = groupStart;
+        }
+    }
+};
+</code></pre>
+                </div>
+
+                <div id="java" class="code-content">
+                    <pre><code class="language-java">// 方法一：遞迴解法
+class Solution {
+    public ListNode reverseKGroup(ListNode head, int k) {
+        // 1. 檢查是否有 k 個節點
+        ListNode curr = head;
+        int count = 0;
+        while (curr != null && count < k) {
+            curr = curr.next;
+            count++;
+        }
+        
+        // 不足 k 個，直接返回
+        if (count < k) return head;
+        
+        // 2. 翻轉前 k 個節點
+        ListNode prev = null;
+        curr = head;
+        ListNode nextNode = null;
+        
+        for (int i = 0; i < k; i++) {
+            nextNode = curr.next;
+            curr.next = prev;
+            prev = curr;
+            curr = nextNode;
+        }
+        
+        // 3. 遞迴處理剩餘部分
+        head.next = reverseKGroup(curr, k);
+        
+        // 4. 返回新頭節點
+        return prev;
+    }
+}
+
+
+// 方法二：迭代解法
+class Solution {
+    public ListNode reverseKGroup(ListNode head, int k) {
+        ListNode dummy = new ListNode(0);
+        dummy.next = head;
+        ListNode prevGroup = dummy;
+        
+        while (true) {
+            // 找到第 k 個節點
+            ListNode groupEnd = prevGroup;
+            for (int i = 0; i < k; i++) {
+                groupEnd = groupEnd.next;
+                if (groupEnd == null) return dummy.next;
+            }
+            
+            ListNode groupStart = prevGroup.next;
+            ListNode nextGroup = groupEnd.next;
+            
+            // 翻轉當前組
+            ListNode prev = nextGroup;
+            ListNode curr = groupStart;
+            
+            while (curr != nextGroup) {
+                ListNode next = curr.next;
+                curr.next = prev;
+                prev = curr;
+                curr = next;
+            }
+            
+            // 連接
+            prevGroup.next = groupEnd;
+            prevGroup = groupStart;
+        }
+    }
+}
+</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>複雜度分析</h2>
+            <div class="complexity">
+                <div class="complexity-item">
+                    <strong>時間複雜度：</strong>O(n)
+                    <ul>
+                        <li>需要遍歷整個鏈表一次</li>
+                        <li>每個節點最多被訪問兩次（檢查 + 翻轉）</li>
+                    </ul>
+                </div>
+                <div class="complexity-item">
+                    <strong>空間複雜度：</strong>
+                    <ul>
+                        <li>遞迴解法：O(n/k)，遞迴調用棧的深度</li>
+                        <li>迭代解法：O(1)，只使用常數額外空間</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>重點提示</h2>
+            
+            <div class="key-point">
+                <strong>💡 關鍵技巧 1：檢查長度</strong>
+                <p>必須先檢查是否有 k 個節點，避免不完整的翻轉。</p>
+            </div>
+
+            <div class="key-point">
+                <strong>💡 關鍵技巧 2：保存指標</strong>
+                <p>翻轉時要保存 prevGroup、groupEnd、nextGroup 等關鍵指標。</p>
+            </div>
+
+            <div class="key-point">
+                <strong>💡 關鍵技巧 3：Dummy Node</strong>
+                <p>使用 dummy node 可以統一處理頭節點的情況。</p>
+            </div>
+
+            <div class="note">
+                <strong>⚠️ 常見錯誤：</strong>
+                <ul>
+                    <li>忘記檢查剩餘節點數量，導致不完整翻轉</li>
+                    <li>指標連接順序錯誤，導致鏈表斷裂</li>
+                    <li>沒有正確處理組與組之間的連接</li>
+                    <li>翻轉後忘記更新 prevGroup 指標</li>
+                </ul>
+            </div>
+
+            <div class="visual-box">
+                <div class="visual-title">🎯 完整翻轉過程（k=3）</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+初始: dummy → 1 → 2 → 3 → 4 → 5 → 6 → 7
+              ↑           ↑   ↑
+         groupStart   groupEnd next
+
+第一組翻轉後:
+      dummy → 3 → 2 → 1 → 4 → 5 → 6 → 7
+                      ↑   ↑
+                 prevGroup next
+
+第二組翻轉後:
+      dummy → 3 → 2 → 1 → 6 → 5 → 4 → 7
+                          ↑       ↑   ↑
+                     newHead  newTail next
+
+最終結果:
+      3 → 2 → 1 → 6 → 5 → 4 → 7
+      └───────┘   └───────┘   │
+        第一組      第二組    保持
+                </pre>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>相關題目</h2>
+            <ul>
+                <li><strong>#206 Reverse Linked List</strong> - 翻轉整個鏈表（基礎）</li>
+                <li><strong>#92 Reverse Linked List II</strong> - 翻轉指定區間</li>
+                <li><strong>#24 Swap Nodes in Pairs</strong> - k=2 的特殊情況</li>
+                <li><strong>#61 Rotate List</strong> - 旋轉鏈表</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        function switchLang(event, lang) {
+            const tabs = document.querySelectorAll('.lang-tab');
+            const contents = document.querySelectorAll('.code-content');
+            
+            tabs.forEach(tab => tab.classList.remove('active'));
+            contents.forEach(content => content.classList.remove('active'));
+            
+            event.target.classList.add('active');
+            document.getElementById(lang).classList.add('active');
+        }
+        
+        hljs.highlightAll();
+    </script>
+</body>
+</html>

@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>#188 Best Time to Buy and Sell Stock IV | LeetCode 學習平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #333; background: #f8fafc; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .header { background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%); color: white; padding: 30px; border-radius: 12px; margin-bottom: 30px; box-shadow: 0 4px 6px rgba(220, 38, 38, 0.2); }
+        .header h1 { font-size: 2em; margin-bottom: 10px; }
+        .difficulty { display: inline-block; padding: 6px 16px; background: rgba(255,255,255,0.2); border-radius: 20px; font-size: 0.9em; font-weight: 600; }
+        .tags { margin-top: 15px; }
+        .tag { display: inline-block; background: rgba(255,255,255,0.15); padding: 4px 12px; border-radius: 6px; margin-right: 8px; font-size: 0.85em; }
+        .back-btn { display: inline-block; margin-bottom: 20px; padding: 10px 20px; background: #3b82f6; color: white; text-decoration: none; border-radius: 8px; transition: background 0.3s; }
+        .back-btn:hover { background: #2563eb; }
+        .section { background: white; padding: 30px; border-radius: 12px; margin-bottom: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .section h2 { color: #1e293b; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 3px solid #dc2626; }
+        .section h3 { color: #475569; margin: 25px 0 15px 0; font-size: 1.3em; }
+        .code-block { background: #282c34; border-radius: 8px; overflow: hidden; margin: 15px 0; }
+        .lang-tabs { display: flex; background: #21252b; border-bottom: 1px solid #181a1f; }
+        .lang-tab { padding: 12px 24px; cursor: pointer; color: #abb2bf; border: none; background: none; transition: all 0.3s; font-weight: 500; }
+        .lang-tab.active { color: #61afef; background: #282c34; border-bottom: 2px solid #61afef; }
+        .lang-tab:hover { color: #61afef; background: #2c313a; }
+        .code-content { display: none; }
+        .code-content.active { display: block; }
+        pre { margin: 0; }
+        code { font-family: 'Consolas', 'Monaco', 'Courier New', monospace; font-size: 0.9em; }
+        .example { background: #f0f9ff; border-left: 4px solid #3b82f6; padding: 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .example-title { font-weight: 700; color: #1e40af; margin-bottom: 12px; font-size: 1.05em; }
+        .visual-box { background: #fef3c7; border: 2px solid #f59e0b; padding: 20px; border-radius: 8px; margin: 15px 0; }
+        .visual-title { font-weight: 700; color: #92400e; margin-bottom: 12px; display: flex; align-items: center; font-size: 1.05em; }
+        .complexity { background: #f1f5f9; padding: 15px; border-radius: 8px; margin: 15px 0; }
+        .complexity-item { margin: 8px 0; color: #475569; }
+        .key-point { background: #dcfce7; border-left: 4px solid #16a34a; padding: 15px 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        ul, ol { margin-left: 25px; margin-top: 10px; }
+        li { margin: 8px 0; color: #475569; }
+        strong { color: #1e293b; }
+        .note { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 15px 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        @media (max-width: 768px) {
+            .container { padding: 10px; }
+            .header h1 { font-size: 1.5em; }
+            .section { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="../index.html" class="back-btn">← 返回題目列表</a>
+        
+        <div class="header">
+            <h1>#188 Best Time to Buy and Sell Stock IV</h1>
+            <div class="difficulty">Hard</div>
+            <div class="tags">
+                <span class="tag">Array</span>
+                <span class="tag">Dynamic Programming</span>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>題目描述</h2>
+            <p>給定一個整數陣列 prices，其中 prices[i] 表示第 i 天的股票價格。</p>
+            <p style="margin-top: 15px;">設計一個算法來計算你所能獲取的最大利潤。你最多可以完成 <strong>k 筆交易</strong>。</p>
+            <p style="margin-top: 15px;"><strong>注意：</strong></p>
+            <ul>
+                <li>你不能同時參與多筆交易（必須在再次購買前出售掉之前的股票）</li>
+                <li>一次交易 = 買入 + 賣出</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>範例</h2>
+            
+            <div class="example">
+                <div class="example-title">範例 1：</div>
+                <strong>輸入：</strong>k = 2, prices = [2,4,1]<br>
+                <strong>輸出：</strong>2<br>
+                <strong>解釋：</strong>在第 1 天 (價格 = 2) 買入，在第 2 天 (價格 = 4) 賣出，利潤 = 4-2 = 2
+            </div>
+
+            <div class="example">
+                <div class="example-title">範例 2：</div>
+                <strong>輸入：</strong>k = 2, prices = [3,2,6,5,0,3]<br>
+                <strong>輸出：</strong>7<br>
+                <strong>解釋：</strong>
+                <ul style="margin-top: 5px;">
+                    <li>第 2 天 (價格 = 2) 買入，第 3 天 (價格 = 6) 賣出，利潤 = 6-2 = 4</li>
+                    <li>第 5 天 (價格 = 0) 買入，第 6 天 (價格 = 3) 賣出，利潤 = 3-0 = 3</li>
+                    <li>總利潤 = 4 + 3 = 7</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>解題思路</h2>
+            
+            <div class="visual-box">
+                <div class="visual-title">💡 核心概念：狀態機 DP</div>
+                <p><strong>關鍵洞察：</strong>維護每次交易後的最大利潤狀態。</p>
+                <ol style="margin-top: 10px;">
+                    <li>定義狀態：第 i 天完成 j 次交易後的最大利潤</li>
+                    <li>區分持有股票和不持有股票兩種狀態</li>
+                    <li>狀態轉移：買入、賣出、不操作</li>
+                    <li>優化：當 k ≥ n/2 時等同於無限次交易</li>
+                </ol>
+            </div>
+
+            <h3>DP 狀態定義</h3>
+            <div class="visual-box">
+                <div class="visual-title">📊 三維 DP</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+<strong>定義：</strong>
+buy[i][j]  = 第 i 天，完成 j 次交易，當前持有股票的最大利潤
+sell[i][j] = 第 i 天，完成 j 次交易，當前不持有股票的最大利潤
+
+<strong>為什麼需要兩個狀態？</strong>
+因為持有股票和不持有股票是兩種不同的狀態
+需要分別記錄
+
+<strong>什麼時候算「完成一次交易」？</strong>
+買入時計數（賣出時已經計數過了）
+或者：賣出時計數（買入時還沒完成）
+
+本題採用：賣出時計數
+                </pre>
+            </div>
+
+            <h3>狀態轉移方程</h3>
+            <div class="visual-box">
+                <div class="visual-title">🔄 轉移邏輯</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+<strong>buy[i][j] 的轉移：</strong>
+第 i 天持有股票，有兩種來源：
+1. 昨天就持有：buy[i-1][j]
+2. 今天買入：sell[i-1][j] - prices[i]
+
+buy[i][j] = max(buy[i-1][j], sell[i-1][j] - prices[i])
+
+<strong>sell[i][j] 的轉移：</strong>
+第 i 天不持有股票，有兩種來源：
+1. 昨天就不持有：sell[i-1][j]
+2. 今天賣出：buy[i-1][j-1] + prices[i]
+   （注意：賣出完成第 j 次交易）
+
+sell[i][j] = max(sell[i-1][j], buy[i-1][j-1] + prices[i])
+
+<strong>初始化：</strong>
+buy[0][0] = -prices[0]  (第一天買入)
+sell[0][0] = 0          (第一天不操作)
+其他為負無窮（不可達）
+                </pre>
+            </div>
+
+            <h3>優化：k 很大的情況</h3>
+            <div class="visual-box">
+                <div class="visual-title">🚀 特殊優化</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+<strong>觀察：</strong>
+如果 k >= n/2（n 是天數）
+→ 相當於可以無限次交易
+→ 退化為 #122 Best Time to Buy and Sell Stock II
+
+<strong>為什麼？</strong>
+最多只能做 n/2 次交易（每次交易至少需要 2 天）
+如果 k >= n/2，k 的限制就失效了
+
+<strong>優化策略：</strong>
+if k >= len(prices) // 2:
+    return 無限次交易的解法（貪心）
+                </pre>
+            </div>
+
+            <h3>詳細範例演示</h3>
+            <div class="visual-box">
+                <div class="visual-title">🔍 DP 表格：k=2, prices=[3,2,6,5,0,3]</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+prices = [3, 2, 6, 5, 0, 3]
+天數 i:    0  1  2  3  4  5
+
+<strong>初始化：</strong>
+buy[0][0] = -3, buy[0][1] = -∞, buy[0][2] = -∞
+sell[0][0] = 0, sell[0][1] = 0,  sell[0][2] = 0
+
+<strong>第 1 天（價格 2）：</strong>
+buy[1][0] = max(-3, 0-2) = -2
+buy[1][1] = max(-∞, 0-2) = -2
+sell[1][0] = max(0, -3+2) = 0
+sell[1][1] = max(0, -∞+2) = 0
+
+<strong>第 2 天（價格 6）：</strong>
+buy[2][0] = max(-2, 0-6) = -2
+buy[2][1] = max(-2, 0-6) = -2
+sell[2][0] = max(0, -2+6) = 4
+sell[2][1] = max(0, -2+6) = 4
+
+<strong>第 3 天（價格 5）：</strong>
+buy[3][0] = max(-2, 0-5) = -2
+buy[3][1] = max(-2, 4-5) = -1
+sell[3][0] = max(4, -2+5) = 4
+sell[3][1] = max(4, -2+5) = 4
+
+<strong>第 4 天（價格 0）：</strong>
+buy[4][0] = max(-2, 0-0) = 0
+buy[4][1] = max(-1, 4-0) = 4
+sell[4][0] = max(4, 0+0) = 4
+sell[4][1] = max(4, -1+0) = 4
+
+<strong>第 5 天（價格 3）：</strong>
+buy[5][0] = max(0, 0-3) = 0
+buy[5][1] = max(4, 4-3) = 4
+sell[5][0] = max(4, 0+3) = 4
+sell[5][1] = max(4, 4+3) = 7 ✓
+
+<strong>答案：</strong>sell[5][2] = 7
+                </pre>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>程式碼實現</h2>
+            
+            <div class="code-block">
+                <div class="lang-tabs">
+                    <button class="lang-tab active" onclick="switchLang(event, 'python')">Python</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'cpp')">C++</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'java')">Java</button>
+                </div>
+
+                <div id="python" class="code-content active">
+                    <pre><code class="language-python"># 方法一：DP（標準解法 + 優化）
+class Solution:
+    def maxProfit(self, k: int, prices: List[int]) -> int:
+        if not prices or k == 0:
+            return 0
+        
+        n = len(prices)
+        
+        # 優化：k 很大時等同於無限次交易
+        if k >= n // 2:
+            return self.maxProfitUnlimited(prices)
+        
+        # buy[j] = 完成 j 次交易，持有股票的最大利潤
+        # sell[j] = 完成 j 次交易，不持有股票的最大利潤
+        buy = [-float('inf')] * (k + 1)
+        sell = [0] * (k + 1)
+        
+        for price in prices:
+            # 從後往前更新，避免覆蓋
+            for j in range(k, 0, -1):
+                sell[j] = max(sell[j], buy[j] + price)
+                buy[j] = max(buy[j], sell[j - 1] - price)
+        
+        return sell[k]
+    
+    def maxProfitUnlimited(self, prices):
+        """無限次交易的貪心解法"""
+        profit = 0
+        for i in range(1, len(prices)):
+            if prices[i] > prices[i - 1]:
+                profit += prices[i] - prices[i - 1]
+        return profit
+
+
+# 方法二：二維 DP（更清晰）
+class Solution:
+    def maxProfit(self, k: int, prices: List[int]) -> int:
+        if not prices or k == 0:
+            return 0
+        
+        n = len(prices)
+        if k >= n // 2:
+            profit = 0
+            for i in range(1, n):
+                profit += max(0, prices[i] - prices[i - 1])
+            return profit
+        
+        # buy[i][j] = 第 i 天完成 j 次交易，持有股票
+        # sell[i][j] = 第 i 天完成 j 次交易，不持有股票
+        buy = [[-float('inf')] * (k + 1) for _ in range(n)]
+        sell = [[0] * (k + 1) for _ in range(n)]
+        
+        # 初始化第一天
+        for j in range(k + 1):
+            buy[0][j] = -prices[0]
+        
+        for i in range(1, n):
+            for j in range(k, 0, -1):
+                buy[i][j] = max(buy[i - 1][j], sell[i - 1][j] - prices[i])
+                sell[i][j] = max(sell[i - 1][j], buy[i - 1][j - 1] + prices[i])
+        
+        return sell[n - 1][k]
+
+
+# 方法三：詳細註解版本
+class Solution:
+    def maxProfit(self, k: int, prices: List[int]) -> int:
+        """
+        股票交易系列最難版本
+        
+        狀態定義：
+        buy[j]：完成 j 次交易，當前持有股票的最大利潤
+        sell[j]：完成 j 次交易，當前不持有股票的最大利潤
+        """
+        if not prices or k == 0:
+            return 0
+        
+        n = len(prices)
+        
+        # 關鍵優化：k 過大時的處理
+        # 如果 k >= n//2，等同於無限次交易
+        if k >= n // 2:
+            # 貪心：抓住每次上漲
+            profit = 0
+            for i in range(1, n):
+                if prices[i] > prices[i - 1]:
+                    profit += prices[i] - prices[i - 1]
+            return profit
+        
+        # 初始化
+        # buy[j] 初始為負無窮（不可能持有股票）
+        # sell[j] 初始為 0（不操作）
+        buy = [-float('inf')] * (k + 1)
+        sell = [0] * (k + 1)
+        
+        # 遍歷每一天
+        for price in prices:
+            # 從後往前更新，避免同一天的狀態互相影響
+            for j in range(k, 0, -1):
+                # 賣出：完成第 j 次交易
+                # 選擇：保持不持有 vs 今天賣出
+                sell[j] = max(sell[j], buy[j] + price)
+                
+                # 買入：準備第 j 次交易
+                # 選擇：保持持有 vs 今天買入
+                buy[j] = max(buy[j], sell[j - 1] - price)
+        
+        # 最終答案：完成 k 次交易，不持有股票
+        return sell[k]
+
+
+# 方法四：空間優化到 O(k)
+class Solution:
+    def maxProfit(self, k: int, prices: List[int]) -> int:
+        if not prices or k == 0:
+            return 0
+        
+        n = len(prices)
+        if k >= n // 2:
+            return sum(max(0, prices[i] - prices[i-1]) for i in range(1, n))
+        
+        buy = [-prices[0]] * (k + 1)
+        sell = [0] * (k + 1)
+        
+        for i in range(1, n):
+            for j in range(k, 0, -1):
+                sell[j] = max(sell[j], buy[j] + prices[i])
+                buy[j] = max(buy[j], sell[j - 1] - prices[i])
+        
+        return sell[k]
+</code></pre>
+                </div>
+
+                <div id="cpp" class="code-content">
+                    <pre><code class="language-cpp">class Solution {
+public:
+    int maxProfit(int k, vector<int>& prices) {
+        if (prices.empty() || k == 0) return 0;
+        
+        int n = prices.size();
+        
+        // k 很大時優化
+        if (k >= n / 2) {
+            int profit = 0;
+            for (int i = 1; i < n; i++) {
+                profit += max(0, prices[i] - prices[i - 1]);
+            }
+            return profit;
+        }
+        
+        vector<int> buy(k + 1, INT_MIN);
+        vector<int> sell(k + 1, 0);
+        
+        for (int price : prices) {
+            for (int j = k; j >= 1; j--) {
+                sell[j] = max(sell[j], buy[j] + price);
+                buy[j] = max(buy[j], sell[j - 1] - price);
+            }
+        }
+        
+        return sell[k];
+    }
+};
+</code></pre>
+                </div>
+
+                <div id="java" class="code-content">
+                    <pre><code class="language-java">class Solution {
+    public int maxProfit(int k, int[] prices) {
+        if (prices.length == 0 || k == 0) return 0;
+        
+        int n = prices.length;
+        
+        // k 很大時優化
+        if (k >= n / 2) {
+            int profit = 0;
+            for (int i = 1; i < n; i++) {
+                profit += Math.max(0, prices[i] - prices[i - 1]);
+            }
+            return profit;
+        }
+        
+        int[] buy = new int[k + 1];
+        int[] sell = new int[k + 1];
+        Arrays.fill(buy, Integer.MIN_VALUE);
+        
+        for (int price : prices) {
+            for (int j = k; j >= 1; j--) {
+                sell[j] = Math.max(sell[j], buy[j] + price);
+                buy[j] = Math.max(buy[j], sell[j - 1] - price);
+            }
+        }
+        
+        return sell[k];
+    }
+}
+</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>複雜度分析</h2>
+            <div class="complexity">
+                <div class="complexity-item">
+                    <strong>一維 DP 解法：</strong>
+                    <ul>
+                        <li>時間複雜度：O(n × k)，n 是天數</li>
+                        <li>空間複雜度：O(k)</li>
+                    </ul>
+                </div>
+                <div class="complexity-item">
+                    <strong>二維 DP 解法：</strong>
+                    <ul>
+                        <li>時間複雜度：O(n × k)</li>
+                        <li>空間複雜度：O(n × k)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>重點提示</h2>
+            
+            <div class="key-point">
+                <strong>💡 關鍵技巧 1：k 的優化</strong>
+                <p>當 k ≥ n/2 時，退化為無限次交易問題。</p>
+            </div>
+
+            <div class="key-point">
+                <strong>💡 關鍵技巧 2：從後往前更新</strong>
+                <p>避免同一天的狀態互相覆蓋。</p>
+            </div>
+
+            <div class="key-point">
+                <strong>💡 關鍵技巧 3：賣出時計數</strong>
+                <p>交易在賣出時才算完成，這樣狀態轉移更清晰。</p>
+            </div>
+
+            <div class="note">
+                <strong>⚠️ 常見錯誤：</strong>
+                <ul>
+                    <li>沒有處理 k 很大的情況（會 TLE 或 MLE）</li>
+                    <li>從前往後更新導致狀態覆蓋</li>
+                    <li>初始化錯誤（buy 應該是負無窮）</li>
+                    <li>交易計數時機錯誤</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>股票系列題目總結</h2>
+            <ul>
+                <li><strong>#121 Best Time to Buy and Sell Stock</strong> - 只能交易 1 次（Easy）</li>
+                <li><strong>#122 Best Time to Buy and Sell Stock II</strong> - 無限次交易（Medium）</li>
+                <li><strong>#123 Best Time to Buy and Sell Stock III</strong> - 最多 2 次交易（Hard）</li>
+                <li><strong>#188 Best Time to Buy and Sell Stock IV</strong> - 最多 k 次交易（Hard）✓</li>
+                <li><strong>#309 Best Time to Buy and Sell Stock with Cooldown</strong> - 有冷凍期（Medium）</li>
+                <li><strong>#714 Best Time to Buy and Sell Stock with Fee</strong> - 有手續費（Medium）</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        function switchLang(event, lang) {
+            const tabs = document.querySelectorAll('.lang-tab');
+            const contents = document.querySelectorAll('.code-content');
+            
+            tabs.forEach(tab => tab.classList.remove('active'));
+            contents.forEach(content => content.classList.remove('active'));
+            
+            event.target.classList.add('active');
+            document.getElementById(lang).classList.add('active');
+        }
+        
+        hljs.highlightAll();
+    </script>
+</body>
+</html>

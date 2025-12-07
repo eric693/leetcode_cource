@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>#85 Maximal Rectangle | LeetCode 學習平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #333; background: #f8fafc; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .header { background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%); color: white; padding: 30px; border-radius: 12px; margin-bottom: 30px; box-shadow: 0 4px 6px rgba(220, 38, 38, 0.2); }
+        .header h1 { font-size: 2em; margin-bottom: 10px; }
+        .difficulty { display: inline-block; padding: 6px 16px; background: rgba(255,255,255,0.2); border-radius: 20px; font-size: 0.9em; font-weight: 600; }
+        .tags { margin-top: 15px; }
+        .tag { display: inline-block; background: rgba(255,255,255,0.15); padding: 4px 12px; border-radius: 6px; margin-right: 8px; font-size: 0.85em; }
+        .back-btn { display: inline-block; margin-bottom: 20px; padding: 10px 20px; background: #3b82f6; color: white; text-decoration: none; border-radius: 8px; transition: background 0.3s; }
+        .back-btn:hover { background: #2563eb; }
+        .section { background: white; padding: 30px; border-radius: 12px; margin-bottom: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .section h2 { color: #1e293b; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 3px solid #dc2626; }
+        .section h3 { color: #475569; margin: 25px 0 15px 0; font-size: 1.3em; }
+        .code-block { background: #282c34; border-radius: 8px; overflow: hidden; margin: 15px 0; }
+        .lang-tabs { display: flex; background: #21252b; border-bottom: 1px solid #181a1f; }
+        .lang-tab { padding: 12px 24px; cursor: pointer; color: #abb2bf; border: none; background: none; transition: all 0.3s; font-weight: 500; }
+        .lang-tab.active { color: #61afef; background: #282c34; border-bottom: 2px solid #61afef; }
+        .lang-tab:hover { color: #61afef; background: #2c313a; }
+        .code-content { display: none; }
+        .code-content.active { display: block; }
+        pre { margin: 0; }
+        code { font-family: 'Consolas', 'Monaco', 'Courier New', monospace; font-size: 0.9em; }
+        .example { background: #f0f9ff; border-left: 4px solid #3b82f6; padding: 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .example-title { font-weight: 700; color: #1e40af; margin-bottom: 12px; font-size: 1.05em; }
+        .visual-box { background: #fef3c7; border: 2px solid #f59e0b; padding: 20px; border-radius: 8px; margin: 15px 0; }
+        .visual-title { font-weight: 700; color: #92400e; margin-bottom: 12px; display: flex; align-items: center; font-size: 1.05em; }
+        .complexity { background: #f1f5f9; padding: 15px; border-radius: 8px; margin: 15px 0; }
+        .complexity-item { margin: 8px 0; color: #475569; }
+        .key-point { background: #dcfce7; border-left: 4px solid #16a34a; padding: 15px 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        ul, ol { margin-left: 25px; margin-top: 10px; }
+        li { margin: 8px 0; color: #475569; }
+        strong { color: #1e293b; }
+        .note { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 15px 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        @media (max-width: 768px) {
+            .container { padding: 10px; }
+            .header h1 { font-size: 1.5em; }
+            .section { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="../index.html" class="back-btn">← 返回題目列表</a>
+        
+        <div class="header">
+            <h1>#85 Maximal Rectangle</h1>
+            <div class="difficulty">Hard</div>
+            <div class="tags">
+                <span class="tag">Array</span>
+                <span class="tag">Dynamic Programming</span>
+                <span class="tag">Stack</span>
+                <span class="tag">Matrix</span>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>題目描述</h2>
+            <p>給定一個僅包含 0 和 1 的二維二進制矩陣，找出只包含 1 的最大矩形，並返回其面積。</p>
+        </div>
+
+        <div class="section">
+            <h2>範例</h2>
+            
+            <div class="example">
+                <div class="example-title">範例 1：</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+<strong>輸入：</strong>
+matrix = [
+  ["1","0","1","0","0"],
+  ["1","0","1","1","1"],
+  ["1","1","1","1","1"],
+  ["1","0","0","1","0"]
+]
+
+<strong>輸出：</strong>6
+
+<strong>解釋：</strong>
+最大矩形如下所示（用 * 標記）：
+[
+  ["1","0","1","0","0"],
+  ["1","0","*","*","*"],
+  ["1","1","*","*","*"],
+  ["1","0","0","1","0"]
+]
+面積 = 3 × 2 = 6
+                </pre>
+            </div>
+
+            <div class="example">
+                <div class="example-title">範例 2：</div>
+                <strong>輸入：</strong>matrix = [["0"]]<br>
+                <strong>輸出：</strong>0
+            </div>
+
+            <div class="example">
+                <div class="example-title">範例 3：</strong>
+                <strong>輸入：</strong>matrix = [["1"]]<br>
+                <strong>輸出：</strong>1
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>解題思路</h2>
+            
+            <div class="visual-box">
+                <div class="visual-title">💡 核心概念：轉化為柱狀圖問題</div>
+                <p><strong>關鍵洞察：</strong>將每一行視為柱狀圖的底部，利用 #84 Largest Rectangle in Histogram 的解法。</p>
+                <ol style="margin-top: 10px;">
+                    <li>對每一行，計算以該行為底的柱狀圖高度</li>
+                    <li>對每個柱狀圖，使用單調棧找最大矩形</li>
+                    <li>取所有行的最大值</li>
+                </ol>
+            </div>
+
+            <h3>轉化過程詳解</h3>
+            <div class="visual-box">
+                <div class="visual-title">🔄 矩陣 → 柱狀圖轉換</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+原始矩陣:
+1 0 1 0 0
+1 0 1 1 1
+1 1 1 1 1
+1 0 0 1 0
+
+<strong>第 0 行為底的柱狀圖:</strong>
+高度: [1, 0, 1, 0, 0]
+     │   │   │   │   │
+     1   0   1   0   0
+
+<strong>第 1 行為底的柱狀圖:</strong>
+高度: [2, 0, 2, 1, 1]
+     ││      ││  │   │
+     21      21  1   1
+     
+最大矩形面積 = 2 (索引 2，高度 2，寬度 1)
+
+<strong>第 2 行為底的柱狀圖:</strong>
+高度: [3, 1, 3, 2, 2]
+     │││ │  │││ ││  ││
+     321 1  321 21  21
+     
+最大矩形面積 = 6 (索引 2-4，高度 2，寬度 3) ✓
+
+<strong>第 3 行為底的柱狀圖:</strong>
+高度: [4, 0, 0, 3, 0]
+     ││││        │││
+     4321        321
+     
+最大矩形面積 = 4
+                </pre>
+            </div>
+
+            <h3>高度計算規則</h3>
+            <div class="visual-box">
+                <div class="visual-title">📊 動態規劃更新高度</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+對於位置 (i, j):
+- 如果 matrix[i][j] == '1':
+    heights[j] = heights[j] + 1  (累加高度)
+- 如果 matrix[i][j] == '0':
+    heights[j] = 0  (重置為 0)
+
+範例:
+第 0 行: 1 0 1 0 0 → heights = [1, 0, 1, 0, 0]
+第 1 行: 1 0 1 1 1 → heights = [2, 0, 2, 1, 1]
+第 2 行: 1 1 1 1 1 → heights = [3, 1, 3, 2, 2]
+第 3 行: 1 0 0 1 0 → heights = [4, 0, 0, 3, 0]
+                </pre>
+            </div>
+
+            <h3>方法比較</h3>
+            <ul>
+                <li><strong>方法一：單調棧（最優）</strong> - 使用 #84 的單調棧解法</li>
+                <li><strong>方法二：動態規劃</strong> - 維護每個位置的左右邊界和高度</li>
+                <li><strong>方法三：暴力法</strong> - 枚舉所有可能的矩形（不推薦）</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>程式碼實現</h2>
+            
+            <div class="code-block">
+                <div class="lang-tabs">
+                    <button class="lang-tab active" onclick="switchLang(event, 'python')">Python</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'cpp')">C++</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'java')">Java</button>
+                </div>
+
+                <div id="python" class="code-content active">
+                    <pre><code class="language-python"># 方法一：單調棧（最優解）
+class Solution:
+    def maximalRectangle(self, matrix: List[List[str]]) -> int:
+        if not matrix or not matrix[0]:
+            return 0
+        
+        n = len(matrix[0])
+        heights = [0] * n
+        max_area = 0
+        
+        for row in matrix:
+            # 更新高度陣列
+            for j in range(n):
+                if row[j] == '1':
+                    heights[j] += 1
+                else:
+                    heights[j] = 0
+            
+            # 對當前高度陣列求最大矩形
+            max_area = max(max_area, self.largestRectangleArea(heights))
+        
+        return max_area
+    
+    def largestRectangleArea(self, heights: List[int]) -> int:
+        """使用單調棧求柱狀圖最大矩形"""
+        stack = []
+        max_area = 0
+        heights = [0] + heights + [0]  # 添加哨兵
+        
+        for i in range(len(heights)):
+            while stack and heights[i] < heights[stack[-1]]:
+                h = heights[stack.pop()]
+                w = i - stack[-1] - 1
+                max_area = max(max_area, h * w)
+            stack.append(i)
+        
+        return max_area
+
+
+# 方法二：動態規劃
+class Solution:
+    def maximalRectangle(self, matrix: List[List[str]]) -> int:
+        if not matrix or not matrix[0]:
+            return 0
+        
+        m, n = len(matrix), len(matrix[0])
+        
+        # 維護三個 DP 陣列
+        heights = [0] * n  # 當前位置的高度
+        left = [0] * n     # 左邊界（含）
+        right = [n] * n    # 右邊界（不含）
+        
+        max_area = 0
+        
+        for i in range(m):
+            # 更新高度
+            for j in range(n):
+                if matrix[i][j] == '1':
+                    heights[j] += 1
+                else:
+                    heights[j] = 0
+            
+            # 更新左邊界
+            cur_left = 0
+            for j in range(n):
+                if matrix[i][j] == '1':
+                    left[j] = max(left[j], cur_left)
+                else:
+                    left[j] = 0
+                    cur_left = j + 1
+            
+            # 更新右邊界
+            cur_right = n
+            for j in range(n - 1, -1, -1):
+                if matrix[i][j] == '1':
+                    right[j] = min(right[j], cur_right)
+                else:
+                    right[j] = n
+                    cur_right = j
+            
+            # 計算面積
+            for j in range(n):
+                max_area = max(max_area, heights[j] * (right[j] - left[j]))
+        
+        return max_area
+
+
+# 方法三：簡潔版單調棧
+class Solution:
+    def maximalRectangle(self, matrix: List[List[str]]) -> int:
+        if not matrix:
+            return 0
+        
+        max_area = 0
+        heights = [0] * len(matrix[0])
+        
+        for row in matrix:
+            # 更新高度
+            for i, val in enumerate(row):
+                heights[i] = heights[i] + 1 if val == '1' else 0
+            
+            # 計算最大矩形（使用單調棧）
+            stack = [-1]
+            for i in range(len(heights)):
+                while stack[-1] != -1 and heights[i] < heights[stack[-1]]:
+                    h = heights[stack.pop()]
+                    w = i - stack[-1] - 1
+                    max_area = max(max_area, h * w)
+                stack.append(i)
+            
+            # 處理剩餘元素
+            while stack[-1] != -1:
+                h = heights[stack.pop()]
+                w = len(heights) - stack[-1] - 1
+                max_area = max(max_area, h * w)
+        
+        return max_area
+</code></pre>
+                </div>
+
+                <div id="cpp" class="code-content">
+                    <pre><code class="language-cpp">// 方法一：單調棧
+class Solution {
+public:
+    int maximalRectangle(vector<vector<char>>& matrix) {
+        if (matrix.empty() || matrix[0].empty()) return 0;
+        
+        int n = matrix[0].size();
+        vector<int> heights(n, 0);
+        int maxArea = 0;
+        
+        for (auto& row : matrix) {
+            // 更新高度
+            for (int j = 0; j < n; j++) {
+                heights[j] = (row[j] == '1') ? heights[j] + 1 : 0;
+            }
+            
+            // 計算最大矩形
+            maxArea = max(maxArea, largestRectangleArea(heights));
+        }
+        
+        return maxArea;
+    }
+    
+private:
+    int largestRectangleArea(vector<int>& heights) {
+        stack<int> stk;
+        int maxArea = 0;
+        heights.insert(heights.begin(), 0);
+        heights.push_back(0);
+        
+        for (int i = 0; i < heights.size(); i++) {
+            while (!stk.empty() && heights[i] < heights[stk.top()]) {
+                int h = heights[stk.top()];
+                stk.pop();
+                int w = i - stk.top() - 1;
+                maxArea = max(maxArea, h * w);
+            }
+            stk.push(i);
+        }
+        
+        return maxArea;
+    }
+};
+
+
+// 方法二：動態規劃
+class Solution {
+public:
+    int maximalRectangle(vector<vector<char>>& matrix) {
+        if (matrix.empty() || matrix[0].empty()) return 0;
+        
+        int m = matrix.size(), n = matrix[0].size();
+        vector<int> heights(n, 0), left(n, 0), right(n, n);
+        int maxArea = 0;
+        
+        for (int i = 0; i < m; i++) {
+            // 更新高度
+            for (int j = 0; j < n; j++) {
+                heights[j] = (matrix[i][j] == '1') ? heights[j] + 1 : 0;
+            }
+            
+            // 更新左邊界
+            int curLeft = 0;
+            for (int j = 0; j < n; j++) {
+                if (matrix[i][j] == '1') {
+                    left[j] = max(left[j], curLeft);
+                } else {
+                    left[j] = 0;
+                    curLeft = j + 1;
+                }
+            }
+            
+            // 更新右邊界
+            int curRight = n;
+            for (int j = n - 1; j >= 0; j--) {
+                if (matrix[i][j] == '1') {
+                    right[j] = min(right[j], curRight);
+                } else {
+                    right[j] = n;
+                    curRight = j;
+                }
+            }
+            
+            // 計算面積
+            for (int j = 0; j < n; j++) {
+                maxArea = max(maxArea, heights[j] * (right[j] - left[j]));
+            }
+        }
+        
+        return maxArea;
+    }
+};
+</code></pre>
+                </div>
+
+                <div id="java" class="code-content">
+                    <pre><code class="language-java">// 方法一：單調棧
+class Solution {
+    public int maximalRectangle(char[][] matrix) {
+        if (matrix.length == 0 || matrix[0].length == 0) return 0;
+        
+        int n = matrix[0].length;
+        int[] heights = new int[n];
+        int maxArea = 0;
+        
+        for (char[] row : matrix) {
+            // 更新高度
+            for (int j = 0; j < n; j++) {
+                heights[j] = (row[j] == '1') ? heights[j] + 1 : 0;
+            }
+            
+            // 計算最大矩形
+            maxArea = Math.max(maxArea, largestRectangleArea(heights));
+        }
+        
+        return maxArea;
+    }
+    
+    private int largestRectangleArea(int[] heights) {
+        Stack<Integer> stack = new Stack<>();
+        int maxArea = 0;
+        int[] h = new int[heights.length + 2];
+        h[0] = 0;
+        h[h.length - 1] = 0;
+        System.arraycopy(heights, 0, h, 1, heights.length);
+        
+        for (int i = 0; i < h.length; i++) {
+            while (!stack.isEmpty() && h[i] < h[stack.peek()]) {
+                int height = h[stack.pop()];
+                int width = i - stack.peek() - 1;
+                maxArea = Math.max(maxArea, height * width);
+            }
+            stack.push(i);
+        }
+        
+        return maxArea;
+    }
+}
+</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>複雜度分析</h2>
+            <div class="complexity">
+                <div class="complexity-item">
+                    <strong>單調棧解法：</strong>
+                    <ul>
+                        <li>時間複雜度：O(m × n)，m 和 n 是矩陣的行數和列數</li>
+                        <li>空間複雜度：O(n)，高度陣列和棧的空間</li>
+                    </ul>
+                </div>
+                <div class="complexity-item">
+                    <strong>動態規劃解法：</strong>
+                    <ul>
+                        <li>時間複雜度：O(m × n)</li>
+                        <li>空間複雜度：O(n)，三個 DP 陣列</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>重點提示</h2>
+            
+            <div class="key-point">
+                <strong>💡 關鍵技巧 1：問題轉化</strong>
+                <p>將 2D 問題轉化為多個 1D 柱狀圖問題，複用 #84 的解法。</p>
+            </div>
+
+            <div class="key-point">
+                <strong>💡 關鍵技巧 2：高度更新</strong>
+                <p>遇到 '1' 累加高度，遇到 '0' 重置為 0。</p>
+            </div>
+
+            <div class="key-point">
+                <strong>💡 關鍵技巧 3：單調棧優化</strong>
+                <p>使用單調棧可以在 O(n) 時間內求出柱狀圖的最大矩形。</p>
+            </div>
+
+            <div class="note">
+                <strong>⚠️ 常見錯誤：</strong>
+                <ul>
+                    <li>忘記在遇到 '0' 時重置高度為 0</li>
+                    <li>沒有正確處理空矩陣的情況</li>
+                    <li>單調棧實現時忘記添加哨兵元素</li>
+                    <li>DP 解法中左右邊界初始化錯誤</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>相關題目</h2>
+            <ul>
+                <li><strong>#84 Largest Rectangle in Histogram</strong> - 柱狀圖最大矩形（本題基礎）</li>
+                <li><strong>#221 Maximal Square</strong> - 最大正方形（類似但更簡單）</li>
+                <li><strong>#1277 Count Square Submatrices</strong> - 統計正方形子矩陣</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        function switchLang(event, lang) {
+            const tabs = document.querySelectorAll('.lang-tab');
+            const contents = document.querySelectorAll('.code-content');
+            
+            tabs.forEach(tab => tab.classList.remove('active'));
+            contents.forEach(content => content.classList.remove('active'));
+            
+            event.target.classList.add('active');
+            document.getElementById(lang).classList.add('active');
+        }
+        
+        hljs.highlightAll();
+    </script>
+</body>
+</html>
