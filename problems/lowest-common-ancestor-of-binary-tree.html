@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>#236 Lowest Common Ancestor of a Binary Tree | LeetCode 學習平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #333; background: #f8fafc; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .header { background: linear-gradient(135deg, #ea580c 0%, #c2410c 100%); color: white; padding: 30px; border-radius: 12px; margin-bottom: 30px; box-shadow: 0 4px 6px rgba(234, 88, 12, 0.2); }
+        .header h1 { font-size: 2em; margin-bottom: 10px; }
+        .difficulty { display: inline-block; padding: 6px 16px; background: rgba(255,255,255,0.2); border-radius: 20px; font-size: 0.9em; font-weight: 600; }
+        .tags { margin-top: 15px; }
+        .tag { display: inline-block; background: rgba(255,255,255,0.15); padding: 4px 12px; border-radius: 6px; margin-right: 8px; font-size: 0.85em; }
+        .back-btn { display: inline-block; margin-bottom: 20px; padding: 10px 20px; background: #3b82f6; color: white; text-decoration: none; border-radius: 8px; transition: background 0.3s; }
+        .back-btn:hover { background: #2563eb; }
+        .section { background: white; padding: 30px; border-radius: 12px; margin-bottom: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .section h2 { color: #1e293b; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 3px solid #ea580c; }
+        .section h3 { color: #475569; margin: 25px 0 15px 0; font-size: 1.3em; }
+        .code-block { background: #282c34; border-radius: 8px; overflow: hidden; margin: 15px 0; }
+        .lang-tabs { display: flex; background: #21252b; border-bottom: 1px solid #181a1f; }
+        .lang-tab { padding: 12px 24px; cursor: pointer; color: #abb2bf; border: none; background: none; transition: all 0.3s; font-weight: 500; }
+        .lang-tab.active { color: #61afef; background: #282c34; border-bottom: 2px solid #61afef; }
+        .lang-tab:hover { color: #61afef; background: #2c313a; }
+        .code-content { display: none; }
+        .code-content.active { display: block; }
+        pre { margin: 0; overflow-x: auto; }
+        code { font-family: 'Consolas', 'Monaco', 'Courier New', monospace; font-size: 0.9em; }
+        .example { background: #f0f9ff; border-left: 4px solid #3b82f6; padding: 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .example-title { font-weight: 700; color: #1e40af; margin-bottom: 12px; font-size: 1.05em; }
+        .visual-box { background: #fef3c7; border: 2px solid #f59e0b; padding: 20px; border-radius: 8px; margin: 15px 0; }
+        .visual-title { font-weight: 700; color: #92400e; margin-bottom: 12px; display: flex; align-items: center; font-size: 1.05em; }
+        .complexity { background: #f1f5f9; padding: 15px; border-radius: 8px; margin: 15px 0; }
+        .complexity-item { margin: 8px 0; color: #475569; }
+        .key-point { background: #dcfce7; border-left: 4px solid #16a34a; padding: 15px 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        ul, ol { margin-left: 25px; margin-top: 10px; }
+        li { margin: 8px 0; color: #475569; }
+        strong { color: #1e293b; }
+        .note { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 15px 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        @media (max-width: 768px) {
+            .container { padding: 10px; }
+            .header h1 { font-size: 1.5em; }
+            .section { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="../index.html" class="back-btn">← 返回題目列表</a>
+
+        <div class="header">
+            <h1>#236 Lowest Common Ancestor of a Binary Tree</h1>
+            <div class="difficulty">Medium</div>
+            <div class="tags">
+                <span class="tag">Tree</span>
+                <span class="tag">DFS</span>
+                <span class="tag">Binary Tree</span>
+                <span class="tag">Recursion</span>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>題目描述</h2>
+            <p>給定一個二元樹，找到該樹中兩個指定節點 p、q 的<strong>最近公共祖先（LCA）</strong>。</p>
+            <p style="margin-top: 15px;">最近公共祖先的定義為：「對於有根樹 T 的兩個節點 p、q，最近公共祖先表示為一個節點 x，滿足 x 是 p、q 的祖先且 x 的<strong>深度盡可能大</strong>（一個節點也可以是它自己的祖先）。」</p>
+            <p style="margin-top: 15px;">注意：這是<strong>普通二元樹</strong>，不是 BST，所以不能利用大小關係。</p>
+        </div>
+
+        <div class="section">
+            <h2>範例</h2>
+            <div class="example">
+                <div class="example-title">範例 1：</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+        3
+       / \
+      5   1
+     / \ / \
+    6  2 0  8
+      / \
+     7   4
+
+輸入：p = 5, q = 1
+輸出：3
+                </pre>
+            </div>
+
+            <div class="example">
+                <div class="example-title">範例 2：</div>
+                <strong>輸入：</strong>（同上樹）p = 5, q = 4<br>
+                <strong>輸出：</strong>5<br>
+                <strong>解釋：</strong>節點 5 是節點 4 的祖先，根據定義，5 也是自己的祖先。
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>解題思路</h2>
+            <div class="visual-box">
+                <div class="visual-title">💡 核心：後序遍歷 + 「往上回報」</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+遞迴函數的語意定義（這是最關鍵的一步）：
+
+  lca(node) 回傳：
+    - 若 node 子樹中「同時」找到 p 和 q → 回傳 LCA
+    - 若只找到其中一個 → 回傳那一個
+    - 若都沒找到 → 回傳 null
+
+【三種情況】
+
+情況 1：node == null 或 node == p 或 node == q
+        → 直接回傳 node（找到目標，或走到底）
+
+情況 2：左右子樹「各回傳一個非 null」
+        → 表示 p 和 q 分別在兩側
+        → node 就是 LCA！回傳 node
+
+情況 3：只有一側非 null
+        → 兩個目標都在那一側（或只找到一個）
+        → 把那一側的結果往上傳
+                </pre>
+            </div>
+
+            <h3>完整推導：p = 5, q = 4</h3>
+            <div class="visual-box">
+                <div class="visual-title">🔄 從葉子往上回報</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+        3
+       / \
+      5   1
+     / \ / \
+    6  2 0  8
+      / \
+     7   4
+
+lca(6) = null（不是 p 也不是 q，無子樹）
+lca(7) = null
+lca(4) = 4  ← 命中 q！
+lca(2)：left = lca(7) = null, right = lca(4) = 4
+        只有一側非 null → 回傳 4
+lca(5) = 5  ← 命中 p！直接回傳，不再往下找
+        （這裡是關鍵：即使 q 在 5 的子樹裡，
+          也不需要繼續找，因為 5 必定是答案）
+lca(0) = null, lca(8) = null
+lca(1)：兩側都 null → 回傳 null
+lca(3)：left = 5, right = null
+        只有一側非 null → 回傳 5 ✓
+
+答案 = 5 ✓
+                </pre>
+            </div>
+
+            <h3>為什麼「遇到 p 就直接回傳」是對的？</h3>
+            <div class="visual-box">
+                <div class="visual-title">🔍 兩種情況都正確</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+假設在節點 x 遇到了 p，直接回傳 x：
+
+情況 A：q 也在 x 的子樹裡
+  → LCA 就是 x（因為 x 是 p 自己，且 x 是 q 的祖先）✓
+  → 直接回傳 x 正確
+
+情況 B：q 不在 x 的子樹裡
+  → x 只是「找到 p 的訊號」往上傳
+  → 上層某個節點會同時收到左右兩側的訊號，
+     在那裡正確判定 LCA ✓
+
+所以不管哪種情況，提早返回都不會出錯，
+而且還能省去不必要的搜尋。
+                </pre>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>程式碼實現</h2>
+
+            <div class="code-block">
+                <div class="lang-tabs">
+                    <button class="lang-tab active" onclick="switchLang(event, 'python')">Python</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'cpp')">C++</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'java')">Java</button>
+                </div>
+
+                <div id="python" class="code-content active">
+                    <pre><code class="language-python"># 遞迴（推薦，簡潔優雅）
+class Solution:
+    def lowestCommonAncestor(self, root: 'TreeNode', p: 'TreeNode', q: 'TreeNode') -&gt; 'TreeNode':
+        # 情況 1：走到底，或命中目標
+        if not root or root is p or root is q:
+            return root
+
+        # 分別在左右子樹中尋找
+        left = self.lowestCommonAncestor(root.left, p, q)
+        right = self.lowestCommonAncestor(root.right, p, q)
+
+        # 情況 2：兩側各找到一個 → root 就是 LCA
+        if left and right:
+            return root
+
+        # 情況 3：只有一側有結果，往上傳
+        return left if left else right
+
+
+# 方法二：記錄父節點 + 集合（更直覺，也更好處理多次查詢）
+class Solution:
+    def lowestCommonAncestor(self, root, p, q):
+        parent = {root: None}
+
+        # BFS/DFS 建立每個節點的父節點對照表
+        stack = [root]
+        while stack:
+            node = stack.pop()
+            if node.left:
+                parent[node.left] = node
+                stack.append(node.left)
+            if node.right:
+                parent[node.right] = node
+                stack.append(node.right)
+
+        # 收集 p 的所有祖先
+        ancestors = set()
+        node = p
+        while node:
+            ancestors.add(node)
+            node = parent[node]
+
+        # 從 q 往上找第一個在 p 祖先集合中的節點
+        node = q
+        while node not in ancestors:
+            node = parent[node]
+        return node</code></pre>
+                </div>
+
+                <div id="cpp" class="code-content">
+                    <pre><code class="language-cpp">// 遞迴（推薦）
+class Solution {
+public:
+    TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+        // 情況 1：走到底，或命中目標
+        if (!root || root == p || root == q) return root;
+
+        TreeNode* left  = lowestCommonAncestor(root-&gt;left,  p, q);
+        TreeNode* right = lowestCommonAncestor(root-&gt;right, p, q);
+
+        // 情況 2：兩側各找到一個 → root 就是 LCA
+        if (left &amp;&amp; right) return root;
+
+        // 情況 3：只有一側有結果，往上傳
+        return left ? left : right;
+    }
+};</code></pre>
+                </div>
+
+                <div id="java" class="code-content">
+                    <pre><code class="language-java">// 遞迴（推薦）
+class Solution {
+    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+        // 情況 1：走到底，或命中目標
+        if (root == null || root == p || root == q) return root;
+
+        TreeNode left  = lowestCommonAncestor(root.left,  p, q);
+        TreeNode right = lowestCommonAncestor(root.right, p, q);
+
+        // 情況 2：兩側各找到一個 → root 就是 LCA
+        if (left != null &amp;&amp; right != null) return root;
+
+        // 情況 3：只有一側有結果，往上傳
+        return (left != null) ? left : right;
+    }
+}</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>複雜度分析</h2>
+            <div class="complexity">
+                <div class="complexity-item">
+                    <strong>時間複雜度：</strong>O(n)
+                    <ul>
+                        <li>最壞情況需要走訪每個節點一次</li>
+                    </ul>
+                </div>
+                <div class="complexity-item">
+                    <strong>空間複雜度：</strong>O(h)
+                    <ul>
+                        <li>遞迴堆疊深度等於樹高，最壞（退化成鏈）為 O(n)</li>
+                        <li>父節點對照表法為 O(n)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>重點提示</h2>
+            <div class="key-point">
+                <strong>💡 關鍵技巧 1：先定義好遞迴函數的「語意」</strong>
+                <p>本題的精髓在於清楚定義「這個函數回傳什麼」。定義好之後，三種情況的處理自然就浮現了。這是解所有樹遞迴題的通用方法：<strong>先想清楚回傳值代表什麼意思</strong>。</p>
+            </div>
+
+            <div class="key-point">
+                <strong>💡 關鍵技巧 2：後序遍歷的「資訊上傳」模式</strong>
+                <p>需要「先知道子樹的結果，才能決定當前節點」的題目，都是後序遍歷。例如 <strong>#543 樹的直徑</strong>、<strong>#110 平衡二元樹</strong>、<strong>#124 最大路徑和</strong>，模式完全相同。</p>
+            </div>
+
+            <div class="key-point">
+                <strong>💡 對比 #235（BST 版本）</strong>
+                <p>如果是 BST，可以利用大小關係直接往下走：都比 root 小就往左、都比 root 大就往右、一大一小（或等於）就是 LCA。時間 O(h)，不需要走訪整棵樹，比本題更快。</p>
+            </div>
+
+            <div class="note">
+                <strong>⚠️ 常見錯誤：</strong>
+                <ul>
+                    <li>比較節點時用 <code>val</code> 而非<strong>參考</strong>（若題目允許重複值就會出錯）</li>
+                    <li>誤以為需要先確認 p、q 都存在（本題保證存在；若不保證，需額外用旗標記錄是否真的找到兩者）</li>
+                    <li>情況 3 寫成只回傳 left，漏掉 right</li>
+                    <li>找到答案後沒有提早返回，做了不必要的搜尋（雖然不影響正確性）</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>相關題目</h2>
+            <ul>
+                <li><strong>#235 LCA of a Binary Search Tree</strong> - BST 版本，可用大小關係優化到 O(h)</li>
+                <li><strong>#1650 LCA of a Binary Tree III</strong> - 節點有 parent 指標（轉化成 #160 找交點）</li>
+                <li><strong>#124 Binary Tree Maximum Path Sum</strong> - 同樣的後序回報模式</li>
+                <li><strong>#543 Diameter of Binary Tree</strong> - 後序遍歷經典題</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>補充說明</h2>
+            <h3>#235 BST 版本的解法</h3>
+            <pre style="background: #f1f5f9; padding: 15px; border-radius: 8px; margin-top: 10px;">
+// 利用 BST 的大小關係，只需 O(h)，且可以寫成迭代
+TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+    while (root) {
+        if (p-&gt;val &lt; root-&gt;val &amp;&amp; q-&gt;val &lt; root-&gt;val)
+            root = root-&gt;left;        // 兩者都在左子樹
+        else if (p-&gt;val &gt; root-&gt;val &amp;&amp; q-&gt;val &gt; root-&gt;val)
+            root = root-&gt;right;       // 兩者都在右子樹
+        else
+            return root;              // 分岔點（或命中其中一個）就是 LCA
+    }
+    return nullptr;
+}
+            </pre>
+
+            <h3>#1650：有 parent 指標的版本</h3>
+            <div class="visual-box">
+                <div class="visual-title">🔗 轉化成鏈結串列找交點</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+若每個節點都有 parent 指標，
+從 p 往上走和從 q 往上走，就是兩條「鏈結串列」，
+它們的交會點就是 LCA —— 完全等同於 #160！
+
+Node* lowestCommonAncestor(Node* p, Node* q) {
+    Node *a = p, *b = q;
+    while (a != b) {
+        a = a-&gt;parent ? a-&gt;parent : q;   // 走完換到對方起點
+        b = b-&gt;parent ? b-&gt;parent : p;
+    }
+    return a;
+}
+
+O(h) 時間，O(1) 空間，非常漂亮。
+                </pre>
+            </div>
+
+            <h3>進階：多次查詢的 LCA</h3>
+            <div class="visual-box">
+                <div class="visual-title">⚡ 倍增法（Binary Lifting）</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+如果要對同一棵樹做「大量 LCA 查詢」，
+每次 O(n) 太慢，可以預處理：
+
+up[v][k] = 節點 v 的第 2^k 個祖先
+
+預處理 O(n log n)：
+  up[v][0] = parent[v]
+  up[v][k] = up[ up[v][k-1] ][k-1]
+
+查詢 O(log n)：
+  1. 先把較深的節點往上跳到同深度
+  2. 兩者一起從大到小的 k 往上跳，
+     只要 up[u][k] != up[v][k] 就跳
+  3. 最後 parent[u] 就是 LCA
+
+這是競賽與大型樹結構（如檔案系統、組織架構）
+的標準做法，也是離線演算法 Tarjan LCA 的替代方案。
+                </pre>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function switchLang(event, lang) {
+            const tabs = document.querySelectorAll('.lang-tab');
+            const contents = document.querySelectorAll('.code-content');
+
+            tabs.forEach(tab => tab.classList.remove('active'));
+            contents.forEach(content => content.classList.remove('active'));
+
+            event.target.classList.add('active');
+            document.getElementById(lang).classList.add('active');
+        }
+
+        hljs.highlightAll();
+    </script>
+</body>
+</html>

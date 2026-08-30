@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>#461 Hamming Distance | LeetCode 學習平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #333; background: #f8fafc; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .header { background: linear-gradient(135deg, #16a34a 0%, #15803d 100%); color: white; padding: 30px; border-radius: 12px; margin-bottom: 30px; box-shadow: 0 4px 6px rgba(22, 163, 74, 0.2); }
+        .header h1 { font-size: 2em; margin-bottom: 10px; }
+        .difficulty { display: inline-block; padding: 6px 16px; background: rgba(255,255,255,0.2); border-radius: 20px; font-size: 0.9em; font-weight: 600; }
+        .tags { margin-top: 15px; }
+        .tag { display: inline-block; background: rgba(255,255,255,0.15); padding: 4px 12px; border-radius: 6px; margin-right: 8px; font-size: 0.85em; }
+        .back-btn { display: inline-block; margin-bottom: 20px; padding: 10px 20px; background: #3b82f6; color: white; text-decoration: none; border-radius: 8px; transition: background 0.3s; }
+        .back-btn:hover { background: #2563eb; }
+        .section { background: white; padding: 30px; border-radius: 12px; margin-bottom: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .section h2 { color: #1e293b; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 3px solid #16a34a; }
+        .section h3 { color: #475569; margin: 25px 0 15px 0; font-size: 1.3em; }
+        .code-block { background: #282c34; border-radius: 8px; overflow: hidden; margin: 15px 0; }
+        .lang-tabs { display: flex; background: #21252b; border-bottom: 1px solid #181a1f; }
+        .lang-tab { padding: 12px 24px; cursor: pointer; color: #abb2bf; border: none; background: none; transition: all 0.3s; font-weight: 500; }
+        .lang-tab.active { color: #61afef; background: #282c34; border-bottom: 2px solid #61afef; }
+        .lang-tab:hover { color: #61afef; background: #2c313a; }
+        .code-content { display: none; }
+        .code-content.active { display: block; }
+        pre { margin: 0; overflow-x: auto; }
+        code { font-family: 'Consolas', 'Monaco', 'Courier New', monospace; font-size: 0.9em; }
+        .example { background: #f0f9ff; border-left: 4px solid #3b82f6; padding: 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .example-title { font-weight: 700; color: #1e40af; margin-bottom: 12px; font-size: 1.05em; }
+        .visual-box { background: #fef3c7; border: 2px solid #f59e0b; padding: 20px; border-radius: 8px; margin: 15px 0; }
+        .visual-title { font-weight: 700; color: #92400e; margin-bottom: 12px; display: flex; align-items: center; font-size: 1.05em; }
+        .complexity { background: #f1f5f9; padding: 15px; border-radius: 8px; margin: 15px 0; }
+        .complexity-item { margin: 8px 0; color: #475569; }
+        .key-point { background: #dcfce7; border-left: 4px solid #16a34a; padding: 15px 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        ul, ol { margin-left: 25px; margin-top: 10px; }
+        li { margin: 8px 0; color: #475569; }
+        strong { color: #1e293b; }
+        .note { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 15px 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        @media (max-width: 768px) {
+            .container { padding: 10px; }
+            .header h1 { font-size: 1.5em; }
+            .section { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="../index.html" class="back-btn">← 返回題目列表</a>
+
+        <div class="header">
+            <h1>#461 Hamming Distance</h1>
+            <div class="difficulty">Easy</div>
+            <div class="tags">
+                <span class="tag">Bit Manipulation</span>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>題目描述</h2>
+            <p>兩個整數之間的<strong>漢明距離（Hamming Distance）</strong>指的是這兩個數字對應二進位位元<strong>不同的位置數目</strong>。</p>
+            <p style="margin-top: 15px;">給你兩個整數 x 和 y，計算並返回它們之間的漢明距離。</p>
+            <p style="margin-top: 15px;">漢明距離是通訊與儲存系統中<strong>錯誤偵測與更正碼（ECC）</strong>的基礎概念，韌體面試常考。</p>
+        </div>
+
+        <div class="section">
+            <h2>範例</h2>
+            <div class="example">
+                <div class="example-title">範例 1：</div>
+                <strong>輸入：</strong>x = 1, y = 4<br>
+                <strong>輸出：</strong>2<br>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+1 = 0 0 0 1
+4 = 0 1 0 0
+        ↑ ↑
+兩個位置不同 → 距離為 2
+                </pre>
+            </div>
+
+            <div class="example">
+                <div class="example-title">範例 2：</div>
+                <strong>輸入：</strong>x = 3, y = 1<br>
+                <strong>輸出：</strong>1<br>
+                <strong>解釋：</strong>3 = 011, 1 = 001，只有第 1 位不同。
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>解題思路</h2>
+            <div class="visual-box">
+                <div class="visual-title">💡 核心：XOR 後數 1 的個數</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+XOR 的特性：相同得 0，不同得 1
+所以 x ^ y 的每個 1，就代表一個「不同的位置」
+
+x = 1 = 0001
+y = 4 = 0100
+x^y   = 0101  → 有 2 個 1 → 漢明距離 = 2 ✓
+
+問題轉化為：#191 Number of 1 Bits
+                </pre>
+            </div>
+
+            <h3>數 1 的方法（三選一）</h3>
+            <div class="visual-box">
+                <div class="visual-title">🎯 Brian Kernighan 最有效率</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+方法 A：逐位檢查，固定跑 32 次
+    for i in 0..31: count += (xor >> i) & 1
+
+方法 B：Brian Kernighan，跑「1 的個數」次
+    while xor: xor &= xor - 1; count++
+
+方法 C：內建函數
+    __builtin_popcount(x ^ y)  /  Integer.bitCount(x ^ y)
+
+追蹤方法 B（xor = 0101）：
+  第 1 次：0101 & 0100 = 0100, count = 1
+  第 2 次：0100 & 0011 = 0000, count = 2
+  xor == 0 結束 → 答案 2 ✓
+                </pre>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>程式碼實現</h2>
+
+            <div class="code-block">
+                <div class="lang-tabs">
+                    <button class="lang-tab active" onclick="switchLang(event, 'python')">Python</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'cpp')">C++</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'java')">Java</button>
+                </div>
+
+                <div id="python" class="code-content active">
+                    <pre><code class="language-python"># 方法一：Brian Kernighan（推薦）
+class Solution:
+    def hammingDistance(self, x: int, y: int) -&gt; int:
+        xor = x ^ y
+        count = 0
+        while xor:
+            xor &amp;= xor - 1      # 每次消掉最右邊的 1
+            count += 1
+        return count
+
+
+# 方法二：逐位檢查
+class Solution:
+    def hammingDistance(self, x: int, y: int) -&gt; int:
+        xor = x ^ y
+        count = 0
+        for i in range(32):
+            count += (xor &gt;&gt; i) &amp; 1
+        return count
+
+
+# 方法三：Python 內建
+class Solution:
+    def hammingDistance(self, x: int, y: int) -&gt; int:
+        return bin(x ^ y).count('1')</code></pre>
+                </div>
+
+                <div id="cpp" class="code-content">
+                    <pre><code class="language-cpp">// 方法一：Brian Kernighan（推薦）
+class Solution {
+public:
+    int hammingDistance(int x, int y) {
+        int xorVal = x ^ y, count = 0;
+        while (xorVal) {
+            xorVal &amp;= (xorVal - 1);   // 消掉最右邊的 1
+            count++;
+        }
+        return count;
+    }
+};
+
+// 方法二：逐位移位比較
+class Solution {
+public:
+    int hammingDistance(int x, int y) {
+        int count = 0;
+        while (x || y) {
+            if ((x &amp; 1) != (y &amp; 1)) count++;
+            x &gt;&gt;= 1;
+            y &gt;&gt;= 1;
+        }
+        return count;
+    }
+};
+
+// 方法三：內建指令
+class Solution {
+public:
+    int hammingDistance(int x, int y) {
+        return __builtin_popcount(x ^ y);
+    }
+};</code></pre>
+                </div>
+
+                <div id="java" class="code-content">
+                    <pre><code class="language-java">// 方法一：Brian Kernighan（推薦）
+class Solution {
+    public int hammingDistance(int x, int y) {
+        int xor = x ^ y, count = 0;
+        while (xor != 0) {
+            xor &amp;= (xor - 1);
+            count++;
+        }
+        return count;
+    }
+}
+
+// 方法二：內建
+class Solution {
+    public int hammingDistance(int x, int y) {
+        return Integer.bitCount(x ^ y);
+    }
+}</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>複雜度分析</h2>
+            <div class="complexity">
+                <div class="complexity-item">
+                    <strong>時間複雜度：</strong>O(1)
+                    <ul>
+                        <li>Brian Kernighan：O(k)，k 為不同位的數量，最多 32</li>
+                        <li>逐位檢查：固定 O(32)</li>
+                    </ul>
+                </div>
+                <div class="complexity-item">
+                    <strong>空間複雜度：</strong>O(1)
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>重點提示</h2>
+            <div class="key-point">
+                <strong>💡 關鍵技巧：先轉化問題再解</strong>
+                <p>「有幾個位不同」→ XOR → 「有幾個 1」。學會把陌生題目轉成已知題目，比記住解法更重要。</p>
+            </div>
+
+            <div class="key-point">
+                <strong>💡 面試延伸：Total Hamming Distance（#477）</strong>
+                <p>要算陣列中<strong>所有配對</strong>的漢明距離總和。暴力是 O(n²)，正解是<strong>逐位統計</strong>：某一位有 c 個 1、n-c 個 0，該位貢獻 c × (n-c)，總複雜度 O(32n)。</p>
+            </div>
+
+            <div class="note">
+                <strong>⚠️ 常見錯誤：</strong>
+                <ul>
+                    <li>方法二的迴圈條件要寫 <code>x || y</code>，只寫 <code>x</code> 會漏掉 y 剩餘的高位</li>
+                    <li>Java 對負數要用 <code>&gt;&gt;&gt;</code>（本題保證非負所以還好）</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>相關題目</h2>
+            <ul>
+                <li><strong>#191 Number of 1 Bits</strong> - 本題的核心子問題</li>
+                <li><strong>#477 Total Hamming Distance</strong> - 所有配對的距離總和</li>
+                <li><strong>#136 Single Number</strong> - XOR 的另一個經典應用</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>補充說明</h2>
+            <h3>#477 Total Hamming Distance 解法</h3>
+            <div class="visual-box">
+                <div class="visual-title">🎯 逐位統計，把 O(n²) 降成 O(32n)</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+nums = [4, 14, 2] = [00100, 01110, 00010]
+
+第 1 位：1 的個數 c=2（14, 2），0 的個數 = 1
+        貢獻 = 2 × 1 = 2
+第 2 位：c=2（4, 14），0 的個數 = 1 → 貢獻 2
+第 3 位：c=1（14），0 的個數 = 2 → 貢獻 2
+總和 = 6 ✓
+
+int totalHammingDistance(vector&lt;int&gt;&amp; nums) {
+    int n = nums.size(), total = 0;
+    for (int i = 0; i &lt; 32; i++) {
+        int c = 0;
+        for (int num : nums) c += (num &gt;&gt; i) &amp; 1;
+        total += c * (n - c);
+    }
+    return total;
+}
+                </pre>
+            </div>
+
+            <h3>通訊應用：ECC 錯誤更正碼</h3>
+            <ul>
+                <li><strong>偵測 d 個位元錯誤</strong>：碼字之間的最小漢明距離必須 &ge; d + 1</li>
+                <li><strong>更正 d 個位元錯誤</strong>：最小漢明距離必須 &ge; 2d + 1</li>
+                <li>Hamming(7,4) 碼最小距離為 3 → 可偵測 2 個錯誤、更正 1 個錯誤</li>
+                <li>DRAM 的 ECC、NAND Flash 的 BCH/LDPC 都建立在這個概念上</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        function switchLang(event, lang) {
+            const tabs = document.querySelectorAll('.lang-tab');
+            const contents = document.querySelectorAll('.code-content');
+
+            tabs.forEach(tab => tab.classList.remove('active'));
+            contents.forEach(content => content.classList.remove('active'));
+
+            event.target.classList.add('active');
+            document.getElementById(lang).classList.add('active');
+        }
+
+        hljs.highlightAll();
+    </script>
+</body>
+</html>

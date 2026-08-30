@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>#260 Single Number III | LeetCode 學習平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #333; background: #f8fafc; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .header { background: linear-gradient(135deg, #ea580c 0%, #c2410c 100%); color: white; padding: 30px; border-radius: 12px; margin-bottom: 30px; box-shadow: 0 4px 6px rgba(234, 88, 12, 0.2); }
+        .header h1 { font-size: 2em; margin-bottom: 10px; }
+        .difficulty { display: inline-block; padding: 6px 16px; background: rgba(255,255,255,0.2); border-radius: 20px; font-size: 0.9em; font-weight: 600; }
+        .tags { margin-top: 15px; }
+        .tag { display: inline-block; background: rgba(255,255,255,0.15); padding: 4px 12px; border-radius: 6px; margin-right: 8px; font-size: 0.85em; }
+        .back-btn { display: inline-block; margin-bottom: 20px; padding: 10px 20px; background: #3b82f6; color: white; text-decoration: none; border-radius: 8px; transition: background 0.3s; }
+        .back-btn:hover { background: #2563eb; }
+        .section { background: white; padding: 30px; border-radius: 12px; margin-bottom: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .section h2 { color: #1e293b; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 3px solid #ea580c; }
+        .section h3 { color: #475569; margin: 25px 0 15px 0; font-size: 1.3em; }
+        .code-block { background: #282c34; border-radius: 8px; overflow: hidden; margin: 15px 0; }
+        .lang-tabs { display: flex; background: #21252b; border-bottom: 1px solid #181a1f; }
+        .lang-tab { padding: 12px 24px; cursor: pointer; color: #abb2bf; border: none; background: none; transition: all 0.3s; font-weight: 500; }
+        .lang-tab.active { color: #61afef; background: #282c34; border-bottom: 2px solid #61afef; }
+        .lang-tab:hover { color: #61afef; background: #2c313a; }
+        .code-content { display: none; }
+        .code-content.active { display: block; }
+        pre { margin: 0; overflow-x: auto; }
+        code { font-family: 'Consolas', 'Monaco', 'Courier New', monospace; font-size: 0.9em; }
+        .example { background: #f0f9ff; border-left: 4px solid #3b82f6; padding: 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .example-title { font-weight: 700; color: #1e40af; margin-bottom: 12px; font-size: 1.05em; }
+        .visual-box { background: #fef3c7; border: 2px solid #f59e0b; padding: 20px; border-radius: 8px; margin: 15px 0; }
+        .visual-title { font-weight: 700; color: #92400e; margin-bottom: 12px; display: flex; align-items: center; font-size: 1.05em; }
+        .complexity { background: #f1f5f9; padding: 15px; border-radius: 8px; margin: 15px 0; }
+        .complexity-item { margin: 8px 0; color: #475569; }
+        .key-point { background: #dcfce7; border-left: 4px solid #16a34a; padding: 15px 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        ul, ol { margin-left: 25px; margin-top: 10px; }
+        li { margin: 8px 0; color: #475569; }
+        strong { color: #1e293b; }
+        .note { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 15px 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        @media (max-width: 768px) {
+            .container { padding: 10px; }
+            .header h1 { font-size: 1.5em; }
+            .section { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="../index.html" class="back-btn">← 返回題目列表</a>
+
+        <div class="header">
+            <h1>#260 Single Number III</h1>
+            <div class="difficulty">Medium</div>
+            <div class="tags">
+                <span class="tag">Bit Manipulation</span>
+                <span class="tag">Array</span>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>題目描述</h2>
+            <p>給你一個整數陣列 nums，其中<strong>恰好有兩個元素只出現一次</strong>，其餘所有元素均出現兩次。找出只出現一次的那兩個元素。你可以按<strong>任意順序</strong>返回答案。</p>
+            <p style="margin-top: 15px;">要求：時間複雜度 <strong>O(n)</strong>，空間複雜度 <strong>O(1)</strong>。</p>
+        </div>
+
+        <div class="section">
+            <h2>範例</h2>
+            <div class="example">
+                <div class="example-title">範例 1：</div>
+                <strong>輸入：</strong>nums = [1,2,1,3,2,5]<br>
+                <strong>輸出：</strong>[3,5]（或 [5,3]）
+            </div>
+
+            <div class="example">
+                <div class="example-title">範例 2：</div>
+                <strong>輸入：</strong>nums = [-1,0]<br>
+                <strong>輸出：</strong>[-1,0]
+            </div>
+
+            <div class="example">
+                <div class="example-title">範例 3：</div>
+                <strong>輸入：</strong>nums = [0,1]<br>
+                <strong>輸出：</strong>[1,0]
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>解題思路</h2>
+            <div class="visual-box">
+                <div class="visual-title">💡 第一步：全部 XOR，得到 a ^ b</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+XOR 性質：x ^ x = 0，x ^ 0 = x，且滿足交換律
+
+nums = [1,2,1,3,2,5]
+全 XOR = 1^2^1^3^2^5
+       = (1^1) ^ (2^2) ^ 3 ^ 5
+       = 0 ^ 0 ^ 3 ^ 5
+       = 3 ^ 5 = 011 ^ 101 = 110 = 6
+
+問題：我們只得到 a^b，怎麼把 a 和 b 分開？
+                </pre>
+            </div>
+
+            <h3>第二步：用 lowbit 分組（本題精髓）</h3>
+            <div class="visual-box">
+                <div class="visual-title">🎯 a ^ b 中為 1 的位，代表 a 和 b 在該位不同</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+xor = a ^ b = 110
+取最低位的 1：lowbit = xor & (-xor) = 010
+
+用第 1 位（值為 2 的那位）把整個陣列分成兩組：
+  組 A：該位為 1 → {2, 3, 2}    (2=010, 3=011, 2=010)
+  組 B：該位為 0 → {1, 1, 5}    (1=001, 1=001, 5=101)
+
+關鍵保證：
+  1. a 和 b 一定被分到不同組（因為該位不同）
+  2. 相同的數字一定被分到同一組（完全相同當然同組）
+
+各組內部 XOR：
+  組 A: 2^3^2 = 3 ✓
+  組 B: 1^1^5 = 5 ✓
+                </pre>
+            </div>
+
+            <h3>為什麼是 x &amp; (-x)？</h3>
+            <div class="visual-box">
+                <div class="visual-title">🔍 二補數取 lowbit</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+-x = ~x + 1（二補數）
+
+x  = 0110 1000
+~x = 1001 0111
+-x = 1001 1000   （~x + 1）
+
+x & -x = 0000 1000  ← 剛好只留下最低位的 1
+
+任何一個為 1 的位都可以用來分組，
+取 lowbit 只是因為最容易計算。
+                </pre>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>程式碼實現</h2>
+
+            <div class="code-block">
+                <div class="lang-tabs">
+                    <button class="lang-tab active" onclick="switchLang(event, 'python')">Python</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'cpp')">C++</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'java')">Java</button>
+                </div>
+
+                <div id="python" class="code-content active">
+                    <pre><code class="language-python"># XOR + lowbit 分組（標準解）
+class Solution:
+    def singleNumber(self, nums: List[int]) -&gt; List[int]:
+        # 第一步：全部 XOR，得到 a ^ b
+        xor_all = 0
+        for num in nums:
+            xor_all ^= num
+
+        # 第二步：取出最低位的 1（a 和 b 在這一位不同）
+        lowbit = xor_all &amp; (-xor_all)
+
+        # 第三步：依這一位分兩組，各自 XOR
+        a = b = 0
+        for num in nums:
+            if num &amp; lowbit:
+                a ^= num
+            else:
+                b ^= num
+        return [a, b]
+
+
+# 對照組：用 HashMap（O(n) 空間，不符要求但好懂）
+class Solution:
+    def singleNumber(self, nums: List[int]) -&gt; List[int]:
+        from collections import Counter
+        return [k for k, v in Counter(nums).items() if v == 1]</code></pre>
+                </div>
+
+                <div id="cpp" class="code-content">
+                    <pre><code class="language-cpp">// XOR + lowbit 分組（標準解）
+class Solution {
+public:
+    vector&lt;int&gt; singleNumber(vector&lt;int&gt;&amp; nums) {
+        // 第一步：全部 XOR，得到 a ^ b
+        long long xorAll = 0;
+        for (int num : nums) xorAll ^= num;
+
+        // 第二步：取最低位的 1（用 long long 避免 INT_MIN 溢位）
+        int lowbit = (int)(xorAll &amp; -xorAll);
+
+        // 第三步：分組 XOR
+        int a = 0, b = 0;
+        for (int num : nums) {
+            if (num &amp; lowbit) a ^= num;
+            else              b ^= num;
+        }
+        return {a, b};
+    }
+};</code></pre>
+                </div>
+
+                <div id="java" class="code-content">
+                    <pre><code class="language-java">// XOR + lowbit 分組（標準解）
+class Solution {
+    public int[] singleNumber(int[] nums) {
+        // 第一步：全部 XOR，得到 a ^ b
+        int xorAll = 0;
+        for (int num : nums) xorAll ^= num;
+
+        // 第二步：取最低位的 1
+        // 注意 xorAll == Integer.MIN_VALUE 時 -xorAll 仍等於自己，剛好正確
+        int lowbit = xorAll &amp; (-xorAll);
+
+        // 第三步：分組 XOR
+        int a = 0, b = 0;
+        for (int num : nums) {
+            if ((num &amp; lowbit) != 0) a ^= num;
+            else                     b ^= num;
+        }
+        return new int[]{a, b};
+    }
+}</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>複雜度分析</h2>
+            <div class="complexity">
+                <div class="complexity-item">
+                    <strong>時間複雜度：</strong>O(n)
+                    <ul>
+                        <li>兩次線性掃描：一次求 XOR、一次分組</li>
+                    </ul>
+                </div>
+                <div class="complexity-item">
+                    <strong>空間複雜度：</strong>O(1)
+                    <ul>
+                        <li>只用了 xorAll、lowbit、a、b 四個變數</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>重點提示</h2>
+            <div class="key-point">
+                <strong>💡 關鍵技巧 1：lowbit = x &amp; (-x)</strong>
+                <p>取出最低位的 1，是位元題的核心工具，也是樹狀陣列（Fenwick Tree）的基礎。</p>
+            </div>
+
+            <div class="key-point">
+                <strong>💡 關鍵技巧 2：「分組」的思維</strong>
+                <p>當一個技巧（XOR）只能處理「一個特殊元素」時，就想辦法把問題<strong>切成兩個子問題</strong>，各自套用同一個技巧。這是很通用的解題思路。</p>
+            </div>
+
+            <div class="note">
+                <strong>⚠️ 常見錯誤：</strong>
+                <ul>
+                    <li>C++ 直接對 <code>INT_MIN</code> 取負號是 UB，建議用 <code>long long</code> 中轉</li>
+                    <li>分組條件要寫 <code>(num &amp; lowbit) != 0</code>，寫成 <code>== 1</code> 是錯的（lowbit 不一定是 1）</li>
+                    <li>誤以為要取最高位的 1；任何一個為 1 的位都可以，但 lowbit 最好算</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>相關題目</h2>
+            <ul>
+                <li><strong>#136 Single Number</strong> - 只有一個特殊數，直接全 XOR</li>
+                <li><strong>#137 Single Number II</strong> - 其餘出現三次，用位元計數或狀態機</li>
+                <li><strong>#268 Missing Number</strong> - 也可用 XOR 解</li>
+                <li><strong>#421 Maximum XOR of Two Numbers</strong> - XOR + Trie</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>補充說明</h2>
+            <h3>XOR 性質總整理（面試必背）</h3>
+            <div class="visual-box">
+                <div class="visual-title">📝 XOR 的六大性質</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+1. x ^ 0 = x            （0 是單位元素）
+2. x ^ x = 0            （自反性 → 消除重複）
+3. x ^ y = y ^ x        （交換律）
+4. (x^y)^z = x^(y^z)    （結合律）
+5. x ^ y ^ y = x        （可逆 → 加解密、交換兩數）
+6. XOR 等於「不進位加法」
+
+應用：
+- 找唯一出現一次的數
+- 不用暫存變數交換兩數
+- 找出缺失的數字
+- 簡易加解密與 checksum（parity bit）
+                </pre>
+            </div>
+
+            <h3>韌體應用：Parity Bit（同位檢查）</h3>
+            <pre style="background: #f1f5f9; padding: 15px; border-radius: 8px; margin-top: 10px;">
+// UART 通訊的偶同位：把所有位元 XOR 起來
+int parity(uint32_t x) {
+    x ^= x &gt;&gt; 16;
+    x ^= x &gt;&gt; 8;
+    x ^= x &gt;&gt; 4;
+    x ^= x &gt;&gt; 2;
+    x ^= x &gt;&gt; 1;
+    return x &amp; 1;   // 1 表示有奇數個 1
+}
+            </pre>
+        </div>
+    </div>
+
+    <script>
+        function switchLang(event, lang) {
+            const tabs = document.querySelectorAll('.lang-tab');
+            const contents = document.querySelectorAll('.code-content');
+
+            tabs.forEach(tab => tab.classList.remove('active'));
+            contents.forEach(content => content.classList.remove('active'));
+
+            event.target.classList.add('active');
+            document.getElementById(lang).classList.add('active');
+        }
+
+        hljs.highlightAll();
+    </script>
+</body>
+</html>

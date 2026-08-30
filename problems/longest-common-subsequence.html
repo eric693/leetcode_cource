@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>#1143 Longest Common Subsequence | LeetCode 學習平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #333; background: #f8fafc; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .header { background: linear-gradient(135deg, #ea580c 0%, #c2410c 100%); color: white; padding: 30px; border-radius: 12px; margin-bottom: 30px; box-shadow: 0 4px 6px rgba(234, 88, 12, 0.2); }
+        .header h1 { font-size: 2em; margin-bottom: 10px; }
+        .difficulty { display: inline-block; padding: 6px 16px; background: rgba(255,255,255,0.2); border-radius: 20px; font-size: 0.9em; font-weight: 600; }
+        .tags { margin-top: 15px; }
+        .tag { display: inline-block; background: rgba(255,255,255,0.15); padding: 4px 12px; border-radius: 6px; margin-right: 8px; font-size: 0.85em; }
+        .back-btn { display: inline-block; margin-bottom: 20px; padding: 10px 20px; background: #3b82f6; color: white; text-decoration: none; border-radius: 8px; transition: background 0.3s; }
+        .back-btn:hover { background: #2563eb; }
+        .section { background: white; padding: 30px; border-radius: 12px; margin-bottom: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .section h2 { color: #1e293b; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 3px solid #ea580c; }
+        .section h3 { color: #475569; margin: 25px 0 15px 0; font-size: 1.3em; }
+        .code-block { background: #282c34; border-radius: 8px; overflow: hidden; margin: 15px 0; }
+        .lang-tabs { display: flex; background: #21252b; border-bottom: 1px solid #181a1f; }
+        .lang-tab { padding: 12px 24px; cursor: pointer; color: #abb2bf; border: none; background: none; transition: all 0.3s; font-weight: 500; }
+        .lang-tab.active { color: #61afef; background: #282c34; border-bottom: 2px solid #61afef; }
+        .lang-tab:hover { color: #61afef; background: #2c313a; }
+        .code-content { display: none; }
+        .code-content.active { display: block; }
+        pre { margin: 0; overflow-x: auto; }
+        code { font-family: 'Consolas', 'Monaco', 'Courier New', monospace; font-size: 0.9em; }
+        .example { background: #f0f9ff; border-left: 4px solid #3b82f6; padding: 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .example-title { font-weight: 700; color: #1e40af; margin-bottom: 12px; font-size: 1.05em; }
+        .visual-box { background: #fef3c7; border: 2px solid #f59e0b; padding: 20px; border-radius: 8px; margin: 15px 0; }
+        .visual-title { font-weight: 700; color: #92400e; margin-bottom: 12px; display: flex; align-items: center; font-size: 1.05em; }
+        .complexity { background: #f1f5f9; padding: 15px; border-radius: 8px; margin: 15px 0; }
+        .complexity-item { margin: 8px 0; color: #475569; }
+        .key-point { background: #dcfce7; border-left: 4px solid #16a34a; padding: 15px 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        ul, ol { margin-left: 25px; margin-top: 10px; }
+        li { margin: 8px 0; color: #475569; }
+        strong { color: #1e293b; }
+        .note { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 15px 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        @media (max-width: 768px) {
+            .container { padding: 10px; }
+            .header h1 { font-size: 1.5em; }
+            .section { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="../index.html" class="back-btn">← 返回題目列表</a>
+
+        <div class="header">
+            <h1>#1143 Longest Common Subsequence</h1>
+            <div class="difficulty">Medium</div>
+            <div class="tags">
+                <span class="tag">Dynamic Programming</span>
+                <span class="tag">String</span>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>題目描述</h2>
+            <p>給定兩個字串 text1 和 text2，返回這兩個字串的<strong>最長公共子序列</strong>的長度。如果不存在公共子序列，返回 0。</p>
+            <p style="margin-top: 15px;"><strong>子序列</strong>是指這樣一個新字串：它是由原字串在<strong>不改變字元相對順序</strong>的情況下刪除某些字元（也可以不刪除任何字元）後組成的新字串。</p>
+            <p style="margin-top: 15px;">例如 "ace" 是 "abcde" 的子序列，但 "aec" 不是。兩個字串的公共子序列是這兩個字串所共同擁有的子序列。</p>
+            <p style="margin-top: 15px;">這是<strong>二維字串 DP 的模板題</strong>，掌握它就能解一整類題目。</p>
+        </div>
+
+        <div class="section">
+            <h2>範例</h2>
+            <div class="example">
+                <div class="example-title">範例 1：</div>
+                <strong>輸入：</strong>text1 = "abcde", text2 = "ace"<br>
+                <strong>輸出：</strong>3<br>
+                <strong>解釋：</strong>最長公共子序列是 "ace"，長度為 3。
+            </div>
+
+            <div class="example">
+                <div class="example-title">範例 2：</div>
+                <strong>輸入：</strong>text1 = "abc", text2 = "abc"<br>
+                <strong>輸出：</strong>3
+            </div>
+
+            <div class="example">
+                <div class="example-title">範例 3：</div>
+                <strong>輸入：</strong>text1 = "abc", text2 = "def"<br>
+                <strong>輸出：</strong>0
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>解題思路</h2>
+            <div class="visual-box">
+                <div class="visual-title">💡 狀態定義（DP 最重要的一步）</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+dp[i][j] = text1 的【前 i 個字元】與 text2 的【前 j 個字元】
+           的最長公共子序列長度
+
+⭐ 用「前 i 個」而不是「以 i 結尾」，
+   好處是 dp[0][*] 和 dp[*][0] 天然代表空字串，邊界為 0，
+   不需要特別初始化第一行第一列。
+   （代價是 dp 的索引 i 對應字串的 i-1 位置，要小心）
+                </pre>
+            </div>
+
+            <h3>狀態轉移方程</h3>
+            <div class="visual-box">
+                <div class="visual-title">🎯 兩種情況</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+情況 1：text1[i-1] == text2[j-1]（最後一個字元相同）
+    dp[i][j] = dp[i-1][j-1] + 1
+
+    這個共同字元一定可以放進 LCS，
+    剩下的問題是前面 i-1 和 j-1 的 LCS。
+
+情況 2：text1[i-1] != text2[j-1]（最後一個字元不同）
+    dp[i][j] = max(dp[i-1][j], dp[i][j-1])
+
+    這兩個字元不可能同時出現在 LCS 的結尾，
+    所以至少要「放棄其中一個」，取兩種放棄方式中較好的。
+
+    dp[i-1][j] = 放棄 text1 的第 i 個字元
+    dp[i][j-1] = 放棄 text2 的第 j 個字元
+                </pre>
+            </div>
+
+            <h3>完整 DP 表格：text1 = "abcde", text2 = "ace"</h3>
+            <div class="visual-box">
+                <div class="visual-title">📊 手推一次就懂了</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+        ""   a    c    e
+   ""   0    0    0    0
+   a    0    1    1    1
+   b    0    1    1    1
+   c    0    1    2    2
+   d    0    1    2    2
+   e    0    1    2    3   ← 答案
+
+逐格說明幾個關鍵：
+
+dp[1][1]: 'a' == 'a' → dp[0][0] + 1 = 1
+dp[2][1]: 'b' != 'a' → max(dp[1][1], dp[2][0]) = max(1, 0) = 1
+dp[3][2]: 'c' == 'c' → dp[2][1] + 1 = 1 + 1 = 2
+dp[5][3]: 'e' == 'e' → dp[4][2] + 1 = 2 + 1 = 3 ✓
+
+答案 dp[5][3] = 3（"ace"）
+                </pre>
+            </div>
+
+            <h3>空間優化：滾動陣列</h3>
+            <div class="visual-box">
+                <div class="visual-title">⚡ O(mn) → O(min(m,n))</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+觀察轉移方程，dp[i][j] 只依賴：
+  dp[i-1][j-1]（左上）
+  dp[i-1][j]  （正上）
+  dp[i][j-1]  （左邊）
+
+也就是只需要「上一行」和「當前行左邊」的資料，
+可以壓成一維陣列，用一個變數暫存左上角的值。
+
+for i in 1..m:
+    prev = 0                    # 代表 dp[i-1][j-1]
+    for j in 1..n:
+        temp = dp[j]            # 先存下舊值（將成為下一輪的左上）
+        if 字元相同: dp[j] = prev + 1
+        else:        dp[j] = max(dp[j], dp[j-1])
+        prev = temp
+                </pre>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>程式碼實現</h2>
+
+            <div class="code-block">
+                <div class="lang-tabs">
+                    <button class="lang-tab active" onclick="switchLang(event, 'python')">Python</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'cpp')">C++</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'java')">Java</button>
+                </div>
+
+                <div id="python" class="code-content active">
+                    <pre><code class="language-python"># 方法一：二維 DP（推薦，最清晰）
+class Solution:
+    def longestCommonSubsequence(self, text1: str, text2: str) -&gt; int:
+        m, n = len(text1), len(text2)
+        # dp[i][j] = text1 前 i 個 與 text2 前 j 個 的 LCS 長度
+        dp = [[0] * (n + 1) for _ in range(m + 1)]
+
+        for i in range(1, m + 1):
+            for j in range(1, n + 1):
+                if text1[i - 1] == text2[j - 1]:
+                    dp[i][j] = dp[i - 1][j - 1] + 1        # 字元相同
+                else:
+                    dp[i][j] = max(dp[i - 1][j], dp[i][j - 1])  # 放棄其一
+
+        return dp[m][n]
+
+
+# 方法二：一維滾動陣列（空間 O(n)）
+class Solution:
+    def longestCommonSubsequence(self, text1: str, text2: str) -&gt; int:
+        m, n = len(text1), len(text2)
+        dp = [0] * (n + 1)
+
+        for i in range(1, m + 1):
+            prev = 0                       # 代表 dp[i-1][j-1]（左上）
+            for j in range(1, n + 1):
+                temp = dp[j]               # 保存舊的 dp[i-1][j]
+                if text1[i - 1] == text2[j - 1]:
+                    dp[j] = prev + 1
+                else:
+                    dp[j] = max(dp[j], dp[j - 1])
+                prev = temp
+
+        return dp[n]</code></pre>
+                </div>
+
+                <div id="cpp" class="code-content">
+                    <pre><code class="language-cpp">// 方法一：二維 DP（推薦）
+class Solution {
+public:
+    int longestCommonSubsequence(string text1, string text2) {
+        int m = text1.size(), n = text2.size();
+        vector&lt;vector&lt;int&gt;&gt; dp(m + 1, vector&lt;int&gt;(n + 1, 0));
+
+        for (int i = 1; i &lt;= m; i++) {
+            for (int j = 1; j &lt;= n; j++) {
+                if (text1[i - 1] == text2[j - 1]) {
+                    dp[i][j] = dp[i - 1][j - 1] + 1;          // 字元相同
+                } else {
+                    dp[i][j] = max(dp[i - 1][j], dp[i][j - 1]); // 放棄其一
+                }
+            }
+        }
+        return dp[m][n];
+    }
+};
+
+// 方法二：滾動陣列（空間 O(n)）
+class Solution {
+public:
+    int longestCommonSubsequence(string text1, string text2) {
+        int m = text1.size(), n = text2.size();
+        vector&lt;int&gt; dp(n + 1, 0);
+
+        for (int i = 1; i &lt;= m; i++) {
+            int prev = 0;                        // dp[i-1][j-1]
+            for (int j = 1; j &lt;= n; j++) {
+                int temp = dp[j];
+                if (text1[i - 1] == text2[j - 1]) dp[j] = prev + 1;
+                else                              dp[j] = max(dp[j], dp[j - 1]);
+                prev = temp;
+            }
+        }
+        return dp[n];
+    }
+};</code></pre>
+                </div>
+
+                <div id="java" class="code-content">
+                    <pre><code class="language-java">// 方法一：二維 DP（推薦）
+class Solution {
+    public int longestCommonSubsequence(String text1, String text2) {
+        int m = text1.length(), n = text2.length();
+        int[][] dp = new int[m + 1][n + 1];
+
+        for (int i = 1; i &lt;= m; i++) {
+            for (int j = 1; j &lt;= n; j++) {
+                if (text1.charAt(i - 1) == text2.charAt(j - 1)) {
+                    dp[i][j] = dp[i - 1][j - 1] + 1;              // 相同
+                } else {
+                    dp[i][j] = Math.max(dp[i - 1][j], dp[i][j - 1]); // 不同
+                }
+            }
+        }
+        return dp[m][n];
+    }
+}</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>複雜度分析</h2>
+            <div class="complexity">
+                <div class="complexity-item">
+                    <strong>時間複雜度：</strong>O(m × n)
+                    <ul>
+                        <li>填滿整個 DP 表格，每格 O(1)</li>
+                        <li>這是本問題的已知最佳複雜度（在一般情況下）</li>
+                    </ul>
+                </div>
+                <div class="complexity-item">
+                    <strong>空間複雜度：</strong>
+                    <ul>
+                        <li>二維 DP：O(m × n)</li>
+                        <li>滾動陣列：O(min(m, n)) ★（把較短的字串放在內層）</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>重點提示</h2>
+            <div class="key-point">
+                <strong>💡 關鍵技巧 1：「前 i 個」的狀態定義</strong>
+                <p>用 <code>dp[i][j] = 前 i 個 vs 前 j 個</code>（而非「以 i 結尾」），可以讓 dp[0][j] = dp[i][0] = 0 自然成立，省去繁瑣的邊界初始化。代價是索引要記得 <code>text1[i-1]</code>，這是最容易寫錯的地方。</p>
+            </div>
+
+            <div class="key-point">
+                <strong>💡 關鍵技巧 2：子序列 vs 子串的 DP 差異</strong>
+                <ul>
+                    <li><strong>子序列</strong>（本題，可不連續）：不匹配時 <code>dp[i][j] = max(dp[i-1][j], dp[i][j-1])</code>，資訊可以「繼承」</li>
+                    <li><strong>子串</strong>（#718，必須連續）：不匹配時 <code>dp[i][j] = 0</code>，必須「歸零重來」，答案要在過程中取最大值</li>
+                </ul>
+                <p style="margin-top: 10px;">這是這兩類題目最核心的差別。</p>
+            </div>
+
+            <div class="key-point">
+                <strong>💡 如何印出 LCS 本身而不只是長度？</strong>
+                <p>從 <code>dp[m][n]</code> 往回走：若字元相同就把它加入結果並往左上；否則往「值較大」的那一邊走。最後把結果反轉。這叫 <strong>DP 路徑回溯</strong>，是很常見的追問。</p>
+            </div>
+
+            <div class="note">
+                <strong>⚠️ 常見錯誤：</strong>
+                <ul>
+                    <li>索引寫成 <code>text1[i]</code> 而非 <code>text1[i-1]</code>（差一錯誤）</li>
+                    <li>陣列大小開成 <code>[m][n]</code> 而非 <code>[m+1][n+1]</code></li>
+                    <li>迴圈從 0 開始（應該從 1 開始，0 是邊界）</li>
+                    <li>把子序列問題誤當成子串問題（不匹配時錯誤地歸零）</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>相關題目</h2>
+            <ul>
+                <li><strong>#718 Maximum Length of Repeated Subarray</strong> - 最長公共「子陣列」（連續版）</li>
+                <li><strong>#72 Edit Distance</strong> - 編輯距離，同款二維字串 DP</li>
+                <li><strong>#583 Delete Operation for Two Strings</strong> - 直接用 LCS 求解</li>
+                <li><strong>#392 Is Subsequence</strong> - 判斷子序列（雙指標即可）</li>
+                <li><strong>#300 Longest Increasing Subsequence</strong> - 單一字串的遞增子序列</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>補充說明</h2>
+            <h3>二維字串 DP 家族</h3>
+            <div class="visual-box">
+                <div class="visual-title">📝 同一個框架，不同的轉移</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+題目           dp 定義                 相同時          不同時
+------------------------------------------------------------------------
+#1143 LCS      前 i vs 前 j 的 LCS      dp[i-1][j-1]+1  max(上, 左)
+#718 最長重複  以 i,j 結尾的長度        dp[i-1][j-1]+1  0（歸零！）
+#72 編輯距離   前 i 轉成前 j 的最少步    dp[i-1][j-1]    1+min(上,左,左上)
+#583 刪除操作  最少刪除次數             dp[i-1][j-1]    1+min(上, 左)
+#115 不同子序列 前 j 在前 i 中出現次數   dp[i-1][j-1]+dp[i-1][j]  dp[i-1][j]
+#10 正規表達式 是否匹配                 依 pattern 決定  依 * 展開
+
+⭐ 掌握 #1143 和 #72 這兩題，
+   整個二維字串 DP 家族就通了。
+                </pre>
+            </div>
+
+            <h3>回溯出 LCS 字串本身</h3>
+            <pre style="background: #f1f5f9; padding: 15px; border-radius: 8px; margin-top: 10px;">
+string getLCS(string&amp; s1, string&amp; s2, vector&lt;vector&lt;int&gt;&gt;&amp; dp) {
+    string lcs;
+    int i = s1.size(), j = s2.size();
+    while (i &gt; 0 &amp;&amp; j &gt; 0) {
+        if (s1[i-1] == s2[j-1]) {
+            lcs += s1[i-1];       // 這個字元在 LCS 中
+            i--; j--;             // 往左上走
+        } else if (dp[i-1][j] &gt;= dp[i][j-1]) {
+            i--;                  // 往上走
+        } else {
+            j--;                  // 往左走
+        }
+    }
+    reverse(lcs.begin(), lcs.end());
+    return lcs;
+}
+
+複雜度 O(m + n)，因為每步至少讓 i 或 j 減 1。
+            </pre>
+
+            <h3>實務應用：diff 工具</h3>
+            <div class="visual-box">
+                <div class="visual-title">🔧 git diff 的核心演算法</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+把「每一行」當成一個字元，對兩個檔案求 LCS：
+  - 在 LCS 中的行 = 沒有變動（context）
+  - 只在舊檔案中的行 = 被刪除（-）
+  - 只在新檔案中的行 = 新增（+）
+
+舊檔案：A B C D E
+新檔案：A C E F
+LCS：   A C E
+
+diff 輸出：
+   A
+  -B
+   C
+  -D
+   E
+  +F
+
+實務上 git 用的是 Myers diff 演算法，
+它是 LCS 的優化版，複雜度 O((m+n)D)，
+D 是編輯距離 —— 對「改動不多」的常見情況特別快。
+
+其他應用：DNA 序列比對、抄襲偵測、拼字檢查、版本合併。
+                </pre>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function switchLang(event, lang) {
+            const tabs = document.querySelectorAll('.lang-tab');
+            const contents = document.querySelectorAll('.code-content');
+
+            tabs.forEach(tab => tab.classList.remove('active'));
+            contents.forEach(content => content.classList.remove('active'));
+
+            event.target.classList.add('active');
+            document.getElementById(lang).classList.add('active');
+        }
+
+        hljs.highlightAll();
+    </script>
+</body>
+</html>

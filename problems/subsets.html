@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>#78 Subsets | LeetCode 學習平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #333; background: #f8fafc; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .header { background: linear-gradient(135deg, #ea580c 0%, #c2410c 100%); color: white; padding: 30px; border-radius: 12px; margin-bottom: 30px; box-shadow: 0 4px 6px rgba(234, 88, 12, 0.2); }
+        .header h1 { font-size: 2em; margin-bottom: 10px; }
+        .difficulty { display: inline-block; padding: 6px 16px; background: rgba(255,255,255,0.2); border-radius: 20px; font-size: 0.9em; font-weight: 600; }
+        .tags { margin-top: 15px; }
+        .tag { display: inline-block; background: rgba(255,255,255,0.15); padding: 4px 12px; border-radius: 6px; margin-right: 8px; font-size: 0.85em; }
+        .back-btn { display: inline-block; margin-bottom: 20px; padding: 10px 20px; background: #3b82f6; color: white; text-decoration: none; border-radius: 8px; transition: background 0.3s; }
+        .back-btn:hover { background: #2563eb; }
+        .section { background: white; padding: 30px; border-radius: 12px; margin-bottom: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .section h2 { color: #1e293b; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 3px solid #ea580c; }
+        .section h3 { color: #475569; margin: 25px 0 15px 0; font-size: 1.3em; }
+        .code-block { background: #282c34; border-radius: 8px; overflow: hidden; margin: 15px 0; }
+        .lang-tabs { display: flex; background: #21252b; border-bottom: 1px solid #181a1f; }
+        .lang-tab { padding: 12px 24px; cursor: pointer; color: #abb2bf; border: none; background: none; transition: all 0.3s; font-weight: 500; }
+        .lang-tab.active { color: #61afef; background: #282c34; border-bottom: 2px solid #61afef; }
+        .lang-tab:hover { color: #61afef; background: #2c313a; }
+        .code-content { display: none; }
+        .code-content.active { display: block; }
+        pre { margin: 0; overflow-x: auto; }
+        code { font-family: 'Consolas', 'Monaco', 'Courier New', monospace; font-size: 0.9em; }
+        .example { background: #f0f9ff; border-left: 4px solid #3b82f6; padding: 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .example-title { font-weight: 700; color: #1e40af; margin-bottom: 12px; font-size: 1.05em; }
+        .visual-box { background: #fef3c7; border: 2px solid #f59e0b; padding: 20px; border-radius: 8px; margin: 15px 0; }
+        .visual-title { font-weight: 700; color: #92400e; margin-bottom: 12px; display: flex; align-items: center; font-size: 1.05em; }
+        .complexity { background: #f1f5f9; padding: 15px; border-radius: 8px; margin: 15px 0; }
+        .complexity-item { margin: 8px 0; color: #475569; }
+        .key-point { background: #dcfce7; border-left: 4px solid #16a34a; padding: 15px 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        ul, ol { margin-left: 25px; margin-top: 10px; }
+        li { margin: 8px 0; color: #475569; }
+        strong { color: #1e293b; }
+        .note { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 15px 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        @media (max-width: 768px) {
+            .container { padding: 10px; }
+            .header h1 { font-size: 1.5em; }
+            .section { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="../index.html" class="back-btn">← 返回題目列表</a>
+
+        <div class="header">
+            <h1>#78 Subsets</h1>
+            <div class="difficulty">Medium</div>
+            <div class="tags">
+                <span class="tag">Backtracking</span>
+                <span class="tag">Bit Manipulation</span>
+                <span class="tag">Array</span>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>題目描述</h2>
+            <p>給你一個整數陣列 nums，陣列中的元素<strong>互不相同</strong>。返回該陣列所有可能的<strong>子集（冪集）</strong>。</p>
+            <p style="margin-top: 15px;">解集<strong>不能</strong>包含重複的子集。你可以按任意順序返回解集。</p>
+            <p style="margin-top: 15px;">n 個元素的子集共有 <strong>2<sup>n</sup></strong> 個（每個元素都有「選」或「不選」兩種可能）。</p>
+        </div>
+
+        <div class="section">
+            <h2>範例</h2>
+            <div class="example">
+                <div class="example-title">範例 1：</div>
+                <strong>輸入：</strong>nums = [1,2,3]<br>
+                <strong>輸出：</strong>[[],[1],[2],[3],[1,2],[1,3],[2,3],[1,2,3]]<br>
+                <strong>解釋：</strong>共 2³ = 8 個子集，包含空集。
+            </div>
+
+            <div class="example">
+                <div class="example-title">範例 2：</div>
+                <strong>輸入：</strong>nums = [0]<br>
+                <strong>輸出：</strong>[[],[0]]
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>解題思路</h2>
+            <div class="visual-box">
+                <div class="visual-title">💡 方法一：回溯（每個節點都是答案）</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+與排列不同：子集問題中，決策樹的【每一個節點】都是一個答案，
+不只有葉子節點。
+
+nums = [1,2,3]
+
+                []            ← 也是答案！
+        /       |       \
+      [1]      [2]      [3]   ← 都是答案
+     /   \      |
+  [1,2] [1,3] [2,3]           ← 都是答案
+    |
+ [1,2,3]                      ← 也是答案
+
+共 8 個節點 = 8 個子集 ✓
+
+⭐ 用 start 參數控制：每層只能選 start 之後的元素，
+   避免產生 [1,2] 和 [2,1] 這種重複的組合。
+                </pre>
+            </div>
+
+            <h3>方法二：位元遮罩（非常優雅）</h3>
+            <div class="visual-box">
+                <div class="visual-title">🎯 用 0 ~ 2ⁿ-1 的二進位表示「選或不選」</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+n = 3，用 3 位元表示每個元素選不選：
+
+mask  二進位  選中的元素   子集
+0     000     -            []
+1     001     nums[0]      [1]
+2     010     nums[1]      [2]
+3     011     nums[0,1]    [1,2]
+4     100     nums[2]      [3]
+5     101     nums[0,2]    [1,3]
+6     110     nums[1,2]    [2,3]
+7     111     nums[0,1,2]  [1,2,3]
+
+實作：
+for (int mask = 0; mask < (1 << n); mask++) {
+    vector<int> subset;
+    for (int i = 0; i < n; i++) {
+        if (mask & (1 << i)) subset.push_back(nums[i]);
+    }
+    result.push_back(subset);
+}
+
+沒有遞迴，程式碼極短，而且不會 stack overflow。
+                </pre>
+            </div>
+
+            <h3>方法三：迭代擴展（最直覺）</h3>
+            <div class="visual-box">
+                <div class="visual-title">🔄 每加入一個元素，答案數量翻倍</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+result = [[]]
+
+加入 1：把現有的每個子集都複製一份並加上 1
+  [[]] → [[], [1]]
+
+加入 2：
+  [[], [1]] → [[], [1], [2], [1,2]]
+
+加入 3：
+  → [[], [1], [2], [1,2], [3], [1,3], [2,3], [1,2,3]] ✓
+
+每一輪答案數量剛好翻倍，最後是 2ⁿ 個。
+這個做法直接體現了「冪集」的遞迴定義。
+                </pre>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>程式碼實現</h2>
+
+            <div class="code-block">
+                <div class="lang-tabs">
+                    <button class="lang-tab active" onclick="switchLang(event, 'python')">Python</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'cpp')">C++</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'java')">Java</button>
+                </div>
+
+                <div id="python" class="code-content active">
+                    <pre><code class="language-python"># 方法一：回溯（推薦，可擴充到 #90 等變形）
+class Solution:
+    def subsets(self, nums: List[int]) -&gt; List[List[int]]:
+        result = []
+        path = []
+
+        def backtrack(start):
+            result.append(path[:])       # 每個節點都是答案！
+
+            for i in range(start, len(nums)):
+                path.append(nums[i])     # 做選擇
+                backtrack(i + 1)         # 下一層只能選 i 之後的
+                path.pop()               # 撤銷選擇
+
+        backtrack(0)
+        return result
+
+
+# 方法二：位元遮罩
+class Solution:
+    def subsets(self, nums: List[int]) -&gt; List[List[int]]:
+        n = len(nums)
+        result = []
+        for mask in range(1 &lt;&lt; n):       # 0 ~ 2^n - 1
+            subset = [nums[i] for i in range(n) if mask &amp; (1 &lt;&lt; i)]
+            result.append(subset)
+        return result
+
+
+# 方法三：迭代擴展
+class Solution:
+    def subsets(self, nums: List[int]) -&gt; List[List[int]]:
+        result = [[]]
+        for num in nums:
+            # 把現有每個子集複製一份並加上 num
+            result += [subset + [num] for subset in result]
+        return result</code></pre>
+                </div>
+
+                <div id="cpp" class="code-content">
+                    <pre><code class="language-cpp">// 方法一：回溯（推薦）
+class Solution {
+    vector&lt;vector&lt;int&gt;&gt; result;
+    vector&lt;int&gt; path;
+
+    void backtrack(vector&lt;int&gt;&amp; nums, int start) {
+        result.push_back(path);          // 每個節點都是答案
+
+        for (int i = start; i &lt; nums.size(); i++) {
+            path.push_back(nums[i]);     // 做選擇
+            backtrack(nums, i + 1);      // 只能選 i 之後的
+            path.pop_back();             // 撤銷選擇
+        }
+    }
+
+public:
+    vector&lt;vector&lt;int&gt;&gt; subsets(vector&lt;int&gt;&amp; nums) {
+        backtrack(nums, 0);
+        return result;
+    }
+};
+
+// 方法二：位元遮罩（無遞迴）
+class Solution {
+public:
+    vector&lt;vector&lt;int&gt;&gt; subsets(vector&lt;int&gt;&amp; nums) {
+        int n = nums.size();
+        vector&lt;vector&lt;int&gt;&gt; result;
+        for (int mask = 0; mask &lt; (1 &lt;&lt; n); mask++) {
+            vector&lt;int&gt; subset;
+            for (int i = 0; i &lt; n; i++) {
+                if (mask &amp; (1 &lt;&lt; i)) subset.push_back(nums[i]);
+            }
+            result.push_back(subset);
+        }
+        return result;
+    }
+};</code></pre>
+                </div>
+
+                <div id="java" class="code-content">
+                    <pre><code class="language-java">// 方法一：回溯（推薦）
+class Solution {
+    private List&lt;List&lt;Integer&gt;&gt; result = new ArrayList&lt;&gt;();
+    private List&lt;Integer&gt; path = new ArrayList&lt;&gt;();
+
+    public List&lt;List&lt;Integer&gt;&gt; subsets(int[] nums) {
+        backtrack(nums, 0);
+        return result;
+    }
+
+    private void backtrack(int[] nums, int start) {
+        result.add(new ArrayList&lt;&gt;(path));    // 每個節點都是答案
+
+        for (int i = start; i &lt; nums.length; i++) {
+            path.add(nums[i]);                // 做選擇
+            backtrack(nums, i + 1);           // 只能選 i 之後的
+            path.remove(path.size() - 1);     // 撤銷選擇
+        }
+    }
+}
+
+// 方法三：迭代擴展
+class Solution {
+    public List&lt;List&lt;Integer&gt;&gt; subsets(int[] nums) {
+        List&lt;List&lt;Integer&gt;&gt; result = new ArrayList&lt;&gt;();
+        result.add(new ArrayList&lt;&gt;());
+        for (int num : nums) {
+            int size = result.size();
+            for (int i = 0; i &lt; size; i++) {
+                List&lt;Integer&gt; newSubset = new ArrayList&lt;&gt;(result.get(i));
+                newSubset.add(num);
+                result.add(newSubset);
+            }
+        }
+        return result;
+    }
+}</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>複雜度分析</h2>
+            <div class="complexity">
+                <div class="complexity-item">
+                    <strong>時間複雜度：</strong>O(n × 2ⁿ)
+                    <ul>
+                        <li>共有 2ⁿ 個子集</li>
+                        <li>每個子集的建立/複製需要 O(n)</li>
+                        <li>這是輸出規模的下界，無法優化</li>
+                    </ul>
+                </div>
+                <div class="complexity-item">
+                    <strong>空間複雜度：</strong>O(n)
+                    <ul>
+                        <li>遞迴堆疊 + path，不計輸出的 O(n × 2ⁿ)</li>
+                        <li>位元遮罩版本沒有遞迴，空間更省</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>重點提示</h2>
+            <div class="key-point">
+                <strong>💡 關鍵技巧 1：子集題「每個節點都收集答案」</strong>
+                <p>和排列/組合不同，子集不需要等到葉子節點。<code>result.add(path)</code> 放在函數<strong>開頭</strong>而不是終止條件裡，這是本題與 #46 最大的結構差異。</p>
+            </div>
+
+            <div class="key-point">
+                <strong>💡 關鍵技巧 2：start 參數保證不重複</strong>
+                <p>下一層從 <code>i + 1</code> 開始，確保每個元素最多被選一次且順序固定，自然就不會產生 [1,2] 和 [2,1] 這種重複。若允許重複選同一個元素（#39），則傳 <code>i</code> 而非 <code>i + 1</code>。</p>
+            </div>
+
+            <div class="key-point">
+                <strong>💡 位元遮罩的實務價值</strong>
+                <p>當 n &le; 20 左右時，「列舉所有子集」是狀態壓縮 DP 的基礎。位元遮罩表示集合的技巧在旅行商問題（TSP）、集合覆蓋等問題中極為重要。</p>
+            </div>
+
+            <div class="note">
+                <strong>⚠️ 常見錯誤：</strong>
+                <ul>
+                    <li>記錄結果時沒有複製 path（同 #46 的經典錯誤）</li>
+                    <li>把 <code>result.add(path)</code> 放在終止條件裡，只會得到完整集合</li>
+                    <li>遞迴傳 <code>start</code> 而非 <code>i + 1</code>，造成無限遞迴或重複</li>
+                    <li>忘記空集也是一個合法的子集</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>相關題目</h2>
+            <ul>
+                <li><strong>#90 Subsets II</strong> - 含重複元素的子集（排序 + 同層去重）</li>
+                <li><strong>#46 Permutations</strong> - 排列（順序有關）</li>
+                <li><strong>#77 Combinations</strong> - 從 n 個數選 k 個</li>
+                <li><strong>#39 Combination Sum</strong> - 元素可重複選取的組合</li>
+                <li><strong>#131 Palindrome Partitioning</strong> - 分割型回溯</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>補充說明</h2>
+            <h3>#90 Subsets II：含重複元素</h3>
+            <div class="visual-box">
+                <div class="visual-title">🎯 排序 + 同層去重</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+nums = [1,2,2]
+
+先【排序】讓相同元素相鄰，然後加上剪枝：
+
+for (int i = start; i &lt; nums.size(); i++) {
+    if (i &gt; start &amp;&amp; nums[i] == nums[i-1]) continue;  // ← 同層去重
+    ...
+}
+
+⚠️ 條件是 i &gt; start 而不是 i &gt; 0，差別在於：
+   i &gt; start  → 只跳過【同一層】中重複的分支
+   i &gt; 0      → 會誤跳掉【不同層】的合法選擇（如 [2,2]）
+
+結果：[[], [1], [1,2], [1,2,2], [2], [2,2]]
+      不會出現兩個 [2] 或兩個 [1,2] ✓
+                </pre>
+            </div>
+
+            <h3>位元遮罩的常用操作</h3>
+            <pre style="background: #f1f5f9; padding: 15px; border-radius: 8px; margin-top: 10px;">
+集合操作              位元運算
+------------------------------------------
+空集                  0
+全集（n 個元素）      (1 &lt;&lt; n) - 1
+加入元素 i            mask | (1 &lt;&lt; i)
+移除元素 i            mask &amp; ~(1 &lt;&lt; i)
+判斷是否含元素 i      mask &amp; (1 &lt;&lt; i)
+集合大小              __builtin_popcount(mask)
+聯集 A ∪ B            a | b
+交集 A ∩ B            a &amp; b
+差集 A \ B            a &amp; ~b
+補集                  mask ^ ((1 &lt;&lt; n) - 1)
+
+【列舉 mask 的所有子集】（很實用的技巧）
+for (int sub = mask; sub; sub = (sub - 1) &amp; mask) {
+    // sub 是 mask 的一個非空子集
+}
+總複雜度 O(3ⁿ) 而非 O(4ⁿ)，是狀態壓縮 DP 的關鍵優化。
+            </pre>
+
+            <h3>子集、組合、排列的數量對照</h3>
+            <ul>
+                <li><strong>子集</strong>：2ⁿ 個（每個元素選或不選）</li>
+                <li><strong>從 n 選 k 的組合</strong>：C(n,k) = n! / (k!(n-k)!)</li>
+                <li><strong>全排列</strong>：n! 個</li>
+                <li><strong>從 n 選 k 的排列</strong>：P(n,k) = n! / (n-k)!</li>
+            </ul>
+            <p style="margin-top: 15px;">注意 <code>Σ C(n,k) for k=0..n = 2ⁿ</code>，也就是「所有大小的組合加總 = 所有子集」，這是二項式定理的直接推論。</p>
+        </div>
+    </div>
+
+    <script>
+        function switchLang(event, lang) {
+            const tabs = document.querySelectorAll('.lang-tab');
+            const contents = document.querySelectorAll('.code-content');
+
+            tabs.forEach(tab => tab.classList.remove('active'));
+            contents.forEach(content => content.classList.remove('active'));
+
+            event.target.classList.add('active');
+            document.getElementById(lang).classList.add('active');
+        }
+
+        hljs.highlightAll();
+    </script>
+</body>
+</html>

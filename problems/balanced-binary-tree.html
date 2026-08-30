@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>#110 Balanced Binary Tree | LeetCode 學習平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #333; background: #f8fafc; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .header { background: linear-gradient(135deg, #16a34a 0%, #15803d 100%); color: white; padding: 30px; border-radius: 12px; margin-bottom: 30px; box-shadow: 0 4px 6px rgba(22, 163, 74, 0.2); }
+        .header h1 { font-size: 2em; margin-bottom: 10px; }
+        .difficulty { display: inline-block; padding: 6px 16px; background: rgba(255,255,255,0.2); border-radius: 20px; font-size: 0.9em; font-weight: 600; }
+        .tags { margin-top: 15px; }
+        .tag { display: inline-block; background: rgba(255,255,255,0.15); padding: 4px 12px; border-radius: 6px; margin-right: 8px; font-size: 0.85em; }
+        .back-btn { display: inline-block; margin-bottom: 20px; padding: 10px 20px; background: #3b82f6; color: white; text-decoration: none; border-radius: 8px; transition: background 0.3s; }
+        .back-btn:hover { background: #2563eb; }
+        .section { background: white; padding: 30px; border-radius: 12px; margin-bottom: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .section h2 { color: #1e293b; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 3px solid #16a34a; }
+        .section h3 { color: #475569; margin: 25px 0 15px 0; font-size: 1.3em; }
+        .code-block { background: #282c34; border-radius: 8px; overflow: hidden; margin: 15px 0; }
+        .lang-tabs { display: flex; background: #21252b; border-bottom: 1px solid #181a1f; }
+        .lang-tab { padding: 12px 24px; cursor: pointer; color: #abb2bf; border: none; background: none; transition: all 0.3s; font-weight: 500; }
+        .lang-tab.active { color: #61afef; background: #282c34; border-bottom: 2px solid #61afef; }
+        .lang-tab:hover { color: #61afef; background: #2c313a; }
+        .code-content { display: none; }
+        .code-content.active { display: block; }
+        pre { margin: 0; overflow-x: auto; }
+        code { font-family: 'Consolas', 'Monaco', 'Courier New', monospace; font-size: 0.9em; }
+        .example { background: #f0f9ff; border-left: 4px solid #3b82f6; padding: 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .example-title { font-weight: 700; color: #1e40af; margin-bottom: 12px; font-size: 1.05em; }
+        .visual-box { background: #fef3c7; border: 2px solid #f59e0b; padding: 20px; border-radius: 8px; margin: 15px 0; }
+        .visual-title { font-weight: 700; color: #92400e; margin-bottom: 12px; display: flex; align-items: center; font-size: 1.05em; }
+        .complexity { background: #f1f5f9; padding: 15px; border-radius: 8px; margin: 15px 0; }
+        .complexity-item { margin: 8px 0; color: #475569; }
+        .key-point { background: #dcfce7; border-left: 4px solid #16a34a; padding: 15px 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        ul, ol { margin-left: 25px; margin-top: 10px; }
+        li { margin: 8px 0; color: #475569; }
+        strong { color: #1e293b; }
+        .note { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 15px 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        @media (max-width: 768px) {
+            .container { padding: 10px; }
+            .header h1 { font-size: 1.5em; }
+            .section { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="../index.html" class="back-btn">← 返回題目列表</a>
+
+        <div class="header">
+            <h1>#110 Balanced Binary Tree</h1>
+            <div class="difficulty">Easy</div>
+            <div class="tags">
+                <span class="tag">Tree</span>
+                <span class="tag">DFS</span>
+                <span class="tag">Binary Tree</span>
+                <span class="tag">Recursion</span>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>題目描述</h2>
+            <p>給定一個二元樹，判斷它是否是<strong>高度平衡</strong>的二元樹。</p>
+            <p style="margin-top: 15px;">本題中，高度平衡二元樹定義為：一個二元樹<strong>每個節點</strong>的左右兩個子樹的高度差的絕對值<strong>不超過 1</strong>。</p>
+        </div>
+
+        <div class="section">
+            <h2>範例</h2>
+            <div class="example">
+                <div class="example-title">範例 1：</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+輸入：root = [3,9,20,null,null,15,7]
+
+      3
+     / \
+    9   20
+        / \
+      15   7
+
+輸出：true
+                </pre>
+            </div>
+
+            <div class="example">
+                <div class="example-title">範例 2：</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+輸入：root = [1,2,2,3,3,null,null,4,4]
+
+          1
+         / \
+        2   2
+       / \
+      3   3
+     / \
+    4   4
+
+輸出：false
+解釋：節點 1 的左子樹高 3、右子樹高 1，差 2 > 1。
+                </pre>
+            </div>
+
+            <div class="example">
+                <div class="example-title">範例 3：</div>
+                <strong>輸入：</strong>root = []<br>
+                <strong>輸出：</strong>true（空樹視為平衡）
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>解題思路</h2>
+            <div class="visual-box">
+                <div class="visual-title">💡 方法一：自頂向下（直覺但慢，O(n²)）</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+對每個節點：
+  1. 算左子樹高度、右子樹高度，檢查差是否 <= 1
+  2. 遞迴檢查左右子樹是否也都平衡
+
+bool isBalanced(node) {
+    if (!node) return true;
+    if (abs(height(node->left) - height(node->right)) > 1) return false;
+    return isBalanced(node->left) && isBalanced(node->right);
+}
+
+【問題】height() 被重複呼叫太多次！
+根節點算一次全樹高度 O(n)，
+每個子節點又各自重算…… 總計 O(n²)
+                </pre>
+            </div>
+
+            <h3>方法二：自底向上（推薦，O(n)）</h3>
+            <div class="visual-box">
+                <div class="visual-title">🎯 一趟後序遍歷同時做兩件事</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+讓遞迴函數「一邊算高度，一邊檢查平衡」，
+用一個特殊回傳值（-1）代表「已經發現不平衡」。
+
+int height(node) {
+    if (!node) return 0;
+
+    int left = height(node->left);
+    if (left == -1) return -1;          // 左子樹已不平衡，提早返回
+
+    int right = height(node->right);
+    if (right == -1) return -1;         // 右子樹已不平衡
+
+    if (abs(left - right) > 1) return -1;   // 當前節點不平衡
+
+    return 1 + max(left, right);        // 平衡，回報高度
+}
+
+答案 = (height(root) != -1)
+
+【為什麼是 O(n)？】
+每個節點的高度只被計算一次，
+而且一旦發現不平衡就立刻往上短路返回。
+                </pre>
+            </div>
+
+            <h3>追蹤範例 2</h3>
+            <div class="visual-box">
+                <div class="visual-title">🔄 -1 如何一路傳上去</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+          1
+         / \
+        2   2
+       / \
+      3   3
+     / \
+    4   4
+
+height(4) = 1, height(4) = 1
+height(3) = 1 + max(1,1) = 2   （左右差 0，平衡）
+height(3右) = 1
+height(2左)：left=2, right=1, |2-1|=1 <= 1 → 回傳 3
+height(2右) = 1
+height(1)：left=3, right=1, |3-1|=2 > 1 → 回傳 -1 ✗
+
+答案 false ✓
+                </pre>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>程式碼實現</h2>
+
+            <div class="code-block">
+                <div class="lang-tabs">
+                    <button class="lang-tab active" onclick="switchLang(event, 'python')">Python</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'cpp')">C++</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'java')">Java</button>
+                </div>
+
+                <div id="python" class="code-content active">
+                    <pre><code class="language-python"># 方法二：自底向上（推薦，O(n)）
+class Solution:
+    def isBalanced(self, root: Optional[TreeNode]) -&gt; bool:
+
+        def height(node):
+            if not node:
+                return 0
+
+            left = height(node.left)
+            if left == -1:              # 左子樹已不平衡，短路
+                return -1
+
+            right = height(node.right)
+            if right == -1:             # 右子樹已不平衡
+                return -1
+
+            if abs(left - right) &gt; 1:   # 當前節點不平衡
+                return -1
+
+            return 1 + max(left, right)
+
+        return height(root) != -1
+
+
+# 方法一：自頂向下（O(n²)，較直覺）
+class Solution:
+    def isBalanced(self, root: Optional[TreeNode]) -&gt; bool:
+        if not root:
+            return True
+
+        def height(node):
+            if not node:
+                return 0
+            return 1 + max(height(node.left), height(node.right))
+
+        if abs(height(root.left) - height(root.right)) &gt; 1:
+            return False
+        return self.isBalanced(root.left) and self.isBalanced(root.right)</code></pre>
+                </div>
+
+                <div id="cpp" class="code-content">
+                    <pre><code class="language-cpp">// 方法二：自底向上（推薦，O(n)）
+class Solution {
+    int height(TreeNode* node) {
+        if (!node) return 0;
+
+        int left = height(node-&gt;left);
+        if (left == -1) return -1;              // 短路：已不平衡
+
+        int right = height(node-&gt;right);
+        if (right == -1) return -1;
+
+        if (abs(left - right) &gt; 1) return -1;   // 當前節點不平衡
+
+        return 1 + max(left, right);
+    }
+
+public:
+    bool isBalanced(TreeNode* root) {
+        return height(root) != -1;
+    }
+};</code></pre>
+                </div>
+
+                <div id="java" class="code-content">
+                    <pre><code class="language-java">// 方法二：自底向上（推薦，O(n)）
+class Solution {
+    public boolean isBalanced(TreeNode root) {
+        return height(root) != -1;
+    }
+
+    private int height(TreeNode node) {
+        if (node == null) return 0;
+
+        int left = height(node.left);
+        if (left == -1) return -1;              // 短路
+
+        int right = height(node.right);
+        if (right == -1) return -1;
+
+        if (Math.abs(left - right) &gt; 1) return -1;
+
+        return 1 + Math.max(left, right);
+    }
+}</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>複雜度分析</h2>
+            <div class="complexity">
+                <div class="complexity-item">
+                    <strong>時間複雜度：</strong>
+                    <ul>
+                        <li>自底向上：O(n)，每個節點只算一次高度 ★</li>
+                        <li>自頂向下：O(n²)，最壞情況（退化成鏈）高度被重複計算</li>
+                    </ul>
+                </div>
+                <div class="complexity-item">
+                    <strong>空間複雜度：</strong>O(h)，遞迴堆疊，最壞 O(n)
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>重點提示</h2>
+            <div class="key-point">
+                <strong>💡 關鍵技巧：用特殊值當「錯誤訊號」</strong>
+                <p>高度不可能是負數，所以用 <code>-1</code> 代表「不平衡」是安全的。這種「用不可能出現的值當旗標」的技巧能省下額外的參數或全域變數，在遞迴題中很常用。</p>
+            </div>
+
+            <div class="key-point">
+                <strong>💡 自頂向下 vs 自底向上</strong>
+                <p>凡是「上層需要下層資訊」的樹題，都應該優先考慮<strong>自底向上（後序）</strong>，一趟遍歷把資訊帶上來，避免重複計算。這是把 O(n²) 優化成 O(n) 的通用手法。</p>
+            </div>
+
+            <div class="note">
+                <strong>⚠️ 常見錯誤：</strong>
+                <ul>
+                    <li>只檢查根節點的左右子樹高度差，忘了<strong>每個節點</strong>都要滿足</li>
+                    <li>發現 -1 後沒有立刻返回，繼續用 -1 參與計算導致答案錯誤</li>
+                    <li>把「平衡」誤解為「完全二元樹」或「所有葉子在同一層」</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>相關題目</h2>
+            <ul>
+                <li><strong>#104 Maximum Depth of Binary Tree</strong> - 求樹高，本題的子程序</li>
+                <li><strong>#543 Diameter of Binary Tree</strong> - 同樣的後序回報模式</li>
+                <li><strong>#108 Convert Sorted Array to BST</strong> - 建立平衡 BST</li>
+                <li><strong>#111 Minimum Depth of Binary Tree</strong> - 最小深度</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>補充說明</h2>
+            <h3>為什麼「平衡」這麼重要？</h3>
+            <div class="visual-box">
+                <div class="visual-title">📊 平衡決定了效能</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+BST 的查詢複雜度是 O(h)，h 是樹高。
+
+平衡的 BST：h = O(log n)  → 查詢快
+退化成鏈：  h = O(n)      → 退化成線性搜尋 ✗
+
+    1                    平衡：
+     \                       4
+      2                     /   \
+       \                   2     6
+        3                 / \   / \
+         \               1   3 5   7
+          4
+    h = 4               h = 3（n=7 時 log₂7 ≈ 2.8）
+
+依序插入 1,2,3,4... 到普通 BST 就會退化成鏈，
+這就是為什麼實務上要用【自平衡樹】。
+                </pre>
+            </div>
+
+            <h3>常見的自平衡樹</h3>
+            <pre style="background: #f1f5f9; padding: 15px; border-radius: 8px; margin-top: 10px;">
+資料結構       平衡條件                    特點
+------------------------------------------------------------------
+AVL 樹        左右高度差 &lt;= 1（本題定義）  最嚴格，查詢最快，
+                                           但插入刪除旋轉次數多
+紅黑樹        紅節點不相鄰、黑高相同        平衡較鬆，
+                                           插入刪除較快 → 實務主流
+              → C++ std::map/set、Java TreeMap、Linux CFS 排程器
+B / B+ 樹     多路平衡                     為磁碟 I/O 設計，
+                                           一個節點 = 一個磁碟頁
+              → 資料庫索引、檔案系統
+Treap / SkipList  機率平衡                 實作簡單，期望 O(log n)
+              → Redis 的有序集合用 SkipList
+            </pre>
+
+            <h3>面試延伸：如何讓一棵樹重新平衡？</h3>
+            <ul>
+                <li><strong>暴力法</strong>：中序遍歷成有序陣列，再用 #108 的方式從中點遞迴重建 → O(n)</li>
+                <li><strong>AVL 旋轉</strong>：左旋、右旋、左右雙旋、右左雙旋四種操作，每次插入後回溯調整 → O(log n)</li>
+                <li><strong>DSW 演算法</strong>：先把樹拉成右鏈（vine），再透過一系列旋轉壓成平衡樹 → O(n) 且 O(1) 空間</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        function switchLang(event, lang) {
+            const tabs = document.querySelectorAll('.lang-tab');
+            const contents = document.querySelectorAll('.code-content');
+
+            tabs.forEach(tab => tab.classList.remove('active'));
+            contents.forEach(content => content.classList.remove('active'));
+
+            event.target.classList.add('active');
+            document.getElementById(lang).classList.add('active');
+        }
+
+        hljs.highlightAll();
+    </script>
+</body>
+</html>

@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>#148 Sort List | LeetCode 學習平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #333; background: #f8fafc; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .header { background: linear-gradient(135deg, #ea580c 0%, #c2410c 100%); color: white; padding: 30px; border-radius: 12px; margin-bottom: 30px; box-shadow: 0 4px 6px rgba(234, 88, 12, 0.2); }
+        .header h1 { font-size: 2em; margin-bottom: 10px; }
+        .difficulty { display: inline-block; padding: 6px 16px; background: rgba(255,255,255,0.2); border-radius: 20px; font-size: 0.9em; font-weight: 600; }
+        .tags { margin-top: 15px; }
+        .tag { display: inline-block; background: rgba(255,255,255,0.15); padding: 4px 12px; border-radius: 6px; margin-right: 8px; font-size: 0.85em; }
+        .back-btn { display: inline-block; margin-bottom: 20px; padding: 10px 20px; background: #3b82f6; color: white; text-decoration: none; border-radius: 8px; transition: background 0.3s; }
+        .back-btn:hover { background: #2563eb; }
+        .section { background: white; padding: 30px; border-radius: 12px; margin-bottom: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .section h2 { color: #1e293b; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 3px solid #ea580c; }
+        .section h3 { color: #475569; margin: 25px 0 15px 0; font-size: 1.3em; }
+        .code-block { background: #282c34; border-radius: 8px; overflow: hidden; margin: 15px 0; }
+        .lang-tabs { display: flex; background: #21252b; border-bottom: 1px solid #181a1f; }
+        .lang-tab { padding: 12px 24px; cursor: pointer; color: #abb2bf; border: none; background: none; transition: all 0.3s; font-weight: 500; }
+        .lang-tab.active { color: #61afef; background: #282c34; border-bottom: 2px solid #61afef; }
+        .lang-tab:hover { color: #61afef; background: #2c313a; }
+        .code-content { display: none; }
+        .code-content.active { display: block; }
+        pre { margin: 0; overflow-x: auto; }
+        code { font-family: 'Consolas', 'Monaco', 'Courier New', monospace; font-size: 0.9em; }
+        .example { background: #f0f9ff; border-left: 4px solid #3b82f6; padding: 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .example-title { font-weight: 700; color: #1e40af; margin-bottom: 12px; font-size: 1.05em; }
+        .visual-box { background: #fef3c7; border: 2px solid #f59e0b; padding: 20px; border-radius: 8px; margin: 15px 0; }
+        .visual-title { font-weight: 700; color: #92400e; margin-bottom: 12px; display: flex; align-items: center; font-size: 1.05em; }
+        .complexity { background: #f1f5f9; padding: 15px; border-radius: 8px; margin: 15px 0; }
+        .complexity-item { margin: 8px 0; color: #475569; }
+        .key-point { background: #dcfce7; border-left: 4px solid #16a34a; padding: 15px 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        ul, ol { margin-left: 25px; margin-top: 10px; }
+        li { margin: 8px 0; color: #475569; }
+        strong { color: #1e293b; }
+        .note { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 15px 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        @media (max-width: 768px) {
+            .container { padding: 10px; }
+            .header h1 { font-size: 1.5em; }
+            .section { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="../index.html" class="back-btn">← 返回題目列表</a>
+
+        <div class="header">
+            <h1>#148 Sort List</h1>
+            <div class="difficulty">Medium</div>
+            <div class="tags">
+                <span class="tag">Linked List</span>
+                <span class="tag">Sorting</span>
+                <span class="tag">Merge Sort</span>
+                <span class="tag">Divide and Conquer</span>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>題目描述</h2>
+            <p>給你鏈結串列的頭節點 head，請將其按<strong>升序排列</strong>並返回排序後的鏈結串列。</p>
+            <p style="margin-top: 15px;"><strong>進階：</strong>你可以在 <strong>O(n log n) 時間複雜度和常數級 O(1) 空間複雜度</strong>下，對串列進行排序嗎？</p>
+        </div>
+
+        <div class="section">
+            <h2>範例</h2>
+            <div class="example">
+                <div class="example-title">範例 1：</div>
+                <strong>輸入：</strong>head = [4,2,1,3]<br>
+                <strong>輸出：</strong>[1,2,3,4]
+            </div>
+
+            <div class="example">
+                <div class="example-title">範例 2：</div>
+                <strong>輸入：</strong>head = [-1,5,3,4,0]<br>
+                <strong>輸出：</strong>[-1,0,3,4,5]
+            </div>
+
+            <div class="example">
+                <div class="example-title">範例 3：</div>
+                <strong>輸入：</strong>head = []<br>
+                <strong>輸出：</strong>[]
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>解題思路</h2>
+            <div class="visual-box">
+                <div class="visual-title">💡 為什麼一定是合併排序（Merge Sort）？</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+排序法        陣列       鏈結串列      原因
+------------------------------------------------------------
+快速排序      O(n log n) 不適合        需要隨機存取做 partition
+堆積排序      O(n log n) 不適合        需要索引存取 2i、2i+1
+合併排序      O(n log n) ★ 最適合      只需要循序存取
+                                        且合併時不需要額外陣列！
+
+陣列的合併排序需要 O(n) 額外空間存放暫存陣列，
+但鏈結串列的合併只要改指標，不需要複製資料 → O(1) 空間！
+
+這是鏈結串列少數比陣列「更有優勢」的場合。
+                </pre>
+            </div>
+
+            <h3>方法一：自頂向下（遞迴，好寫但空間 O(log n)）</h3>
+            <div class="visual-box">
+                <div class="visual-title">🎯 分治三步驟</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+1. 找中點，從中間斷開成兩條串列
+2. 遞迴排序左右兩半
+3. 合併兩條有序串列（就是 #21）
+
+[4, 2, 1, 3]
+      ↓ 切開
+[4, 2]      [1, 3]
+  ↓            ↓
+[4] [2]     [1] [3]
+  ↓ merge      ↓ merge
+[2, 4]      [1, 3]
+      ↓ merge
+[1, 2, 3, 4] ✓
+
+⚠️ 切斷是關鍵：找到中點後必須 mid.next = None，
+   否則左半段會一直延伸到結尾，造成無限遞迴。
+                </pre>
+            </div>
+
+            <h3>方法二：自底向上（迭代，真正的 O(1) 空間）</h3>
+            <div class="visual-box">
+                <div class="visual-title">⚡ 從小區塊開始兩兩合併</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+不用遞迴，改用「步長」由小到大合併：
+
+step = 1：每 1 個一組，兩兩合併 → 得到長度 2 的有序段
+step = 2：每 2 個一組，兩兩合併 → 得到長度 4 的有序段
+step = 4：...
+直到 step >= n
+
+[4, 2, 1, 3]
+step=1: (4,2) → (2,4) ; (1,3) → (1,3)
+        結果：[2, 4, 1, 3]
+step=2: (2,4) 與 (1,3) 合併 → [1, 2, 3, 4] ✓
+
+優點：沒有遞迴堆疊，空間真正是 O(1)
+缺點：程式碼較長，需要小心處理切分與串接
+                </pre>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>程式碼實現</h2>
+
+            <div class="code-block">
+                <div class="lang-tabs">
+                    <button class="lang-tab active" onclick="switchLang(event, 'python')">Python</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'cpp')">C++</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'java')">Java</button>
+                </div>
+
+                <div id="python" class="code-content active">
+                    <pre><code class="language-python"># 方法一：自頂向下遞迴（推薦，好寫好懂）
+class Solution:
+    def sortList(self, head: Optional[ListNode]) -&gt; Optional[ListNode]:
+        if not head or not head.next:
+            return head
+
+        # 1. 找中點並切斷（slow 停在前半段最後一個）
+        slow, fast = head, head.next
+        while fast and fast.next:
+            slow = slow.next
+            fast = fast.next.next
+        mid = slow.next
+        slow.next = None            # 關鍵：一定要切斷！
+
+        # 2. 遞迴排序兩半
+        left = self.sortList(head)
+        right = self.sortList(mid)
+
+        # 3. 合併
+        return self.merge(left, right)
+
+    def merge(self, l1, l2):
+        dummy = ListNode(0)
+        cur = dummy
+        while l1 and l2:
+            if l1.val &lt;= l2.val:    # &lt;= 保證穩定性
+                cur.next = l1
+                l1 = l1.next
+            else:
+                cur.next = l2
+                l2 = l2.next
+            cur = cur.next
+        cur.next = l1 if l1 else l2
+        return dummy.next
+
+
+# 方法二：自底向上迭代（真正的 O(1) 空間）
+class Solution:
+    def sortList(self, head: Optional[ListNode]) -&gt; Optional[ListNode]:
+        # 先算長度
+        n, node = 0, head
+        while node:
+            n += 1
+            node = node.next
+
+        dummy = ListNode(0, head)
+        step = 1
+        while step &lt; n:
+            prev, cur = dummy, dummy.next
+            while cur:
+                left = cur
+                right = self.split(left, step)      # 切出長度 step 的左段
+                cur = self.split(right, step)       # 切出右段，cur 指向剩餘
+                prev = self.mergeInto(prev, left, right)
+            step *= 2
+        return dummy.next
+
+    def split(self, head, n):
+        # 從 head 往後走 n-1 步後切斷，回傳後半段的頭
+        while head and n &gt; 1:
+            head = head.next
+            n -= 1
+        if not head:
+            return None
+        rest = head.next
+        head.next = None
+        return rest
+
+    def mergeInto(self, prev, l1, l2):
+        # 合併 l1、l2 接在 prev 後面，回傳合併後的尾節點
+        cur = prev
+        while l1 and l2:
+            if l1.val &lt;= l2.val:
+                cur.next, l1 = l1, l1.next
+            else:
+                cur.next, l2 = l2, l2.next
+            cur = cur.next
+        cur.next = l1 if l1 else l2
+        while cur.next:
+            cur = cur.next
+        return cur</code></pre>
+                </div>
+
+                <div id="cpp" class="code-content">
+                    <pre><code class="language-cpp">// 方法一：自頂向下遞迴（推薦）
+class Solution {
+    ListNode* merge(ListNode* l1, ListNode* l2) {
+        ListNode dummy(0);
+        ListNode* cur = &amp;dummy;
+        while (l1 &amp;&amp; l2) {
+            if (l1-&gt;val &lt;= l2-&gt;val) { cur-&gt;next = l1; l1 = l1-&gt;next; }
+            else                    { cur-&gt;next = l2; l2 = l2-&gt;next; }
+            cur = cur-&gt;next;
+        }
+        cur-&gt;next = l1 ? l1 : l2;
+        return dummy.next;
+    }
+
+public:
+    ListNode* sortList(ListNode* head) {
+        if (!head || !head-&gt;next) return head;
+
+        // 找中點並切斷
+        ListNode *slow = head, *fast = head-&gt;next;
+        while (fast &amp;&amp; fast-&gt;next) {
+            slow = slow-&gt;next;
+            fast = fast-&gt;next-&gt;next;
+        }
+        ListNode* mid = slow-&gt;next;
+        slow-&gt;next = nullptr;          // 關鍵：切斷
+
+        return merge(sortList(head), sortList(mid));
+    }
+};</code></pre>
+                </div>
+
+                <div id="java" class="code-content">
+                    <pre><code class="language-java">// 方法一：自頂向下遞迴（推薦）
+class Solution {
+    public ListNode sortList(ListNode head) {
+        if (head == null || head.next == null) return head;
+
+        // 找中點並切斷
+        ListNode slow = head, fast = head.next;
+        while (fast != null &amp;&amp; fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+        ListNode mid = slow.next;
+        slow.next = null;              // 關鍵：切斷
+
+        ListNode left = sortList(head);
+        ListNode right = sortList(mid);
+        return merge(left, right);
+    }
+
+    private ListNode merge(ListNode l1, ListNode l2) {
+        ListNode dummy = new ListNode(0), cur = dummy;
+        while (l1 != null &amp;&amp; l2 != null) {
+            if (l1.val &lt;= l2.val) { cur.next = l1; l1 = l1.next; }
+            else                  { cur.next = l2; l2 = l2.next; }
+            cur = cur.next;
+        }
+        cur.next = (l1 != null) ? l1 : l2;
+        return dummy.next;
+    }
+}</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>複雜度分析</h2>
+            <div class="complexity">
+                <div class="complexity-item">
+                    <strong>時間複雜度：</strong>O(n log n)
+                    <ul>
+                        <li>共 log n 層，每層合併的總成本為 O(n)</li>
+                        <li>與輸入順序無關，沒有最壞情況退化的問題（不像快排）</li>
+                    </ul>
+                </div>
+                <div class="complexity-item">
+                    <strong>空間複雜度：</strong>
+                    <ul>
+                        <li>自頂向下遞迴：O(log n) 的遞迴堆疊</li>
+                        <li>自底向上迭代：O(1) ★ 完全符合進階要求</li>
+                        <li>兩者都不需要額外陣列，因為合併只是改指標</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>重點提示</h2>
+            <div class="key-point">
+                <strong>💡 關鍵技巧 1：找中點後一定要切斷</strong>
+                <p><code>slow.next = null</code> 少了這行就會無限遞迴 stack overflow。這是本題最常見的 bug。</p>
+            </div>
+
+            <div class="key-point">
+                <strong>💡 關鍵技巧 2：fast 從 head.next 起跑</strong>
+                <p>兩個節點時（[4,2]），若 fast 從 head 起跑，slow 會停在第二個，切出來的左半段是整條串列 → 無限遞迴。從 <code>head.next</code> 起跑可讓 slow 停在<strong>前半段最後一個</strong>，保證兩邊都非空。</p>
+            </div>
+
+            <div class="key-point">
+                <strong>💡 面試回答重點</strong>
+                <p>被問「為什麼不用快排？」時，答：快排需要隨機存取才能有效率地做 partition，而且鏈結串列上很難挑好的 pivot，最壞會退化成 O(n²)。合併排序在串列上反而<strong>比在陣列上更好</strong>，因為省掉了 O(n) 的暫存空間。</p>
+            </div>
+
+            <div class="note">
+                <strong>⚠️ 常見錯誤：</strong>
+                <ul>
+                    <li>忘記切斷造成無限遞迴</li>
+                    <li>fast 起始位置寫錯，導致兩個節點的情況無法收斂</li>
+                    <li>merge 用 <code>&lt;</code> 而非 <code>&lt;=</code>，雖然結果正確但失去穩定性</li>
+                    <li>沒有處理空串列或單節點</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>相關題目</h2>
+            <ul>
+                <li><strong>#21 Merge Two Sorted Lists</strong> - 本題的 merge 子程序</li>
+                <li><strong>#23 Merge k Sorted Lists</strong> - 分治合併的進階版</li>
+                <li><strong>#876 Middle of the Linked List</strong> - 找中點</li>
+                <li><strong>#912 Sort an Array</strong> - 陣列版的排序</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>補充說明</h2>
+            <h3>排序演算法比較表（面試必備）</h3>
+            <div class="visual-box">
+                <div class="visual-title">📊 常見排序法</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+演算法      平均        最壞        空間      穩定  適用
+------------------------------------------------------------------
+氣泡/插入   O(n²)      O(n²)       O(1)      是    小資料、近乎有序
+選擇        O(n²)      O(n²)       O(1)      否    幾乎不用
+合併        O(n log n) O(n log n)  O(n)      是    需穩定、外部排序、鏈結串列★
+快速        O(n log n) O(n²)       O(log n)  否    通用、快取友善（實務最快）
+堆積        O(n log n) O(n log n)  O(1)      否    需要最壞保證、Top-K
+計數/基數   O(n + k)   O(n + k)    O(k)      是    值域小的整數
+
+「穩定」= 相等元素的相對順序不變，
+在多鍵排序（先排 A 再排 B）時非常重要。
+                </pre>
+            </div>
+
+            <h3>實務補充：Timsort</h3>
+            <p>Python 的 <code>sorted()</code> 和 Java 的 <code>Arrays.sort(Object[])</code> 都使用 <strong>Timsort</strong>——合併排序與插入排序的混合。它會偵測資料中已經有序的片段（run）並直接利用，對真實世界中「部分有序」的資料特別快，且保有穩定性。</p>
+
+            <h3>邊界情況檢查清單</h3>
+            <ul>
+                <li>空串列 → 直接返回 null</li>
+                <li>單一節點 → 直接返回（也是遞迴的終止條件）</li>
+                <li>兩個節點 → 注意 fast 起跑點，否則無限遞迴</li>
+                <li>全部值相同 → merge 用 <code>&lt;=</code> 可保持穩定</li>
+                <li>含負數 → 本題無特殊處理需求</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        function switchLang(event, lang) {
+            const tabs = document.querySelectorAll('.lang-tab');
+            const contents = document.querySelectorAll('.code-content');
+
+            tabs.forEach(tab => tab.classList.remove('active'));
+            contents.forEach(content => content.classList.remove('active'));
+
+            event.target.classList.add('active');
+            document.getElementById(lang).classList.add('active');
+        }
+
+        hljs.highlightAll();
+    </script>
+</body>
+</html>

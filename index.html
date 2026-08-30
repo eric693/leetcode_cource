@@ -58,15 +58,15 @@
                 <div class="stat-label">總題數</div>
             </div>
             <div class="stat-item">
-                <div class="stat-number">42</div>
+                <div class="stat-number">55</div>
                 <div class="stat-label">Easy</div>
             </div>
             <div class="stat-item">
-                <div class="stat-number">34</div>
+                <div class="stat-number">71</div>
                 <div class="stat-label">Medium</div>
             </div>
             <div class="stat-item">
-                <div class="stat-number">25</div>
+                <div class="stat-number">24</div>
                 <div class="stat-label">Hard</div>
             </div>
         </div>
@@ -74,10 +74,10 @@
         <div class="filter-section">
             <div class="filter-label">難度篩選</div>
             <div class="filter-buttons">
-                <button class="filter-btn active" onclick="filterProblems('all')">全部題目 (101)</button>
-                <button class="filter-btn" onclick="filterProblems('easy')">Easy (42)</button>
-                <button class="filter-btn" onclick="filterProblems('medium')">Medium (34)</button>
-                <button class="filter-btn" onclick="filterProblems('hard')">Hard (25)</button>
+                <button class="filter-btn active" onclick="filterProblems('all')">全部題目 (150)</button>
+                <button class="filter-btn" onclick="filterProblems('easy')">Easy (55)</button>
+                <button class="filter-btn" onclick="filterProblems('medium')">Medium (71)</button>
+                <button class="filter-btn" onclick="filterProblems('hard')">Hard (24)</button>
             </div>
         </div>
 
@@ -239,7 +239,7 @@
                         <div class="problem-description">找出陣列中所有總和為 0 的三元組，使用排序和雙指標。</div>
                         <div class="problem-tags"><span class="tag">Array</span><span class="tag">Two Pointers</span><span class="tag">Sorting</span></div>
                     </div>
-                    <div class="problem-card" data-difficulty="medium" onclick="location.href='problems/search-in-rotated-sorted-array.html'">
+                    <div class="problem-card" data-difficulty="medium" onclick="location.href='problems/search-rotated-array.html'">
                         <div class="problem-header">
                             <div class="problem-number">#33</div>
                             <div class="difficulty-badge medium">Medium</div>
@@ -365,6 +365,51 @@
                         <div class="problem-description">分糖果問題，使用貪心算法的雙向掃描策略。</div>
                         <div class="problem-tags"><span class="tag">Array</span><span class="tag">Greedy</span></div>
                     </div>
+                    <div class="problem-card" data-difficulty="medium" onclick="location.href='problems/merge-intervals.html'">
+                        <div class="problem-header">
+                            <div class="problem-number">#56</div>
+                            <div class="difficulty-badge medium">Medium</div>
+                        </div>
+                        <div class="problem-title">Merge Intervals</div>
+                        <div class="problem-description">合併所有重疊的區間，排序後貪心掃描一次即可。</div>
+                        <div class="problem-tags"><span class="tag">Array</span><span class="tag">Sorting</span><span class="tag">Interval</span></div>
+                    </div>
+                    <div class="problem-card" data-difficulty="medium" onclick="location.href='problems/insert-interval.html'">
+                        <div class="problem-header">
+                            <div class="problem-number">#57</div>
+                            <div class="difficulty-badge medium">Medium</div>
+                        </div>
+                        <div class="problem-title">Insert Interval</div>
+                        <div class="problem-description">在已排序不重疊的區間中插入新區間並合併，三階段線性掃描。</div>
+                        <div class="problem-tags"><span class="tag">Array</span><span class="tag">Interval</span><span class="tag">Greedy</span></div>
+                    </div>
+                    <div class="problem-card" data-difficulty="medium" onclick="location.href='problems/find-minimum-in-rotated-sorted-array.html'">
+                        <div class="problem-header">
+                            <div class="problem-number">#153</div>
+                            <div class="difficulty-badge medium">Medium</div>
+                        </div>
+                        <div class="problem-title">Find Minimum in Rotated Sorted Array</div>
+                        <div class="problem-description">在旋轉排序陣列中用二分搜尋找出最小元素。</div>
+                        <div class="problem-tags"><span class="tag">Array</span><span class="tag">Binary Search</span></div>
+                    </div>
+                    <div class="problem-card" data-difficulty="medium" onclick="location.href='problems/find-peak-element.html'">
+                        <div class="problem-header">
+                            <div class="problem-number">#162</div>
+                            <div class="difficulty-badge medium">Medium</div>
+                        </div>
+                        <div class="problem-title">Find Peak Element</div>
+                        <div class="problem-description">在無序陣列中用二分搜尋找出任意一個峰值元素。</div>
+                        <div class="problem-tags"><span class="tag">Array</span><span class="tag">Binary Search</span></div>
+                    </div>
+                    <div class="problem-card" data-difficulty="medium" onclick="location.href='problems/subarray-sum-equals-k.html'">
+                        <div class="problem-header">
+                            <div class="problem-number">#560</div>
+                            <div class="difficulty-badge medium">Medium</div>
+                        </div>
+                        <div class="problem-title">Subarray Sum Equals K</div>
+                        <div class="problem-description">統計和為 k 的連續子陣列個數，前綴和加雜湊表。</div>
+                        <div class="problem-tags"><span class="tag">Array</span><span class="tag">Hash Table</span><span class="tag">Prefix Sum</span></div>
+                    </div>
                 </div>
             </div>
 
@@ -417,7 +462,7 @@
                         <div class="problem-description">判斷字串是否為回文，忽略大小寫和非字母數字字符。</div>
                         <div class="problem-tags"><span class="tag">Two Pointers</span><span class="tag">String</span></div>
                     </div>
-                    <div class="problem-card" data-difficulty="easy" onclick="location.href='problems/excel-sheet-column-title.html'">
+                    <div class="problem-card" data-difficulty="easy" onclick="location.href='problems/excel-sheet-column-number.html'">
                         <div class="problem-header">
                             <div class="problem-number">#171</div>
                             <div class="difficulty-badge easy">Easy</div>
@@ -471,7 +516,7 @@
                         <div class="problem-description">經典 FizzBuzz 問題，根據規則輸出字串。</div>
                         <div class="problem-tags"><span class="tag">Math</span><span class="tag">String</span><span class="tag">Simulation</span></div>
                     </div>
-                    <div class="problem-card" data-difficulty="medium" onclick="location.href='problems/longest-substring-without-repeating-characters.html'">
+                    <div class="problem-card" data-difficulty="medium" onclick="location.href='problems/longest-substring.html'">
                         <div class="problem-header">
                             <div class="problem-number">#3</div>
                             <div class="difficulty-badge medium">Medium</div>
@@ -561,6 +606,51 @@
                         <div class="problem-description">找出包含所有目標字符的最小子字串，使用滑動視窗。</div>
                         <div class="problem-tags"><span class="tag">Hash Table</span><span class="tag">String</span><span class="tag">Sliding Window</span></div>
                     </div>
+                    <div class="problem-card" data-difficulty="easy" onclick="location.href='problems/longest-common-prefix.html'">
+                        <div class="problem-header">
+                            <div class="problem-number">#14</div>
+                            <div class="difficulty-badge easy">Easy</div>
+                        </div>
+                        <div class="problem-title">Longest Common Prefix</div>
+                        <div class="problem-description">尋找字串陣列中的最長公共前綴，縱向掃描或排序取頭尾。</div>
+                        <div class="problem-tags"><span class="tag">String</span><span class="tag">Trie</span></div>
+                    </div>
+                    <div class="problem-card" data-difficulty="medium" onclick="location.href='problems/string-to-integer-atoi.html'">
+                        <div class="problem-header">
+                            <div class="problem-number">#8</div>
+                            <div class="difficulty-badge medium">Medium</div>
+                        </div>
+                        <div class="problem-title">String to Integer (atoi)</div>
+                        <div class="problem-description">實作字串轉整數，重點在溢位的事前預判與邊界處理。</div>
+                        <div class="problem-tags"><span class="tag">String</span><span class="tag">Simulation</span></div>
+                    </div>
+                    <div class="problem-card" data-difficulty="medium" onclick="location.href='problems/reverse-words-in-a-string.html'">
+                        <div class="problem-header">
+                            <div class="problem-number">#151</div>
+                            <div class="difficulty-badge medium">Medium</div>
+                        </div>
+                        <div class="problem-title">Reverse Words in a String</div>
+                        <div class="problem-description">反轉字串中單詞的順序，可用「整體反轉再逐詞反轉」達到 O(1) 空間。</div>
+                        <div class="problem-tags"><span class="tag">String</span><span class="tag">Two Pointers</span></div>
+                    </div>
+                    <div class="problem-card" data-difficulty="medium" onclick="location.href='problems/multiply-strings.html'">
+                        <div class="problem-header">
+                            <div class="problem-number">#43</div>
+                            <div class="difficulty-badge medium">Medium</div>
+                        </div>
+                        <div class="problem-title">Multiply Strings</div>
+                        <div class="problem-description">不用大數函式庫實作字串大數乘法，關鍵是 i+j 定位法。</div>
+                        <div class="problem-tags"><span class="tag">String</span><span class="tag">Math</span><span class="tag">Simulation</span></div>
+                    </div>
+                    <div class="problem-card" data-difficulty="easy" onclick="location.href='problems/is-subsequence.html'">
+                        <div class="problem-header">
+                            <div class="problem-number">#392</div>
+                            <div class="difficulty-badge easy">Easy</div>
+                        </div>
+                        <div class="problem-title">Is Subsequence</div>
+                        <div class="problem-description">判斷 s 是否為 t 的子序列，雙指標貪心；大量查詢時改用預處理加二分。</div>
+                        <div class="problem-tags"><span class="tag">Two Pointers</span><span class="tag">String</span><span class="tag">DP</span></div>
+                    </div>
                 </div>
             </div>
 
@@ -595,7 +685,7 @@
                         <div class="problem-description">找出最長連續序列的長度，要求 O(n) 時間。</div>
                         <div class="problem-tags"><span class="tag">Array</span><span class="tag">Hash Table</span><span class="tag">Union Find</span></div>
                     </div>
-                    <div class="problem-card" data-difficulty="medium" onclick="location.href='problems/top-k-frequent-elements.html'">
+                    <div class="problem-card" data-difficulty="medium" onclick="location.href='problems/top-k-frequent.html'">
                         <div class="problem-header">
                             <div class="problem-number">#347</div>
                             <div class="difficulty-badge medium">Medium</div>
@@ -620,7 +710,7 @@
                         <div class="problem-description">判斷二元樹是否鏡像對稱，使用遞迴或迭代。</div>
                         <div class="problem-tags"><span class="tag">Tree</span><span class="tag">DFS</span><span class="tag">BFS</span></div>
                     </div>
-                    <div class="problem-card" data-difficulty="easy" onclick="location.href='problems/maximum-depth-of-binary-tree.html'">
+                    <div class="problem-card" data-difficulty="easy" onclick="location.href='problems/max-depth-binary-tree.html'">
                         <div class="problem-header">
                             <div class="problem-number">#104</div>
                             <div class="difficulty-badge easy">Easy</div>
@@ -647,7 +737,7 @@
                         <div class="problem-description">翻轉二元樹，使用遞迴或迭代。</div>
                         <div class="problem-tags"><span class="tag">Tree</span><span class="tag">DFS</span><span class="tag">BFS</span></div>
                     </div>
-                    <div class="problem-card" data-difficulty="medium" onclick="location.href='problems/validate-binary-search-tree.html'">
+                    <div class="problem-card" data-difficulty="medium" onclick="location.href='problems/validate-bst.html'">
                         <div class="problem-header">
                             <div class="problem-number">#98</div>
                             <div class="difficulty-badge medium">Medium</div>
@@ -682,6 +772,69 @@
                         <div class="problem-title">Serialize and Deserialize Binary Tree</div>
                         <div class="problem-description">序列化和反序列化二元樹，使用前序遍歷。</div>
                         <div class="problem-tags"><span class="tag">Tree</span><span class="tag">DFS</span><span class="tag">BFS</span><span class="tag">Design</span></div>
+                    </div>
+                    <div class="problem-card" data-difficulty="easy" onclick="location.href='problems/binary-tree-inorder-traversal.html'">
+                        <div class="problem-header">
+                            <div class="problem-number">#94</div>
+                            <div class="difficulty-badge easy">Easy</div>
+                        </div>
+                        <div class="problem-title">Binary Tree Inorder Traversal</div>
+                        <div class="problem-description">二元樹中序遍歷，遞迴、堆疊迭代與 O(1) 空間的 Morris 遍歷。</div>
+                        <div class="problem-tags"><span class="tag">Tree</span><span class="tag">Stack</span><span class="tag">DFS</span></div>
+                    </div>
+                    <div class="problem-card" data-difficulty="medium" onclick="location.href='problems/lowest-common-ancestor-of-binary-tree.html'">
+                        <div class="problem-header">
+                            <div class="problem-number">#236</div>
+                            <div class="difficulty-badge medium">Medium</div>
+                        </div>
+                        <div class="problem-title">Lowest Common Ancestor of a Binary Tree</div>
+                        <div class="problem-description">普通二元樹的最近公共祖先，後序遍歷往上回報。</div>
+                        <div class="problem-tags"><span class="tag">Tree</span><span class="tag">DFS</span><span class="tag">Recursion</span></div>
+                    </div>
+                    <div class="problem-card" data-difficulty="medium" onclick="location.href='problems/lowest-common-ancestor-of-bst.html'">
+                        <div class="problem-header">
+                            <div class="problem-number">#235</div>
+                            <div class="difficulty-badge medium">Medium</div>
+                        </div>
+                        <div class="problem-title">Lowest Common Ancestor of a BST</div>
+                        <div class="problem-description">利用 BST 的大小關係，只走一條路徑就能找到 LCA。</div>
+                        <div class="problem-tags"><span class="tag">Tree</span><span class="tag">BST</span><span class="tag">DFS</span></div>
+                    </div>
+                    <div class="problem-card" data-difficulty="medium" onclick="location.href='problems/construct-binary-tree-from-preorder-and-inorder.html'">
+                        <div class="problem-header">
+                            <div class="problem-number">#105</div>
+                            <div class="difficulty-badge medium">Medium</div>
+                        </div>
+                        <div class="problem-title">Construct Binary Tree from Preorder and Inorder</div>
+                        <div class="problem-description">由前序與中序遍歷重建二元樹，前序給根、中序給左右分界。</div>
+                        <div class="problem-tags"><span class="tag">Tree</span><span class="tag">Divide and Conquer</span><span class="tag">Hash Table</span></div>
+                    </div>
+                    <div class="problem-card" data-difficulty="easy" onclick="location.href='problems/balanced-binary-tree.html'">
+                        <div class="problem-header">
+                            <div class="problem-number">#110</div>
+                            <div class="difficulty-badge easy">Easy</div>
+                        </div>
+                        <div class="problem-title">Balanced Binary Tree</div>
+                        <div class="problem-description">判斷是否為高度平衡二元樹，自底向上一趟遍歷即可 O(n)。</div>
+                        <div class="problem-tags"><span class="tag">Tree</span><span class="tag">DFS</span><span class="tag">Recursion</span></div>
+                    </div>
+                    <div class="problem-card" data-difficulty="easy" onclick="location.href='problems/diameter-of-binary-tree.html'">
+                        <div class="problem-header">
+                            <div class="problem-number">#543</div>
+                            <div class="difficulty-badge easy">Easy</div>
+                        </div>
+                        <div class="problem-title">Diameter of Binary Tree</div>
+                        <div class="problem-description">求樹的直徑，樹型 DP 的「回傳值與答案分離」經典題。</div>
+                        <div class="problem-tags"><span class="tag">Tree</span><span class="tag">DFS</span><span class="tag">Recursion</span></div>
+                    </div>
+                    <div class="problem-card" data-difficulty="medium" onclick="location.href='problems/binary-tree-right-side-view.html'">
+                        <div class="problem-header">
+                            <div class="problem-number">#199</div>
+                            <div class="difficulty-badge medium">Medium</div>
+                        </div>
+                        <div class="problem-title">Binary Tree Right Side View</div>
+                        <div class="problem-description">從右側看二元樹，BFS 取每層最後一個或 DFS 先右後左。</div>
+                        <div class="problem-tags"><span class="tag">Tree</span><span class="tag">BFS</span><span class="tag">DFS</span></div>
                     </div>
                 </div>
             </div>
@@ -762,6 +915,60 @@
                         <div class="problem-description">實現 LRU 快取機制，使用雙向鏈結串列和哈希表。</div>
                         <div class="problem-tags"><span class="tag">Hash Table</span><span class="tag">Linked List</span><span class="tag">Design</span></div>
                     </div>
+                    <div class="problem-card" data-difficulty="medium" onclick="location.href='problems/remove-nth-node-from-end.html'">
+                        <div class="problem-header">
+                            <div class="problem-number">#19</div>
+                            <div class="difficulty-badge medium">Medium</div>
+                        </div>
+                        <div class="problem-title">Remove Nth Node From End of List</div>
+                        <div class="problem-description">一趟掃描刪除倒數第 n 個節點，快慢指標加 dummy 節點。</div>
+                        <div class="problem-tags"><span class="tag">Linked List</span><span class="tag">Two Pointers</span></div>
+                    </div>
+                    <div class="problem-card" data-difficulty="medium" onclick="location.href='problems/linked-list-cycle-ii.html'">
+                        <div class="problem-header">
+                            <div class="problem-number">#142</div>
+                            <div class="difficulty-badge medium">Medium</div>
+                        </div>
+                        <div class="problem-title">Linked List Cycle II</div>
+                        <div class="problem-description">找出環的入口節點，Floyd 判圈演算法與完整數學證明。</div>
+                        <div class="problem-tags"><span class="tag">Linked List</span><span class="tag">Two Pointers</span></div>
+                    </div>
+                    <div class="problem-card" data-difficulty="easy" onclick="location.href='problems/intersection-of-two-linked-lists.html'">
+                        <div class="problem-header">
+                            <div class="problem-number">#160</div>
+                            <div class="difficulty-badge easy">Easy</div>
+                        </div>
+                        <div class="problem-title">Intersection of Two Linked Lists</div>
+                        <div class="problem-description">找兩條串列的交點，用「走完自己走對方」消除長度差。</div>
+                        <div class="problem-tags"><span class="tag">Linked List</span><span class="tag">Two Pointers</span></div>
+                    </div>
+                    <div class="problem-card" data-difficulty="easy" onclick="location.href='problems/palindrome-linked-list.html'">
+                        <div class="problem-header">
+                            <div class="problem-number">#234</div>
+                            <div class="difficulty-badge easy">Easy</div>
+                        </div>
+                        <div class="problem-title">Palindrome Linked List</div>
+                        <div class="problem-description">判斷串列是否回文，找中點加反轉後半段達到 O(1) 空間。</div>
+                        <div class="problem-tags"><span class="tag">Linked List</span><span class="tag">Two Pointers</span><span class="tag">Stack</span></div>
+                    </div>
+                    <div class="problem-card" data-difficulty="medium" onclick="location.href='problems/copy-list-with-random-pointer.html'">
+                        <div class="problem-header">
+                            <div class="problem-number">#138</div>
+                            <div class="difficulty-badge medium">Medium</div>
+                        </div>
+                        <div class="problem-title">Copy List with Random Pointer</div>
+                        <div class="problem-description">含隨機指標的串列深拷貝，HashMap 對照或節點交錯編織。</div>
+                        <div class="problem-tags"><span class="tag">Linked List</span><span class="tag">Hash Table</span></div>
+                    </div>
+                    <div class="problem-card" data-difficulty="medium" onclick="location.href='problems/sort-list.html'">
+                        <div class="problem-header">
+                            <div class="problem-number">#148</div>
+                            <div class="difficulty-badge medium">Medium</div>
+                        </div>
+                        <div class="problem-title">Sort List</div>
+                        <div class="problem-description">對鏈結串列排序，合併排序在串列上可達 O(n log n) 與 O(1) 空間。</div>
+                        <div class="problem-tags"><span class="tag">Linked List</span><span class="tag">Sorting</span><span class="tag">Merge Sort</span></div>
+                    </div>
                 </div>
             </div>
 
@@ -778,7 +985,7 @@
                         <div class="problem-description">爬樓梯的方法數，經典動態規劃入門題。</div>
                         <div class="problem-tags"><span class="tag">Math</span><span class="tag">Dynamic Programming</span><span class="tag">Memoization</span></div>
                     </div>
-                    <div class="problem-card" data-difficulty="easy" onclick="location.href='problems/best-time-to-buy-and-sell-stock.html'">
+                    <div class="problem-card" data-difficulty="easy" onclick="location.href='problems/best-time-to-buy-sell-stock.html'">
                         <div class="problem-header">
                             <div class="problem-number">#121</div>
                             <div class="difficulty-badge easy">Easy</div>
@@ -895,6 +1102,42 @@
                         <div class="problem-description">戳氣球問題，區間 DP 經典題，反向思考最後戳哪個。</div>
                         <div class="problem-tags"><span class="tag">Array</span><span class="tag">Dynamic Programming</span></div>
                     </div>
+                    <div class="problem-card" data-difficulty="medium" onclick="location.href='problems/house-robber-ii.html'">
+                        <div class="problem-header">
+                            <div class="problem-number">#213</div>
+                            <div class="difficulty-badge medium">Medium</div>
+                        </div>
+                        <div class="problem-title">House Robber II</div>
+                        <div class="problem-description">環狀排列的打家劫舍，拆環成兩個線性子問題。</div>
+                        <div class="problem-tags"><span class="tag">DP</span><span class="tag">Array</span></div>
+                    </div>
+                    <div class="problem-card" data-difficulty="medium" onclick="location.href='problems/unique-paths-ii.html'">
+                        <div class="problem-header">
+                            <div class="problem-number">#63</div>
+                            <div class="difficulty-badge medium">Medium</div>
+                        </div>
+                        <div class="problem-title">Unique Paths II</div>
+                        <div class="problem-description">有障礙物的網格路徑計數，矩陣 DP 與邊界處理。</div>
+                        <div class="problem-tags"><span class="tag">DP</span><span class="tag">Matrix</span></div>
+                    </div>
+                    <div class="problem-card" data-difficulty="medium" onclick="location.href='problems/longest-common-subsequence.html'">
+                        <div class="problem-header">
+                            <div class="problem-number">#1143</div>
+                            <div class="difficulty-badge medium">Medium</div>
+                        </div>
+                        <div class="problem-title">Longest Common Subsequence</div>
+                        <div class="problem-description">最長公共子序列，二維字串 DP 的模板題，也是 diff 工具的核心。</div>
+                        <div class="problem-tags"><span class="tag">DP</span><span class="tag">String</span></div>
+                    </div>
+                    <div class="problem-card" data-difficulty="medium" onclick="location.href='problems/maximal-square.html'">
+                        <div class="problem-header">
+                            <div class="problem-number">#221</div>
+                            <div class="difficulty-badge medium">Medium</div>
+                        </div>
+                        <div class="problem-title">Maximal Square</div>
+                        <div class="problem-description">矩陣中全為 1 的最大正方形，dp = min(左, 上, 左上) + 1。</div>
+                        <div class="problem-tags"><span class="tag">DP</span><span class="tag">Matrix</span></div>
+                    </div>
                 </div>
             </div>
 
@@ -946,6 +1189,24 @@
                         <div class="problem-title">Sliding Window Maximum</div>
                         <div class="problem-description">找出滑動視窗的最大值，使用單調雙端佇列。</div>
                         <div class="problem-tags"><span class="tag">Array</span><span class="tag">Queue</span><span class="tag">Sliding Window</span><span class="tag">Monotonic Queue</span></div>
+                    </div>
+                    <div class="problem-card" data-difficulty="medium" onclick="location.href='problems/evaluate-reverse-polish-notation.html'">
+                        <div class="problem-header">
+                            <div class="problem-number">#150</div>
+                            <div class="difficulty-badge medium">Medium</div>
+                        </div>
+                        <div class="problem-title">Evaluate Reverse Polish Notation</div>
+                        <div class="problem-description">逆波蘭表達式求值，一個堆疊搞定，也是堆疊式虛擬機的原理。</div>
+                        <div class="problem-tags"><span class="tag">Stack</span><span class="tag">Math</span></div>
+                    </div>
+                    <div class="problem-card" data-difficulty="medium" onclick="location.href='problems/kth-largest-element-in-an-array.html'">
+                        <div class="problem-header">
+                            <div class="problem-number">#215</div>
+                            <div class="difficulty-badge medium">Medium</div>
+                        </div>
+                        <div class="problem-title">Kth Largest Element in an Array</div>
+                        <div class="problem-description">找第 k 大元素，最小堆積 O(n log k) 或快速選擇平均 O(n)。</div>
+                        <div class="problem-tags"><span class="tag">Heap</span><span class="tag">Quickselect</span><span class="tag">Sorting</span></div>
                     </div>
                 </div>
             </div>
@@ -1015,6 +1276,51 @@
                         <div class="problem-description">經典 N 皇后問題，使用回溯法找出所有解法。</div>
                         <div class="problem-tags"><span class="tag">Backtracking</span><span class="tag">Array</span></div>
                     </div>
+                    <div class="problem-card" data-difficulty="medium" onclick="location.href='problems/permutations.html'">
+                        <div class="problem-header">
+                            <div class="problem-number">#46</div>
+                            <div class="difficulty-badge medium">Medium</div>
+                        </div>
+                        <div class="problem-title">Permutations</div>
+                        <div class="problem-description">全排列，回溯法的入門模板題。</div>
+                        <div class="problem-tags"><span class="tag">Backtracking</span><span class="tag">Array</span></div>
+                    </div>
+                    <div class="problem-card" data-difficulty="medium" onclick="location.href='problems/subsets.html'">
+                        <div class="problem-header">
+                            <div class="problem-number">#78</div>
+                            <div class="difficulty-badge medium">Medium</div>
+                        </div>
+                        <div class="problem-title">Subsets</div>
+                        <div class="problem-description">所有子集（冪集），回溯或位元遮罩兩種解法。</div>
+                        <div class="problem-tags"><span class="tag">Backtracking</span><span class="tag">Bit Manipulation</span></div>
+                    </div>
+                    <div class="problem-card" data-difficulty="medium" onclick="location.href='problems/combination-sum.html'">
+                        <div class="problem-header">
+                            <div class="problem-number">#39</div>
+                            <div class="difficulty-badge medium">Medium</div>
+                        </div>
+                        <div class="problem-title">Combination Sum</div>
+                        <div class="problem-description">元素可重複使用的組合總和，關鍵在遞迴傳 i 而非 i+1。</div>
+                        <div class="problem-tags"><span class="tag">Backtracking</span><span class="tag">Array</span></div>
+                    </div>
+                    <div class="problem-card" data-difficulty="medium" onclick="location.href='problems/generate-parentheses.html'">
+                        <div class="problem-header">
+                            <div class="problem-number">#22</div>
+                            <div class="difficulty-badge medium">Medium</div>
+                        </div>
+                        <div class="problem-title">Generate Parentheses</div>
+                        <div class="problem-description">生成所有合法括號組合，邊生成邊剪枝，答案數為卡塔蘭數。</div>
+                        <div class="problem-tags"><span class="tag">Backtracking</span><span class="tag">String</span></div>
+                    </div>
+                    <div class="problem-card" data-difficulty="medium" onclick="location.href='problems/letter-combinations-of-a-phone-number.html'">
+                        <div class="problem-header">
+                            <div class="problem-number">#17</div>
+                            <div class="difficulty-badge medium">Medium</div>
+                        </div>
+                        <div class="problem-title">Letter Combinations of a Phone Number</div>
+                        <div class="problem-description">電話號碼的字母組合，每層選擇列表不同的回溯。</div>
+                        <div class="problem-tags"><span class="tag">Backtracking</span><span class="tag">String</span><span class="tag">Hash Table</span></div>
+                    </div>
                 </div>
             </div>
 
@@ -1031,7 +1337,7 @@
                         <div class="problem-description">判斷一個整數是否為回文數，不使用字串轉換。</div>
                         <div class="problem-tags"><span class="tag">Math</span></div>
                     </div>
-                    <div class="problem-card" data-difficulty="easy" onclick="location.href='problems/sqrtx.html'">
+                    <div class="problem-card" data-difficulty="easy" onclick="location.href='problems/sqrt-x.html'">
                         <div class="problem-header">
                             <div class="problem-number">#69</div>
                             <div class="difficulty-badge easy">Easy</div>
@@ -1053,11 +1359,173 @@
             </div>
 
 
+            <div class="category-section">
+                <h2 class="category-title">Bit Manipulation（位元運算 · 韌體必考）</h2>
+                <div class="problems-grid">
+                    <div class="problem-card" data-difficulty="easy" onclick="location.href='problems/number-of-1-bits.html'">
+                        <div class="problem-header">
+                            <div class="problem-number">#191</div>
+                            <div class="difficulty-badge easy">Easy</div>
+                        </div>
+                        <div class="problem-title">Number of 1 Bits</div>
+                        <div class="problem-description">計算二進位中 1 的個數，n &amp; (n-1) 與查表法，韌體面試第一題。</div>
+                        <div class="problem-tags"><span class="tag">Bit Manipulation</span></div>
+                    </div>
+                    <div class="problem-card" data-difficulty="easy" onclick="location.href='problems/reverse-bits.html'">
+                        <div class="problem-header">
+                            <div class="problem-number">#190</div>
+                            <div class="difficulty-badge easy">Easy</div>
+                        </div>
+                        <div class="problem-title">Reverse Bits</div>
+                        <div class="problem-description">顛倒 32 位元整數的位元，分治遮罩法與查表優化。</div>
+                        <div class="problem-tags"><span class="tag">Bit Manipulation</span><span class="tag">Divide and Conquer</span></div>
+                    </div>
+                    <div class="problem-card" data-difficulty="easy" onclick="location.href='problems/power-of-two.html'">
+                        <div class="problem-header">
+                            <div class="problem-number">#231</div>
+                            <div class="difficulty-badge easy">Easy</div>
+                        </div>
+                        <div class="problem-title">Power of Two</div>
+                        <div class="problem-description">判斷是否為 2 的冪，一行 n &amp; (n-1) == 0 搞定。</div>
+                        <div class="problem-tags"><span class="tag">Bit Manipulation</span><span class="tag">Math</span></div>
+                    </div>
+                    <div class="problem-card" data-difficulty="easy" onclick="location.href='problems/counting-bits.html'">
+                        <div class="problem-header">
+                            <div class="problem-number">#338</div>
+                            <div class="difficulty-badge easy">Easy</div>
+                        </div>
+                        <div class="problem-title">Counting Bits</div>
+                        <div class="problem-description">計算 0~n 每個數的 1 的個數，位元題也能用 DP。</div>
+                        <div class="problem-tags"><span class="tag">Bit Manipulation</span><span class="tag">DP</span></div>
+                    </div>
+                    <div class="problem-card" data-difficulty="easy" onclick="location.href='problems/hamming-distance.html'">
+                        <div class="problem-header">
+                            <div class="problem-number">#461</div>
+                            <div class="difficulty-badge easy">Easy</div>
+                        </div>
+                        <div class="problem-title">Hamming Distance</div>
+                        <div class="problem-description">兩數的漢明距離，XOR 後數 1，ECC 錯誤更正碼的基礎。</div>
+                        <div class="problem-tags"><span class="tag">Bit Manipulation</span></div>
+                    </div>
+                    <div class="problem-card" data-difficulty="medium" onclick="location.href='problems/single-number-ii.html'">
+                        <div class="problem-header">
+                            <div class="problem-number">#137</div>
+                            <div class="difficulty-badge medium">Medium</div>
+                        </div>
+                        <div class="problem-title">Single Number II</div>
+                        <div class="problem-description">其餘出現三次，找出現一次的數，位元計數或狀態機。</div>
+                        <div class="problem-tags"><span class="tag">Bit Manipulation</span><span class="tag">Array</span></div>
+                    </div>
+                    <div class="problem-card" data-difficulty="medium" onclick="location.href='problems/single-number-iii.html'">
+                        <div class="problem-header">
+                            <div class="problem-number">#260</div>
+                            <div class="difficulty-badge medium">Medium</div>
+                        </div>
+                        <div class="problem-title">Single Number III</div>
+                        <div class="problem-description">有兩個只出現一次的數，XOR 加 lowbit 分組。</div>
+                        <div class="problem-tags"><span class="tag">Bit Manipulation</span><span class="tag">Array</span></div>
+                    </div>
+                    <div class="problem-card" data-difficulty="medium" onclick="location.href='problems/sum-of-two-integers.html'">
+                        <div class="problem-header">
+                            <div class="problem-number">#371</div>
+                            <div class="difficulty-badge medium">Medium</div>
+                        </div>
+                        <div class="problem-title">Sum of Two Integers</div>
+                        <div class="problem-description">不用 + 和 - 做加法，本質是用位元運算實作全加器。</div>
+                        <div class="problem-tags"><span class="tag">Bit Manipulation</span><span class="tag">Math</span></div>
+                    </div>
+                    <div class="problem-card" data-difficulty="medium" onclick="location.href='problems/bitwise-and-of-numbers-range.html'">
+                        <div class="problem-header">
+                            <div class="problem-number">#201</div>
+                            <div class="difficulty-badge medium">Medium</div>
+                        </div>
+                        <div class="problem-title">Bitwise AND of Numbers Range</div>
+                        <div class="problem-description">區間內所有數的按位 AND，答案是兩端點的共同前綴。</div>
+                        <div class="problem-tags"><span class="tag">Bit Manipulation</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="category-section">
+                <h2 class="category-title">Design（設計題 · 系統與韌體）</h2>
+                <div class="problems-grid">
+                    <div class="problem-card" data-difficulty="medium" onclick="location.href='problems/design-circular-queue.html'">
+                        <div class="problem-header">
+                            <div class="problem-number">#622</div>
+                            <div class="difficulty-badge medium">Medium</div>
+                        </div>
+                        <div class="problem-title">Design Circular Queue</div>
+                        <div class="problem-description">設計環形佇列（Ring Buffer），嵌入式與 UART 緩衝的核心結構。</div>
+                        <div class="problem-tags"><span class="tag">Design</span><span class="tag">Queue</span><span class="tag">Array</span></div>
+                    </div>
+                    <div class="problem-card" data-difficulty="easy" onclick="location.href='problems/implement-queue-using-stacks.html'">
+                        <div class="problem-header">
+                            <div class="problem-number">#232</div>
+                            <div class="difficulty-badge easy">Easy</div>
+                        </div>
+                        <div class="problem-title">Implement Queue using Stacks</div>
+                        <div class="problem-description">用兩個堆疊實作佇列，攤銷 O(1) 複雜度分析。</div>
+                        <div class="problem-tags"><span class="tag">Design</span><span class="tag">Stack</span><span class="tag">Queue</span></div>
+                    </div>
+                    <div class="problem-card" data-difficulty="medium" onclick="location.href='problems/implement-trie.html'">
+                        <div class="problem-header">
+                            <div class="problem-number">#208</div>
+                            <div class="difficulty-badge medium">Medium</div>
+                        </div>
+                        <div class="problem-title">Implement Trie (Prefix Tree)</div>
+                        <div class="problem-description">實作前綴樹，自動補全、IP 路由與敏感詞過濾的基礎。</div>
+                        <div class="problem-tags"><span class="tag">Design</span><span class="tag">Trie</span><span class="tag">String</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="category-section">
+                <h2 class="category-title">Graph（圖論 · 拓撲排序）</h2>
+                <div class="problems-grid">
+                    <div class="problem-card" data-difficulty="medium" onclick="location.href='problems/course-schedule.html'">
+                        <div class="problem-header">
+                            <div class="problem-number">#207</div>
+                            <div class="difficulty-badge medium">Medium</div>
+                        </div>
+                        <div class="problem-title">Course Schedule</div>
+                        <div class="problem-description">課程表：判斷有向圖是否有環，拓撲排序 Kahn 演算法。</div>
+                        <div class="problem-tags"><span class="tag">Graph</span><span class="tag">Topological Sort</span><span class="tag">BFS</span></div>
+                    </div>
+                    <div class="problem-card" data-difficulty="medium" onclick="location.href='problems/course-schedule-ii.html'">
+                        <div class="problem-header">
+                            <div class="problem-number">#210</div>
+                            <div class="difficulty-badge medium">Medium</div>
+                        </div>
+                        <div class="problem-title">Course Schedule II</div>
+                        <div class="problem-description">輸出具體的修課順序，拓撲排序的完整版。</div>
+                        <div class="problem-tags"><span class="tag">Graph</span><span class="tag">Topological Sort</span><span class="tag">BFS</span></div>
+                    </div>
+                    <div class="problem-card" data-difficulty="medium" onclick="location.href='problems/clone-graph.html'">
+                        <div class="problem-header">
+                            <div class="problem-number">#133</div>
+                            <div class="difficulty-badge medium">Medium</div>
+                        </div>
+                        <div class="problem-title">Clone Graph</div>
+                        <div class="problem-description">圖的深拷貝，用 visited 對照表打破環的無限遞迴。</div>
+                        <div class="problem-tags"><span class="tag">Graph</span><span class="tag">DFS</span><span class="tag">BFS</span><span class="tag">Hash Table</span></div>
+                    </div>
+                    <div class="problem-card" data-difficulty="medium" onclick="location.href='problems/rotting-oranges.html'">
+                        <div class="problem-header">
+                            <div class="problem-number">#994</div>
+                            <div class="difficulty-badge medium">Medium</div>
+                        </div>
+                        <div class="problem-title">Rotting Oranges</div>
+                        <div class="problem-description">腐爛的橘子，多源 BFS 求最短擴散時間。</div>
+                        <div class="problem-tags"><span class="tag">BFS</span><span class="tag">Matrix</span><span class="tag">Graph</span></div>
+                    </div>
+                </div>
+            </div>
+
         </div>
 
         <footer>
             <p>LeetCode 學習平台 - 完整版</p>
-            <p style="margin-top: 10px; opacity: 0.8;">101 題完整收錄 | 42 Easy + 34 Medium + 25 Hard</p>
+            <p style="margin-top: 10px; opacity: 0.8;">150 題完整收錄 | 55 Easy + 71 Medium + 24 Hard</p>
             <p style="margin-top: 10px; font-size: 0.9em; opacity: 0.7;">持續更新中...</p>
         </footer>
     </div>

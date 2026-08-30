@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>32. Longest Valid Parentheses - LeetCode 學習平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f8fafc; line-height: 1.8; color: #334155; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .header { background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; padding: 40px; border-radius: 16px; margin-bottom: 30px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .back-btn { display: inline-block; color: white; text-decoration: none; background: rgba(255,255,255,0.2); padding: 10px 20px; border-radius: 8px; margin-bottom: 20px; transition: all 0.3s; }
+        .back-btn:hover { background: rgba(255,255,255,0.3); }
+        .problem-title { font-size: 2.5em; font-weight: 800; margin-bottom: 15px; }
+        .difficulty { display: inline-block; background: rgba(255,255,255,0.3); padding: 8px 20px; border-radius: 20px; font-weight: 600; font-size: 0.9em; }
+        .content-section { background: white; padding: 40px; border-radius: 16px; margin-bottom: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .section-title { font-size: 1.8em; color: #1e293b; margin-bottom: 25px; font-weight: 700; padding-bottom: 10px; border-bottom: 3px solid #10b981; }
+        .description { font-size: 1.1em; line-height: 1.9; color: #475569; margin-bottom: 20px; }
+        .example-box { background: #f0fdf4; border-left: 4px solid #10b981; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .example-title { font-weight: 700; color: #059669; margin-bottom: 10px; font-size: 1.1em; }
+        .approach-box { background: #eff6ff; border-left: 4px solid #3b82f6; padding: 25px; border-radius: 8px; margin: 25px 0; }
+        .approach-title { font-weight: 700; color: #1e40af; margin-bottom: 15px; font-size: 1.3em; }
+        .complexity-box { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .complexity-item { margin: 10px 0; font-weight: 600; color: #92400e; }
+        .language-tabs { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+        .tab-btn { padding: 12px 28px; border: 2px solid #10b981; background: white; color: #10b981; border-radius: 8px; cursor: pointer; font-weight: 600; transition: all 0.3s; font-size: 1em; }
+        .tab-btn:hover { background: #f0fdf4; }
+        .tab-btn.active { background: #10b981; color: white; }
+        .code-container { display: none; margin-top: 20px; }
+        .code-container.active { display: block; }
+        pre { background: #282c34 !important; padding: 25px !important; border-radius: 12px; overflow-x: auto; margin: 0; }
+        code { font-family: 'Fira Code', 'Consolas', monospace; font-size: 0.95em; line-height: 1.6; }
+        ol, ul { margin-left: 30px; margin-top: 15px; }
+        li { margin: 12px 0; line-height: 1.8; }
+        strong { color: #1e293b; font-weight: 700; }
+        .tips-box { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        
+        @media (max-width: 768px) {
+            .container { padding: 10px; }
+            .header { padding: 25px; }
+            .problem-title { font-size: 1.8em; }
+            .content-section { padding: 25px; }
+            .tab-btn { padding: 10px 20px; font-size: 0.9em; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="../index.html" class="back-btn">← 返回題目列表</a>
+            <div class="problem-title">32. Longest Valid Parentheses</div>
+            <span class="difficulty">Hard</span>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">題目描述</h2>
+            <div class="description">
+                <p>給定一個只包含 <code>(</code> 和 <code>)</code> 的字串，找出最長有效（格式正確且連續）括號子字串的長度。</p>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例 1:</div>
+                <pre><code>輸入: s = "(()"
+輸出: 2
+解釋: 最長有效括號子字串是 "()"</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例 2:</div>
+                <pre><code>輸入: s = ")()())"
+輸出: 4
+解釋: 最長有效括號子字串是 "()()"</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例 3:</div>
+                <pre><code>輸入: s = ""
+輸出: 0</code></pre>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">解題思路</h2>
+
+            <div class="approach-box">
+                <div class="approach-title">方法一：堆疊記錄索引（推薦）</div>
+                <p>堆疊中存放的是<strong>索引</strong>而非字元，並先放入 -1 作為「最後一個未匹配右括號的位置」哨兵。</p><p>遇到 ( 就把索引推入堆疊；遇到 ) 則先彈出一個元素：若堆疊變空，代表這個右括號無法匹配，把它自己的索引推入當作新的基準；否則用當前索引減去堆疊頂端索引，即為以此處結尾的有效長度。</p><p>一次掃描即可，邏輯清楚且不易出錯。</p>
+            </div>
+
+            <div class="approach-box">
+                <div class="approach-title">方法二：動態規劃</div>
+                <p>定義 dp[i] 為「以 s[i] 結尾的最長有效括號長度」，只有 s[i] 為 ) 時才可能非零。</p><p>若 s[i-1] 為 (，則 dp[i] = dp[i-2] + 2；若 s[i-1] 為 )，則檢查與之配對的位置 j = i - dp[i-1] - 1，當 s[j] 為 ( 時 dp[i] = dp[i-1] + 2 + dp[j-1]。</p><p>答案為 dp 陣列的最大值，時間 O(n)、空間 O(n)。</p>
+            </div>
+
+            <div class="approach-box">
+                <div class="approach-title">方法三：左右兩次掃描（O(1) 空間）</div>
+                <p>由左往右計數 left、right，兩者相等時更新答案，right 超過 left 時歸零。</p><p>再由右往左做一次對稱的掃描，即可補上像 "(()" 這類左括號偏多的情況。此法只需常數額外空間。</p>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">程式碼實現</h2>
+            <div class="language-tabs">
+                <button class="tab-btn active" onclick="showLanguage('python')">Python</button>
+                <button class="tab-btn" onclick="showLanguage('java')">Java</button>
+                <button class="tab-btn" onclick="showLanguage('cpp')">C++</button>
+            </div>
+
+            <div id="python" class="code-container active">
+                <pre><code class="language-python">class Solution:
+    def longestValidParentheses(self, s: str) -&gt; int:
+        stack = [-1]          # 哨兵：最後一個未匹配右括號的索引
+        longest = 0
+
+        for i, ch in enumerate(s):
+            if ch == '(':
+                stack.append(i)
+            else:
+                stack.pop()
+                if not stack:
+                    stack.append(i)      # 此右括號無法匹配，成為新基準
+                else:
+                    longest = max(longest, i - stack[-1])
+
+        return longest</code></pre>
+            </div>
+
+            <div id="java" class="code-container">
+                <pre><code class="language-java">class Solution {
+    public int longestValidParentheses(String s) {
+        Deque&lt;Integer&gt; stack = new ArrayDeque&lt;&gt;();
+        stack.push(-1);
+        int longest = 0;
+
+        for (int i = 0; i &lt; s.length(); i++) {
+            if (s.charAt(i) == '(') {
+                stack.push(i);
+            } else {
+                stack.pop();
+                if (stack.isEmpty()) {
+                    stack.push(i);
+                } else {
+                    longest = Math.max(longest, i - stack.peek());
+                }
+            }
+        }
+        return longest;
+    }
+}</code></pre>
+            </div>
+
+            <div id="cpp" class="code-container">
+                <pre><code class="language-cpp">class Solution {
+public:
+    int longestValidParentheses(string s) {
+        stack&lt;int&gt; st;
+        st.push(-1);
+        int longest = 0;
+
+        for (int i = 0; i &lt; (int)s.size(); i++) {
+            if (s[i] == '(') {
+                st.push(i);
+            } else {
+                st.pop();
+                if (st.empty()) {
+                    st.push(i);
+                } else {
+                    longest = max(longest, i - st.top());
+                }
+            }
+        }
+        return longest;
+    }
+};</code></pre>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">複雜度分析</h2>
+            <div class="complexity-box">
+                <div class="complexity-item">時間複雜度: O(n)</div>
+                <p style="color: #78716c; margin: 10px 0;">每個字元只被推入與彈出堆疊各一次，單次掃描即可完成。</p>
+
+                <div class="complexity-item" style="margin-top: 20px;">空間複雜度: O(n)</div>
+                <p style="color: #78716c; margin: 10px 0;">最壞情況（例如全部是左括號）堆疊會存放 n 個索引；兩次掃描解法可降到 O(1)。</p>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">重點提示</h2>
+            <div class="tips-box">
+                <ul>
+                    <li><strong>堆疊存索引：</strong>存索引而非字元，才能用「當前位置減基準位置」直接算出長度</li>
+                    <li><strong>哨兵 -1 的作用：</strong>讓第一段從開頭起算的有效括號能正確得到長度，省去特判</li>
+                    <li><strong>彈出後再判空：</strong>先 pop 再檢查是否為空，是區分「成功匹配」與「多餘右括號」的關鍵</li>
+                    <li><strong>與 valid-parentheses 的差異：</strong>本題求最長連續有效長度，不只是判斷整體是否合法，因此必須追蹤位置資訊</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        hljs.highlightAll();
+        
+        function showLanguage(lang) {
+            // 隱藏所有程式碼區塊
+            document.querySelectorAll('.code-container').forEach(container => {
+                container.classList.remove('active');
+            });
+            
+            // 移除所有按鈕的 active 狀態
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // 顯示選中的程式碼區塊
+            document.getElementById(lang).classList.add('active');
+            
+            // 設定選中按鈕的 active 狀態
+            event.target.classList.add('active');
+        }
+    </script>
+</body>
+</html>

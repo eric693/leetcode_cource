@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>#151 Reverse Words in a String | LeetCode 學習平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #333; background: #f8fafc; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .header { background: linear-gradient(135deg, #ea580c 0%, #c2410c 100%); color: white; padding: 30px; border-radius: 12px; margin-bottom: 30px; box-shadow: 0 4px 6px rgba(234, 88, 12, 0.2); }
+        .header h1 { font-size: 2em; margin-bottom: 10px; }
+        .difficulty { display: inline-block; padding: 6px 16px; background: rgba(255,255,255,0.2); border-radius: 20px; font-size: 0.9em; font-weight: 600; }
+        .tags { margin-top: 15px; }
+        .tag { display: inline-block; background: rgba(255,255,255,0.15); padding: 4px 12px; border-radius: 6px; margin-right: 8px; font-size: 0.85em; }
+        .back-btn { display: inline-block; margin-bottom: 20px; padding: 10px 20px; background: #3b82f6; color: white; text-decoration: none; border-radius: 8px; transition: background 0.3s; }
+        .back-btn:hover { background: #2563eb; }
+        .section { background: white; padding: 30px; border-radius: 12px; margin-bottom: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .section h2 { color: #1e293b; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 3px solid #ea580c; }
+        .section h3 { color: #475569; margin: 25px 0 15px 0; font-size: 1.3em; }
+        .code-block { background: #282c34; border-radius: 8px; overflow: hidden; margin: 15px 0; }
+        .lang-tabs { display: flex; background: #21252b; border-bottom: 1px solid #181a1f; }
+        .lang-tab { padding: 12px 24px; cursor: pointer; color: #abb2bf; border: none; background: none; transition: all 0.3s; font-weight: 500; }
+        .lang-tab.active { color: #61afef; background: #282c34; border-bottom: 2px solid #61afef; }
+        .lang-tab:hover { color: #61afef; background: #2c313a; }
+        .code-content { display: none; }
+        .code-content.active { display: block; }
+        pre { margin: 0; overflow-x: auto; }
+        code { font-family: 'Consolas', 'Monaco', 'Courier New', monospace; font-size: 0.9em; }
+        .example { background: #f0f9ff; border-left: 4px solid #3b82f6; padding: 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .example-title { font-weight: 700; color: #1e40af; margin-bottom: 12px; font-size: 1.05em; }
+        .visual-box { background: #fef3c7; border: 2px solid #f59e0b; padding: 20px; border-radius: 8px; margin: 15px 0; }
+        .visual-title { font-weight: 700; color: #92400e; margin-bottom: 12px; display: flex; align-items: center; font-size: 1.05em; }
+        .complexity { background: #f1f5f9; padding: 15px; border-radius: 8px; margin: 15px 0; }
+        .complexity-item { margin: 8px 0; color: #475569; }
+        .key-point { background: #dcfce7; border-left: 4px solid #16a34a; padding: 15px 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        ul, ol { margin-left: 25px; margin-top: 10px; }
+        li { margin: 8px 0; color: #475569; }
+        strong { color: #1e293b; }
+        .note { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 15px 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        @media (max-width: 768px) {
+            .container { padding: 10px; }
+            .header h1 { font-size: 1.5em; }
+            .section { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="../index.html" class="back-btn">← 返回題目列表</a>
+
+        <div class="header">
+            <h1>#151 Reverse Words in a String</h1>
+            <div class="difficulty">Medium</div>
+            <div class="tags">
+                <span class="tag">String</span>
+                <span class="tag">Two Pointers</span>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>題目描述</h2>
+            <p>給你一個字串 s，請你反轉字串中<strong>單詞</strong>的順序。</p>
+            <p style="margin-top: 15px;">單詞是由非空格字元組成的字串。s 中使用至少一個空格將字串中的單詞分隔開。</p>
+            <p style="margin-top: 15px;">返回<strong>單詞順序顛倒</strong>且<strong>單詞之間用單個空格連接</strong>的結果字串。注意：s 中可能會存在前置空格、尾隨空格或者單詞間的多個空格，返回的結果字串中<strong>不應包含</strong>這些多餘的空格。</p>
+            <p style="margin-top: 15px;"><strong>進階：</strong>如果字串在你使用的語言中是可變的（如 C++ 的 char[]），能否使用 <strong>O(1) 額外空間</strong>就地解決？</p>
+        </div>
+
+        <div class="section">
+            <h2>範例</h2>
+            <div class="example">
+                <div class="example-title">範例 1：</div>
+                <strong>輸入：</strong>s = "the sky is blue"<br>
+                <strong>輸出：</strong>"blue is sky the"
+            </div>
+
+            <div class="example">
+                <div class="example-title">範例 2：</div>
+                <strong>輸入：</strong>s = "  hello world  "<br>
+                <strong>輸出：</strong>"world hello"<br>
+                <strong>解釋：</strong>反轉後的字串不能包含前置或尾隨空格。
+            </div>
+
+            <div class="example">
+                <div class="example-title">範例 3：</div>
+                <strong>輸入：</strong>s = "a good   example"<br>
+                <strong>輸出：</strong>"example good a"<br>
+                <strong>解釋：</strong>單詞間的多餘空格要縮減成一個。
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>解題思路</h2>
+            <div class="visual-box">
+                <div class="visual-title">💡 方法一：分割 + 反轉 + 拼接（最簡潔）</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+s = "  the   sky is blue  "
+
+1. 用空白分割（自動忽略多餘空格）
+   → ["the", "sky", "is", "blue"]
+2. 反轉陣列
+   → ["blue", "is", "sky", "the"]
+3. 用單一空格拼接
+   → "blue is sky the" ✓
+
+Python 一行：' '.join(s.split()[::-1])
+                </pre>
+            </div>
+
+            <h3>方法二：整體反轉 + 逐詞反轉（O(1) 空間，面試重點）</h3>
+            <div class="visual-box">
+                <div class="visual-title">🎯 「反轉兩次」的經典技巧</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+核心觀察：把整個字串反轉後，單詞的「順序」對了，
+          但每個單詞「內部」也被反轉了 —— 再反轉回來即可。
+
+原始： "the sky is blue"
+
+【步驟 1】整體反轉
+       "eulb si yks eht"
+       單詞順序 ✓，但每個字反了 ✗
+
+【步驟 2】逐個單詞內部反轉
+       "blue is sky the" ✓
+
+這個「反轉兩次」的技巧非常通用：
+  - 陣列旋轉（#189 Rotate Array）
+  - 循環移位
+  - 字串旋轉判斷
+                </pre>
+            </div>
+
+            <h3>方法三：就地處理（C 風格，最完整）</h3>
+            <div class="visual-box">
+                <div class="visual-title">🔧 三步驟，真正的 O(1) 空間</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+【步驟 1】清理空格（雙指標就地壓縮）
+  "  the   sky  " → "the sky"
+  用讀寫雙指標：讀指標跳過多餘空格，寫指標依序寫入
+
+【步驟 2】整體反轉
+  "the sky" → "yks eht"
+
+【步驟 3】逐詞反轉
+  "yks eht" → "sky the"
+
+全程只用固定數量的變數，符合進階要求。
+                </pre>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>程式碼實現</h2>
+
+            <div class="code-block">
+                <div class="lang-tabs">
+                    <button class="lang-tab active" onclick="switchLang(event, 'python')">Python</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'cpp')">C++</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'java')">Java</button>
+                </div>
+
+                <div id="python" class="code-content active">
+                    <pre><code class="language-python"># 方法一：內建函數（最簡潔）
+class Solution:
+    def reverseWords(self, s: str) -&gt; str:
+        # split() 不帶參數會自動忽略連續空白與前後空白
+        return ' '.join(s.split()[::-1])
+
+
+# 方法二：手動雙指標（不依賴內建 split，展現基本功）
+class Solution:
+    def reverseWords(self, s: str) -&gt; str:
+        words = []
+        i, n = 0, len(s)
+        while i &lt; n:
+            # 跳過空格
+            while i &lt; n and s[i] == ' ':
+                i += 1
+            if i &gt;= n:
+                break
+            # 讀取一個完整單詞
+            start = i
+            while i &lt; n and s[i] != ' ':
+                i += 1
+            words.append(s[start:i])
+
+        # 反轉單詞順序
+        return ' '.join(reversed(words))</code></pre>
+                </div>
+
+                <div id="cpp" class="code-content">
+                    <pre><code class="language-cpp">// 方法三：就地處理（O(1) 額外空間，推薦，回答進階題）
+class Solution {
+public:
+    string reverseWords(string s) {
+        // 步驟 1：清理多餘空格（讀寫雙指標就地壓縮）
+        int write = 0, n = s.size();
+        for (int read = 0; read &lt; n; ) {
+            if (s[read] == ' ') { read++; continue; }
+            if (write != 0) s[write++] = ' ';        // 單詞之間補一個空格
+            while (read &lt; n &amp;&amp; s[read] != ' ') {
+                s[write++] = s[read++];
+            }
+        }
+        s.resize(write);
+
+        // 步驟 2：整體反轉
+        reverse(s.begin(), s.end());
+
+        // 步驟 3：逐個單詞內部反轉
+        int start = 0;
+        for (int i = 0; i &lt;= s.size(); i++) {
+            if (i == s.size() || s[i] == ' ') {
+                reverse(s.begin() + start, s.begin() + i);
+                start = i + 1;
+            }
+        }
+        return s;
+    }
+};
+
+// 方法一：用 stringstream（簡潔版）
+class Solution {
+public:
+    string reverseWords(string s) {
+        istringstream iss(s);
+        string word, result;
+        while (iss &gt;&gt; word) {              // &gt;&gt; 自動跳過空白
+            if (!result.empty()) result = " " + result;
+            result = word + result;        // 反序拼接
+        }
+        return result;
+    }
+};</code></pre>
+                </div>
+
+                <div id="java" class="code-content">
+                    <pre><code class="language-java">// 方法一：內建 split + StringBuilder
+class Solution {
+    public String reverseWords(String s) {
+        String[] words = s.trim().split("\\s+");   // \s+ 匹配一或多個空白
+        StringBuilder sb = new StringBuilder();
+        for (int i = words.length - 1; i &gt;= 0; i--) {
+            sb.append(words[i]);
+            if (i &gt; 0) sb.append(' ');
+        }
+        return sb.toString();
+    }
+}
+
+// 方法二：手動雙指標（不依賴正規表達式）
+class Solution {
+    public String reverseWords(String s) {
+        StringBuilder sb = new StringBuilder();
+        int i = s.length() - 1;
+        while (i &gt;= 0) {
+            while (i &gt;= 0 &amp;&amp; s.charAt(i) == ' ') i--;      // 跳過空格
+            if (i &lt; 0) break;
+            int end = i;
+            while (i &gt;= 0 &amp;&amp; s.charAt(i) != ' ') i--;      // 找到單詞開頭
+            if (sb.length() &gt; 0) sb.append(' ');
+            sb.append(s, i + 1, end + 1);
+        }
+        return sb.toString();
+    }
+}</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>複雜度分析</h2>
+            <div class="complexity">
+                <div class="complexity-item">
+                    <strong>時間複雜度：</strong>O(n)
+                    <ul>
+                        <li>清理空格 O(n) + 整體反轉 O(n) + 逐詞反轉合計 O(n)</li>
+                    </ul>
+                </div>
+                <div class="complexity-item">
+                    <strong>空間複雜度：</strong>
+                    <ul>
+                        <li>C++ 就地版本：O(1) ★ 符合進階要求</li>
+                        <li>Java / Python：O(n)，因為字串不可變，必須建新字串</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>重點提示</h2>
+            <div class="key-point">
+                <strong>💡 關鍵技巧：反轉兩次</strong>
+                <p>「整體反轉 + 局部反轉」是字串與陣列題的萬用技巧。看到「順序顛倒但要保持某種局部結構」就要想到它。#189 Rotate Array 用的是完全一樣的思路。</p>
+            </div>
+
+            <div class="key-point">
+                <strong>💡 面試注意：不要只寫一行</strong>
+                <p>用 <code>' '.join(s.split()[::-1])</code> 一行過關，面試官通常會追問「不用內建函數怎麼寫」。準備好手寫雙指標版本，並主動說明如何處理多餘空格。</p>
+            </div>
+
+            <div class="note">
+                <strong>⚠️ 常見錯誤：</strong>
+                <ul>
+                    <li>用 <code>split(" ")</code>（帶參數）會產生空字串元素，必須用 <code>split()</code>（Python）或 <code>split("\\s+")</code> + <code>trim()</code>（Java）</li>
+                    <li>忘記 trim，導致開頭的空白產生一個空元素</li>
+                    <li>拼接時多加了尾隨空格</li>
+                    <li>Java 用 <code>String +=</code> 在迴圈中拼接，變成 O(n²)，應該用 <code>StringBuilder</code></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>相關題目</h2>
+            <ul>
+                <li><strong>#186 Reverse Words in a String II</strong> - 就地版本（char[] 輸入）</li>
+                <li><strong>#557 Reverse Words in a String III</strong> - 只反轉每個單詞內部</li>
+                <li><strong>#189 Rotate Array</strong> - 同樣使用「反轉三次」技巧</li>
+                <li><strong>#344 Reverse String</strong> - 字串反轉基礎</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>補充說明</h2>
+            <h3>「反轉技巧」的三大應用</h3>
+            <div class="visual-box">
+                <div class="visual-title">🔄 一招通吃</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+【#151 反轉單詞順序】
+  整體反轉 → 逐詞反轉
+
+【#189 陣列右旋 k 位】
+  [1,2,3,4,5,6,7], k = 3 → [5,6,7,1,2,3,4]
+
+  1. 整體反轉：      [7,6,5,4,3,2,1]
+  2. 反轉前 k 個：   [5,6,7,4,3,2,1]
+  3. 反轉後 n-k 個： [5,6,7,1,2,3,4] ✓
+
+  O(n) 時間，O(1) 空間，比用額外陣列漂亮得多。
+  ⚠️ 記得先做 k %= n，否則 k > n 時會出錯。
+
+【#557 只反轉每個單詞】
+  "Let's take LeetCode" → "s'teL ekat edoCteeL"
+  只做「逐詞反轉」這一步。
+                </pre>
+            </div>
+
+            <h3>C 語言的就地版本（韌體面試常考）</h3>
+            <pre style="background: #f1f5f9; padding: 15px; border-radius: 8px; margin-top: 10px;">
+void reverse(char *s, int left, int right) {
+    while (left &lt; right) {
+        char tmp = s[left];
+        s[left++] = s[right];
+        s[right--] = tmp;
+    }
+}
+
+void reverseWords(char *s) {
+    int n = strlen(s);
+    reverse(s, 0, n - 1);              // 整體反轉
+
+    int start = 0;
+    for (int i = 0; i &lt;= n; i++) {     // 逐詞反轉
+        if (i == n || s[i] == ' ') {
+            reverse(s, start, i - 1);
+            start = i + 1;
+        }
+    }
+}
+            </pre>
+
+            <h3>邊界情況檢查清單</h3>
+            <ul>
+                <li><code>"   "</code> 全是空格 → 返回空字串</li>
+                <li><code>"a"</code> 單一字元 → 返回 "a"</li>
+                <li><code>"  hello  "</code> 前後有空格 → "hello"</li>
+                <li><code>"a   b"</code> 中間多空格 → "b a"</li>
+                <li>整個字串只有一個單詞 → 原樣返回（去除空白後）</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        function switchLang(event, lang) {
+            const tabs = document.querySelectorAll('.lang-tab');
+            const contents = document.querySelectorAll('.code-content');
+
+            tabs.forEach(tab => tab.classList.remove('active'));
+            contents.forEach(content => content.classList.remove('active'));
+
+            event.target.classList.add('active');
+            document.getElementById(lang).classList.add('active');
+        }
+
+        hljs.highlightAll();
+    </script>
+</body>
+</html>

@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>#56 Merge Intervals | LeetCode 學習平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #333; background: #f8fafc; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .header { background: linear-gradient(135deg, #ea580c 0%, #c2410c 100%); color: white; padding: 30px; border-radius: 12px; margin-bottom: 30px; box-shadow: 0 4px 6px rgba(234, 88, 12, 0.2); }
+        .header h1 { font-size: 2em; margin-bottom: 10px; }
+        .difficulty { display: inline-block; padding: 6px 16px; background: rgba(255,255,255,0.2); border-radius: 20px; font-size: 0.9em; font-weight: 600; }
+        .tags { margin-top: 15px; }
+        .tag { display: inline-block; background: rgba(255,255,255,0.15); padding: 4px 12px; border-radius: 6px; margin-right: 8px; font-size: 0.85em; }
+        .back-btn { display: inline-block; margin-bottom: 20px; padding: 10px 20px; background: #3b82f6; color: white; text-decoration: none; border-radius: 8px; transition: background 0.3s; }
+        .back-btn:hover { background: #2563eb; }
+        .section { background: white; padding: 30px; border-radius: 12px; margin-bottom: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .section h2 { color: #1e293b; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 3px solid #ea580c; }
+        .section h3 { color: #475569; margin: 25px 0 15px 0; font-size: 1.3em; }
+        .code-block { background: #282c34; border-radius: 8px; overflow: hidden; margin: 15px 0; }
+        .lang-tabs { display: flex; background: #21252b; border-bottom: 1px solid #181a1f; }
+        .lang-tab { padding: 12px 24px; cursor: pointer; color: #abb2bf; border: none; background: none; transition: all 0.3s; font-weight: 500; }
+        .lang-tab.active { color: #61afef; background: #282c34; border-bottom: 2px solid #61afef; }
+        .lang-tab:hover { color: #61afef; background: #2c313a; }
+        .code-content { display: none; }
+        .code-content.active { display: block; }
+        pre { margin: 0; overflow-x: auto; }
+        code { font-family: 'Consolas', 'Monaco', 'Courier New', monospace; font-size: 0.9em; }
+        .example { background: #f0f9ff; border-left: 4px solid #3b82f6; padding: 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .example-title { font-weight: 700; color: #1e40af; margin-bottom: 12px; font-size: 1.05em; }
+        .visual-box { background: #fef3c7; border: 2px solid #f59e0b; padding: 20px; border-radius: 8px; margin: 15px 0; }
+        .visual-title { font-weight: 700; color: #92400e; margin-bottom: 12px; display: flex; align-items: center; font-size: 1.05em; }
+        .complexity { background: #f1f5f9; padding: 15px; border-radius: 8px; margin: 15px 0; }
+        .complexity-item { margin: 8px 0; color: #475569; }
+        .key-point { background: #dcfce7; border-left: 4px solid #16a34a; padding: 15px 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        ul, ol { margin-left: 25px; margin-top: 10px; }
+        li { margin: 8px 0; color: #475569; }
+        strong { color: #1e293b; }
+        .note { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 15px 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        @media (max-width: 768px) {
+            .container { padding: 10px; }
+            .header h1 { font-size: 1.5em; }
+            .section { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="../index.html" class="back-btn">← 返回題目列表</a>
+
+        <div class="header">
+            <h1>#56 Merge Intervals</h1>
+            <div class="difficulty">Medium</div>
+            <div class="tags">
+                <span class="tag">Array</span>
+                <span class="tag">Sorting</span>
+                <span class="tag">Interval</span>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>題目描述</h2>
+            <p>以陣列 intervals 表示若干個區間的集合，其中單個區間為 <code>intervals[i] = [start<sub>i</sub>, end<sub>i</sub>]</code>。請你<strong>合併所有重疊的區間</strong>，並返回一個不重疊的區間陣列，該陣列需恰好覆蓋輸入中的所有區間。</p>
+        </div>
+
+        <div class="section">
+            <h2>範例</h2>
+            <div class="example">
+                <div class="example-title">範例 1：</div>
+                <strong>輸入：</strong>intervals = [[1,3],[2,6],[8,10],[15,18]]<br>
+                <strong>輸出：</strong>[[1,6],[8,10],[15,18]]<br>
+                <strong>解釋：</strong>[1,3] 和 [2,6] 重疊，合併為 [1,6]。
+            </div>
+
+            <div class="example">
+                <div class="example-title">範例 2：</div>
+                <strong>輸入：</strong>intervals = [[1,4],[4,5]]<br>
+                <strong>輸出：</strong>[[1,5]]<br>
+                <strong>解釋：</strong>端點接觸也算重疊。
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>解題思路</h2>
+            <div class="visual-box">
+                <div class="visual-title">💡 核心：先按起點排序，再貪心合併</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+排序後，只需要和「結果中的最後一個區間」比較即可，
+因為起點已經遞增，不可能和更早的區間重疊。
+
+intervals = [[1,3],[2,6],[8,10],[15,18]]（已按起點排序）
+
+result = [[1,3]]
+
+看 [2,6]：2 <= 3（重疊）→ 合併，end 取 max(3,6)=6
+result = [[1,6]]
+
+看 [8,10]：8 > 6（不重疊）→ 直接加入
+result = [[1,6],[8,10]]
+
+看 [15,18]：15 > 10（不重疊）→ 直接加入
+result = [[1,6],[8,10],[15,18]] ✓
+                </pre>
+            </div>
+
+            <h3>判斷重疊的條件</h3>
+            <div class="visual-box">
+                <div class="visual-title">🎯 排序後只需一個條件</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+排序後 cur.start >= last.start 恆成立，
+所以重疊 ⟺ cur.start <= last.end
+
+情況一：包含      last [1......10]
+                  cur     [3, 5]
+                  合併後 [1, 10]  ← end 要取 max！
+
+情況二：部分重疊  last [1, 5]
+                  cur     [3, 8]
+                  合併後 [1, 8]
+
+情況三：不重疊    last [1, 3]
+                  cur        [5, 8]
+                  各自保留
+
+💡 情況一就是為什麼一定要寫 max(last.end, cur.end)，
+   直接寫 cur.end 會把 [1,10] 錯誤縮成 [1,5]。
+                </pre>
+            </div>
+
+            <h3>為什麼排序是必要的？</h3>
+            <p>不排序的話，一個新區間可能和<strong>任何</strong>已存在的區間重疊，需要 O(n²) 兩兩比較。排序後有了單調性，只要比較最後一個，降為 O(n log n)。</p>
+        </div>
+
+        <div class="section">
+            <h2>程式碼實現</h2>
+
+            <div class="code-block">
+                <div class="lang-tabs">
+                    <button class="lang-tab active" onclick="switchLang(event, 'python')">Python</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'cpp')">C++</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'java')">Java</button>
+                </div>
+
+                <div id="python" class="code-content active">
+                    <pre><code class="language-python">class Solution:
+    def merge(self, intervals: List[List[int]]) -&gt; List[List[int]]:
+        # 1. 按起點排序
+        intervals.sort(key=lambda x: x[0])
+
+        result = []
+        for start, end in intervals:
+            # 不重疊：直接加入
+            if not result or start &gt; result[-1][1]:
+                result.append([start, end])
+            else:
+                # 重疊：延伸結尾（一定要取 max，處理包含關係）
+                result[-1][1] = max(result[-1][1], end)
+        return result</code></pre>
+                </div>
+
+                <div id="cpp" class="code-content">
+                    <pre><code class="language-cpp">class Solution {
+public:
+    vector&lt;vector&lt;int&gt;&gt; merge(vector&lt;vector&lt;int&gt;&gt;&amp; intervals) {
+        // 1. 按起點排序
+        sort(intervals.begin(), intervals.end());
+
+        vector&lt;vector&lt;int&gt;&gt; result;
+        for (const auto&amp; iv : intervals) {
+            // 不重疊：直接加入
+            if (result.empty() || iv[0] &gt; result.back()[1]) {
+                result.push_back(iv);
+            } else {
+                // 重疊：延伸結尾（取 max 處理包含關係）
+                result.back()[1] = max(result.back()[1], iv[1]);
+            }
+        }
+        return result;
+    }
+};</code></pre>
+                </div>
+
+                <div id="java" class="code-content">
+                    <pre><code class="language-java">class Solution {
+    public int[][] merge(int[][] intervals) {
+        // 1. 按起點排序
+        Arrays.sort(intervals, (a, b) -&gt; Integer.compare(a[0], b[0]));
+
+        List&lt;int[]&gt; result = new ArrayList&lt;&gt;();
+        for (int[] iv : intervals) {
+            // 不重疊：直接加入
+            if (result.isEmpty() || iv[0] &gt; result.get(result.size() - 1)[1]) {
+                result.add(iv);
+            } else {
+                // 重疊：延伸結尾
+                int[] last = result.get(result.size() - 1);
+                last[1] = Math.max(last[1], iv[1]);
+            }
+        }
+        return result.toArray(new int[result.size()][]);
+    }
+}</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>複雜度分析</h2>
+            <div class="complexity">
+                <div class="complexity-item">
+                    <strong>時間複雜度：</strong>O(n log n)
+                    <ul>
+                        <li>排序 O(n log n) 為主要成本</li>
+                        <li>單趟合併只需 O(n)</li>
+                    </ul>
+                </div>
+                <div class="complexity-item">
+                    <strong>空間複雜度：</strong>O(log n) ~ O(n)
+                    <ul>
+                        <li>排序所需的堆疊空間</li>
+                        <li>不計算輸出陣列的話為 O(log n)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>重點提示</h2>
+            <div class="key-point">
+                <strong>💡 關鍵技巧 1：一定要用 max 更新結尾</strong>
+                <p>[[1,10],[2,3]] 排序後若直接寫 <code>result[-1][1] = end</code>，會把 [1,10] 縮成 [1,3]，答案就錯了。這是本題最常見的 bug。</p>
+            </div>
+
+            <div class="key-point">
+                <strong>💡 關鍵技巧 2：端點接觸算不算重疊？</strong>
+                <p>本題 [1,4] 和 [4,5] 要合併，所以條件是 <code>start &gt; last.end</code> 才算不重疊。但有些題目（如會議室安排）端點接觸<strong>不算</strong>衝突，要用 <code>start &gt;= last.end</code>。務必先問清楚題目定義。</p>
+            </div>
+
+            <div class="note">
+                <strong>⚠️ 常見錯誤：</strong>
+                <ul>
+                    <li>忘記先排序</li>
+                    <li>更新結尾時沒取 max</li>
+                    <li>邊界條件 <code>&gt;</code> 和 <code>&gt;=</code> 用錯</li>
+                    <li>Java 用 <code>(a,b) -&gt; a[0] - b[0]</code> 在極端值時會整數溢位，建議用 <code>Integer.compare</code></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>相關題目</h2>
+            <ul>
+                <li><strong>#57 Insert Interval</strong> - 在已排序的區間中插入一個新區間</li>
+                <li><strong>#252 Meeting Rooms</strong> - 判斷是否有重疊</li>
+                <li><strong>#253 Meeting Rooms II</strong> - 求最少需要幾間會議室</li>
+                <li><strong>#435 Non-overlapping Intervals</strong> - 最少刪除幾個區間使不重疊</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>補充說明</h2>
+            <h3>區間題型四大套路</h3>
+            <div class="visual-box">
+                <div class="visual-title">📝 看到區間題先想這四招</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+1【按起點排序 + 貪心合併】→ #56 合併區間
+   排序後只需比較最後一個
+
+2【按終點排序 + 貪心選擇】→ #435 最少刪除、活動選擇問題
+   每次選結束最早的，能留下最多區間
+
+3【差分陣列 / 掃描線】→ #253 會議室 II、#1094 拼車
+   進入 +1、離開 -1，掃描過程中的最大值就是答案
+   events = [(s, +1), (e, -1)]，排序後累加
+
+4【最小堆積】→ #253 另一種解法
+   堆積存放每間會議室的結束時間，
+   新會議來時看最早結束的房間是否已空出
+
+判斷兩區間 [a,b] 與 [c,d] 是否重疊的通用式：
+   重疊 ⟺ a &lt;= d && c &lt;= b
+   （等價於 NOT (b &lt; c || d &lt; a)）
+                </pre>
+            </div>
+
+            <h3>#253 會議室 II 的掃描線解法</h3>
+            <pre style="background: #f1f5f9; padding: 15px; border-radius: 8px; margin-top: 10px;">
+int minMeetingRooms(vector&lt;vector&lt;int&gt;&gt;&amp; intervals) {
+    vector&lt;pair&lt;int,int&gt;&gt; events;
+    for (auto&amp; iv : intervals) {
+        events.push_back({iv[0], 1});    // 會議開始，佔用 +1
+        events.push_back({iv[1], -1});   // 會議結束，釋放 -1
+    }
+    sort(events.begin(), events.end());  // 同時間點時 -1 排在 +1 前（結束優先）
+    int cur = 0, maxRooms = 0;
+    for (auto&amp; [t, delta] : events) {
+        cur += delta;
+        maxRooms = max(maxRooms, cur);
+    }
+    return maxRooms;
+}
+            </pre>
+        </div>
+    </div>
+
+    <script>
+        function switchLang(event, lang) {
+            const tabs = document.querySelectorAll('.lang-tab');
+            const contents = document.querySelectorAll('.code-content');
+
+            tabs.forEach(tab => tab.classList.remove('active'));
+            contents.forEach(content => content.classList.remove('active'));
+
+            event.target.classList.add('active');
+            document.getElementById(lang).classList.add('active');
+        }
+
+        hljs.highlightAll();
+    </script>
+</body>
+</html>

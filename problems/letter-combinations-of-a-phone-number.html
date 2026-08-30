@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>#17 Letter Combinations of a Phone Number | LeetCode 學習平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #333; background: #f8fafc; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .header { background: linear-gradient(135deg, #ea580c 0%, #c2410c 100%); color: white; padding: 30px; border-radius: 12px; margin-bottom: 30px; box-shadow: 0 4px 6px rgba(234, 88, 12, 0.2); }
+        .header h1 { font-size: 2em; margin-bottom: 10px; }
+        .difficulty { display: inline-block; padding: 6px 16px; background: rgba(255,255,255,0.2); border-radius: 20px; font-size: 0.9em; font-weight: 600; }
+        .tags { margin-top: 15px; }
+        .tag { display: inline-block; background: rgba(255,255,255,0.15); padding: 4px 12px; border-radius: 6px; margin-right: 8px; font-size: 0.85em; }
+        .back-btn { display: inline-block; margin-bottom: 20px; padding: 10px 20px; background: #3b82f6; color: white; text-decoration: none; border-radius: 8px; transition: background 0.3s; }
+        .back-btn:hover { background: #2563eb; }
+        .section { background: white; padding: 30px; border-radius: 12px; margin-bottom: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .section h2 { color: #1e293b; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 3px solid #ea580c; }
+        .section h3 { color: #475569; margin: 25px 0 15px 0; font-size: 1.3em; }
+        .code-block { background: #282c34; border-radius: 8px; overflow: hidden; margin: 15px 0; }
+        .lang-tabs { display: flex; background: #21252b; border-bottom: 1px solid #181a1f; }
+        .lang-tab { padding: 12px 24px; cursor: pointer; color: #abb2bf; border: none; background: none; transition: all 0.3s; font-weight: 500; }
+        .lang-tab.active { color: #61afef; background: #282c34; border-bottom: 2px solid #61afef; }
+        .lang-tab:hover { color: #61afef; background: #2c313a; }
+        .code-content { display: none; }
+        .code-content.active { display: block; }
+        pre { margin: 0; overflow-x: auto; }
+        code { font-family: 'Consolas', 'Monaco', 'Courier New', monospace; font-size: 0.9em; }
+        .example { background: #f0f9ff; border-left: 4px solid #3b82f6; padding: 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .example-title { font-weight: 700; color: #1e40af; margin-bottom: 12px; font-size: 1.05em; }
+        .visual-box { background: #fef3c7; border: 2px solid #f59e0b; padding: 20px; border-radius: 8px; margin: 15px 0; }
+        .visual-title { font-weight: 700; color: #92400e; margin-bottom: 12px; display: flex; align-items: center; font-size: 1.05em; }
+        .complexity { background: #f1f5f9; padding: 15px; border-radius: 8px; margin: 15px 0; }
+        .complexity-item { margin: 8px 0; color: #475569; }
+        .key-point { background: #dcfce7; border-left: 4px solid #16a34a; padding: 15px 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        ul, ol { margin-left: 25px; margin-top: 10px; }
+        li { margin: 8px 0; color: #475569; }
+        strong { color: #1e293b; }
+        .note { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 15px 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        @media (max-width: 768px) {
+            .container { padding: 10px; }
+            .header h1 { font-size: 1.5em; }
+            .section { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="../index.html" class="back-btn">← 返回題目列表</a>
+
+        <div class="header">
+            <h1>#17 Letter Combinations of a Phone Number</h1>
+            <div class="difficulty">Medium</div>
+            <div class="tags">
+                <span class="tag">Backtracking</span>
+                <span class="tag">String</span>
+                <span class="tag">Hash Table</span>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>題目描述</h2>
+            <p>給定一個僅包含數字 <code>2-9</code> 的字串，返回所有它能表示的字母組合。答案可以按<strong>任意順序</strong>返回。</p>
+            <p style="margin-top: 15px;">數字到字母的映射與電話按鍵相同（注意 1 不對應任何字母）：</p>
+            <pre style="background: #f1f5f9; padding: 15px; border-radius: 8px; margin-top: 10px;">
+2 → abc      3 → def      4 → ghi
+5 → jkl      6 → mno      7 → pqrs
+8 → tuv      9 → wxyz
+            </pre>
+        </div>
+
+        <div class="section">
+            <h2>範例</h2>
+            <div class="example">
+                <div class="example-title">範例 1：</div>
+                <strong>輸入：</strong>digits = "23"<br>
+                <strong>輸出：</strong>["ad","ae","af","bd","be","bf","cd","ce","cf"]<br>
+                <strong>解釋：</strong>3 × 3 = 9 種組合。
+            </div>
+
+            <div class="example">
+                <div class="example-title">範例 2：</div>
+                <strong>輸入：</strong>digits = ""<br>
+                <strong>輸出：</strong>[]<br>
+                <strong>解釋：</strong>空輸入要返回空陣列，不是 [""]。
+            </div>
+
+            <div class="example">
+                <div class="example-title">範例 3：</div>
+                <strong>輸入：</strong>digits = "2"<br>
+                <strong>輸出：</strong>["a","b","c"]
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>解題思路</h2>
+            <div class="visual-box">
+                <div class="visual-title">💡 核心：多集合的笛卡爾積 = 多層回溯</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+digits = "23"
+  第 1 層：從 {a, b, c} 選一個
+  第 2 層：從 {d, e, f} 選一個
+
+                ""
+        /       |       \
+      "a"      "b"      "c"
+     / | \    / | \    / | \
+   ad ae af bd be bf cd ce cf
+
+深度 = digits 的長度
+每層的分支數 = 該數字對應的字母數（3 或 4）
+
+⭐ 與其他回溯題的差別：
+   每一層的「選擇列表」是不同的（由該位數字決定），
+   而不是共用同一個候選集合。
+                </pre>
+            </div>
+
+            <h3>回溯實作</h3>
+            <div class="visual-box">
+                <div class="visual-title">🎯 index 表示「現在處理第幾個數字」</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+void backtrack(int index) {
+    if (index == digits.size()) {      // 所有數字都處理完
+        result.push_back(path);
+        return;
+    }
+
+    string letters = phone[digits[index]];   // 這一位對應的字母集
+    for (char c : letters) {
+        path.push_back(c);              // ① 做選擇
+        backtrack(index + 1);           // ② 處理下一位數字
+        path.pop_back();                // ③ 撤銷選擇
+    }
+}
+
+沒有剪枝條件 —— 因為所有組合都是合法答案。
+                </pre>
+            </div>
+
+            <h3>方法二：BFS 迭代（不用遞迴）</h3>
+            <div class="visual-box">
+                <div class="visual-title">🔄 逐位擴展佇列</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+result = [""]
+
+處理 '2'：把 result 中每個字串各接上 a、b、c
+  [""] → ["a", "b", "c"]
+
+處理 '3'：把 result 中每個字串各接上 d、e、f
+  ["a","b","c"] → ["ad","ae","af","bd","be","bf","cd","ce","cf"] ✓
+
+每一輪答案數量乘以該數字的字母數。
+優點：沒有遞迴堆疊，程式碼也很短。
+                </pre>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>程式碼實現</h2>
+
+            <div class="code-block">
+                <div class="lang-tabs">
+                    <button class="lang-tab active" onclick="switchLang(event, 'python')">Python</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'cpp')">C++</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'java')">Java</button>
+                </div>
+
+                <div id="python" class="code-content active">
+                    <pre><code class="language-python"># 方法一：回溯（推薦）
+class Solution:
+    def letterCombinations(self, digits: str) -&gt; List[str]:
+        if not digits:
+            return []                 # 注意：空輸入回傳 []，不是 [""]
+
+        phone = {
+            '2': 'abc', '3': 'def', '4': 'ghi', '5': 'jkl',
+            '6': 'mno', '7': 'pqrs', '8': 'tuv', '9': 'wxyz'
+        }
+
+        result = []
+        path = []
+
+        def backtrack(index):
+            # 所有數字都處理完了
+            if index == len(digits):
+                result.append(''.join(path))
+                return
+
+            for ch in phone[digits[index]]:
+                path.append(ch)          # ① 做選擇
+                backtrack(index + 1)     # ② 下一位數字
+                path.pop()               # ③ 撤銷選擇
+
+        backtrack(0)
+        return result
+
+
+# 方法二：BFS 迭代
+class Solution:
+    def letterCombinations(self, digits: str) -&gt; List[str]:
+        if not digits:
+            return []
+
+        phone = {
+            '2': 'abc', '3': 'def', '4': 'ghi', '5': 'jkl',
+            '6': 'mno', '7': 'pqrs', '8': 'tuv', '9': 'wxyz'
+        }
+
+        result = ['']
+        for d in digits:
+            # 每一輪把現有結果與新字母做笛卡爾積
+            result = [prefix + ch for prefix in result for ch in phone[d]]
+        return result</code></pre>
+                </div>
+
+                <div id="cpp" class="code-content">
+                    <pre><code class="language-cpp">// 方法一：回溯（推薦）
+class Solution {
+    vector&lt;string&gt; result;
+    string path;
+    vector&lt;string&gt; phone = {
+        "", "", "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"
+    };
+
+    void backtrack(const string&amp; digits, int index) {
+        if (index == digits.size()) {
+            result.push_back(path);
+            return;
+        }
+
+        const string&amp; letters = phone[digits[index] - '0'];
+        for (char c : letters) {
+            path.push_back(c);                  // ① 做選擇
+            backtrack(digits, index + 1);       // ② 下一位
+            path.pop_back();                    // ③ 撤銷
+        }
+    }
+
+public:
+    vector&lt;string&gt; letterCombinations(string digits) {
+        if (digits.empty()) return {};          // 空輸入回傳空陣列
+        backtrack(digits, 0);
+        return result;
+    }
+};
+
+// 方法二：BFS 迭代
+class Solution {
+public:
+    vector&lt;string&gt; letterCombinations(string digits) {
+        if (digits.empty()) return {};
+        vector&lt;string&gt; phone = {"","","abc","def","ghi","jkl",
+                                "mno","pqrs","tuv","wxyz"};
+        vector&lt;string&gt; result = {""};
+        for (char d : digits) {
+            vector&lt;string&gt; next;
+            for (const string&amp; prefix : result)
+                for (char c : phone[d - '0'])
+                    next.push_back(prefix + c);
+            result = move(next);
+        }
+        return result;
+    }
+};</code></pre>
+                </div>
+
+                <div id="java" class="code-content">
+                    <pre><code class="language-java">// 方法一：回溯（推薦）
+class Solution {
+    private List&lt;String&gt; result = new ArrayList&lt;&gt;();
+    private StringBuilder path = new StringBuilder();
+    private String[] phone = {
+        "", "", "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"
+    };
+
+    public List&lt;String&gt; letterCombinations(String digits) {
+        if (digits == null || digits.isEmpty()) return result;
+        backtrack(digits, 0);
+        return result;
+    }
+
+    private void backtrack(String digits, int index) {
+        if (index == digits.length()) {
+            result.add(path.toString());
+            return;
+        }
+
+        String letters = phone[digits.charAt(index) - '0'];
+        for (char c : letters.toCharArray()) {
+            path.append(c);                          // ① 做選擇
+            backtrack(digits, index + 1);            // ② 下一位
+            path.deleteCharAt(path.length() - 1);    // ③ 撤銷
+        }
+    }
+}</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>複雜度分析</h2>
+            <div class="complexity">
+                <div class="complexity-item">
+                    <strong>時間複雜度：</strong>O(4ⁿ × n)
+                    <ul>
+                        <li>n 為 digits 長度，每位最多 4 個字母（7 和 9）</li>
+                        <li>共最多 4ⁿ 個組合，每個組合建構需 O(n)</li>
+                        <li>這是輸出規模的下界</li>
+                    </ul>
+                </div>
+                <div class="complexity-item">
+                    <strong>空間複雜度：</strong>O(n)
+                    <ul>
+                        <li>遞迴堆疊深度 n，path 長度 n</li>
+                        <li>不計輸出所需的 O(4ⁿ × n)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>重點提示</h2>
+            <div class="key-point">
+                <strong>💡 關鍵技巧 1：空輸入要回傳 []，不是 [""]</strong>
+                <p>這是本題最常見的失分點。如果不特判空字串，回溯會直接觸發終止條件而把空字串加入結果，得到 <code>[""]</code>，與題目要求不符。</p>
+            </div>
+
+            <div class="key-point">
+                <strong>💡 關鍵技巧 2：每層的選擇列表不同</strong>
+                <p>本題與 #46、#78 的結構差異在於：選擇列表<strong>由當前層決定</strong>（<code>phone[digits[index]]</code>），而不是固定的 nums。理解這點，就能處理各種「多維笛卡爾積」型的題目。</p>
+            </div>
+
+            <div class="key-point">
+                <strong>💡 用陣列取代 HashMap</strong>
+                <p>因為 key 是 '2'~'9'，直接用長度 10 的字串陣列、以 <code>digits[i] - '0'</code> 當索引，比 HashMap 更快也更簡潔。這是「key 是小範圍整數時用陣列」的通用優化。</p>
+            </div>
+
+            <div class="note">
+                <strong>⚠️ 常見錯誤：</strong>
+                <ul>
+                    <li>沒有特判空字串，回傳 <code>[""]</code></li>
+                    <li>忘記 7 和 9 有 4 個字母（pqrs、wxyz），只寫 3 個</li>
+                    <li>忘記撤銷選擇</li>
+                    <li>Java 用 String 拼接而非 StringBuilder，效能較差</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>相關題目</h2>
+            <ul>
+                <li><strong>#46 Permutations</strong> - 回溯基礎</li>
+                <li><strong>#78 Subsets</strong> - 組合型回溯</li>
+                <li><strong>#39 Combination Sum</strong> - 帶剪枝的回溯</li>
+                <li><strong>#93 Restore IP Addresses</strong> - 分割型回溯</li>
+                <li><strong>#131 Palindrome Partitioning</strong> - 字串分割回溯</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>補充說明</h2>
+            <h3>回溯題型的三大結構</h3>
+            <div class="visual-box">
+                <div class="visual-title">📝 認出結構就知道怎麼寫</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+【型 A：從同一個集合中選】
+  for (i = start 或 0; i &lt; n; i++)
+  代表題：#46 排列、#78 子集、#39 組合總和
+  差別只在起點與 used 陣列
+
+【型 B：每層有不同的選擇列表】← 本題
+  for (choice : getChoices(depth))
+  代表題：#17 電話號碼、#79 單詞搜尋（四個方向）
+
+【型 C：分割問題（決定「切在哪」）】
+  for (end = start; end &lt; n; end++) 取 s[start..end]
+  代表題：#131 回文分割、#93 復原 IP 位址
+                </pre>
+            </div>
+
+            <h3>#93 Restore IP Addresses（分割型範例）</h3>
+            <pre style="background: #f1f5f9; padding: 15px; border-radius: 8px; margin-top: 10px;">
+void backtrack(string&amp; s, int start, vector&lt;string&gt;&amp; segments) {
+    if (segments.size() == 4) {
+        if (start == s.size()) result.push_back(join(segments, "."));
+        return;                       // 剛好 4 段且用完所有字元才合法
+    }
+
+    // 每段長度 1~3
+    for (int len = 1; len &lt;= 3 &amp;&amp; start + len &lt;= s.size(); len++) {
+        string seg = s.substr(start, len);
+        if (seg.size() &gt; 1 &amp;&amp; seg[0] == '0') break;   // 不能有前置零
+        if (stoi(seg) &gt; 255) break;                    // 不能超過 255
+
+        segments.push_back(seg);
+        backtrack(s, start + len, segments);
+        segments.pop_back();
+    }
+}
+
+剪枝條件（前置零、&gt;255、段數）是這題的重點。
+            </pre>
+
+            <h3>實務應用：T9 輸入法</h3>
+            <p>早期功能手機的 <strong>T9 預測輸入</strong>就是這題的反向應用：使用者按下 <code>4663</code>，系統要在所有 4×3×3×3 = 108 種字母組合中，快速找出哪些是真正的英文單字。實務做法是<strong>預先把字典中每個單字轉成數字序列建成雜湊表</strong>，查詢時 O(1) 直接取出候選單字，而不是列舉所有組合再逐一查字典 —— 又是一次「預處理換查詢速度」的體現。</p>
+        </div>
+    </div>
+
+    <script>
+        function switchLang(event, lang) {
+            const tabs = document.querySelectorAll('.lang-tab');
+            const contents = document.querySelectorAll('.code-content');
+
+            tabs.forEach(tab => tab.classList.remove('active'));
+            contents.forEach(content => content.classList.remove('active'));
+
+            event.target.classList.add('active');
+            document.getElementById(lang).classList.add('active');
+        }
+
+        hljs.highlightAll();
+    </script>
+</body>
+</html>

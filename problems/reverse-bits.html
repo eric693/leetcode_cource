@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>#190 Reverse Bits | LeetCode 學習平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #333; background: #f8fafc; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .header { background: linear-gradient(135deg, #16a34a 0%, #15803d 100%); color: white; padding: 30px; border-radius: 12px; margin-bottom: 30px; box-shadow: 0 4px 6px rgba(22, 163, 74, 0.2); }
+        .header h1 { font-size: 2em; margin-bottom: 10px; }
+        .difficulty { display: inline-block; padding: 6px 16px; background: rgba(255,255,255,0.2); border-radius: 20px; font-size: 0.9em; font-weight: 600; }
+        .tags { margin-top: 15px; }
+        .tag { display: inline-block; background: rgba(255,255,255,0.15); padding: 4px 12px; border-radius: 6px; margin-right: 8px; font-size: 0.85em; }
+        .back-btn { display: inline-block; margin-bottom: 20px; padding: 10px 20px; background: #3b82f6; color: white; text-decoration: none; border-radius: 8px; transition: background 0.3s; }
+        .back-btn:hover { background: #2563eb; }
+        .section { background: white; padding: 30px; border-radius: 12px; margin-bottom: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .section h2 { color: #1e293b; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 3px solid #16a34a; }
+        .section h3 { color: #475569; margin: 25px 0 15px 0; font-size: 1.3em; }
+        .code-block { background: #282c34; border-radius: 8px; overflow: hidden; margin: 15px 0; }
+        .lang-tabs { display: flex; background: #21252b; border-bottom: 1px solid #181a1f; }
+        .lang-tab { padding: 12px 24px; cursor: pointer; color: #abb2bf; border: none; background: none; transition: all 0.3s; font-weight: 500; }
+        .lang-tab.active { color: #61afef; background: #282c34; border-bottom: 2px solid #61afef; }
+        .lang-tab:hover { color: #61afef; background: #2c313a; }
+        .code-content { display: none; }
+        .code-content.active { display: block; }
+        pre { margin: 0; overflow-x: auto; }
+        code { font-family: 'Consolas', 'Monaco', 'Courier New', monospace; font-size: 0.9em; }
+        .example { background: #f0f9ff; border-left: 4px solid #3b82f6; padding: 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .example-title { font-weight: 700; color: #1e40af; margin-bottom: 12px; font-size: 1.05em; }
+        .visual-box { background: #fef3c7; border: 2px solid #f59e0b; padding: 20px; border-radius: 8px; margin: 15px 0; }
+        .visual-title { font-weight: 700; color: #92400e; margin-bottom: 12px; display: flex; align-items: center; font-size: 1.05em; }
+        .complexity { background: #f1f5f9; padding: 15px; border-radius: 8px; margin: 15px 0; }
+        .complexity-item { margin: 8px 0; color: #475569; }
+        .key-point { background: #dcfce7; border-left: 4px solid #16a34a; padding: 15px 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        ul, ol { margin-left: 25px; margin-top: 10px; }
+        li { margin: 8px 0; color: #475569; }
+        strong { color: #1e293b; }
+        .note { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 15px 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        @media (max-width: 768px) {
+            .container { padding: 10px; }
+            .header h1 { font-size: 1.5em; }
+            .section { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="../index.html" class="back-btn">← 返回題目列表</a>
+
+        <div class="header">
+            <h1>#190 Reverse Bits</h1>
+            <div class="difficulty">Easy</div>
+            <div class="tags">
+                <span class="tag">Bit Manipulation</span>
+                <span class="tag">Divide and Conquer</span>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>題目描述</h2>
+            <p>顛倒給定的 32 位元無號整數的二進位位元。</p>
+            <p style="margin-top: 15px;">例如輸入 <code>00000010100101000001111010011100</code>，輸出 <code>00111001011110000010100101000000</code>。</p>
+            <p style="margin-top: 15px;"><strong>進階：</strong>如果這個函數被呼叫很多次，你要如何優化？（這是韌體面試最愛的追問）</p>
+        </div>
+
+        <div class="section">
+            <h2>範例</h2>
+            <div class="example">
+                <div class="example-title">範例 1：</div>
+                <strong>輸入：</strong>n = 00000010100101000001111010011100（十進位 43261596）<br>
+                <strong>輸出：</strong>00111001011110000010100101000000（十進位 964176192）
+            </div>
+
+            <div class="example">
+                <div class="example-title">範例 2：</div>
+                <strong>輸入：</strong>n = 11111111111111111111111111111101（十進位 4294967293）<br>
+                <strong>輸出：</strong>10111111111111111111111111111111（十進位 3221225471）
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>解題思路</h2>
+            <div class="visual-box">
+                <div class="visual-title">💡 方法一：逐位搬移</div>
+                <p>把 n 的最低位一個一個取出，塞進 result 的最低位，同時 result 左移。</p>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+n = 1011（只看 4 位示範）
+result = 0000
+
+第 1 輪：result = (0000 << 1) | (n & 1)=1 → 0001, n = 101
+第 2 輪：result = (0001 << 1) | 1        → 0011, n = 10
+第 3 輪：result = (0011 << 1) | 0        → 0110, n = 1
+第 4 輪：result = (0110 << 1) | 1        → 1101, n = 0
+
+1011 反轉 → 1101 ✓
+                </pre>
+            </div>
+
+            <h3>方法二：分治法（Divide &amp; Conquer）</h3>
+            <div class="visual-box">
+                <div class="visual-title">🎯 只要 5 步，O(log 32)</div>
+                <p>先交換相鄰的 16 位、再交換 8 位、4 位、2 位、1 位，就完成整體反轉。</p>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+原始： ABCDEFGH（每個字母代表 4 位）
+換16： EFGHABCD
+換8 ： GHEFCDAB
+換4 ： HGFEDCBA  （4 位群組已反轉）
+換2 ： 群組內每 2 位再交換
+換1 ： 最後每 1 位交換 → 完全反轉
+
+遮罩：
+0xFFFF0000 / 0x0000FFFF   16 位
+0xFF00FF00 / 0x00FF00FF   8 位
+0xF0F0F0F0 / 0x0F0F0F0F   4 位
+0xCCCCCCCC / 0x33333333   2 位
+0xAAAAAAAA / 0x55555555   1 位
+                </pre>
+            </div>
+
+            <h3>方法三：查表 + 快取（回答「呼叫很多次」的進階題）</h3>
+            <div class="visual-box">
+                <div class="visual-title">⚡ 拆成 4 個 byte 查表</div>
+                <p>建立 256 大小的 byte 反轉表，把 32 位元拆成 4 個 byte，各自查表後再反序組回去。若輸入有重複，還可以用 HashMap 做記憶化快取。</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>程式碼實現</h2>
+
+            <div class="code-block">
+                <div class="lang-tabs">
+                    <button class="lang-tab active" onclick="switchLang(event, 'python')">Python</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'cpp')">C++</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'java')">Java</button>
+                </div>
+
+                <div id="python" class="code-content active">
+                    <pre><code class="language-python"># 方法一：逐位搬移
+class Solution:
+    def reverseBits(self, n: int) -&gt; int:
+        result = 0
+        for _ in range(32):
+            result = (result &lt;&lt; 1) | (n &amp; 1)
+            n &gt;&gt;= 1
+        return result
+
+
+# 方法二：分治法（只要 5 步）
+class Solution:
+    def reverseBits(self, n: int) -&gt; int:
+        n = ((n &amp; 0xFFFF0000) &gt;&gt; 16) | ((n &amp; 0x0000FFFF) &lt;&lt; 16)
+        n = ((n &amp; 0xFF00FF00) &gt;&gt; 8)  | ((n &amp; 0x00FF00FF) &lt;&lt; 8)
+        n = ((n &amp; 0xF0F0F0F0) &gt;&gt; 4)  | ((n &amp; 0x0F0F0F0F) &lt;&lt; 4)
+        n = ((n &amp; 0xCCCCCCCC) &gt;&gt; 2)  | ((n &amp; 0x33333333) &lt;&lt; 2)
+        n = ((n &amp; 0xAAAAAAAA) &gt;&gt; 1)  | ((n &amp; 0x55555555) &lt;&lt; 1)
+        return n
+
+
+# 方法三：查表 + 記憶化（適合被呼叫很多次）
+class Solution:
+    cache = {}
+
+    def reverseBits(self, n: int) -&gt; int:
+        result, power = 0, 24
+        while n:
+            byte = n &amp; 0xFF
+            result |= self.reverseByte(byte) &lt;&lt; power
+            n &gt;&gt;= 8
+            power -= 8
+        return result
+
+    def reverseByte(self, byte):
+        if byte in self.cache:
+            return self.cache[byte]
+        value = (byte * 0x0202020202 &amp; 0x010884422010) % 1023
+        self.cache[byte] = value
+        return value</code></pre>
+                </div>
+
+                <div id="cpp" class="code-content">
+                    <pre><code class="language-cpp">// 方法一：逐位搬移
+class Solution {
+public:
+    uint32_t reverseBits(uint32_t n) {
+        uint32_t result = 0;
+        for (int i = 0; i &lt; 32; i++) {
+            result = (result &lt;&lt; 1) | (n &amp; 1);
+            n &gt;&gt;= 1;
+        }
+        return result;
+    }
+};
+
+// 方法二：分治法（只要 5 步，韌體最愛）
+class Solution {
+public:
+    uint32_t reverseBits(uint32_t n) {
+        n = ((n &amp; 0xFFFF0000) &gt;&gt; 16) | ((n &amp; 0x0000FFFF) &lt;&lt; 16);
+        n = ((n &amp; 0xFF00FF00) &gt;&gt; 8)  | ((n &amp; 0x00FF00FF) &lt;&lt; 8);
+        n = ((n &amp; 0xF0F0F0F0) &gt;&gt; 4)  | ((n &amp; 0x0F0F0F0F) &lt;&lt; 4);
+        n = ((n &amp; 0xCCCCCCCC) &gt;&gt; 2)  | ((n &amp; 0x33333333) &lt;&lt; 2);
+        n = ((n &amp; 0xAAAAAAAA) &gt;&gt; 1)  | ((n &amp; 0x55555555) &lt;&lt; 1);
+        return n;
+    }
+};
+
+// 方法三：查表法（被呼叫很多次時最快）
+class Solution {
+    uint8_t table[256];
+public:
+    Solution() {
+        for (int i = 0; i &lt; 256; i++) {
+            uint8_t b = i, r = 0;
+            for (int j = 0; j &lt; 8; j++) { r = (r &lt;&lt; 1) | (b &amp; 1); b &gt;&gt;= 1; }
+            table[i] = r;
+        }
+    }
+    uint32_t reverseBits(uint32_t n) {
+        return (table[n &amp; 0xFF] &lt;&lt; 24) | (table[(n &gt;&gt; 8) &amp; 0xFF] &lt;&lt; 16)
+             | (table[(n &gt;&gt; 16) &amp; 0xFF] &lt;&lt; 8) | table[(n &gt;&gt; 24) &amp; 0xFF];
+    }
+};</code></pre>
+                </div>
+
+                <div id="java" class="code-content">
+                    <pre><code class="language-java">// 方法一：逐位搬移
+public class Solution {
+    public int reverseBits(int n) {
+        int result = 0;
+        for (int i = 0; i &lt; 32; i++) {
+            result = (result &lt;&lt; 1) | (n &amp; 1);
+            n &gt;&gt;&gt;= 1;              // 注意：無號右移
+        }
+        return result;
+    }
+}
+
+// 方法二：分治法
+public class Solution {
+    public int reverseBits(int n) {
+        n = (n &gt;&gt;&gt; 16) | (n &lt;&lt; 16);
+        n = ((n &amp; 0xFF00FF00) &gt;&gt;&gt; 8)  | ((n &amp; 0x00FF00FF) &lt;&lt; 8);
+        n = ((n &amp; 0xF0F0F0F0) &gt;&gt;&gt; 4)  | ((n &amp; 0x0F0F0F0F) &lt;&lt; 4);
+        n = ((n &amp; 0xCCCCCCCC) &gt;&gt;&gt; 2)  | ((n &amp; 0x33333333) &lt;&lt; 2);
+        n = ((n &amp; 0xAAAAAAAA) &gt;&gt;&gt; 1)  | ((n &amp; 0x55555555) &lt;&lt; 1);
+        return n;
+    }
+}
+
+// 方法三：Java 內建
+public class Solution {
+    public int reverseBits(int n) {
+        return Integer.reverse(n);
+    }
+}</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>複雜度分析</h2>
+            <div class="complexity">
+                <div class="complexity-item">
+                    <strong>時間複雜度：</strong>
+                    <ul>
+                        <li>方法一：O(32) = O(1)</li>
+                        <li>方法二（分治）：O(5) = O(1)，實際運算次數最少</li>
+                        <li>方法三（查表）：O(4) = O(1)，加上一次性建表 O(256)</li>
+                    </ul>
+                </div>
+                <div class="complexity-item">
+                    <strong>空間複雜度：</strong>
+                    <ul>
+                        <li>方法一、二：O(1)</li>
+                        <li>方法三：O(256) 查表空間</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>重點提示</h2>
+            <div class="key-point">
+                <strong>💡 關鍵技巧 1：分治遮罩要記熟</strong>
+                <p>0xAAAAAAAA / 0x55555555（奇偶位）、0xCCCCCCCC / 0x33333333（每 2 位）、0xF0F0F0F0 / 0x0F0F0F0F（每 4 位），這組遮罩在 popcount、bit reverse、byte swap 都會用到。</p>
+            </div>
+
+            <div class="key-point">
+                <strong>💡 關鍵技巧 2：進階題的標準答案</strong>
+                <p>面試官問「呼叫很多次怎麼優化」時，答案就是：<strong>拆 byte 查表 + 快取</strong>。這題就是在考這個。</p>
+            </div>
+
+            <div class="note">
+                <strong>⚠️ 常見錯誤：</strong>
+                <ul>
+                    <li><strong>Java 一定要用 <code>&gt;&gt;&gt;</code></strong>，用 <code>&gt;&gt;</code> 對負數會補 1 造成錯誤</li>
+                    <li>Python 整數沒有位寬限制，左移後要記得 &amp; 0xFFFFFFFF（本題因為固定 32 輪所以安全）</li>
+                    <li>C++ 用 <code>int</code> 而非 <code>uint32_t</code> 會有 UB</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>相關題目</h2>
+            <ul>
+                <li><strong>#191 Number of 1 Bits</strong> - 同樣可用分治遮罩解</li>
+                <li><strong>#7 Reverse Integer</strong> - 十進位版的反轉</li>
+                <li><strong>#476 Number Complement</strong> - 位元補數</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>補充說明</h2>
+            <h3>韌體實務：Byte Swap（大小端轉換）</h3>
+            <div class="visual-box">
+                <div class="visual-title">🔧 endianness 轉換是同一個技巧</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+// 32 位元 big-endian ↔ little-endian
+uint32_t bswap32(uint32_t x) {
+    return ((x & 0xFF000000) >> 24) |
+           ((x & 0x00FF0000) >> 8)  |
+           ((x & 0x0000FF00) << 8)  |
+           ((x & 0x000000FF) << 24);
+}
+// GCC 內建：__builtin_bswap32(x)
+// 網路位元組序：htonl() / ntohl()
+
+差別：bit reverse 是反轉「每一個位元」，
+      byte swap 是只反轉「位元組順序」，byte 內部不動。
+                </pre>
+            </div>
+
+            <h3>面試延伸問題</h3>
+            <ul>
+                <li>如何反轉一個 byte？（查表或 8 次迴圈）</li>
+                <li>如何判斷目前機器是大端還是小端？（用 union 或指標轉型看第一個 byte）</li>
+                <li>為什麼網路協定用 big-endian？（習慣約定，稱為 network byte order）</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        function switchLang(event, lang) {
+            const tabs = document.querySelectorAll('.lang-tab');
+            const contents = document.querySelectorAll('.code-content');
+
+            tabs.forEach(tab => tab.classList.remove('active'));
+            contents.forEach(content => content.classList.remove('active'));
+
+            event.target.classList.add('active');
+            document.getElementById(lang).classList.add('active');
+        }
+
+        hljs.highlightAll();
+    </script>
+</body>
+</html>

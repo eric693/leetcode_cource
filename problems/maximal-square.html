@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>#221 Maximal Square | LeetCode 學習平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #333; background: #f8fafc; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .header { background: linear-gradient(135deg, #ea580c 0%, #c2410c 100%); color: white; padding: 30px; border-radius: 12px; margin-bottom: 30px; box-shadow: 0 4px 6px rgba(234, 88, 12, 0.2); }
+        .header h1 { font-size: 2em; margin-bottom: 10px; }
+        .difficulty { display: inline-block; padding: 6px 16px; background: rgba(255,255,255,0.2); border-radius: 20px; font-size: 0.9em; font-weight: 600; }
+        .tags { margin-top: 15px; }
+        .tag { display: inline-block; background: rgba(255,255,255,0.15); padding: 4px 12px; border-radius: 6px; margin-right: 8px; font-size: 0.85em; }
+        .back-btn { display: inline-block; margin-bottom: 20px; padding: 10px 20px; background: #3b82f6; color: white; text-decoration: none; border-radius: 8px; transition: background 0.3s; }
+        .back-btn:hover { background: #2563eb; }
+        .section { background: white; padding: 30px; border-radius: 12px; margin-bottom: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .section h2 { color: #1e293b; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 3px solid #ea580c; }
+        .section h3 { color: #475569; margin: 25px 0 15px 0; font-size: 1.3em; }
+        .code-block { background: #282c34; border-radius: 8px; overflow: hidden; margin: 15px 0; }
+        .lang-tabs { display: flex; background: #21252b; border-bottom: 1px solid #181a1f; }
+        .lang-tab { padding: 12px 24px; cursor: pointer; color: #abb2bf; border: none; background: none; transition: all 0.3s; font-weight: 500; }
+        .lang-tab.active { color: #61afef; background: #282c34; border-bottom: 2px solid #61afef; }
+        .lang-tab:hover { color: #61afef; background: #2c313a; }
+        .code-content { display: none; }
+        .code-content.active { display: block; }
+        pre { margin: 0; overflow-x: auto; }
+        code { font-family: 'Consolas', 'Monaco', 'Courier New', monospace; font-size: 0.9em; }
+        .example { background: #f0f9ff; border-left: 4px solid #3b82f6; padding: 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .example-title { font-weight: 700; color: #1e40af; margin-bottom: 12px; font-size: 1.05em; }
+        .visual-box { background: #fef3c7; border: 2px solid #f59e0b; padding: 20px; border-radius: 8px; margin: 15px 0; }
+        .visual-title { font-weight: 700; color: #92400e; margin-bottom: 12px; display: flex; align-items: center; font-size: 1.05em; }
+        .complexity { background: #f1f5f9; padding: 15px; border-radius: 8px; margin: 15px 0; }
+        .complexity-item { margin: 8px 0; color: #475569; }
+        .key-point { background: #dcfce7; border-left: 4px solid #16a34a; padding: 15px 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        ul, ol { margin-left: 25px; margin-top: 10px; }
+        li { margin: 8px 0; color: #475569; }
+        strong { color: #1e293b; }
+        .note { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 15px 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        @media (max-width: 768px) {
+            .container { padding: 10px; }
+            .header h1 { font-size: 1.5em; }
+            .section { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="../index.html" class="back-btn">← 返回題目列表</a>
+
+        <div class="header">
+            <h1>#221 Maximal Square</h1>
+            <div class="difficulty">Medium</div>
+            <div class="tags">
+                <span class="tag">Dynamic Programming</span>
+                <span class="tag">Matrix</span>
+                <span class="tag">Array</span>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>題目描述</h2>
+            <p>在一個由 <code>'0'</code> 和 <code>'1'</code> 組成的二維矩陣內，找到只包含 <code>'1'</code> 的<strong>最大正方形</strong>，並返回其<strong>面積</strong>。</p>
+        </div>
+
+        <div class="section">
+            <h2>範例</h2>
+            <div class="example">
+                <div class="example-title">範例 1：</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+輸入：matrix =
+[["1","0","1","0","0"],
+ ["1","0","1","1","1"],
+ ["1","1","1","1","1"],
+ ["1","0","0","1","0"]]
+
+輸出：4
+
+  1 0 1 0 0
+  1 0 [1 1] 1
+  1 1 [1 1] 1
+  1 0 0 1 0
+
+最大正方形邊長為 2，面積 = 2 × 2 = 4
+                </pre>
+            </div>
+
+            <div class="example">
+                <div class="example-title">範例 2：</div>
+                <strong>輸入：</strong>matrix = [["0","1"],["1","0"]]<br>
+                <strong>輸出：</strong>1
+            </div>
+
+            <div class="example">
+                <div class="example-title">範例 3：</div>
+                <strong>輸入：</strong>matrix = [["0"]]<br>
+                <strong>輸出：</strong>0
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>解題思路</h2>
+            <div class="visual-box">
+                <div class="visual-title">💡 狀態定義</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+dp[i][j] = 以 (i, j) 為【右下角】的最大正方形的邊長
+
+答案 = max(dp[i][j])² （所有格子中最大邊長的平方）
+
+⭐ 「以某格為右下角」是矩形/正方形類 DP 的標準定義方式。
+</pre>
+            </div>
+
+            <h3>轉移方程（本題的精髓）</h3>
+            <div class="visual-box">
+                <div class="visual-title">🎯 dp[i][j] = min(左, 上, 左上) + 1</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+若 matrix[i][j] == '0'：dp[i][j] = 0
+若 matrix[i][j] == '1'：
+    dp[i][j] = min(dp[i-1][j], dp[i][j-1], dp[i-1][j-1]) + 1
+
+【為什麼是 min 而不是 max？】
+
+要以 (i,j) 為右下角形成邊長為 k 的正方形，
+必須「同時」滿足三個條件：
+
+  ┌───────┬───┐
+  │       │   │
+  │  左上  │ 上 │     左上：dp[i-1][j-1] >= k-1
+  │       │   │     上　：dp[i-1][j]   >= k-1
+  ├───────┼───┤     左　：dp[i][j-1]   >= k-1
+  │   左   │(i,j)│
+  └───────┴───┘
+
+三者是「木桶效應」—— 最短的那塊板決定了容量，
+所以取 min。任何一邊不夠大，正方形就撐不起來。
+
+【圖解 min 的必要性】
+  1 1 1
+  1 1 1
+  1 1 0    ← 左上角雖然是 1，但 (2,2) 是 0
+
+  對 (1,1)：min(dp[0][1]=1, dp[1][0]=1, dp[0][0]=1) + 1 = 2 ✓
+  對 (2,2)：matrix 是 '0' → dp = 0
+  若用 max 就會錯誤地認為能形成大正方形。
+                </pre>
+            </div>
+
+            <h3>完整推導</h3>
+            <div class="visual-box">
+                <div class="visual-title">📊 手推 DP 表格</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+matrix:              dp:
+1 0 1 0 0            1 0 1 0 0
+1 0 1 1 1     →      1 0 1 1 1
+1 1 1 1 1            1 1 1 2 2   ← dp[2][3] = min(1,1,1)+1 = 2
+1 0 0 1 0            1 0 0 1 0
+
+最大值 = 2 → 面積 = 2² = 4 ✓
+
+關鍵格 dp[2][3]：
+  matrix[2][3] = '1'
+  dp[1][3] = 1（上）
+  dp[2][2] = 1（左）
+  dp[1][2] = 1（左上）
+  min(1,1,1) + 1 = 2 ✓
+                </pre>
+            </div>
+
+            <h3>邊界處理技巧</h3>
+            <p>把 dp 陣列多開一行一列（<code>(m+1) × (n+1)</code>），讓第 0 行第 0 列全為 0，這樣第一行第一列的格子就不需要特判，可以統一用同一個轉移公式。</p>
+        </div>
+
+        <div class="section">
+            <h2>程式碼實現</h2>
+
+            <div class="code-block">
+                <div class="lang-tabs">
+                    <button class="lang-tab active" onclick="switchLang(event, 'python')">Python</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'cpp')">C++</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'java')">Java</button>
+                </div>
+
+                <div id="python" class="code-content active">
+                    <pre><code class="language-python"># 二維 DP（推薦）
+class Solution:
+    def maximalSquare(self, matrix: List[List[str]]) -&gt; int:
+        if not matrix or not matrix[0]:
+            return 0
+
+        m, n = len(matrix), len(matrix[0])
+        # 多開一行一列，避免邊界特判
+        dp = [[0] * (n + 1) for _ in range(m + 1)]
+        max_side = 0
+
+        for i in range(1, m + 1):
+            for j in range(1, n + 1):
+                if matrix[i - 1][j - 1] == '1':
+                    # 木桶效應：三個方向取最小值
+                    dp[i][j] = min(dp[i - 1][j],      # 上
+                                   dp[i][j - 1],      # 左
+                                   dp[i - 1][j - 1]   # 左上
+                                   ) + 1
+                    max_side = max(max_side, dp[i][j])
+
+        return max_side * max_side
+
+
+# 空間優化：滾動陣列 O(n)
+class Solution:
+    def maximalSquare(self, matrix: List[List[str]]) -&gt; int:
+        if not matrix or not matrix[0]:
+            return 0
+
+        m, n = len(matrix), len(matrix[0])
+        dp = [0] * (n + 1)
+        max_side = 0
+
+        for i in range(1, m + 1):
+            prev = 0                      # 代表 dp[i-1][j-1]（左上）
+            for j in range(1, n + 1):
+                temp = dp[j]              # 保存舊的 dp[i-1][j]
+                if matrix[i - 1][j - 1] == '1':
+                    dp[j] = min(dp[j], dp[j - 1], prev) + 1
+                    max_side = max(max_side, dp[j])
+                else:
+                    dp[j] = 0
+                prev = temp
+
+        return max_side * max_side</code></pre>
+                </div>
+
+                <div id="cpp" class="code-content">
+                    <pre><code class="language-cpp">// 二維 DP（推薦）
+class Solution {
+public:
+    int maximalSquare(vector&lt;vector&lt;char&gt;&gt;&amp; matrix) {
+        if (matrix.empty() || matrix[0].empty()) return 0;
+
+        int m = matrix.size(), n = matrix[0].size();
+        // 多開一行一列，避免邊界特判
+        vector&lt;vector&lt;int&gt;&gt; dp(m + 1, vector&lt;int&gt;(n + 1, 0));
+        int maxSide = 0;
+
+        for (int i = 1; i &lt;= m; i++) {
+            for (int j = 1; j &lt;= n; j++) {
+                if (matrix[i - 1][j - 1] == '1') {
+                    // 木桶效應：三個方向取最小
+                    dp[i][j] = min({dp[i - 1][j],      // 上
+                                    dp[i][j - 1],      // 左
+                                    dp[i - 1][j - 1]}) // 左上
+                               + 1;
+                    maxSide = max(maxSide, dp[i][j]);
+                }
+            }
+        }
+        return maxSide * maxSide;
+    }
+};
+
+// 空間優化版 O(n)
+class Solution {
+public:
+    int maximalSquare(vector&lt;vector&lt;char&gt;&gt;&amp; matrix) {
+        if (matrix.empty()) return 0;
+        int m = matrix.size(), n = matrix[0].size();
+        vector&lt;int&gt; dp(n + 1, 0);
+        int maxSide = 0;
+
+        for (int i = 1; i &lt;= m; i++) {
+            int prev = 0;
+            for (int j = 1; j &lt;= n; j++) {
+                int temp = dp[j];
+                if (matrix[i - 1][j - 1] == '1') {
+                    dp[j] = min({dp[j], dp[j - 1], prev}) + 1;
+                    maxSide = max(maxSide, dp[j]);
+                } else {
+                    dp[j] = 0;
+                }
+                prev = temp;
+            }
+        }
+        return maxSide * maxSide;
+    }
+};</code></pre>
+                </div>
+
+                <div id="java" class="code-content">
+                    <pre><code class="language-java">// 二維 DP（推薦）
+class Solution {
+    public int maximalSquare(char[][] matrix) {
+        if (matrix == null || matrix.length == 0) return 0;
+
+        int m = matrix.length, n = matrix[0].length;
+        int[][] dp = new int[m + 1][n + 1];   // 多開一行一列
+        int maxSide = 0;
+
+        for (int i = 1; i &lt;= m; i++) {
+            for (int j = 1; j &lt;= n; j++) {
+                if (matrix[i - 1][j - 1] == '1') {
+                    // 木桶效應：三個方向取最小
+                    dp[i][j] = Math.min(
+                                   Math.min(dp[i - 1][j], dp[i][j - 1]),
+                                   dp[i - 1][j - 1]
+                               ) + 1;
+                    maxSide = Math.max(maxSide, dp[i][j]);
+                }
+            }
+        }
+        return maxSide * maxSide;
+    }
+}</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>複雜度分析</h2>
+            <div class="complexity">
+                <div class="complexity-item">
+                    <strong>時間複雜度：</strong>O(m × n)
+                    <ul>
+                        <li>每個格子只計算一次，每次 O(1)</li>
+                        <li>暴力枚舉所有正方形是 O(m²n²) 甚至更差</li>
+                    </ul>
+                </div>
+                <div class="complexity-item">
+                    <strong>空間複雜度：</strong>
+                    <ul>
+                        <li>二維 DP：O(m × n)</li>
+                        <li>滾動陣列：O(n) ★</li>
+                        <li>也可以直接在原矩陣上修改達到 O(1)（但會破壞輸入）</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>重點提示</h2>
+            <div class="key-point">
+                <strong>💡 關鍵技巧 1：為什麼是 min 不是 max</strong>
+                <p>正方形要求<strong>四邊等長</strong>，三個方向中最短的那個限制了整體大小 —— 這就是木桶效應。面試官很愛問這個「為什麼」，能講清楚就代表你真的理解了，而不是背答案。</p>
+            </div>
+
+            <div class="key-point">
+                <strong>💡 關鍵技巧 2：「以 (i,j) 為右下角」的狀態設計</strong>
+                <p>矩形/正方形類問題，把狀態定義成「以某個格子為右下角（或右端點）」，能讓子問題自然重疊。這個技巧在 #85 最大矩形、#1277 統計正方形數量中都會用到。</p>
+            </div>
+
+            <div class="key-point">
+                <strong>💡 對比 #85 Maximal Rectangle</strong>
+                <p>如果求的是最大<strong>矩形</strong>（長寬可以不等），這個 min 技巧就<strong>不成立</strong>了。#85 的正解是：把每一行當成「柱狀圖的底」，對每一行套用 #84 的<strong>單調堆疊</strong>解法。正方形能用簡單 DP、矩形不行，這是兩題最大的分野。</p>
+            </div>
+
+            <div class="note">
+                <strong>⚠️ 常見錯誤：</strong>
+                <ul>
+                    <li>返回邊長而不是<strong>面積</strong>（要記得平方）</li>
+                    <li>用 max 而非 min</li>
+                    <li>矩陣元素是<strong>字元</strong> <code>'1'</code> 而非數字 <code>1</code>，比較時型別搞錯</li>
+                    <li>沒處理空矩陣</li>
+                    <li>忘記在遇到 '0' 時把 dp 歸零（滾動陣列版特別容易漏）</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>相關題目</h2>
+            <ul>
+                <li><strong>#85 Maximal Rectangle</strong> - 最大矩形（需要單調堆疊）</li>
+                <li><strong>#84 Largest Rectangle in Histogram</strong> - 柱狀圖最大矩形</li>
+                <li><strong>#1277 Count Square Submatrices with All Ones</strong> - 統計所有正方形數量</li>
+                <li><strong>#64 Minimum Path Sum</strong> - 矩陣 DP 基礎</li>
+                <li><strong>#304 Range Sum Query 2D</strong> - 二維前綴和</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>補充說明</h2>
+            <h3>#1277：統計所有正方形的數量</h3>
+            <div class="visual-box">
+                <div class="visual-title">🎁 同一份 dp，答案改成求和</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+關鍵洞察：dp[i][j] = k 代表以 (i,j) 為右下角，
+          存在邊長為 1, 2, ..., k 的正方形，共 k 個！
+
+所以只要把本題的 max 改成 sum：
+
+int countSquares(vector&lt;vector&lt;int&gt;&gt;&amp; matrix) {
+    int total = 0;
+    // ... 同樣的 dp 轉移 ...
+    total += dp[i][j];        // ← 唯一的差別
+    return total;
+}
+
+一題兩用，非常划算。
+                </pre>
+            </div>
+
+            <h3>#85 最大矩形的解法對照</h3>
+            <pre style="background: #f1f5f9; padding: 15px; border-radius: 8px; margin-top: 10px;">
+正方形（本題）：dp + min，O(mn)
+矩形（#85）  ：逐行建柱狀圖 + 單調堆疊，O(mn)
+
+矩陣：              每行的「高度」陣列：
+1 0 1 0 0           heights = [1,0,1,0,0]
+1 0 1 1 1     →     heights = [2,0,2,1,1]
+1 1 1 1 1     →     heights = [3,1,3,2,2]  ← 對這個跑 #84
+1 0 0 1 0     →     heights = [4,0,0,3,0]
+
+每一行都當成柱狀圖的底，
+用 #84 的單調堆疊求該行能形成的最大矩形，
+取所有行的最大值即為答案。
+
+為什麼矩形不能用 min 技巧？
+因為矩形的長寬可以不同，
+「三個方向取 min」會錯誤地把它限制成正方形。
+            </pre>
+
+            <h3>矩陣 DP 的四種常見狀態設計</h3>
+            <ul>
+                <li><strong>以 (i,j) 為終點</strong>：路徑類問題（#62 唯一路徑、#64 最小路徑和）</li>
+                <li><strong>以 (i,j) 為右下角</strong>：矩形/正方形類（本題、#1277）</li>
+                <li><strong>前 i 行 j 列的聚合值</strong>：二維前綴和（#304）</li>
+                <li><strong>(i,j) 出發的最優值</strong>：記憶化搜尋（#329 最長遞增路徑）</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        function switchLang(event, lang) {
+            const tabs = document.querySelectorAll('.lang-tab');
+            const contents = document.querySelectorAll('.code-content');
+
+            tabs.forEach(tab => tab.classList.remove('active'));
+            contents.forEach(content => content.classList.remove('active'));
+
+            event.target.classList.add('active');
+            document.getElementById(lang).classList.add('active');
+        }
+
+        hljs.highlightAll();
+    </script>
+</body>
+</html>

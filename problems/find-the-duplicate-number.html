@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>287. Find the Duplicate Number - LeetCode 學習平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f8fafc; line-height: 1.8; color: #334155; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .header { background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; padding: 40px; border-radius: 16px; margin-bottom: 30px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .back-btn { display: inline-block; color: white; text-decoration: none; background: rgba(255,255,255,0.2); padding: 10px 20px; border-radius: 8px; margin-bottom: 20px; transition: all 0.3s; }
+        .back-btn:hover { background: rgba(255,255,255,0.3); }
+        .problem-title { font-size: 2.5em; font-weight: 800; margin-bottom: 15px; }
+        .difficulty { display: inline-block; background: rgba(255,255,255,0.3); padding: 8px 20px; border-radius: 20px; font-weight: 600; font-size: 0.9em; }
+        .content-section { background: white; padding: 40px; border-radius: 16px; margin-bottom: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .section-title { font-size: 1.8em; color: #1e293b; margin-bottom: 25px; font-weight: 700; padding-bottom: 10px; border-bottom: 3px solid #10b981; }
+        .description { font-size: 1.1em; line-height: 1.9; color: #475569; margin-bottom: 20px; }
+        .example-box { background: #f0fdf4; border-left: 4px solid #10b981; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .example-title { font-weight: 700; color: #059669; margin-bottom: 10px; font-size: 1.1em; }
+        .approach-box { background: #eff6ff; border-left: 4px solid #3b82f6; padding: 25px; border-radius: 8px; margin: 25px 0; }
+        .approach-title { font-weight: 700; color: #1e40af; margin-bottom: 15px; font-size: 1.3em; }
+        .complexity-box { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .complexity-item { margin: 10px 0; font-weight: 600; color: #92400e; }
+        .language-tabs { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+        .tab-btn { padding: 12px 28px; border: 2px solid #10b981; background: white; color: #10b981; border-radius: 8px; cursor: pointer; font-weight: 600; transition: all 0.3s; font-size: 1em; }
+        .tab-btn:hover { background: #f0fdf4; }
+        .tab-btn.active { background: #10b981; color: white; }
+        .code-container { display: none; margin-top: 20px; }
+        .code-container.active { display: block; }
+        pre { background: #282c34 !important; padding: 25px !important; border-radius: 12px; overflow-x: auto; margin: 0; }
+        code { font-family: 'Fira Code', 'Consolas', monospace; font-size: 0.95em; line-height: 1.6; }
+        ol, ul { margin-left: 30px; margin-top: 15px; }
+        li { margin: 12px 0; line-height: 1.8; }
+        strong { color: #1e293b; font-weight: 700; }
+        .tips-box { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        
+        @media (max-width: 768px) {
+            .container { padding: 10px; }
+            .header { padding: 25px; }
+            .problem-title { font-size: 1.8em; }
+            .content-section { padding: 25px; }
+            .tab-btn { padding: 10px 20px; font-size: 0.9em; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="../index.html" class="back-btn">← 返回題目列表</a>
+            <div class="problem-title">287. Find the Duplicate Number</div>
+            <span class="difficulty">Medium</span>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">題目描述</h2>
+            <div class="description">
+                <p>給定一個包含 <code>n + 1</code> 個整數的陣列 <code>nums</code>，其數字都在 <code>[1, n]</code> 範圍內（包括 1 和 n），可知至少存在一個重複的整數。</p>
+                <p>假設 <code>nums</code> 只有<strong>一個重複的整數</strong>，請找出這個重複的數。</p>
+                <p><strong>限制：</strong>不能修改陣列 <code>nums</code>，且只能使用常數級 <code>O(1)</code> 的額外空間。</p>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例 1:</div>
+                <pre><code>輸入: nums = [1,3,4,2,2]
+輸出: 2</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例 2:</div>
+                <pre><code>輸入: nums = [3,1,3,4,2]
+輸出: 3</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例 3:</div>
+                <pre><code>輸入: nums = [3,3,3,3,3]
+輸出: 3</code></pre>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">解題思路</h2>
+
+            <div class="approach-box">
+                <div class="approach-title">方法一：快慢指標找環入口（推薦）</div>
+                <p>把陣列看成一張函數圖：從索引 i 連一條邊到索引 nums[i]。因為值域是 [1, n] 而索引有 n + 1 個，這張圖一定存在環，而<strong>環的入口就是重複的數字</strong>。</p><p>第一階段從索引 0 出發，slow 走一步、fast 走兩步，直到相遇。</p><p>第二階段把其中一個指標放回起點 0，兩個指標各走一步，再次相遇的位置即為環入口，也就是答案。</p>
+            </div>
+
+            <div class="approach-box">
+                <div class="approach-title">方法二：對值域二分搜尋</div>
+                <p>在 [1, n] 的<strong>數值範圍</strong>上二分，對每個候選中點 mid 統計陣列中「小於等於 mid 的元素個數」count。</p><p>若 count > mid，代表重複的數字落在 [1, mid]，否則落在 [mid + 1, n]。</p><p>時間 O(n log n)、空間 O(1)，同樣不修改原陣列，是很好的備選答案。</p>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">程式碼實現</h2>
+            <div class="language-tabs">
+                <button class="tab-btn active" onclick="showLanguage('python')">Python</button>
+                <button class="tab-btn" onclick="showLanguage('java')">Java</button>
+                <button class="tab-btn" onclick="showLanguage('cpp')">C++</button>
+            </div>
+
+            <div id="python" class="code-container active">
+                <pre><code class="language-python">class Solution:
+    def findDuplicate(self, nums: List[int]) -&gt; int:
+        # 第一階段：找到快慢指標的相遇點
+        slow = nums[0]
+        fast = nums[nums[0]]
+        while slow != fast:
+            slow = nums[slow]
+            fast = nums[nums[fast]]
+
+        # 第二階段：從起點與相遇點同速前進，交會處即為環入口
+        slow = 0
+        while slow != fast:
+            slow = nums[slow]
+            fast = nums[fast]
+        return slow</code></pre>
+            </div>
+
+            <div id="java" class="code-container">
+                <pre><code class="language-java">class Solution {
+    public int findDuplicate(int[] nums) {
+        int slow = nums[0];
+        int fast = nums[nums[0]];
+        while (slow != fast) {
+            slow = nums[slow];
+            fast = nums[nums[fast]];
+        }
+
+        slow = 0;
+        while (slow != fast) {
+            slow = nums[slow];
+            fast = nums[fast];
+        }
+        return slow;
+    }
+}</code></pre>
+            </div>
+
+            <div id="cpp" class="code-container">
+                <pre><code class="language-cpp">class Solution {
+public:
+    int findDuplicate(vector&lt;int&gt;&amp; nums) {
+        int slow = nums[0];
+        int fast = nums[nums[0]];
+        while (slow != fast) {
+            slow = nums[slow];
+            fast = nums[nums[fast]];
+        }
+
+        slow = 0;
+        while (slow != fast) {
+            slow = nums[slow];
+            fast = nums[fast];
+        }
+        return slow;
+    }
+};</code></pre>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">複雜度分析</h2>
+            <div class="complexity-box">
+                <div class="complexity-item">時間複雜度: O(n)</div>
+                <p style="color: #78716c; margin: 10px 0;">快慢指標兩個階段各最多走訪 O(n) 步；二分解法為 O(n log n)。</p>
+
+                <div class="complexity-item" style="margin-top: 20px;">空間複雜度: O(1)</div>
+                <p style="color: #78716c; margin: 10px 0;">只使用兩個索引變數，未使用額外陣列，也沒有修改輸入。</p>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">重點提示</h2>
+            <div class="tips-box">
+                <ul>
+                    <li><strong>為何一定有環：</strong>值域 [1, n] 對應 n + 1 個索引，依鴿籠原理必有兩個索引指向同一位置，形成入環</li>
+                    <li><strong>環入口即答案：</strong>重複的數字是唯一被兩條邊指向的節點，正好是 Floyd 判圈法找出的環入口</li>
+                    <li><strong>起點必須是 0：</strong>索引 0 不會是任何節點的後繼（值域從 1 開始），所以從 0 出發保證不在環內</li>
+                    <li><strong>別用排序或標記：</strong>排序會修改陣列、雜湊集合需要 O(n) 空間，都違反題目限制</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        hljs.highlightAll();
+        
+        function showLanguage(lang) {
+            // 隱藏所有程式碼區塊
+            document.querySelectorAll('.code-container').forEach(container => {
+                container.classList.remove('active');
+            });
+            
+            // 移除所有按鈕的 active 狀態
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // 顯示選中的程式碼區塊
+            document.getElementById(lang).classList.add('active');
+            
+            // 設定選中按鈕的 active 狀態
+            event.target.classList.add('active');
+        }
+    </script>
+</body>
+</html>

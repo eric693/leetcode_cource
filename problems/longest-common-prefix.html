@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>#14 Longest Common Prefix | LeetCode 學習平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #333; background: #f8fafc; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .header { background: linear-gradient(135deg, #16a34a 0%, #15803d 100%); color: white; padding: 30px; border-radius: 12px; margin-bottom: 30px; box-shadow: 0 4px 6px rgba(22, 163, 74, 0.2); }
+        .header h1 { font-size: 2em; margin-bottom: 10px; }
+        .difficulty { display: inline-block; padding: 6px 16px; background: rgba(255,255,255,0.2); border-radius: 20px; font-size: 0.9em; font-weight: 600; }
+        .tags { margin-top: 15px; }
+        .tag { display: inline-block; background: rgba(255,255,255,0.15); padding: 4px 12px; border-radius: 6px; margin-right: 8px; font-size: 0.85em; }
+        .back-btn { display: inline-block; margin-bottom: 20px; padding: 10px 20px; background: #3b82f6; color: white; text-decoration: none; border-radius: 8px; transition: background 0.3s; }
+        .back-btn:hover { background: #2563eb; }
+        .section { background: white; padding: 30px; border-radius: 12px; margin-bottom: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .section h2 { color: #1e293b; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 3px solid #16a34a; }
+        .section h3 { color: #475569; margin: 25px 0 15px 0; font-size: 1.3em; }
+        .code-block { background: #282c34; border-radius: 8px; overflow: hidden; margin: 15px 0; }
+        .lang-tabs { display: flex; background: #21252b; border-bottom: 1px solid #181a1f; }
+        .lang-tab { padding: 12px 24px; cursor: pointer; color: #abb2bf; border: none; background: none; transition: all 0.3s; font-weight: 500; }
+        .lang-tab.active { color: #61afef; background: #282c34; border-bottom: 2px solid #61afef; }
+        .lang-tab:hover { color: #61afef; background: #2c313a; }
+        .code-content { display: none; }
+        .code-content.active { display: block; }
+        pre { margin: 0; overflow-x: auto; }
+        code { font-family: 'Consolas', 'Monaco', 'Courier New', monospace; font-size: 0.9em; }
+        .example { background: #f0f9ff; border-left: 4px solid #3b82f6; padding: 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .example-title { font-weight: 700; color: #1e40af; margin-bottom: 12px; font-size: 1.05em; }
+        .visual-box { background: #fef3c7; border: 2px solid #f59e0b; padding: 20px; border-radius: 8px; margin: 15px 0; }
+        .visual-title { font-weight: 700; color: #92400e; margin-bottom: 12px; display: flex; align-items: center; font-size: 1.05em; }
+        .complexity { background: #f1f5f9; padding: 15px; border-radius: 8px; margin: 15px 0; }
+        .complexity-item { margin: 8px 0; color: #475569; }
+        .key-point { background: #dcfce7; border-left: 4px solid #16a34a; padding: 15px 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        ul, ol { margin-left: 25px; margin-top: 10px; }
+        li { margin: 8px 0; color: #475569; }
+        strong { color: #1e293b; }
+        .note { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 15px 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        @media (max-width: 768px) {
+            .container { padding: 10px; }
+            .header h1 { font-size: 1.5em; }
+            .section { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="../index.html" class="back-btn">← 返回題目列表</a>
+
+        <div class="header">
+            <h1>#14 Longest Common Prefix</h1>
+            <div class="difficulty">Easy</div>
+            <div class="tags">
+                <span class="tag">String</span>
+                <span class="tag">Trie</span>
+                <span class="tag">Divide and Conquer</span>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>題目描述</h2>
+            <p>編寫一個函數來尋找字串陣列中的<strong>最長公共前綴</strong>。</p>
+            <p style="margin-top: 15px;">如果不存在公共前綴，返回空字串 <code>""</code>。</p>
+        </div>
+
+        <div class="section">
+            <h2>範例</h2>
+            <div class="example">
+                <div class="example-title">範例 1：</div>
+                <strong>輸入：</strong>strs = ["flower","flow","flight"]<br>
+                <strong>輸出：</strong>"fl"
+            </div>
+
+            <div class="example">
+                <div class="example-title">範例 2：</div>
+                <strong>輸入：</strong>strs = ["dog","racecar","car"]<br>
+                <strong>輸出：</strong>""<br>
+                <strong>解釋：</strong>輸入不存在公共前綴。
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>解題思路</h2>
+            <div class="visual-box">
+                <div class="visual-title">💡 方法一：縱向掃描（推薦，最直覺）</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+一列一列（一個字元位置一個字元位置）往下比：
+
+  f l o w e r
+  f l o w
+  f l i g h t
+  ↑ ↑ ↑
+  ✓ ✓ ✗
+
+第 0 個字元：全部都是 'f' ✓
+第 1 個字元：全部都是 'l' ✓
+第 2 個字元：'o','o','i' 不同 ✗ → 停止
+
+答案 = "fl"
+
+提早停止條件：
+1. 遇到不同的字元
+2. 某個字串已經走到結尾（前綴不可能比最短的字串長）
+
+最佳情況只比第一個字元就結束，效率很好。
+                </pre>
+            </div>
+
+            <h3>方法二：橫向掃描</h3>
+            <div class="visual-box">
+                <div class="visual-title">🎯 逐一與前一個結果取交集</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+prefix = "flower"
+prefix = LCP("flower", "flow")   = "flow"
+prefix = LCP("flow", "flight")   = "fl"
+→ 答案 "fl"
+
+若中途 prefix 變成空字串，可以立刻返回。
+                </pre>
+            </div>
+
+            <h3>方法三：排序取頭尾（面試小技巧）</h3>
+            <div class="visual-box">
+                <div class="visual-title">⚡ 只需要比較兩個字串</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+字典序排序後，只要比較【第一個】和【最後一個】字串即可！
+
+原理：字典序最小和最大的兩個字串，
+      它們的公共前綴必定是所有字串的公共前綴。
+      （中間的字串必然介於兩者之間，前綴也被夾住）
+
+["flower","flow","flight"]
+排序後 → ["flight","flow","flower"]
+比較 "flight" 和 "flower" → "fl" ✓
+
+複雜度 O(n log n × L)，理論上比縱向掃描差，
+但程式碼極短，適合快速寫出來。
+                </pre>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>程式碼實現</h2>
+
+            <div class="code-block">
+                <div class="lang-tabs">
+                    <button class="lang-tab active" onclick="switchLang(event, 'python')">Python</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'cpp')">C++</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'java')">Java</button>
+                </div>
+
+                <div id="python" class="code-content active">
+                    <pre><code class="language-python"># 方法一：縱向掃描（推薦）
+class Solution:
+    def longestCommonPrefix(self, strs: List[str]) -&gt; str:
+        if not strs:
+            return ""
+
+        first = strs[0]
+        for i in range(len(first)):
+            ch = first[i]
+            for s in strs[1:]:
+                # 走到某字串結尾，或字元不同 → 停止
+                if i &gt;= len(s) or s[i] != ch:
+                    return first[:i]
+        return first
+
+
+# 方法二：橫向掃描
+class Solution:
+    def longestCommonPrefix(self, strs: List[str]) -&gt; str:
+        if not strs:
+            return ""
+        prefix = strs[0]
+        for s in strs[1:]:
+            while not s.startswith(prefix):
+                prefix = prefix[:-1]     # 每次砍掉最後一個字元
+                if not prefix:
+                    return ""
+        return prefix
+
+
+# 方法三：排序取頭尾（最短的寫法）
+class Solution:
+    def longestCommonPrefix(self, strs: List[str]) -&gt; str:
+        if not strs:
+            return ""
+        strs.sort()
+        first, last = strs[0], strs[-1]
+        i = 0
+        while i &lt; len(first) and i &lt; len(last) and first[i] == last[i]:
+            i += 1
+        return first[:i]</code></pre>
+                </div>
+
+                <div id="cpp" class="code-content">
+                    <pre><code class="language-cpp">// 方法一：縱向掃描（推薦）
+class Solution {
+public:
+    string longestCommonPrefix(vector&lt;string&gt;&amp; strs) {
+        if (strs.empty()) return "";
+
+        for (int i = 0; i &lt; strs[0].size(); i++) {
+            char c = strs[0][i];
+            for (int j = 1; j &lt; strs.size(); j++) {
+                // 走到結尾或字元不同 → 停止
+                if (i &gt;= strs[j].size() || strs[j][i] != c) {
+                    return strs[0].substr(0, i);
+                }
+            }
+        }
+        return strs[0];
+    }
+};
+
+// 方法三：排序取頭尾
+class Solution {
+public:
+    string longestCommonPrefix(vector&lt;string&gt;&amp; strs) {
+        if (strs.empty()) return "";
+        sort(strs.begin(), strs.end());
+        const string &amp;first = strs.front(), &amp;last = strs.back();
+        int i = 0;
+        while (i &lt; first.size() &amp;&amp; i &lt; last.size() &amp;&amp; first[i] == last[i]) i++;
+        return first.substr(0, i);
+    }
+};</code></pre>
+                </div>
+
+                <div id="java" class="code-content">
+                    <pre><code class="language-java">// 方法一：縱向掃描（推薦）
+class Solution {
+    public String longestCommonPrefix(String[] strs) {
+        if (strs == null || strs.length == 0) return "";
+
+        for (int i = 0; i &lt; strs[0].length(); i++) {
+            char c = strs[0].charAt(i);
+            for (int j = 1; j &lt; strs.length; j++) {
+                if (i &gt;= strs[j].length() || strs[j].charAt(i) != c) {
+                    return strs[0].substring(0, i);
+                }
+            }
+        }
+        return strs[0];
+    }
+}
+
+// 方法二：橫向掃描
+class Solution {
+    public String longestCommonPrefix(String[] strs) {
+        if (strs == null || strs.length == 0) return "";
+        String prefix = strs[0];
+        for (int i = 1; i &lt; strs.length; i++) {
+            while (strs[i].indexOf(prefix) != 0) {
+                prefix = prefix.substring(0, prefix.length() - 1);
+                if (prefix.isEmpty()) return "";
+            }
+        }
+        return prefix;
+    }
+}</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>複雜度分析</h2>
+            <div class="complexity">
+                <div class="complexity-item">
+                    <strong>時間複雜度：</strong>O(S)
+                    <ul>
+                        <li>S = 所有字串的字元總數（最壞情況要比對全部）</li>
+                        <li>實務上通常遠低於此，因為很快就會遇到不同字元</li>
+                        <li>方法三（排序）為 O(n log n × L)</li>
+                    </ul>
+                </div>
+                <div class="complexity-item">
+                    <strong>空間複雜度：</strong>O(1)，不計返回值所需空間
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>重點提示</h2>
+            <div class="key-point">
+                <strong>💡 關鍵技巧：邊界檢查要完整</strong>
+                <p>必須同時檢查「索引是否超出其他字串長度」和「字元是否相同」。只檢查字元會在 <code>["ab", "a"]</code> 這種輸入上越界崩潰。</p>
+            </div>
+
+            <div class="key-point">
+                <strong>💡 面試延伸：如果要支援大量查詢怎麼辦？</strong>
+                <p>建一棵 <strong>Trie</strong>，從根節點往下走，只要節點<strong>只有一個子節點且不是單字結尾</strong>就繼續，否則停止。走過的路徑就是最長公共前綴。建樹 O(S)，之後每次查詢 O(L)。</p>
+            </div>
+
+            <div class="note">
+                <strong>⚠️ 常見錯誤：</strong>
+                <ul>
+                    <li>忘記處理空陣列或包含空字串的情況</li>
+                    <li>索引越界（沒檢查其他字串的長度）</li>
+                    <li>方法三修改了輸入陣列的順序（若題目要求不可修改，要先複製）</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>相關題目</h2>
+            <ul>
+                <li><strong>#208 Implement Trie</strong> - 前綴樹，處理大量前綴查詢</li>
+                <li><strong>#58 Length of Last Word</strong> - 字串基礎操作</li>
+                <li><strong>#28 Find the Index of the First Occurrence</strong> - 字串匹配</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>補充說明</h2>
+            <h3>方法四：分治法</h3>
+            <div class="visual-box">
+                <div class="visual-title">🔀 把陣列切半各自求解再合併</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+LCP(strs[0..n-1]) = LCP( LCP(strs[0..mid]), LCP(strs[mid+1..n-1]) )
+
+["flower","flow","flight","flock"]
+        /                    \
+["flower","flow"]      ["flight","flock"]
+    = "flow"                = "fl"
+        \                    /
+          LCP("flow","fl") = "fl" ✓
+
+複雜度同樣是 O(S)，但可以平行化處理，
+適合超大量字串的分散式場景。
+                </pre>
+            </div>
+
+            <h3>方法五：Trie 解法</h3>
+            <pre style="background: #f1f5f9; padding: 15px; border-radius: 8px; margin-top: 10px;">
+建 Trie 後從根往下走，停止條件：
+  1. 當前節點有 &gt; 1 個子節點（開始分岔）
+  2. 當前節點是某個單字的結尾（不能再往下）
+
+["flower","flow","flight"]
+root → f → l → 這裡分岔成 o 和 i → 停止
+答案 = "fl" ✓
+
+適用場景：字串集合固定，但要反覆查詢
+          「某個子集合的最長公共前綴」。
+            </pre>
+
+            <h3>實務應用</h3>
+            <ul>
+                <li><strong>檔案路徑</strong>：找出一組路徑的共同根目錄</li>
+                <li><strong>IP 路由</strong>：最長前綴匹配（Longest Prefix Match）決定封包走哪條路由</li>
+                <li><strong>版本控制</strong>：git 用前綴唯一性讓你只打 commit hash 的前幾碼</li>
+                <li><strong>自動補全</strong>：輸入框顯示所有候選的共同部分</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        function switchLang(event, lang) {
+            const tabs = document.querySelectorAll('.lang-tab');
+            const contents = document.querySelectorAll('.code-content');
+
+            tabs.forEach(tab => tab.classList.remove('active'));
+            contents.forEach(content => content.classList.remove('active'));
+
+            event.target.classList.add('active');
+            document.getElementById(lang).classList.add('active');
+        }
+
+        hljs.highlightAll();
+    </script>
+</body>
+</html>

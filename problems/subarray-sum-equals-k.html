@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>#560 Subarray Sum Equals K | LeetCode 學習平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #333; background: #f8fafc; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .header { background: linear-gradient(135deg, #ea580c 0%, #c2410c 100%); color: white; padding: 30px; border-radius: 12px; margin-bottom: 30px; box-shadow: 0 4px 6px rgba(234, 88, 12, 0.2); }
+        .header h1 { font-size: 2em; margin-bottom: 10px; }
+        .difficulty { display: inline-block; padding: 6px 16px; background: rgba(255,255,255,0.2); border-radius: 20px; font-size: 0.9em; font-weight: 600; }
+        .tags { margin-top: 15px; }
+        .tag { display: inline-block; background: rgba(255,255,255,0.15); padding: 4px 12px; border-radius: 6px; margin-right: 8px; font-size: 0.85em; }
+        .back-btn { display: inline-block; margin-bottom: 20px; padding: 10px 20px; background: #3b82f6; color: white; text-decoration: none; border-radius: 8px; transition: background 0.3s; }
+        .back-btn:hover { background: #2563eb; }
+        .section { background: white; padding: 30px; border-radius: 12px; margin-bottom: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .section h2 { color: #1e293b; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 3px solid #ea580c; }
+        .section h3 { color: #475569; margin: 25px 0 15px 0; font-size: 1.3em; }
+        .code-block { background: #282c34; border-radius: 8px; overflow: hidden; margin: 15px 0; }
+        .lang-tabs { display: flex; background: #21252b; border-bottom: 1px solid #181a1f; }
+        .lang-tab { padding: 12px 24px; cursor: pointer; color: #abb2bf; border: none; background: none; transition: all 0.3s; font-weight: 500; }
+        .lang-tab.active { color: #61afef; background: #282c34; border-bottom: 2px solid #61afef; }
+        .lang-tab:hover { color: #61afef; background: #2c313a; }
+        .code-content { display: none; }
+        .code-content.active { display: block; }
+        pre { margin: 0; overflow-x: auto; }
+        code { font-family: 'Consolas', 'Monaco', 'Courier New', monospace; font-size: 0.9em; }
+        .example { background: #f0f9ff; border-left: 4px solid #3b82f6; padding: 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .example-title { font-weight: 700; color: #1e40af; margin-bottom: 12px; font-size: 1.05em; }
+        .visual-box { background: #fef3c7; border: 2px solid #f59e0b; padding: 20px; border-radius: 8px; margin: 15px 0; }
+        .visual-title { font-weight: 700; color: #92400e; margin-bottom: 12px; display: flex; align-items: center; font-size: 1.05em; }
+        .complexity { background: #f1f5f9; padding: 15px; border-radius: 8px; margin: 15px 0; }
+        .complexity-item { margin: 8px 0; color: #475569; }
+        .key-point { background: #dcfce7; border-left: 4px solid #16a34a; padding: 15px 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        ul, ol { margin-left: 25px; margin-top: 10px; }
+        li { margin: 8px 0; color: #475569; }
+        strong { color: #1e293b; }
+        .note { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 15px 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        @media (max-width: 768px) {
+            .container { padding: 10px; }
+            .header h1 { font-size: 1.5em; }
+            .section { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="../index.html" class="back-btn">← 返回題目列表</a>
+
+        <div class="header">
+            <h1>#560 Subarray Sum Equals K</h1>
+            <div class="difficulty">Medium</div>
+            <div class="tags">
+                <span class="tag">Array</span>
+                <span class="tag">Hash Table</span>
+                <span class="tag">Prefix Sum</span>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>題目描述</h2>
+            <p>給你一個整數陣列 nums 和一個整數 k，請你統計並返回<strong>該陣列中和為 k 的連續子陣列的個數</strong>。</p>
+            <p style="margin-top: 15px;">子陣列是陣列中元素的連續非空序列。注意 nums 中<strong>可能包含負數</strong>。</p>
+        </div>
+
+        <div class="section">
+            <h2>範例</h2>
+            <div class="example">
+                <div class="example-title">範例 1：</div>
+                <strong>輸入：</strong>nums = [1,1,1], k = 2<br>
+                <strong>輸出：</strong>2<br>
+                <strong>解釋：</strong>[1,1]（索引 0-1）和 [1,1]（索引 1-2）
+            </div>
+
+            <div class="example">
+                <div class="example-title">範例 2：</div>
+                <strong>輸入：</strong>nums = [1,2,3], k = 3<br>
+                <strong>輸出：</strong>2<br>
+                <strong>解釋：</strong>[3] 和 [1,2]
+            </div>
+
+            <div class="example">
+                <div class="example-title">範例 3：</div>
+                <strong>輸入：</strong>nums = [1,-1,0], k = 0<br>
+                <strong>輸出：</strong>3<br>
+                <strong>解釋：</strong>[1,-1]、[0]、[1,-1,0]
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>解題思路</h2>
+            <div class="note">
+                <strong>⚠️ 為什麼不能用滑動視窗？</strong>
+                <p>滑動視窗要求「擴大視窗時和單調遞增」，才能靠移動左右邊界收斂。但本題<strong>有負數</strong>，加入元素可能讓和變小，視窗無法單調收縮 —— 這是本題最重要的觀念。</p>
+            </div>
+
+            <h3>核心：前綴和 + HashMap</h3>
+            <div class="visual-box">
+                <div class="visual-title">💡 把「找子陣列」轉成「找兩個前綴和的差」</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+定義 prefix[i] = nums[0] + nums[1] + ... + nums[i-1]
+
+子陣列 (i, j] 的和 = prefix[j] - prefix[i]
+
+要找和為 k 的子陣列，就是要找：
+    prefix[j] - prefix[i] = k
+即  prefix[i] = prefix[j] - k
+
+所以掃描到位置 j 時，只要問：
+「之前出現過幾次值為 prefix[j] - k 的前綴和？」
+把次數累加進答案即可。
+
+用 HashMap 記錄「每個前綴和出現的次數」，
+一趟掃描就能完成 → O(n)
+                </pre>
+            </div>
+
+            <h3>完整追蹤：nums = [1,2,3], k = 3</h3>
+            <div class="visual-box">
+                <div class="visual-title">🔄 逐步計算</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+初始 count = {0: 1}   ← 關鍵！代表「空前綴和 0」出現一次
+prefixSum = 0, result = 0
+
+i=0, num=1:
+  prefixSum = 1
+  找 1 - 3 = -2 → count 中沒有，加 0
+  count = {0:1, 1:1}
+
+i=1, num=2:
+  prefixSum = 3
+  找 3 - 3 = 0 → count[0] = 1，result += 1 → result = 1
+  （對應子陣列 [1,2]）
+  count = {0:1, 1:1, 3:1}
+
+i=2, num=3:
+  prefixSum = 6
+  找 6 - 3 = 3 → count[3] = 1，result += 1 → result = 2
+  （對應子陣列 [3]）
+  count = {0:1, 1:1, 3:1, 6:1}
+
+答案 = 2 ✓
+                </pre>
+            </div>
+
+            <h3>為什麼要初始化 count[0] = 1？</h3>
+            <div class="visual-box">
+                <div class="visual-title">🎯 處理「從索引 0 開始」的子陣列</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+nums = [3], k = 3
+
+沒有初始化 count[0] = 1：
+  prefixSum = 3，找 3-3 = 0 → 找不到 → result = 0 ✗
+
+有初始化：
+  找到 count[0] = 1 → result = 1 ✓
+
+意義：prefix[0] = 0 代表「什麼都不取」的空前綴，
+      它讓「整段從頭開始的子陣列」也能被正確計數。
+
+這是本題最容易漏掉的一行，務必記住。
+                </pre>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>程式碼實現</h2>
+
+            <div class="code-block">
+                <div class="lang-tabs">
+                    <button class="lang-tab active" onclick="switchLang(event, 'python')">Python</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'cpp')">C++</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'java')">Java</button>
+                </div>
+
+                <div id="python" class="code-content active">
+                    <pre><code class="language-python"># 前綴和 + HashMap（推薦，O(n)）
+class Solution:
+    def subarraySum(self, nums: List[int], k: int) -&gt; int:
+        from collections import defaultdict
+
+        count = defaultdict(int)
+        count[0] = 1              # 關鍵：空前綴和出現一次
+
+        prefix_sum = 0
+        result = 0
+        for num in nums:
+            prefix_sum += num
+            # 有幾個舊前綴和滿足 prefix_sum - old = k
+            result += count[prefix_sum - k]
+            count[prefix_sum] += 1
+        return result
+
+
+# 暴力解（O(n²)，小資料可用，面試可先講再優化）
+class Solution:
+    def subarraySum(self, nums: List[int], k: int) -&gt; int:
+        n = len(nums)
+        result = 0
+        for i in range(n):
+            total = 0
+            for j in range(i, n):
+                total += nums[j]
+                if total == k:
+                    result += 1
+        return result</code></pre>
+                </div>
+
+                <div id="cpp" class="code-content">
+                    <pre><code class="language-cpp">// 前綴和 + HashMap（推薦，O(n)）
+class Solution {
+public:
+    int subarraySum(vector&lt;int&gt;&amp; nums, int k) {
+        unordered_map&lt;int, int&gt; count;
+        count[0] = 1;                 // 關鍵：空前綴和出現一次
+
+        int prefixSum = 0, result = 0;
+        for (int num : nums) {
+            prefixSum += num;
+            // 查詢是否存在 prefixSum - k
+            auto it = count.find(prefixSum - k);
+            if (it != count.end()) result += it-&gt;second;
+            count[prefixSum]++;
+        }
+        return result;
+    }
+};</code></pre>
+                </div>
+
+                <div id="java" class="code-content">
+                    <pre><code class="language-java">// 前綴和 + HashMap（推薦，O(n)）
+class Solution {
+    public int subarraySum(int[] nums, int k) {
+        Map&lt;Integer, Integer&gt; count = new HashMap&lt;&gt;();
+        count.put(0, 1);              // 關鍵：空前綴和出現一次
+
+        int prefixSum = 0, result = 0;
+        for (int num : nums) {
+            prefixSum += num;
+            // 有幾個舊前綴和滿足 prefixSum - old = k
+            result += count.getOrDefault(prefixSum - k, 0);
+            count.put(prefixSum, count.getOrDefault(prefixSum, 0) + 1);
+        }
+        return result;
+    }
+}</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>複雜度分析</h2>
+            <div class="complexity">
+                <div class="complexity-item">
+                    <strong>時間複雜度：</strong>O(n)
+                    <ul>
+                        <li>單趟掃描，HashMap 平均 O(1) 查詢與插入</li>
+                        <li>暴力解為 O(n²)</li>
+                    </ul>
+                </div>
+                <div class="complexity-item">
+                    <strong>空間複雜度：</strong>O(n)
+                    <ul>
+                        <li>最壞情況所有前綴和都不同，HashMap 存 n 個鍵</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>重點提示</h2>
+            <div class="key-point">
+                <strong>💡 關鍵技巧 1：count[0] = 1 的初始化</strong>
+                <p>沒有這行，所有「從索引 0 開始」的子陣列都會被漏算。這是本題唯一但最致命的陷阱。</p>
+            </div>
+
+            <div class="key-point">
+                <strong>💡 關鍵技巧 2：先查詢，再更新</strong>
+                <p>必須先 <code>result += count[prefixSum - k]</code>，之後才 <code>count[prefixSum]++</code>。順序寫反的話，當 k = 0 時會把「自己」算進去，答案偏大。</p>
+            </div>
+
+            <div class="key-point">
+                <strong>💡 關鍵技巧 3：有負數 → 排除滑動視窗</strong>
+                <p>面試時主動說明「因為有負數，視窗和不單調，所以滑動視窗不適用，改用前綴和 + 雜湊」，是展現思考深度的好機會。</p>
+            </div>
+
+            <div class="note">
+                <strong>⚠️ 常見錯誤：</strong>
+                <ul>
+                    <li>忘記 count[0] = 1</li>
+                    <li>查詢與更新的順序顛倒</li>
+                    <li>誤用滑動視窗（在有負數時會得到錯誤答案）</li>
+                    <li>前綴和可能溢位（本題範圍內 int 足夠，但大資料要用 long）</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>相關題目</h2>
+            <ul>
+                <li><strong>#523 Continuous Subarray Sum</strong> - 和為 k 的倍數（存餘數）</li>
+                <li><strong>#974 Subarray Sums Divisible by K</strong> - 和可被 k 整除</li>
+                <li><strong>#325 Maximum Size Subarray Sum Equals k</strong> - 求最長長度（存最早索引）</li>
+                <li><strong>#303 Range Sum Query</strong> - 前綴和的基礎應用</li>
+                <li><strong>#209 Minimum Size Subarray Sum</strong> - 全為正數，可用滑動視窗</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>補充說明</h2>
+            <h3>前綴和 + HashMap 的四種變形</h3>
+            <div class="visual-box">
+                <div class="visual-title">📝 記住這張表就能解一整類題</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+題型                   HashMap 存什麼        查詢什麼
+--------------------------------------------------------------
+#560 和為 k 的個數      前綴和 → 出現次數     prefix - k
+#325 和為 k 的最長長度  前綴和 → 最早索引     prefix - k，取 i - idx
+#523 和為 k 的倍數      前綴和%k → 最早索引   相同餘數
+#974 可被 k 整除的個數  前綴和%k → 出現次數   相同餘數
+
+【核心公式】
+  sum(i..j) = prefix[j+1] - prefix[i]
+
+【求個數】存次數；【求長度】存最早出現的索引
+
+注意 #523/#974 取餘數時，負數要修正：
+  ((sum % k) + k) % k
+                </pre>
+            </div>
+
+            <h3>#974 範例：和可被 K 整除的子陣列</h3>
+            <pre style="background: #f1f5f9; padding: 15px; border-radius: 8px; margin-top: 10px;">
+int subarraysDivByK(vector&lt;int&gt;&amp; nums, int k) {
+    unordered_map&lt;int,int&gt; count;
+    count[0] = 1;
+    int prefix = 0, result = 0;
+    for (int num : nums) {
+        prefix += num;
+        int mod = ((prefix % k) + k) % k;   // 處理負數餘數
+        result += count[mod];               // 相同餘數 → 差值可被 k 整除
+        count[mod]++;
+    }
+    return result;
+}
+
+原理：若 prefix[j] ≡ prefix[i] (mod k)，
+      則 (prefix[j] - prefix[i]) % k == 0
+            </pre>
+
+            <h3>什麼時候用滑動視窗、什麼時候用前綴和？</h3>
+            <ul>
+                <li><strong>全為正數 + 求最短/最長</strong> → 滑動視窗（#209），O(n) 且 O(1) 空間</li>
+                <li><strong>含負數 或 求「個數」</strong> → 前綴和 + HashMap（本題），O(n) 但需 O(n) 空間</li>
+                <li><strong>多次區間查詢、陣列不變</strong> → 純前綴和陣列（#303）</li>
+                <li><strong>多次區間查詢、陣列會變</strong> → 樹狀陣列 / 線段樹</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        function switchLang(event, lang) {
+            const tabs = document.querySelectorAll('.lang-tab');
+            const contents = document.querySelectorAll('.code-content');
+
+            tabs.forEach(tab => tab.classList.remove('active'));
+            contents.forEach(content => content.classList.remove('active'));
+
+            event.target.classList.add('active');
+            document.getElementById(lang).classList.add('active');
+        }
+
+        hljs.highlightAll();
+    </script>
+</body>
+</html>

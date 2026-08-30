@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>#622 Design Circular Queue | LeetCode 學習平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #333; background: #f8fafc; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .header { background: linear-gradient(135deg, #ea580c 0%, #c2410c 100%); color: white; padding: 30px; border-radius: 12px; margin-bottom: 30px; box-shadow: 0 4px 6px rgba(234, 88, 12, 0.2); }
+        .header h1 { font-size: 2em; margin-bottom: 10px; }
+        .difficulty { display: inline-block; padding: 6px 16px; background: rgba(255,255,255,0.2); border-radius: 20px; font-size: 0.9em; font-weight: 600; }
+        .tags { margin-top: 15px; }
+        .tag { display: inline-block; background: rgba(255,255,255,0.15); padding: 4px 12px; border-radius: 6px; margin-right: 8px; font-size: 0.85em; }
+        .back-btn { display: inline-block; margin-bottom: 20px; padding: 10px 20px; background: #3b82f6; color: white; text-decoration: none; border-radius: 8px; transition: background 0.3s; }
+        .back-btn:hover { background: #2563eb; }
+        .section { background: white; padding: 30px; border-radius: 12px; margin-bottom: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .section h2 { color: #1e293b; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 3px solid #ea580c; }
+        .section h3 { color: #475569; margin: 25px 0 15px 0; font-size: 1.3em; }
+        .code-block { background: #282c34; border-radius: 8px; overflow: hidden; margin: 15px 0; }
+        .lang-tabs { display: flex; background: #21252b; border-bottom: 1px solid #181a1f; }
+        .lang-tab { padding: 12px 24px; cursor: pointer; color: #abb2bf; border: none; background: none; transition: all 0.3s; font-weight: 500; }
+        .lang-tab.active { color: #61afef; background: #282c34; border-bottom: 2px solid #61afef; }
+        .lang-tab:hover { color: #61afef; background: #2c313a; }
+        .code-content { display: none; }
+        .code-content.active { display: block; }
+        pre { margin: 0; overflow-x: auto; }
+        code { font-family: 'Consolas', 'Monaco', 'Courier New', monospace; font-size: 0.9em; }
+        .example { background: #f0f9ff; border-left: 4px solid #3b82f6; padding: 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .example-title { font-weight: 700; color: #1e40af; margin-bottom: 12px; font-size: 1.05em; }
+        .visual-box { background: #fef3c7; border: 2px solid #f59e0b; padding: 20px; border-radius: 8px; margin: 15px 0; }
+        .visual-title { font-weight: 700; color: #92400e; margin-bottom: 12px; display: flex; align-items: center; font-size: 1.05em; }
+        .complexity { background: #f1f5f9; padding: 15px; border-radius: 8px; margin: 15px 0; }
+        .complexity-item { margin: 8px 0; color: #475569; }
+        .key-point { background: #dcfce7; border-left: 4px solid #16a34a; padding: 15px 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        ul, ol { margin-left: 25px; margin-top: 10px; }
+        li { margin: 8px 0; color: #475569; }
+        strong { color: #1e293b; }
+        .note { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 15px 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        @media (max-width: 768px) {
+            .container { padding: 10px; }
+            .header h1 { font-size: 1.5em; }
+            .section { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="../index.html" class="back-btn">← 返回題目列表</a>
+
+        <div class="header">
+            <h1>#622 Design Circular Queue</h1>
+            <div class="difficulty">Medium</div>
+            <div class="tags">
+                <span class="tag">Design</span>
+                <span class="tag">Array</span>
+                <span class="tag">Queue</span>
+                <span class="tag">Linked List</span>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>題目描述</h2>
+            <p>設計你的<strong>循環佇列（Circular Queue / Ring Buffer）</strong>實現。循環佇列是一種線性資料結構，其操作表現基於 FIFO（先進先出）原則，並且隊尾被連接在隊首之後以形成一個循環。</p>
+            <p style="margin-top: 15px;">實現 MyCircularQueue 類別：</p>
+            <ul>
+                <li><code>MyCircularQueue(k)</code>：構造器，設置佇列長度為 k</li>
+                <li><code>enQueue(value)</code>：向循環佇列插入一個元素，成功返回 true</li>
+                <li><code>deQueue()</code>：從循環佇列中刪除一個元素，成功返回 true</li>
+                <li><code>Front()</code>：從隊首取得元素，佇列為空返回 -1</li>
+                <li><code>Rear()</code>：取得隊尾元素，佇列為空返回 -1</li>
+                <li><code>isEmpty()</code> / <code>isFull()</code>：檢查是否為空 / 已滿</li>
+            </ul>
+            <p style="margin-top: 15px;"><strong>這是嵌入式/韌體面試出現頻率最高的設計題</strong>，因為 UART 收發、DMA 緩衝、感測器資料串流全都靠 ring buffer。</p>
+        </div>
+
+        <div class="section">
+            <h2>範例</h2>
+            <div class="example">
+                <div class="example-title">範例：</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+MyCircularQueue q = new MyCircularQueue(3);
+q.enQueue(1);   // 返回 true
+q.enQueue(2);   // 返回 true
+q.enQueue(3);   // 返回 true
+q.enQueue(4);   // 返回 false，佇列已滿
+q.Rear();       // 返回 3
+q.isFull();     // 返回 true
+q.deQueue();    // 返回 true
+q.enQueue(4);   // 返回 true
+q.Rear();       // 返回 4
+                </pre>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>解題思路</h2>
+            <div class="visual-box">
+                <div class="visual-title">💡 核心：用取模讓索引「繞回來」</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+用固定大小的陣列 + 兩個索引：
+  head：指向隊首元素
+  tail：指向下一個要寫入的位置
+
+索引前進時取模：index = (index + 1) % capacity
+
+容量 3 的佇列（實際開 4 格，見下方說明）：
+
+初始      [ _, _, _, _ ]   head=0 tail=0  空
+enQueue(1)[ 1, _, _, _ ]   head=0 tail=1
+enQueue(2)[ 1, 2, _, _ ]   head=0 tail=2
+enQueue(3)[ 1, 2, 3, _ ]   head=0 tail=3  滿
+deQueue() [ _, 2, 3, _ ]   head=1 tail=3
+enQueue(4)[ _, 2, 3, 4 ]   head=1 tail=0  ← tail 繞回開頭！
+                </pre>
+            </div>
+
+            <h3>關鍵難題：如何區分「空」和「滿」？</h3>
+            <div class="visual-box">
+                <div class="visual-title">🎯 head == tail 時，到底是空還是滿？</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+三種常見解法：
+
+【方法 A】多開一格（浪費一格，韌體最常用）
+  陣列開 k+1 格，永遠留一格空
+  空： head == tail
+  滿： (tail + 1) % (k+1) == head
+  優點：不需額外變數，兩個索引就能無鎖使用（單生產者單消費者）
+
+【方法 B】額外維護 count 計數
+  空： count == 0
+  滿： count == capacity
+  優點：不浪費空間、最好懂
+  缺點：多執行緒下 count 是共享變數，需要保護
+
+【方法 C】用 flag 標記
+  維護一個 isFull 布林值，較少用
+
+本頁 Python 用方法 B，C++/Java 用方法 A 各示範一次。
+                </pre>
+            </div>
+
+            <h3>效能重點：用 &amp; 取代 %</h3>
+            <div class="visual-box">
+                <div class="visual-title">⚡ 容量設成 2 的冪</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+取模 % 在 MCU 上是很慢的除法運算。
+若 capacity 是 2 的冪，可以改寫成：
+
+  (i + 1) % capacity   →   (i + 1) & (capacity - 1)
+
+例：capacity = 8
+    7 % 8 = 7,  7 & 7 = 7  ✓
+    8 % 8 = 0,  8 & 7 = 0  ✓
+
+這就是為什麼實務上 ring buffer 大小總是 16/64/256/1024。
+                </pre>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>程式碼實現</h2>
+
+            <div class="code-block">
+                <div class="lang-tabs">
+                    <button class="lang-tab active" onclick="switchLang(event, 'python')">Python</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'cpp')">C++</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'java')">Java</button>
+                </div>
+
+                <div id="python" class="code-content active">
+                    <pre><code class="language-python"># 方法 B：陣列 + count 計數（最好懂）
+class MyCircularQueue:
+
+    def __init__(self, k: int):
+        self.capacity = k
+        self.queue = [0] * k
+        self.head = 0       # 隊首索引
+        self.count = 0      # 目前元素個數
+
+    def enQueue(self, value: int) -&gt; bool:
+        if self.isFull():
+            return False
+        # tail 由 head 和 count 推導出來
+        tail = (self.head + self.count) % self.capacity
+        self.queue[tail] = value
+        self.count += 1
+        return True
+
+    def deQueue(self) -&gt; bool:
+        if self.isEmpty():
+            return False
+        self.head = (self.head + 1) % self.capacity
+        self.count -= 1
+        return True
+
+    def Front(self) -&gt; int:
+        return -1 if self.isEmpty() else self.queue[self.head]
+
+    def Rear(self) -&gt; int:
+        if self.isEmpty():
+            return -1
+        return self.queue[(self.head + self.count - 1) % self.capacity]
+
+    def isEmpty(self) -&gt; bool:
+        return self.count == 0
+
+    def isFull(self) -&gt; bool:
+        return self.count == self.capacity</code></pre>
+                </div>
+
+                <div id="cpp" class="code-content">
+                    <pre><code class="language-cpp">// 方法 A：多開一格，不需 count（韌體標準寫法）
+class MyCircularQueue {
+private:
+    vector&lt;int&gt; buf;
+    int head, tail, cap;   // cap = k + 1（多一格用來區分空與滿）
+
+public:
+    MyCircularQueue(int k) : buf(k + 1), head(0), tail(0), cap(k + 1) {}
+
+    bool enQueue(int value) {
+        if (isFull()) return false;
+        buf[tail] = value;
+        tail = (tail + 1) % cap;
+        return true;
+    }
+
+    bool deQueue() {
+        if (isEmpty()) return false;
+        head = (head + 1) % cap;
+        return true;
+    }
+
+    int Front()  { return isEmpty() ? -1 : buf[head]; }
+    int Rear()   { return isEmpty() ? -1 : buf[(tail - 1 + cap) % cap]; }
+    bool isEmpty(){ return head == tail; }
+    bool isFull() { return (tail + 1) % cap == head; }
+};
+
+/* ---------- 韌體版本：容量為 2 的冪，用 &amp; 取代 % ----------
+#define RB_SIZE 256              // 必須是 2 的冪
+#define RB_MASK (RB_SIZE - 1)
+
+typedef struct {
+    volatile uint16_t head, tail;
+    uint8_t buf[RB_SIZE];
+} ring_buffer_t;
+
+// 單生產者（ISR）單消費者（main loop）情況下可免鎖
+bool rb_push(ring_buffer_t *rb, uint8_t v) {
+    uint16_t next = (rb-&gt;tail + 1) &amp; RB_MASK;
+    if (next == rb-&gt;head) return false;      // 滿
+    rb-&gt;buf[rb-&gt;tail] = v;
+    rb-&gt;tail = next;                          // 最後才更新索引
+    return true;
+}
+
+bool rb_pop(ring_buffer_t *rb, uint8_t *out) {
+    if (rb-&gt;head == rb-&gt;tail) return false;   // 空
+    *out = rb-&gt;buf[rb-&gt;head];
+    rb-&gt;head = (rb-&gt;head + 1) &amp; RB_MASK;
+    return true;
+}
+----------------------------------------------------------- */</code></pre>
+                </div>
+
+                <div id="java" class="code-content">
+                    <pre><code class="language-java">// 方法 A：多開一格
+class MyCircularQueue {
+    private int[] buf;
+    private int head, tail, cap;
+
+    public MyCircularQueue(int k) {
+        cap = k + 1;            // 多開一格區分空與滿
+        buf = new int[cap];
+        head = tail = 0;
+    }
+
+    public boolean enQueue(int value) {
+        if (isFull()) return false;
+        buf[tail] = value;
+        tail = (tail + 1) % cap;
+        return true;
+    }
+
+    public boolean deQueue() {
+        if (isEmpty()) return false;
+        head = (head + 1) % cap;
+        return true;
+    }
+
+    public int Front() { return isEmpty() ? -1 : buf[head]; }
+
+    public int Rear()  { return isEmpty() ? -1 : buf[(tail - 1 + cap) % cap]; }
+
+    public boolean isEmpty() { return head == tail; }
+
+    public boolean isFull()  { return (tail + 1) % cap == head; }
+}</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>複雜度分析</h2>
+            <div class="complexity">
+                <div class="complexity-item">
+                    <strong>時間複雜度：</strong>所有操作都是 O(1)
+                    <ul>
+                        <li>enQueue / deQueue / Front / Rear / isEmpty / isFull 皆為常數時間</li>
+                        <li>這是 ring buffer 相對於一般陣列佇列（deQueue 要 O(n) 搬移）最大的優勢</li>
+                    </ul>
+                </div>
+                <div class="complexity-item">
+                    <strong>空間複雜度：</strong>O(k)
+                    <ul>
+                        <li>固定大小陣列，執行期完全不需要動態配置</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>重點提示</h2>
+            <div class="key-point">
+                <strong>💡 關鍵技巧 1：Rear 索引要處理負數</strong>
+                <p><code>(tail - 1 + cap) % cap</code>，當 tail == 0 時 tail - 1 會變成 -1，加上 cap 才正確。這是本題最常見的錯誤。</p>
+            </div>
+
+            <div class="key-point">
+                <strong>💡 關鍵技巧 2：ring buffer 為什麼適合嵌入式</strong>
+                <ul>
+                    <li><strong>不需動態記憶體</strong>：靜態配置，無 malloc/free，無記憶體碎片</li>
+                    <li><strong>O(1) 且時間可預測</strong>：符合即時系統（RTOS）的確定性要求</li>
+                    <li><strong>單生產者單消費者可免鎖</strong>：ISR 寫、main loop 讀，不用關中斷</li>
+                </ul>
+            </div>
+
+            <div class="key-point">
+                <strong>💡 面試常見追問</strong>
+                <ul>
+                    <li>「怎麼區分空和滿？」→ 多留一格 或 額外 count</li>
+                    <li>「取模很慢怎麼辦？」→ 容量設 2 的冪，用 &amp; (size-1)</li>
+                    <li>「多執行緒安全嗎？」→ 單生產者單消費者且索引為原子讀寫時安全，要加 <code>volatile</code> 與記憶體屏障；多生產者則需要鎖或 CAS</li>
+                    <li>「滿了怎麼辦？」→ 丟棄新資料 / 覆蓋最舊資料（overwrite mode）/ 阻塞等待，看應用需求</li>
+                </ul>
+            </div>
+
+            <div class="note">
+                <strong>⚠️ 常見錯誤：</strong>
+                <ul>
+                    <li>忘記多開一格，導致空與滿無法區分</li>
+                    <li>Rear() 沒有處理 tail = 0 的負索引</li>
+                    <li>先更新索引再寫資料（多執行緒下會讀到未寫入的髒資料），應該<strong>先寫資料，最後才更新索引</strong></li>
+                    <li>ISR 中使用的索引沒宣告 <code>volatile</code>，被編譯器優化掉</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>相關題目</h2>
+            <ul>
+                <li><strong>#641 Design Circular Deque</strong> - 雙端循環佇列</li>
+                <li><strong>#232 Implement Queue using Stacks</strong> - 另一種佇列實作</li>
+                <li><strong>#146 LRU Cache</strong> - 另一個高頻設計題</li>
+                <li><strong>#239 Sliding Window Maximum</strong> - 單調佇列的應用</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>補充說明</h2>
+            <h3>韌體實務：UART 接收緩衝</h3>
+            <div class="visual-box">
+                <div class="visual-title">🔧 典型的 ISR + main loop 架構</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+// 中斷服務常式：收到一個 byte 就丟進 ring buffer
+void USART1_IRQHandler(void) {
+    if (USART1->SR & USART_SR_RXNE) {
+        uint8_t data = USART1->DR;
+        rb_push(&rx_buffer, data);   // 不阻塞，滿了就丟棄
+    }
+}
+
+// 主迴圈：有空的時候才慢慢處理
+void main_loop(void) {
+    uint8_t byte;
+    while (rb_pop(&rx_buffer, &byte)) {
+        parse_protocol(byte);
+    }
+}
+
+好處：ISR 極短（只做搬資料），不會拖慢中斷回應時間，
+      解耦「資料到達的速度」與「處理的速度」。
+                </pre>
+            </div>
+
+            <h3>三種佇列實作比較</h3>
+            <pre style="background: #f1f5f9; padding: 15px; border-radius: 8px; margin-top: 10px;">
+實作方式            enQueue   deQueue   記憶體      適用場景
+-----------------------------------------------------------------
+一般陣列 + 搬移      O(1)      O(n)     連續        小資料量
+動態陣列（vector）   攤銷O(1)  O(n)     連續、會擴  一般應用
+鏈結串列             O(1)      O(1)     分散、有額外指標  容量不固定
+環形緩衝（本題）     O(1)      O(1)     連續、固定  嵌入式、即時系統 ★
+        </pre>
+
+            <h3>延伸：覆蓋模式（Overwrite Mode）</h3>
+            <p>某些應用（如飛行記錄器、示波器取樣）希望永遠保留「最新的 N 筆」，滿的時候不是拒絕寫入，而是覆蓋最舊的資料：</p>
+            <pre style="background: #f1f5f9; padding: 15px; border-radius: 8px; margin-top: 10px;">
+void rb_push_overwrite(ring_buffer_t *rb, uint8_t v) {
+    rb-&gt;buf[rb-&gt;tail] = v;
+    rb-&gt;tail = (rb-&gt;tail + 1) &amp; RB_MASK;
+    if (rb-&gt;tail == rb-&gt;head)                  // 滿了就推進 head
+        rb-&gt;head = (rb-&gt;head + 1) &amp; RB_MASK;   // 丟掉最舊的一筆
+}
+            </pre>
+        </div>
+    </div>
+
+    <script>
+        function switchLang(event, lang) {
+            const tabs = document.querySelectorAll('.lang-tab');
+            const contents = document.querySelectorAll('.code-content');
+
+            tabs.forEach(tab => tab.classList.remove('active'));
+            contents.forEach(content => content.classList.remove('active'));
+
+            event.target.classList.add('active');
+            document.getElementById(lang).classList.add('active');
+        }
+
+        hljs.highlightAll();
+    </script>
+</body>
+</html>

@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>#215 Kth Largest Element in an Array | LeetCode 學習平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #333; background: #f8fafc; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .header { background: linear-gradient(135deg, #ea580c 0%, #c2410c 100%); color: white; padding: 30px; border-radius: 12px; margin-bottom: 30px; box-shadow: 0 4px 6px rgba(234, 88, 12, 0.2); }
+        .header h1 { font-size: 2em; margin-bottom: 10px; }
+        .difficulty { display: inline-block; padding: 6px 16px; background: rgba(255,255,255,0.2); border-radius: 20px; font-size: 0.9em; font-weight: 600; }
+        .tags { margin-top: 15px; }
+        .tag { display: inline-block; background: rgba(255,255,255,0.15); padding: 4px 12px; border-radius: 6px; margin-right: 8px; font-size: 0.85em; }
+        .back-btn { display: inline-block; margin-bottom: 20px; padding: 10px 20px; background: #3b82f6; color: white; text-decoration: none; border-radius: 8px; transition: background 0.3s; }
+        .back-btn:hover { background: #2563eb; }
+        .section { background: white; padding: 30px; border-radius: 12px; margin-bottom: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .section h2 { color: #1e293b; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 3px solid #ea580c; }
+        .section h3 { color: #475569; margin: 25px 0 15px 0; font-size: 1.3em; }
+        .code-block { background: #282c34; border-radius: 8px; overflow: hidden; margin: 15px 0; }
+        .lang-tabs { display: flex; background: #21252b; border-bottom: 1px solid #181a1f; }
+        .lang-tab { padding: 12px 24px; cursor: pointer; color: #abb2bf; border: none; background: none; transition: all 0.3s; font-weight: 500; }
+        .lang-tab.active { color: #61afef; background: #282c34; border-bottom: 2px solid #61afef; }
+        .lang-tab:hover { color: #61afef; background: #2c313a; }
+        .code-content { display: none; }
+        .code-content.active { display: block; }
+        pre { margin: 0; overflow-x: auto; }
+        code { font-family: 'Consolas', 'Monaco', 'Courier New', monospace; font-size: 0.9em; }
+        .example { background: #f0f9ff; border-left: 4px solid #3b82f6; padding: 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .example-title { font-weight: 700; color: #1e40af; margin-bottom: 12px; font-size: 1.05em; }
+        .visual-box { background: #fef3c7; border: 2px solid #f59e0b; padding: 20px; border-radius: 8px; margin: 15px 0; }
+        .visual-title { font-weight: 700; color: #92400e; margin-bottom: 12px; display: flex; align-items: center; font-size: 1.05em; }
+        .complexity { background: #f1f5f9; padding: 15px; border-radius: 8px; margin: 15px 0; }
+        .complexity-item { margin: 8px 0; color: #475569; }
+        .key-point { background: #dcfce7; border-left: 4px solid #16a34a; padding: 15px 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        ul, ol { margin-left: 25px; margin-top: 10px; }
+        li { margin: 8px 0; color: #475569; }
+        strong { color: #1e293b; }
+        .note { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 15px 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        @media (max-width: 768px) {
+            .container { padding: 10px; }
+            .header h1 { font-size: 1.5em; }
+            .section { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="../index.html" class="back-btn">← 返回題目列表</a>
+
+        <div class="header">
+            <h1>#215 Kth Largest Element in an Array</h1>
+            <div class="difficulty">Medium</div>
+            <div class="tags">
+                <span class="tag">Heap</span>
+                <span class="tag">Quickselect</span>
+                <span class="tag">Sorting</span>
+                <span class="tag">Divide and Conquer</span>
+                <span class="tag">Array</span>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>題目描述</h2>
+            <p>給定整數陣列 nums 和整數 k，請返回陣列中<strong>第 k 個最大的元素</strong>。</p>
+            <p style="margin-top: 15px;">請注意，你需要找的是陣列排序後的第 k 個最大的元素，而<strong>不是</strong>第 k 個不同的元素。</p>
+            <p style="margin-top: 15px;">你必須設計並實現時間複雜度為 <strong>O(n)</strong> 的演算法解決此問題。</p>
+        </div>
+
+        <div class="section">
+            <h2>範例</h2>
+            <div class="example">
+                <div class="example-title">範例 1：</div>
+                <strong>輸入：</strong>nums = [3,2,1,5,6,4], k = 2<br>
+                <strong>輸出：</strong>5<br>
+                <strong>解釋：</strong>排序後為 [1,2,3,4,5,6]，第 2 大是 5。
+            </div>
+
+            <div class="example">
+                <div class="example-title">範例 2：</div>
+                <strong>輸入：</strong>nums = [3,2,3,1,2,4,5,5,6], k = 4<br>
+                <strong>輸出：</strong>4<br>
+                <strong>解釋：</strong>重複元素各自計算，不去重。
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>解題思路</h2>
+            <div class="visual-box">
+                <div class="visual-title">💡 三種解法的取捨</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+方法          時間           空間    適用情境
+-----------------------------------------------------------------
+排序後取      O(n log n)     O(1)    最簡單，資料小時夠用
+最小堆積      O(n log k)     O(k)    ★ k 很小、資料串流、無法全載入記憶體
+快速選擇      平均 O(n)      O(1)    ★ 符合題目 O(n) 要求，但最壞 O(n²)
+              最壞 O(n²)
+
+面試建議：先講排序法（30秒），再講堆積法，
+          最後講快速選擇並說明它是題目要的 O(n)。
+                </pre>
+            </div>
+
+            <h3>方法一：最小堆積（維護大小為 k 的堆）</h3>
+            <div class="visual-box">
+                <div class="visual-title">🎯 堆頂永遠是「目前的第 k 大」</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+維護一個大小為 k 的【最小堆積】：
+  堆中永遠保存「目前看過的最大的 k 個數」
+  堆頂（最小的那個）就是第 k 大 ✓
+
+for (num : nums) {
+    heap.push(num);
+    if (heap.size() > k) heap.pop();   // 彈出最小的
+}
+return heap.top();
+
+【追蹤】nums = [3,2,1,5,6,4], k = 2
+  push 3 → [3]
+  push 2 → [2,3]
+  push 1 → [1,2,3] 超過 k，pop 1 → [2,3]
+  push 5 → [2,3,5] pop 2 → [3,5]
+  push 6 → [3,5,6] pop 3 → [5,6]
+  push 4 → [4,5,6] pop 4 → [5,6]
+  堆頂 = 5 ✓
+
+⭐ 為什麼是最小堆而不是最大堆？
+   因為我們要不斷「淘汰最小的」，
+   最小堆才能 O(1) 取得並 O(log k) 移除最小值。
+                </pre>
+            </div>
+
+            <h3>方法二：快速選擇（Quickselect，本題正解）</h3>
+            <div class="visual-box">
+                <div class="visual-title">⚡ 快速排序的「單邊」版本</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+第 k 大 = 升序排序後索引為 (n - k) 的元素
+
+快速排序每次 partition 後，pivot 會落在它的最終位置。
+如果那個位置正好是 n-k，就找到答案了！
+否則只需要遞迴【其中一邊】（快排要遞迴兩邊）。
+
+  if (pivotIndex == target) return nums[pivotIndex];
+  if (pivotIndex < target)  只遞迴右邊;
+  else                      只遞迴左邊;
+
+【為什麼是 O(n)？】
+每次期望排除一半：
+  n + n/2 + n/4 + ... = 2n = O(n) ✓
+（快排要處理兩邊，所以是 O(n log n)）
+
+【最壞 O(n²)】
+每次 pivot 都選到最大或最小值（如已排序陣列選第一個當 pivot）。
+解法：【隨機選 pivot】，讓最壞情況的機率趨近於 0。
+                </pre>
+            </div>
+
+            <h3>Partition 的實作（Lomuto 分割）</h3>
+            <div class="visual-box">
+                <div class="visual-title">🔧 把小於 pivot 的都搬到左邊</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+int partition(vector<int>& nums, int left, int right) {
+    // 隨機選 pivot 並換到最右邊（避免最壞情況）
+    int randIdx = left + rand() % (right - left + 1);
+    swap(nums[randIdx], nums[right]);
+
+    int pivot = nums[right];
+    int i = left;                  // i 指向「下一個小於 pivot 的位置」
+
+    for (int j = left; j < right; j++) {
+        if (nums[j] < pivot) {
+            swap(nums[i], nums[j]);
+            i++;
+        }
+    }
+    swap(nums[i], nums[right]);    // pivot 歸位
+    return i;                      // 回傳 pivot 的最終索引
+}
+                </pre>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>程式碼實現</h2>
+
+            <div class="code-block">
+                <div class="lang-tabs">
+                    <button class="lang-tab active" onclick="switchLang(event, 'python')">Python</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'cpp')">C++</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'java')">Java</button>
+                </div>
+
+                <div id="python" class="code-content active">
+                    <pre><code class="language-python"># 方法一：最小堆積（O(n log k)，程式碼最短）
+class Solution:
+    def findKthLargest(self, nums: List[int], k: int) -&gt; int:
+        import heapq
+        heap = []
+        for num in nums:
+            heapq.heappush(heap, num)
+            if len(heap) &gt; k:
+                heapq.heappop(heap)     # 彈出最小的
+        return heap[0]                  # 堆頂 = 第 k 大
+
+
+# 更簡潔：直接用 nlargest
+class Solution:
+    def findKthLargest(self, nums: List[int], k: int) -&gt; int:
+        import heapq
+        return heapq.nlargest(k, nums)[-1]
+
+
+# 方法二：快速選擇（平均 O(n)，題目要求的解法）
+class Solution:
+    def findKthLargest(self, nums: List[int], k: int) -&gt; int:
+        import random
+
+        def partition(left, right):
+            # 隨機選 pivot，避免最壞情況
+            rand_idx = random.randint(left, right)
+            nums[rand_idx], nums[right] = nums[right], nums[rand_idx]
+
+            pivot = nums[right]
+            i = left
+            for j in range(left, right):
+                if nums[j] &lt; pivot:
+                    nums[i], nums[j] = nums[j], nums[i]
+                    i += 1
+            nums[i], nums[right] = nums[right], nums[i]
+            return i
+
+        # 第 k 大 = 升序索引 n - k
+        target = len(nums) - k
+        left, right = 0, len(nums) - 1
+
+        while True:
+            p = partition(left, right)
+            if p == target:
+                return nums[p]
+            elif p &lt; target:
+                left = p + 1          # 只往右邊找
+            else:
+                right = p - 1         # 只往左邊找</code></pre>
+                </div>
+
+                <div id="cpp" class="code-content">
+                    <pre><code class="language-cpp">// 方法一：最小堆積（O(n log k)）
+class Solution {
+public:
+    int findKthLargest(vector&lt;int&gt;&amp; nums, int k) {
+        // priority_queue 預設是最大堆，加 greater 變成最小堆
+        priority_queue&lt;int, vector&lt;int&gt;, greater&lt;int&gt;&gt; minHeap;
+
+        for (int num : nums) {
+            minHeap.push(num);
+            if (minHeap.size() &gt; k) minHeap.pop();   // 彈出最小的
+        }
+        return minHeap.top();
+    }
+};
+
+// 方法二：快速選擇（平均 O(n)，題目要求）
+class Solution {
+    int partition(vector&lt;int&gt;&amp; nums, int left, int right) {
+        // 隨機選 pivot，避免最壞情況
+        int randIdx = left + rand() % (right - left + 1);
+        swap(nums[randIdx], nums[right]);
+
+        int pivot = nums[right];
+        int i = left;
+        for (int j = left; j &lt; right; j++) {
+            if (nums[j] &lt; pivot) swap(nums[i++], nums[j]);
+        }
+        swap(nums[i], nums[right]);
+        return i;
+    }
+
+public:
+    int findKthLargest(vector&lt;int&gt;&amp; nums, int k) {
+        int target = nums.size() - k;    // 第 k 大 = 升序索引 n-k
+        int left = 0, right = nums.size() - 1;
+
+        while (true) {
+            int p = partition(nums, left, right);
+            if (p == target) return nums[p];
+            else if (p &lt; target) left = p + 1;    // 只找右邊
+            else                 right = p - 1;   // 只找左邊
+        }
+    }
+};
+
+// 方法三：STL 內建（實務首選，就是 Quickselect + Introselect）
+class Solution {
+public:
+    int findKthLargest(vector&lt;int&gt;&amp; nums, int k) {
+        nth_element(nums.begin(), nums.begin() + k - 1, nums.end(),
+                    greater&lt;int&gt;());
+        return nums[k - 1];
+    }
+};</code></pre>
+                </div>
+
+                <div id="java" class="code-content">
+                    <pre><code class="language-java">// 方法一：最小堆積（O(n log k)）
+class Solution {
+    public int findKthLargest(int[] nums, int k) {
+        PriorityQueue&lt;Integer&gt; minHeap = new PriorityQueue&lt;&gt;();  // 預設最小堆
+
+        for (int num : nums) {
+            minHeap.offer(num);
+            if (minHeap.size() &gt; k) minHeap.poll();    // 彈出最小的
+        }
+        return minHeap.peek();
+    }
+}
+
+// 方法二：快速選擇（平均 O(n)）
+class Solution {
+    private Random rand = new Random();
+
+    public int findKthLargest(int[] nums, int k) {
+        int target = nums.length - k;
+        int left = 0, right = nums.length - 1;
+
+        while (true) {
+            int p = partition(nums, left, right);
+            if (p == target) return nums[p];
+            else if (p &lt; target) left = p + 1;
+            else                 right = p - 1;
+        }
+    }
+
+    private int partition(int[] nums, int left, int right) {
+        int randIdx = left + rand.nextInt(right - left + 1);
+        swap(nums, randIdx, right);
+
+        int pivot = nums[right], i = left;
+        for (int j = left; j &lt; right; j++) {
+            if (nums[j] &lt; pivot) swap(nums, i++, j);
+        }
+        swap(nums, i, right);
+        return i;
+    }
+
+    private void swap(int[] a, int i, int j) {
+        int t = a[i]; a[i] = a[j]; a[j] = t;
+    }
+}</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>複雜度分析</h2>
+            <div class="complexity">
+                <div class="complexity-item">
+                    <strong>時間複雜度：</strong>
+                    <ul>
+                        <li>排序法：O(n log n)</li>
+                        <li>最小堆積：O(n log k)，k 很小時接近 O(n)</li>
+                        <li>快速選擇：<strong>平均 O(n)</strong>，最壞 O(n²)（隨機化後機率極低）</li>
+                        <li>理論上有最壞 O(n) 的「中位數的中位數」演算法，但常數太大不實用</li>
+                    </ul>
+                </div>
+                <div class="complexity-item">
+                    <strong>空間複雜度：</strong>
+                    <ul>
+                        <li>最小堆積：O(k)</li>
+                        <li>快速選擇（迭代版）：O(1) ★</li>
+                        <li>快速選擇（遞迴版）：平均 O(log n) 堆疊</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>重點提示</h2>
+            <div class="key-point">
+                <strong>💡 關鍵技巧 1：第 k 大 = 升序索引 n - k</strong>
+                <p>轉換公式要背熟。也可以在 partition 時用降序排列，這樣目標索引就是 k-1。兩種寫法都可以，但務必在紙上驗證一次避免差一錯誤。</p>
+            </div>
+
+            <div class="key-point">
+                <strong>💡 關鍵技巧 2：隨機化 pivot 是必須的</strong>
+                <p>LeetCode 的測試資料<strong>包含已排序的大陣列</strong>，如果固定選第一個或最後一個當 pivot，會退化成 O(n²) 而超時。加上隨機化只要一行，卻是能否通過的關鍵。</p>
+            </div>
+
+            <div class="key-point">
+                <strong>💡 關鍵技巧 3：Top-K 問題用「反向堆積」</strong>
+                <ul>
+                    <li>求<strong>最大</strong>的 k 個 → 用<strong>最小</strong>堆（淘汰最小的）</li>
+                    <li>求<strong>最小</strong>的 k 個 → 用<strong>最大</strong>堆（淘汰最大的）</li>
+                </ul>
+                <p style="margin-top: 10px;">這個「反直覺」的配對是 Top-K 問題的標準做法，一定要記住。</p>
+            </div>
+
+            <div class="note">
+                <strong>⚠️ 常見錯誤：</strong>
+                <ul>
+                    <li>索引轉換寫錯（n-k 還是 k-1）</li>
+                    <li>沒有隨機化 pivot，遇到已排序資料超時</li>
+                    <li>堆積用錯方向（求最大 k 個卻用最大堆）</li>
+                    <li>快速選擇遞迴了兩邊（那就變成快排 O(n log n) 了）</li>
+                    <li>partition 的迴圈邊界寫成 <code>j &lt;= right</code>（會把 pivot 自己也比較進去）</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>相關題目</h2>
+            <ul>
+                <li><strong>#347 Top K Frequent Elements</strong> - 出現頻率前 k 高（堆積/桶排序）</li>
+                <li><strong>#973 K Closest Points to Origin</strong> - 最近的 k 個點</li>
+                <li><strong>#295 Find Median from Data Stream</strong> - 雙堆積求中位數</li>
+                <li><strong>#703 Kth Largest Element in a Stream</strong> - 資料串流版本</li>
+                <li><strong>#912 Sort an Array</strong> - 快速排序完整實作</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>補充說明</h2>
+            <h3>Top-K 問題的四種解法</h3>
+            <div class="visual-box">
+                <div class="visual-title">📊 依情境選擇</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+解法            時間          空間   適用情境
+--------------------------------------------------------------------
+全部排序        O(n log n)    O(1)   n 很小、或本來就要排序
+大小 k 的堆積   O(n log k)    O(k)   ★ k &lt;&lt; n、資料串流、分散式
+快速選擇        平均 O(n)     O(1)   ★ 資料全在記憶體、只查一次
+桶排序/計數     O(n)          O(範圍) 值域小且已知（如 #347）
+
+【分散式場景】（面試系統設計常問）
+  海量資料求 Top-K：
+  1. 每台機器各自用堆積算出本地 Top-K
+  2. 把所有本地結果匯總，再算一次全域 Top-K
+  → 堆積法天然可以分治，快速選擇則不行
+                </pre>
+            </div>
+
+            <h3>堆積（Heap）的核心操作複習</h3>
+            <pre style="background: #f1f5f9; padding: 15px; border-radius: 8px; margin-top: 10px;">
+用陣列表示完全二元樹：
+  節點 i 的左子 = 2i + 1，右子 = 2i + 2，父節點 = (i-1) / 2
+
+操作        複雜度      說明
+------------------------------------------------
+取頂端      O(1)        arr[0]
+插入        O(log n)    放到最後，向上調整（sift up）
+刪除頂端    O(log n)    把最後一個移到頂，向下調整（sift down）
+建堆        O(n)        ★ 從 n/2 開始逐個 sift down
+                        （不是 O(n log n)！這是常見誤解）
+
+各語言的堆積：
+  C++    priority_queue（預設最大堆）
+  Java   PriorityQueue（預設最小堆）★ 方向相反，要注意
+  Python heapq（只有最小堆，要最大堆就存負數）
+            </pre>
+
+            <h3>#295 資料串流中位數：雙堆積技巧</h3>
+            <pre style="background: #f1f5f9; padding: 15px; border-radius: 8px; margin-top: 10px;">
+用兩個堆積把資料切成兩半：
+  最大堆 small：存較小的一半（堆頂 = 較小半的最大值）
+  最小堆 large：存較大的一半（堆頂 = 較大半的最小值）
+
+保持 |size(small) - size(large)| &lt;= 1
+
+中位數：
+  兩邊一樣大 → (small.top() + large.top()) / 2
+  small 多一個 → small.top()
+
+addNum: O(log n)，findMedian: O(1)
+
+這是「用兩個堆積維護有序性」的經典技巧，
+也是滑動視窗中位數（#480）的基礎。
+            </pre>
+        </div>
+    </div>
+
+    <script>
+        function switchLang(event, lang) {
+            const tabs = document.querySelectorAll('.lang-tab');
+            const contents = document.querySelectorAll('.code-content');
+
+            tabs.forEach(tab => tab.classList.remove('active'));
+            contents.forEach(content => content.classList.remove('active'));
+
+            event.target.classList.add('active');
+            document.getElementById(lang).classList.add('active');
+        }
+
+        hljs.highlightAll();
+    </script>
+</body>
+</html>

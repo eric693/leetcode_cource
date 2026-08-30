@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>#392 Is Subsequence | LeetCode 學習平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #333; background: #f8fafc; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .header { background: linear-gradient(135deg, #16a34a 0%, #15803d 100%); color: white; padding: 30px; border-radius: 12px; margin-bottom: 30px; box-shadow: 0 4px 6px rgba(22, 163, 74, 0.2); }
+        .header h1 { font-size: 2em; margin-bottom: 10px; }
+        .difficulty { display: inline-block; padding: 6px 16px; background: rgba(255,255,255,0.2); border-radius: 20px; font-size: 0.9em; font-weight: 600; }
+        .tags { margin-top: 15px; }
+        .tag { display: inline-block; background: rgba(255,255,255,0.15); padding: 4px 12px; border-radius: 6px; margin-right: 8px; font-size: 0.85em; }
+        .back-btn { display: inline-block; margin-bottom: 20px; padding: 10px 20px; background: #3b82f6; color: white; text-decoration: none; border-radius: 8px; transition: background 0.3s; }
+        .back-btn:hover { background: #2563eb; }
+        .section { background: white; padding: 30px; border-radius: 12px; margin-bottom: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .section h2 { color: #1e293b; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 3px solid #16a34a; }
+        .section h3 { color: #475569; margin: 25px 0 15px 0; font-size: 1.3em; }
+        .code-block { background: #282c34; border-radius: 8px; overflow: hidden; margin: 15px 0; }
+        .lang-tabs { display: flex; background: #21252b; border-bottom: 1px solid #181a1f; }
+        .lang-tab { padding: 12px 24px; cursor: pointer; color: #abb2bf; border: none; background: none; transition: all 0.3s; font-weight: 500; }
+        .lang-tab.active { color: #61afef; background: #282c34; border-bottom: 2px solid #61afef; }
+        .lang-tab:hover { color: #61afef; background: #2c313a; }
+        .code-content { display: none; }
+        .code-content.active { display: block; }
+        pre { margin: 0; overflow-x: auto; }
+        code { font-family: 'Consolas', 'Monaco', 'Courier New', monospace; font-size: 0.9em; }
+        .example { background: #f0f9ff; border-left: 4px solid #3b82f6; padding: 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .example-title { font-weight: 700; color: #1e40af; margin-bottom: 12px; font-size: 1.05em; }
+        .visual-box { background: #fef3c7; border: 2px solid #f59e0b; padding: 20px; border-radius: 8px; margin: 15px 0; }
+        .visual-title { font-weight: 700; color: #92400e; margin-bottom: 12px; display: flex; align-items: center; font-size: 1.05em; }
+        .complexity { background: #f1f5f9; padding: 15px; border-radius: 8px; margin: 15px 0; }
+        .complexity-item { margin: 8px 0; color: #475569; }
+        .key-point { background: #dcfce7; border-left: 4px solid #16a34a; padding: 15px 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        ul, ol { margin-left: 25px; margin-top: 10px; }
+        li { margin: 8px 0; color: #475569; }
+        strong { color: #1e293b; }
+        .note { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 15px 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        @media (max-width: 768px) {
+            .container { padding: 10px; }
+            .header h1 { font-size: 1.5em; }
+            .section { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="../index.html" class="back-btn">← 返回題目列表</a>
+
+        <div class="header">
+            <h1>#392 Is Subsequence</h1>
+            <div class="difficulty">Easy</div>
+            <div class="tags">
+                <span class="tag">Two Pointers</span>
+                <span class="tag">String</span>
+                <span class="tag">Dynamic Programming</span>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>題目描述</h2>
+            <p>給定字串 s 和 t，判斷 s 是否為 t 的<strong>子序列</strong>。</p>
+            <p style="margin-top: 15px;">字串的子序列是原始字串刪除一些（也可以不刪除）字元而<strong>不改變剩餘字元相對位置</strong>形成的新字串。例如 "ace" 是 "abcde" 的子序列，而 "aec" 不是。</p>
+            <p style="margin-top: 15px;"><strong>進階：</strong>如果有大量輸入的 S（稱作 S₁, S₂, ..., S<sub>k</sub>，其中 k &ge; 10 億），你需要依次檢查它們是否為 T 的子序列。在這種情況下，你會怎樣改變程式碼？</p>
+        </div>
+
+        <div class="section">
+            <h2>範例</h2>
+            <div class="example">
+                <div class="example-title">範例 1：</div>
+                <strong>輸入：</strong>s = "abc", t = "ahbgdc"<br>
+                <strong>輸出：</strong>true
+            </div>
+
+            <div class="example">
+                <div class="example-title">範例 2：</div>
+                <strong>輸入：</strong>s = "axc", t = "ahbgdc"<br>
+                <strong>輸出：</strong>false
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>解題思路</h2>
+            <div class="visual-box">
+                <div class="visual-title">💡 方法一：雙指標貪心（O(n)）</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+i 指向 s，j 指向 t。
+j 一路往前掃，只要遇到 s[i] 就讓 i 前進。
+若 i 走完 s 就代表匹配成功。
+
+s = "abc", t = "ahbgdc"
+
+j=0: t[0]='a' == s[0]='a' ✓ → i=1
+j=1: t[1]='h' != s[1]='b'   → i 不動
+j=2: t[2]='b' == s[1]='b' ✓ → i=2
+j=3: t[3]='g' != s[2]='c'   → i 不動
+j=4: t[4]='d' != 'c'        → i 不動
+j=5: t[5]='c' == s[2]='c' ✓ → i=3
+
+i == len(s) → true ✓
+
+【為什麼貪心是對的？】
+遇到能匹配的字元就立刻匹配，一定不會比「跳過它、
+等後面再匹配」更差 —— 因為越早匹配，留給後續字元
+的選擇空間越大。這是典型的交換論證（exchange argument）。
+                </pre>
+            </div>
+
+            <h3>方法二：預處理 + 二分搜尋（回答進階題）</h3>
+            <div class="visual-box">
+                <div class="visual-title">🎯 大量查詢時的標準答案</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+如果有 10 億個 s 要對同一個 t 查詢，
+每次都掃一遍 t 就是 O(k × n)，太慢。
+
+【預處理】對 t 建立索引表：
+  pos[c] = t 中所有字元 c 出現的位置（遞增）
+
+t = "ahbgdc"
+  pos['a'] = [0]
+  pos['b'] = [2]
+  pos['c'] = [5]
+  pos['d'] = [4]
+  pos['g'] = [3]
+  pos['h'] = [1]
+
+【查詢】s = "abc"，維護當前位置 cur = -1
+  'a': 在 pos['a'] 中二分找 > -1 的最小值 → 0，cur = 0
+  'b': 在 pos['b'] 中二分找 > 0 的最小值  → 2，cur = 2
+  'c': 在 pos['c'] 中二分找 > 2 的最小值  → 5，cur = 5
+  全部找到 → true ✓
+
+複雜度：預處理 O(n)，每次查詢 O(|s| × log n)
+        總計 O(n + k × |s| × log n)，遠優於 O(k × n)
+                </pre>
+            </div>
+
+            <h3>方法三：DP 狀態機（更快的查詢）</h3>
+            <div class="visual-box">
+                <div class="visual-title">⚡ 每次查詢降到 O(|s|)</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+預處理一張表：
+  nxt[i][c] = 從 t 的位置 i 開始，字元 c 第一次出現的位置
+              （不存在則為 n）
+
+從後往前遞推：
+  nxt[i][c] = i     if t[i] == c
+            = nxt[i+1][c]  otherwise
+
+查詢時直接跳轉，每個字元 O(1)：
+  cur = nxt[cur][s[i]] + 1
+
+預處理 O(n × 26) 空間與時間，
+換來每次查詢 O(|s|)，這是最快的做法。
+                </pre>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>程式碼實現</h2>
+
+            <div class="code-block">
+                <div class="lang-tabs">
+                    <button class="lang-tab active" onclick="switchLang(event, 'python')">Python</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'cpp')">C++</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'java')">Java</button>
+                </div>
+
+                <div id="python" class="code-content active">
+                    <pre><code class="language-python"># 方法一：雙指標（推薦，單次查詢最佳）
+class Solution:
+    def isSubsequence(self, s: str, t: str) -&gt; bool:
+        i = 0
+        for ch in t:
+            if i &lt; len(s) and s[i] == ch:
+                i += 1
+        return i == len(s)
+
+
+# 方法二：預處理 + 二分（大量查詢用）
+class Solution:
+    def __init__(self):
+        self.pos = None
+
+    def isSubsequence(self, s: str, t: str) -&gt; bool:
+        import bisect
+        from collections import defaultdict
+
+        # 預處理：記錄每個字元出現的所有位置
+        if self.pos is None:
+            self.pos = defaultdict(list)
+            for i, ch in enumerate(t):
+                self.pos[ch].append(i)
+
+        cur = -1
+        for ch in s:
+            lst = self.pos.get(ch)
+            if not lst:
+                return False
+            # 找第一個 &gt; cur 的位置
+            idx = bisect.bisect_right(lst, cur)
+            if idx == len(lst):
+                return False
+            cur = lst[idx]
+        return True</code></pre>
+                </div>
+
+                <div id="cpp" class="code-content">
+                    <pre><code class="language-cpp">// 方法一：雙指標（推薦）
+class Solution {
+public:
+    bool isSubsequence(string s, string t) {
+        int i = 0;
+        for (char c : t) {
+            if (i &lt; s.size() &amp;&amp; s[i] == c) i++;
+        }
+        return i == s.size();
+    }
+};
+
+// 方法三：DP 狀態機（大量查詢，每次 O(|s|)）
+class Solution {
+public:
+    bool isSubsequence(string s, string t) {
+        int n = t.size();
+        // nxt[i][c]：從位置 i 起字元 c 第一次出現的位置
+        vector&lt;vector&lt;int&gt;&gt; nxt(n + 1, vector&lt;int&gt;(26, n));
+        for (int i = n - 1; i &gt;= 0; i--) {
+            for (int c = 0; c &lt; 26; c++) nxt[i][c] = nxt[i + 1][c];
+            nxt[i][t[i] - 'a'] = i;
+        }
+
+        int cur = 0;
+        for (char c : s) {
+            if (nxt[cur][c - 'a'] == n) return false;   // 找不到
+            cur = nxt[cur][c - 'a'] + 1;                // 跳到下一個位置
+        }
+        return true;
+    }
+};</code></pre>
+                </div>
+
+                <div id="java" class="code-content">
+                    <pre><code class="language-java">// 方法一：雙指標（推薦）
+class Solution {
+    public boolean isSubsequence(String s, String t) {
+        int i = 0;
+        for (int j = 0; j &lt; t.length(); j++) {
+            if (i &lt; s.length() &amp;&amp; s.charAt(i) == t.charAt(j)) {
+                i++;
+            }
+        }
+        return i == s.length();
+    }
+}
+
+// 方法三：DP 狀態機
+class Solution {
+    public boolean isSubsequence(String s, String t) {
+        int n = t.length();
+        int[][] nxt = new int[n + 1][26];
+        Arrays.fill(nxt[n], n);
+        for (int i = n - 1; i &gt;= 0; i--) {
+            nxt[i] = nxt[i + 1].clone();
+            nxt[i][t.charAt(i) - 'a'] = i;
+        }
+
+        int cur = 0;
+        for (char c : s.toCharArray()) {
+            if (nxt[cur][c - 'a'] == n) return false;
+            cur = nxt[cur][c - 'a'] + 1;
+        }
+        return true;
+    }
+}</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>複雜度分析</h2>
+            <div class="complexity">
+                <div class="complexity-item">
+                    <strong>時間複雜度：</strong>
+                    <ul>
+                        <li>雙指標：O(n)，n 為 t 的長度</li>
+                        <li>二分法：預處理 O(n)，每次查詢 O(|s| log n)</li>
+                        <li>DP 狀態機：預處理 O(26n)，每次查詢 O(|s|)</li>
+                    </ul>
+                </div>
+                <div class="complexity-item">
+                    <strong>空間複雜度：</strong>
+                    <ul>
+                        <li>雙指標：O(1) ★</li>
+                        <li>二分法：O(n)</li>
+                        <li>DP 狀態機：O(26n)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>重點提示</h2>
+            <div class="key-point">
+                <strong>💡 關鍵技巧 1：子序列 vs 子字串</strong>
+                <p><strong>子序列</strong>可以不連續但要保持順序（本題）；<strong>子字串</strong>必須連續。看題目時務必分清楚，兩者的解法完全不同。</p>
+            </div>
+
+            <div class="key-point">
+                <strong>💡 關鍵技巧 2：進階題才是重點</strong>
+                <p>單看主題目非常簡單，面試官真正想考的是<strong>進階問題</strong>：「大量查詢怎麼優化？」答案是「<strong>預處理 t 建索引</strong>」。這體現了一個重要的系統設計思維：<strong>當查詢遠多於更新時，就用空間換時間做預處理</strong>（就像資料庫建索引）。</p>
+            </div>
+
+            <div class="note">
+                <strong>⚠️ 常見錯誤：</strong>
+                <ul>
+                    <li>雙指標時忘記檢查 <code>i &lt; len(s)</code> 而越界</li>
+                    <li>把子序列誤解成子字串</li>
+                    <li>沒注意到空字串 s 是任何字串的子序列（本解法自然返回 true）</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>相關題目</h2>
+            <ul>
+                <li><strong>#1143 Longest Common Subsequence</strong> - 最長公共子序列（DP）</li>
+                <li><strong>#792 Number of Matching Subsequences</strong> - 統計有多少個 s 是 t 的子序列</li>
+                <li><strong>#115 Distinct Subsequences</strong> - 計算子序列出現的方法數</li>
+                <li><strong>#524 Longest Word in Dictionary through Deleting</strong> - 本題的直接應用</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>補充說明</h2>
+            <h3>DP 解法（雖然不需要，但理解它有助於解相關題）</h3>
+            <div class="visual-box">
+                <div class="visual-title">📐 dp[i][j] = s 前 i 個字元是否為 t 前 j 個的子序列</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+狀態轉移：
+  若 s[i-1] == t[j-1]：dp[i][j] = dp[i-1][j-1]
+  否則：               dp[i][j] = dp[i][j-1]   （跳過 t 的這個字元）
+
+邊界：dp[0][j] = true（空字串是任何字串的子序列）
+      dp[i][0] = false（非空字串不可能是空字串的子序列）
+
+答案：dp[m][n]
+
+複雜度 O(mn)，比雙指標差很多，
+但這個框架可以直接改成 #1143（最長公共子序列）
+和 #115（子序列計數），值得掌握。
+                </pre>
+            </div>
+
+            <h3>#792 Number of Matching Subsequences 的巧解</h3>
+            <pre style="background: #f1f5f9; padding: 15px; border-radius: 8px; margin-top: 10px;">
+給一堆 words，問有幾個是 s 的子序列。
+
+【桶排序法】把每個 word 依「當前待匹配的字元」分桶，
+掃描 s 一次，每個字元把對應桶裡的所有 word 往前推一格：
+
+buckets[26]  // buckets[c] 存放「下一個要匹配 c」的所有 word
+
+for (char c : s) {
+    auto old = buckets[c - 'a'];
+    buckets[c - 'a'].clear();
+    for (auto&amp; it : old) {
+        it.advance();                    // 指標前進
+        if (it.done()) count++;          // 完全匹配
+        else buckets[it.current()].push_back(it);
+    }
+}
+
+複雜度 O(|s| + 所有 word 的總長度)，非常漂亮。
+            </pre>
+
+            <h3>面試思維：預處理的取捨</h3>
+            <ul>
+                <li><strong>單次查詢</strong> → 雙指標，O(n) 時間 O(1) 空間，最簡潔</li>
+                <li><strong>少量查詢</strong> → 仍用雙指標，預處理成本不划算</li>
+                <li><strong>大量查詢</strong> → 二分或 DP 狀態機，預處理成本被攤平</li>
+                <li><strong>t 會頻繁變動</strong> → 預處理反而是負擔，回到雙指標</li>
+            </ul>
+            <p style="margin-top: 15px;">能講出這個取捨分析，比單純寫出程式碼更能展現工程判斷力。</p>
+        </div>
+    </div>
+
+    <script>
+        function switchLang(event, lang) {
+            const tabs = document.querySelectorAll('.lang-tab');
+            const contents = document.querySelectorAll('.code-content');
+
+            tabs.forEach(tab => tab.classList.remove('active'));
+            contents.forEach(content => content.classList.remove('active'));
+
+            event.target.classList.add('active');
+            document.getElementById(lang).classList.add('active');
+        }
+
+        hljs.highlightAll();
+    </script>
+</body>
+</html>

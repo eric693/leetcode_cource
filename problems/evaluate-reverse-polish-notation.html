@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>#150 Evaluate Reverse Polish Notation | LeetCode 學習平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #333; background: #f8fafc; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .header { background: linear-gradient(135deg, #ea580c 0%, #c2410c 100%); color: white; padding: 30px; border-radius: 12px; margin-bottom: 30px; box-shadow: 0 4px 6px rgba(234, 88, 12, 0.2); }
+        .header h1 { font-size: 2em; margin-bottom: 10px; }
+        .difficulty { display: inline-block; padding: 6px 16px; background: rgba(255,255,255,0.2); border-radius: 20px; font-size: 0.9em; font-weight: 600; }
+        .tags { margin-top: 15px; }
+        .tag { display: inline-block; background: rgba(255,255,255,0.15); padding: 4px 12px; border-radius: 6px; margin-right: 8px; font-size: 0.85em; }
+        .back-btn { display: inline-block; margin-bottom: 20px; padding: 10px 20px; background: #3b82f6; color: white; text-decoration: none; border-radius: 8px; transition: background 0.3s; }
+        .back-btn:hover { background: #2563eb; }
+        .section { background: white; padding: 30px; border-radius: 12px; margin-bottom: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .section h2 { color: #1e293b; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 3px solid #ea580c; }
+        .section h3 { color: #475569; margin: 25px 0 15px 0; font-size: 1.3em; }
+        .code-block { background: #282c34; border-radius: 8px; overflow: hidden; margin: 15px 0; }
+        .lang-tabs { display: flex; background: #21252b; border-bottom: 1px solid #181a1f; }
+        .lang-tab { padding: 12px 24px; cursor: pointer; color: #abb2bf; border: none; background: none; transition: all 0.3s; font-weight: 500; }
+        .lang-tab.active { color: #61afef; background: #282c34; border-bottom: 2px solid #61afef; }
+        .lang-tab:hover { color: #61afef; background: #2c313a; }
+        .code-content { display: none; }
+        .code-content.active { display: block; }
+        pre { margin: 0; overflow-x: auto; }
+        code { font-family: 'Consolas', 'Monaco', 'Courier New', monospace; font-size: 0.9em; }
+        .example { background: #f0f9ff; border-left: 4px solid #3b82f6; padding: 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .example-title { font-weight: 700; color: #1e40af; margin-bottom: 12px; font-size: 1.05em; }
+        .visual-box { background: #fef3c7; border: 2px solid #f59e0b; padding: 20px; border-radius: 8px; margin: 15px 0; }
+        .visual-title { font-weight: 700; color: #92400e; margin-bottom: 12px; display: flex; align-items: center; font-size: 1.05em; }
+        .complexity { background: #f1f5f9; padding: 15px; border-radius: 8px; margin: 15px 0; }
+        .complexity-item { margin: 8px 0; color: #475569; }
+        .key-point { background: #dcfce7; border-left: 4px solid #16a34a; padding: 15px 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        ul, ol { margin-left: 25px; margin-top: 10px; }
+        li { margin: 8px 0; color: #475569; }
+        strong { color: #1e293b; }
+        .note { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 15px 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        @media (max-width: 768px) {
+            .container { padding: 10px; }
+            .header h1 { font-size: 1.5em; }
+            .section { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="../index.html" class="back-btn">← 返回題目列表</a>
+
+        <div class="header">
+            <h1>#150 Evaluate Reverse Polish Notation</h1>
+            <div class="difficulty">Medium</div>
+            <div class="tags">
+                <span class="tag">Stack</span>
+                <span class="tag">Array</span>
+                <span class="tag">Math</span>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>題目描述</h2>
+            <p>給你一個字串陣列 tokens，表示一個根據<strong>逆波蘭表示法（Reverse Polish Notation, 後綴表達式）</strong>表示的算術運算式。請你計算該運算式，返回一個表示運算式值的整數。</p>
+            <p style="margin-top: 15px;">注意：</p>
+            <ul>
+                <li>有效的運算子為 <code>+</code>、<code>-</code>、<code>*</code>、<code>/</code></li>
+                <li>每個運算元（運算對象）都可以是整數或另一個運算式</li>
+                <li>兩個整數之間的除法總是<strong>向零截斷</strong>（例如 -7/2 = -3，不是 -4）</li>
+                <li>該運算式中不含除零運算，輸入保證是有效的</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>範例</h2>
+            <div class="example">
+                <div class="example-title">範例 1：</div>
+                <strong>輸入：</strong>tokens = ["2","1","+","3","*"]<br>
+                <strong>輸出：</strong>9<br>
+                <strong>解釋：</strong>該算式轉化為常見的中綴算術運算式為 ((2 + 1) * 3) = 9
+            </div>
+
+            <div class="example">
+                <div class="example-title">範例 2：</div>
+                <strong>輸入：</strong>tokens = ["4","13","5","/","+"]<br>
+                <strong>輸出：</strong>6<br>
+                <strong>解釋：</strong>該算式轉化為 (4 + (13 / 5)) = 4 + 2 = 6
+            </div>
+
+            <div class="example">
+                <div class="example-title">範例 3：</div>
+                <strong>輸入：</strong>tokens = ["10","6","9","3","+","-11","*","/","*","17","+","5","+"]<br>
+                <strong>輸出：</strong>22
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>解題思路</h2>
+            <div class="visual-box">
+                <div class="visual-title">💡 什麼是逆波蘭表示法？</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+中綴（我們習慣的寫法）： (2 + 1) * 3
+後綴（逆波蘭）：          2 1 + 3 *
+
+運算子寫在兩個運算元【之後】。
+
+【逆波蘭的三大優點】
+1. 不需要括號 —— 運算順序由位置唯一決定
+2. 不需要運算子優先級規則
+3. 用一個堆疊就能求值，實作極簡
+
+這正是編譯器、計算機、虛擬機內部使用的表示法。
+                </pre>
+            </div>
+
+            <h3>核心：一個堆疊搞定</h3>
+            <div class="visual-box">
+                <div class="visual-title">🎯 遇到數字就推入，遇到運算子就彈出兩個</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+for (token : tokens) {
+    if (是數字) {
+        stack.push(數字);
+    } else {
+        b = stack.pop();      // 注意順序！先彈出的是【右】運算元
+        a = stack.pop();      // 後彈出的是【左】運算元
+        stack.push(a 運算 b);
+    }
+}
+return stack.top();
+
+⚠️ 順序極重要：
+   對於加法和乘法沒差，
+   但減法和除法會完全不同！
+   "5 3 -" 應該是 5 - 3 = 2，不是 3 - 5 = -2
+                </pre>
+            </div>
+
+            <h3>完整追蹤：["4","13","5","/","+"]</h3>
+            <div class="visual-box">
+                <div class="visual-title">🔄 堆疊的變化</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+token = "4"  → 數字，推入      stack = [4]
+token = "13" → 數字，推入      stack = [4, 13]
+token = "5"  → 數字，推入      stack = [4, 13, 5]
+token = "/"  → 運算子
+               b = pop() = 5   （右運算元）
+               a = pop() = 13  （左運算元）
+               push(13 / 5 = 2)
+                               stack = [4, 2]
+token = "+"  → 運算子
+               b = pop() = 2
+               a = pop() = 4
+               push(4 + 2 = 6)
+                               stack = [6]
+
+答案 = 6 ✓
+                </pre>
+            </div>
+
+            <h3>陷阱：除法的截斷方向</h3>
+            <div class="visual-box">
+                <div class="visual-title">⚠️ 「向零截斷」vs「向下取整」</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+題目要求【向零截斷】（truncate toward zero）：
+  7 / 2  = 3      -7 / 2  = -3   （不是 -4！）
+
+各語言的行為：
+  C/C++ 的 /      → 向零截斷 ✓ 直接用
+  Java 的 /       → 向零截斷 ✓ 直接用
+  Python 的 //    → 向下取整 ✗ -7 // 2 = -4，會出錯！
+
+Python 的正確寫法：
+  int(a / b)                     # 浮點除法後截斷（小數字安全）
+  或
+  abs(a) // abs(b) * (1 if a*b >= 0 else -1)   # 純整數運算
+
+本題數值範圍小，用 int(a / b) 即可。
+                </pre>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>程式碼實現</h2>
+
+            <div class="code-block">
+                <div class="lang-tabs">
+                    <button class="lang-tab active" onclick="switchLang(event, 'python')">Python</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'cpp')">C++</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'java')">Java</button>
+                </div>
+
+                <div id="python" class="code-content active">
+                    <pre><code class="language-python">class Solution:
+    def evalRPN(self, tokens: List[str]) -&gt; int:
+        stack = []
+        operators = {'+', '-', '*', '/'}
+
+        for token in tokens:
+            if token in operators:
+                b = stack.pop()      # 先彈出的是【右】運算元
+                a = stack.pop()      # 後彈出的是【左】運算元
+
+                if token == '+':
+                    stack.append(a + b)
+                elif token == '-':
+                    stack.append(a - b)
+                elif token == '*':
+                    stack.append(a * b)
+                else:
+                    # Python 的 // 是向下取整，這裡要向零截斷
+                    stack.append(int(a / b))
+            else:
+                stack.append(int(token))   # 注意：可能是負數如 "-11"
+
+        return stack[0]
+
+
+# 用字典 + lambda 讓程式碼更簡潔
+class Solution:
+    def evalRPN(self, tokens: List[str]) -&gt; int:
+        ops = {
+            '+': lambda a, b: a + b,
+            '-': lambda a, b: a - b,
+            '*': lambda a, b: a * b,
+            '/': lambda a, b: int(a / b),    # 向零截斷
+        }
+        stack = []
+        for token in tokens:
+            if token in ops:
+                b, a = stack.pop(), stack.pop()
+                stack.append(ops[token](a, b))
+            else:
+                stack.append(int(token))
+        return stack[0]</code></pre>
+                </div>
+
+                <div id="cpp" class="code-content">
+                    <pre><code class="language-cpp">class Solution {
+public:
+    int evalRPN(vector&lt;string&gt;&amp; tokens) {
+        stack&lt;long long&gt; stk;
+
+        for (const string&amp; token : tokens) {
+            if (token == "+" || token == "-" ||
+                token == "*" || token == "/") {
+                long long b = stk.top(); stk.pop();   // 右運算元
+                long long a = stk.top(); stk.pop();   // 左運算元
+
+                if      (token == "+") stk.push(a + b);
+                else if (token == "-") stk.push(a - b);
+                else if (token == "*") stk.push(a * b);
+                else                   stk.push(a / b);  // C++ 本來就向零截斷
+            } else {
+                stk.push(stoll(token));    // stoll 可正確處理負號
+            }
+        }
+        return (int)stk.top();
+    }
+};</code></pre>
+                </div>
+
+                <div id="java" class="code-content">
+                    <pre><code class="language-java">class Solution {
+    public int evalRPN(String[] tokens) {
+        Deque&lt;Integer&gt; stack = new ArrayDeque&lt;&gt;();
+
+        for (String token : tokens) {
+            switch (token) {
+                case "+": case "-": case "*": case "/": {
+                    int b = stack.pop();      // 右運算元
+                    int a = stack.pop();      // 左運算元
+                    int result;
+                    switch (token) {
+                        case "+": result = a + b; break;
+                        case "-": result = a - b; break;
+                        case "*": result = a * b; break;
+                        default:  result = a / b; break;  // Java 向零截斷
+                    }
+                    stack.push(result);
+                    break;
+                }
+                default:
+                    stack.push(Integer.parseInt(token));  // 可處理負號
+            }
+        }
+        return stack.pop();
+    }
+}</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>複雜度分析</h2>
+            <div class="complexity">
+                <div class="complexity-item">
+                    <strong>時間複雜度：</strong>O(n)
+                    <ul>
+                        <li>每個 token 只處理一次，堆疊操作都是 O(1)</li>
+                    </ul>
+                </div>
+                <div class="complexity-item">
+                    <strong>空間複雜度：</strong>O(n)
+                    <ul>
+                        <li>最壞情況（所有數字連續出現）堆疊會存 n/2 + 1 個元素</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>重點提示</h2>
+            <div class="key-point">
+                <strong>💡 關鍵技巧 1：彈出順序不能反</strong>
+                <p><strong>先彈出的是右運算元</strong>，因為堆疊是後進先出。減法和除法對順序敏感，寫反了 <code>["5","3","-"]</code> 會得到 -2 而不是 2。這是本題最常見的錯誤。</p>
+            </div>
+
+            <div class="key-point">
+                <strong>💡 關鍵技巧 2：判斷數字不能只看第一個字元</strong>
+                <p>token 可能是 <code>"-11"</code>（負數）。用「第一個字元是不是數字」來判斷會把負數誤判成減法運算子。<strong>正確做法是先檢查是不是那四個運算子</strong>，其餘一律當數字。</p>
+            </div>
+
+            <div class="key-point">
+                <strong>💡 Python 特別注意除法</strong>
+                <p><code>-7 // 2 = -4</code>（向下取整）但題目要 <code>-3</code>（向零截斷）。必須用 <code>int(a / b)</code>。這個差異在很多題目中都會踩到，值得記住。</p>
+            </div>
+
+            <div class="note">
+                <strong>⚠️ 常見錯誤：</strong>
+                <ul>
+                    <li>運算元順序顛倒</li>
+                    <li>用 <code>isdigit()</code> 判斷導致負數被當成運算子</li>
+                    <li>Python 用 <code>//</code> 導致負數除法結果錯誤</li>
+                    <li>C++ 用 <code>stoi</code> 遇到超大數字溢位（本題範圍內安全，但用 <code>long long</code> 更保險）</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>相關題目</h2>
+            <ul>
+                <li><strong>#224 Basic Calculator</strong> - 帶括號的中綴表達式求值</li>
+                <li><strong>#227 Basic Calculator II</strong> - 帶運算子優先級的中綴求值</li>
+                <li><strong>#20 Valid Parentheses</strong> - 堆疊基礎題</li>
+                <li><strong>#155 Min Stack</strong> - 堆疊設計題</li>
+                <li><strong>#772 Basic Calculator III</strong> - 括號 + 優先級的完整版</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>補充說明</h2>
+            <h3>三種表達式表示法</h3>
+            <div class="visual-box">
+                <div class="visual-title">📝 前綴、中綴、後綴</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+                    運算子位置    範例（(2+1)*3）  求值方式
+------------------------------------------------------------------
+中綴（infix）       在中間        (2 + 1) * 3      需要括號與優先級
+前綴（prefix）      在前面        * + 2 1 3        從右往左掃 + 堆疊
+                    = 波蘭表示法                   （Lisp 的形式）
+後綴（postfix）     在後面        2 1 + 3 *        從左往右掃 + 堆疊
+                    = 逆波蘭 ★                     最容易實作
+
+⭐ 前綴和後綴都不需要括號，
+   因為運算順序已經由結構唯一決定了。
+
+樹的觀點：這三種其實就是【表達式樹】的三種遍歷！
+        *
+       / \
+      +   3
+     / \
+    2   1
+  前序遍歷 → * + 2 1 3  （前綴）
+  中序遍歷 → 2 + 1 * 3  （中綴，會遺失括號資訊）
+  後序遍歷 → 2 1 + 3 *  （後綴）✓
+                </pre>
+            </div>
+
+            <h3>中綴轉後綴：Shunting-yard 演算法</h3>
+            <pre style="background: #f1f5f9; padding: 15px; border-radius: 8px; margin-top: 10px;">
+Dijkstra 提出的經典演算法，用一個運算子堆疊：
+
+for (token : 中綴表達式) {
+    if (是數字)    直接輸出;
+    if (是 '(')    推入堆疊;
+    if (是 ')')    不斷彈出並輸出，直到遇到 '('，然後丟棄 '(';
+    if (是運算子)  while (堆疊頂端運算子的優先級 &gt;= 當前運算子)
+                       彈出並輸出;
+                   推入當前運算子;
+}
+最後把堆疊中剩餘的運算子全部彈出輸出。
+
+範例："3 + 4 * 2"
+  3 → 輸出      output: 3
+  + → 推入      stack: [+]
+  4 → 輸出      output: 3 4
+  * → 優先級高於 +，直接推入   stack: [+, *]
+  2 → 輸出      output: 3 4 2
+  結束 → 彈出全部   output: 3 4 2 * +
+
+結果 "3 4 2 * +" = 3 + (4*2) = 11 ✓
+            </pre>
+
+            <h3>實務應用：堆疊機（Stack Machine）</h3>
+            <div class="visual-box">
+                <div class="visual-title">🔧 虛擬機的運作原理</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+JVM、Python VM、WebAssembly 都是【堆疊式虛擬機】，
+它們的位元組碼本質上就是逆波蘭表示法。
+
+Java 原始碼： int c = a + b;
+
+JVM 位元組碼：
+  iload_1      // 把 a 推入運算元堆疊
+  iload_2      // 把 b 推入運算元堆疊
+  iadd         // 彈出兩個，相加，結果推回
+  istore_3     // 彈出結果存入 c
+
+完全就是本題的邏輯！
+
+【為什麼虛擬機用堆疊而不是暫存器？】
+  ✓ 指令編碼短（不需要指定運算元的位置）
+  ✓ 與底層硬體無關，可攜性高
+  ✗ 執行效率較低（記憶體存取較多）
+  → 所以 JIT 編譯器會把堆疊碼再轉成暫存器機器碼
+
+相對地，真實 CPU（x86、ARM）和 Lua VM、Dalvik
+則是【暫存器式】，指令較少但編碼較長。
+                </pre>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function switchLang(event, lang) {
+            const tabs = document.querySelectorAll('.lang-tab');
+            const contents = document.querySelectorAll('.code-content');
+
+            tabs.forEach(tab => tab.classList.remove('active'));
+            contents.forEach(content => content.classList.remove('active'));
+
+            event.target.classList.add('active');
+            document.getElementById(lang).classList.add('active');
+        }
+
+        hljs.highlightAll();
+    </script>
+</body>
+</html>

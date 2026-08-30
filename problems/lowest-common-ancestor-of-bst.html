@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>#235 Lowest Common Ancestor of a Binary Search Tree | LeetCode 學習平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #333; background: #f8fafc; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .header { background: linear-gradient(135deg, #ea580c 0%, #c2410c 100%); color: white; padding: 30px; border-radius: 12px; margin-bottom: 30px; box-shadow: 0 4px 6px rgba(234, 88, 12, 0.2); }
+        .header h1 { font-size: 2em; margin-bottom: 10px; }
+        .difficulty { display: inline-block; padding: 6px 16px; background: rgba(255,255,255,0.2); border-radius: 20px; font-size: 0.9em; font-weight: 600; }
+        .tags { margin-top: 15px; }
+        .tag { display: inline-block; background: rgba(255,255,255,0.15); padding: 4px 12px; border-radius: 6px; margin-right: 8px; font-size: 0.85em; }
+        .back-btn { display: inline-block; margin-bottom: 20px; padding: 10px 20px; background: #3b82f6; color: white; text-decoration: none; border-radius: 8px; transition: background 0.3s; }
+        .back-btn:hover { background: #2563eb; }
+        .section { background: white; padding: 30px; border-radius: 12px; margin-bottom: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .section h2 { color: #1e293b; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 3px solid #ea580c; }
+        .section h3 { color: #475569; margin: 25px 0 15px 0; font-size: 1.3em; }
+        .code-block { background: #282c34; border-radius: 8px; overflow: hidden; margin: 15px 0; }
+        .lang-tabs { display: flex; background: #21252b; border-bottom: 1px solid #181a1f; }
+        .lang-tab { padding: 12px 24px; cursor: pointer; color: #abb2bf; border: none; background: none; transition: all 0.3s; font-weight: 500; }
+        .lang-tab.active { color: #61afef; background: #282c34; border-bottom: 2px solid #61afef; }
+        .lang-tab:hover { color: #61afef; background: #2c313a; }
+        .code-content { display: none; }
+        .code-content.active { display: block; }
+        pre { margin: 0; overflow-x: auto; }
+        code { font-family: 'Consolas', 'Monaco', 'Courier New', monospace; font-size: 0.9em; }
+        .example { background: #f0f9ff; border-left: 4px solid #3b82f6; padding: 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .example-title { font-weight: 700; color: #1e40af; margin-bottom: 12px; font-size: 1.05em; }
+        .visual-box { background: #fef3c7; border: 2px solid #f59e0b; padding: 20px; border-radius: 8px; margin: 15px 0; }
+        .visual-title { font-weight: 700; color: #92400e; margin-bottom: 12px; display: flex; align-items: center; font-size: 1.05em; }
+        .complexity { background: #f1f5f9; padding: 15px; border-radius: 8px; margin: 15px 0; }
+        .complexity-item { margin: 8px 0; color: #475569; }
+        .key-point { background: #dcfce7; border-left: 4px solid #16a34a; padding: 15px 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        ul, ol { margin-left: 25px; margin-top: 10px; }
+        li { margin: 8px 0; color: #475569; }
+        strong { color: #1e293b; }
+        .note { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 15px 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        @media (max-width: 768px) {
+            .container { padding: 10px; }
+            .header h1 { font-size: 1.5em; }
+            .section { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="../index.html" class="back-btn">← 返回題目列表</a>
+
+        <div class="header">
+            <h1>#235 Lowest Common Ancestor of a Binary Search Tree</h1>
+            <div class="difficulty">Medium</div>
+            <div class="tags">
+                <span class="tag">Tree</span>
+                <span class="tag">Binary Search Tree</span>
+                <span class="tag">DFS</span>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>題目描述</h2>
+            <p>給定一個<strong>二元搜尋樹</strong>，找到該樹中兩個指定節點的最近公共祖先（LCA）。</p>
+            <p style="margin-top: 15px;">最近公共祖先的定義：對於有根樹 T 的兩個節點 p、q，最近公共祖先表示為一個節點 x，滿足 x 是 p、q 的祖先且 x 的深度盡可能大（<strong>一個節點也可以是它自己的祖先</strong>）。</p>
+            <p style="margin-top: 15px;">與 #236 的差別在於：這裡是 <strong>BST</strong>，可以利用「左小右大」的性質大幅簡化。</p>
+        </div>
+
+        <div class="section">
+            <h2>範例</h2>
+            <div class="example">
+                <div class="example-title">範例 1：</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+        6
+       / \
+      2   8
+     / \ / \
+    0  4 7  9
+      / \
+     3   5
+
+輸入：p = 2, q = 8
+輸出：6
+                </pre>
+            </div>
+
+            <div class="example">
+                <div class="example-title">範例 2：</div>
+                <strong>輸入：</strong>（同上樹）p = 2, q = 4<br>
+                <strong>輸出：</strong>2<br>
+                <strong>解釋：</strong>節點 2 是節點 4 的祖先，也是自己的祖先。
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>解題思路</h2>
+            <div class="visual-box">
+                <div class="visual-title">💡 核心：LCA 就是「值的分岔點」</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+BST 性質：左子樹全部 < 根 < 右子樹全部
+
+從根開始，比較 p、q 的值與當前節點：
+
+情況 1：p.val < root.val 且 q.val < root.val
+        → 兩者都在左子樹 → 往左走
+
+情況 2：p.val > root.val 且 q.val > root.val
+        → 兩者都在右子樹 → 往右走
+
+情況 3：其他（一大一小，或其中一個等於 root）
+        → 這裡就是【分岔點】= LCA ✓
+
+因為再往下走任何一邊，都會把另一個節點排除掉。
+                </pre>
+            </div>
+
+            <h3>完整追蹤：p = 2, q = 8</h3>
+            <div class="visual-box">
+                <div class="visual-title">🔄 一路往下直到分岔</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+        6
+       / \
+      2   8
+
+root = 6：
+  p=2 < 6，q=8 > 6 → 一大一小，分岔！
+  返回 6 ✓
+
+再看 p = 2, q = 4：
+root = 6：
+  p=2 < 6，q=4 < 6 → 都在左邊，往左走
+root = 2：
+  p=2 == 2 → 命中其中一個，返回 2 ✓
+  （因為 2 是自己的祖先，且 4 在它的子樹裡）
+                </pre>
+            </div>
+
+            <h3>與 #236 的效能差異</h3>
+            <div class="visual-box">
+                <div class="visual-title">📊 為什麼 BST 版本更快</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+              #236 普通二元樹      #235 BST
+-------------------------------------------------
+判斷依據      要走訪整棵樹找節點   直接用值的大小關係
+時間          O(n)                 O(h) = O(log n) 平衡時
+空間          O(h) 遞迴堆疊        O(1)（可寫成迭代）★
+走訪範圍      最壞每個節點都要看   只走一條根到節點的路徑
+
+BST 版本只需要走「一條路徑」，
+完全不用進入不相關的子樹，效率好非常多。
+                </pre>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>程式碼實現</h2>
+
+            <div class="code-block">
+                <div class="lang-tabs">
+                    <button class="lang-tab active" onclick="switchLang(event, 'python')">Python</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'cpp')">C++</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'java')">Java</button>
+                </div>
+
+                <div id="python" class="code-content active">
+                    <pre><code class="language-python"># 迭代版（推薦，O(1) 空間）
+class Solution:
+    def lowestCommonAncestor(self, root: 'TreeNode', p: 'TreeNode', q: 'TreeNode') -&gt; 'TreeNode':
+        cur = root
+        while cur:
+            if p.val &lt; cur.val and q.val &lt; cur.val:
+                cur = cur.left       # 兩者都在左子樹
+            elif p.val &gt; cur.val and q.val &gt; cur.val:
+                cur = cur.right      # 兩者都在右子樹
+            else:
+                return cur           # 分岔點就是 LCA
+        return None
+
+
+# 遞迴版
+class Solution:
+    def lowestCommonAncestor(self, root, p, q):
+        if p.val &lt; root.val and q.val &lt; root.val:
+            return self.lowestCommonAncestor(root.left, p, q)
+        if p.val &gt; root.val and q.val &gt; root.val:
+            return self.lowestCommonAncestor(root.right, p, q)
+        return root</code></pre>
+                </div>
+
+                <div id="cpp" class="code-content">
+                    <pre><code class="language-cpp">// 迭代版（推薦，O(1) 空間）
+class Solution {
+public:
+    TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+        TreeNode* cur = root;
+        while (cur) {
+            if (p-&gt;val &lt; cur-&gt;val &amp;&amp; q-&gt;val &lt; cur-&gt;val) {
+                cur = cur-&gt;left;      // 兩者都在左子樹
+            } else if (p-&gt;val &gt; cur-&gt;val &amp;&amp; q-&gt;val &gt; cur-&gt;val) {
+                cur = cur-&gt;right;     // 兩者都在右子樹
+            } else {
+                return cur;           // 分岔點就是 LCA
+            }
+        }
+        return nullptr;
+    }
+};
+
+// 遞迴版
+class Solution {
+public:
+    TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+        if (p-&gt;val &lt; root-&gt;val &amp;&amp; q-&gt;val &lt; root-&gt;val)
+            return lowestCommonAncestor(root-&gt;left, p, q);
+        if (p-&gt;val &gt; root-&gt;val &amp;&amp; q-&gt;val &gt; root-&gt;val)
+            return lowestCommonAncestor(root-&gt;right, p, q);
+        return root;
+    }
+};</code></pre>
+                </div>
+
+                <div id="java" class="code-content">
+                    <pre><code class="language-java">// 迭代版（推薦，O(1) 空間）
+class Solution {
+    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+        TreeNode cur = root;
+        while (cur != null) {
+            if (p.val &lt; cur.val &amp;&amp; q.val &lt; cur.val) {
+                cur = cur.left;       // 兩者都在左子樹
+            } else if (p.val &gt; cur.val &amp;&amp; q.val &gt; cur.val) {
+                cur = cur.right;      // 兩者都在右子樹
+            } else {
+                return cur;           // 分岔點就是 LCA
+            }
+        }
+        return null;
+    }
+}</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>複雜度分析</h2>
+            <div class="complexity">
+                <div class="complexity-item">
+                    <strong>時間複雜度：</strong>O(h)
+                    <ul>
+                        <li>h 為樹高；平衡 BST 時為 O(log n)</li>
+                        <li>最壞（退化成鏈）為 O(n)</li>
+                        <li>只走一條路徑，不需要走訪整棵樹</li>
+                    </ul>
+                </div>
+                <div class="complexity-item">
+                    <strong>空間複雜度：</strong>
+                    <ul>
+                        <li>迭代版：O(1) ★</li>
+                        <li>遞迴版：O(h) 的呼叫堆疊</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>重點提示</h2>
+            <div class="key-point">
+                <strong>💡 關鍵技巧：看到 BST 就先想「能不能利用大小關係」</strong>
+                <p>BST 題目的通用心法：把「搜尋」問題變成「往左還是往右」的判斷。這能把 O(n) 的走訪降到 O(h)。#98 驗證 BST、#230 第 k 小、#700 搜尋、#701 插入都是同樣的思路。</p>
+            </div>
+
+            <div class="key-point">
+                <strong>💡 為什麼「分岔點」一定是 LCA？</strong>
+                <p>假設 <code>p.val &lt;= root.val &lt;= q.val</code>。若再往左走，新的節點值會小於 root，q 就不可能在它的子樹裡；往右走則 p 被排除。所以 root 是<strong>最後一個能同時包含兩者的節點</strong>，正是最近公共祖先。</p>
+            </div>
+
+            <div class="note">
+                <strong>⚠️ 常見錯誤：</strong>
+                <ul>
+                    <li>沒有處理「p 或 q 就是當前節點」的情況（本解法的 else 分支自動涵蓋了）</li>
+                    <li>條件寫成 <code>&lt;=</code>，會在 p == root 時繼續往下走而錯過答案</li>
+                    <li>直接套用 #236 的解法（雖然正確，但浪費了 BST 的性質，面試會被扣分）</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>相關題目</h2>
+            <ul>
+                <li><strong>#236 LCA of a Binary Tree</strong> - 普通二元樹版本，需要後序遍歷</li>
+                <li><strong>#98 Validate Binary Search Tree</strong> - 驗證 BST</li>
+                <li><strong>#230 Kth Smallest Element in a BST</strong> - 中序遍歷應用</li>
+                <li><strong>#700 Search in a BST</strong> - BST 基本搜尋</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>補充說明</h2>
+            <h3>BST 的核心性質總整理</h3>
+            <div class="visual-box">
+                <div class="visual-title">📝 五個必記的性質</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+1【中序遍歷 = 遞增序列】
+   → #98 驗證、#230 第 k 小、#530 最小絕對差、#173 迭代器
+
+2【搜尋只走一條路徑，O(h)】
+   → #700 搜尋、#701 插入、#450 刪除、本題 #235
+
+3【左子樹全部 &lt; 根 &lt; 右子樹全部】（是「全部」，不只是直接子節點！）
+   → #98 驗證時必須傳遞上下界，只比較父子是不夠的
+
+4【最小值 = 一路往左；最大值 = 一路往右】
+   → #450 刪除節點時用來找後繼節點
+
+5【範圍查詢可剪枝】
+   → #938 區間和：若 root.val &lt; low 就完全不用進左子樹
+                </pre>
+            </div>
+
+            <h3>#98 驗證 BST 的常見陷阱</h3>
+            <pre style="background: #f1f5f9; padding: 15px; border-radius: 8px; margin-top: 10px;">
+❌ 錯誤：只比較父子關係
+    if (node-&gt;left &amp;&amp; node-&gt;left-&gt;val &gt;= node-&gt;val) return false;
+
+  反例：      5
+             /             1   6
+               /               3   7      ← 3 &lt; 5 卻在右子樹！局部檢查會漏掉
+
+✓ 正確：傳遞上下界
+bool validate(TreeNode* node, long lo, long hi) {
+    if (!node) return true;
+    if (node-&gt;val &lt;= lo || node-&gt;val &gt;= hi) return false;
+    return validate(node-&gt;left,  lo, node-&gt;val)
+        &amp;&amp; validate(node-&gt;right, node-&gt;val, hi);
+}
+// 初始呼叫：validate(root, LONG_MIN, LONG_MAX)
+
+✓ 或者：中序遍歷檢查是否嚴格遞增
+            </pre>
+
+            <h3>面試延伸問題</h3>
+            <ul>
+                <li>「如果 p 或 q 不一定存在於樹中呢？」→ 需要額外驗證兩者是否都存在，否則答案無意義</li>
+                <li>「如果樹很大且查詢很多次？」→ 可以預處理成倍增表（Binary Lifting）達到 O(log n) 查詢</li>
+                <li>「如果 BST 允許重複值？」→ 需要明確定義重複值放左邊還是右邊，並調整比較的等號</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        function switchLang(event, lang) {
+            const tabs = document.querySelectorAll('.lang-tab');
+            const contents = document.querySelectorAll('.code-content');
+
+            tabs.forEach(tab => tab.classList.remove('active'));
+            contents.forEach(content => content.classList.remove('active'));
+
+            event.target.classList.add('active');
+            document.getElementById(lang).classList.add('active');
+        }
+
+        hljs.highlightAll();
+    </script>
+</body>
+</html>

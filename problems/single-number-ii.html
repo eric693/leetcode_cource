@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>#137 Single Number II | LeetCode 學習平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #333; background: #f8fafc; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .header { background: linear-gradient(135deg, #ea580c 0%, #c2410c 100%); color: white; padding: 30px; border-radius: 12px; margin-bottom: 30px; box-shadow: 0 4px 6px rgba(234, 88, 12, 0.2); }
+        .header h1 { font-size: 2em; margin-bottom: 10px; }
+        .difficulty { display: inline-block; padding: 6px 16px; background: rgba(255,255,255,0.2); border-radius: 20px; font-size: 0.9em; font-weight: 600; }
+        .tags { margin-top: 15px; }
+        .tag { display: inline-block; background: rgba(255,255,255,0.15); padding: 4px 12px; border-radius: 6px; margin-right: 8px; font-size: 0.85em; }
+        .back-btn { display: inline-block; margin-bottom: 20px; padding: 10px 20px; background: #3b82f6; color: white; text-decoration: none; border-radius: 8px; transition: background 0.3s; }
+        .back-btn:hover { background: #2563eb; }
+        .section { background: white; padding: 30px; border-radius: 12px; margin-bottom: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .section h2 { color: #1e293b; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 3px solid #ea580c; }
+        .section h3 { color: #475569; margin: 25px 0 15px 0; font-size: 1.3em; }
+        .code-block { background: #282c34; border-radius: 8px; overflow: hidden; margin: 15px 0; }
+        .lang-tabs { display: flex; background: #21252b; border-bottom: 1px solid #181a1f; }
+        .lang-tab { padding: 12px 24px; cursor: pointer; color: #abb2bf; border: none; background: none; transition: all 0.3s; font-weight: 500; }
+        .lang-tab.active { color: #61afef; background: #282c34; border-bottom: 2px solid #61afef; }
+        .lang-tab:hover { color: #61afef; background: #2c313a; }
+        .code-content { display: none; }
+        .code-content.active { display: block; }
+        pre { margin: 0; overflow-x: auto; }
+        code { font-family: 'Consolas', 'Monaco', 'Courier New', monospace; font-size: 0.9em; }
+        .example { background: #f0f9ff; border-left: 4px solid #3b82f6; padding: 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .example-title { font-weight: 700; color: #1e40af; margin-bottom: 12px; font-size: 1.05em; }
+        .visual-box { background: #fef3c7; border: 2px solid #f59e0b; padding: 20px; border-radius: 8px; margin: 15px 0; }
+        .visual-title { font-weight: 700; color: #92400e; margin-bottom: 12px; display: flex; align-items: center; font-size: 1.05em; }
+        .complexity { background: #f1f5f9; padding: 15px; border-radius: 8px; margin: 15px 0; }
+        .complexity-item { margin: 8px 0; color: #475569; }
+        .key-point { background: #dcfce7; border-left: 4px solid #16a34a; padding: 15px 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        ul, ol { margin-left: 25px; margin-top: 10px; }
+        li { margin: 8px 0; color: #475569; }
+        strong { color: #1e293b; }
+        .note { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 15px 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        @media (max-width: 768px) {
+            .container { padding: 10px; }
+            .header h1 { font-size: 1.5em; }
+            .section { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="../index.html" class="back-btn">← 返回題目列表</a>
+
+        <div class="header">
+            <h1>#137 Single Number II</h1>
+            <div class="difficulty">Medium</div>
+            <div class="tags">
+                <span class="tag">Bit Manipulation</span>
+                <span class="tag">Array</span>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>題目描述</h2>
+            <p>給你一個整數陣列 nums，除某個元素<strong>僅出現一次</strong>外，其餘每個元素都<strong>恰好出現三次</strong>。請你找出並返回那個只出現了一次的元素。</p>
+            <p style="margin-top: 15px;">你必須設計並實現線性時間複雜度 <strong>O(n)</strong> 的演算法，且使用<strong>常數級 O(1) 的額外空間</strong>來解決此問題。</p>
+        </div>
+
+        <div class="section">
+            <h2>範例</h2>
+            <div class="example">
+                <div class="example-title">範例 1：</div>
+                <strong>輸入：</strong>nums = [2,2,3,2]<br>
+                <strong>輸出：</strong>3
+            </div>
+
+            <div class="example">
+                <div class="example-title">範例 2：</div>
+                <strong>輸入：</strong>nums = [0,1,0,1,0,1,99]<br>
+                <strong>輸出：</strong>99
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>解題思路</h2>
+            <div class="note">
+                <strong>⚠️ 為什麼不能用 XOR？</strong>
+                <p>#136 Single Number 出現兩次，XOR 剛好互相抵消。但這題出現三次，XOR 三次等於自己（a^a^a = a），無法抵消，所以要換方法。</p>
+            </div>
+
+            <h3>方法一：位元計數（最好理解，面試首選）</h3>
+            <div class="visual-box">
+                <div class="visual-title">💡 每一位的 1 的總數 % 3</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+出現 3 次的數字，在每一個位元上都貢獻 3 個（或 0 個）1
+所以把所有數字的第 i 位加總後 % 3，剩下的就是答案的第 i 位！
+
+nums = [2, 2, 3, 2]
+       2 = 010
+       2 = 010
+       3 = 011
+       2 = 010
+
+第 0 位：0+0+1+0 = 1, 1 % 3 = 1  → 答案第 0 位 = 1
+第 1 位：1+1+1+1 = 4, 4 % 3 = 1  → 答案第 1 位 = 1
+第 2 位：0             0 % 3 = 0  → 答案第 2 位 = 0
+
+答案 = 011 = 3 ✓
+                </pre>
+            </div>
+
+            <h3>方法二：狀態機 / 兩個變數（O(1) 空間最優解）</h3>
+            <div class="visual-box">
+                <div class="visual-title">🎯 用 ones、twos 模擬「模 3 計數器」</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+我們要一個「每一位獨立的三進位計數器」，
+用兩個變數就能表示 3 種狀態：
+
+(twos, ones)
+(0, 0) → 該位出現 0 次
+(0, 1) → 該位出現 1 次
+(1, 0) → 該位出現 2 次
+出現第 3 次時回到 (0, 0)
+
+轉移公式：
+ones = (ones ^ num) & ~twos
+twos = (twos ^ num) & ~ones
+
+跑完後 ones 就是只出現一次的數字。
+
+追蹤 nums = [2,2,3,2]，只看第 1 位（值都是 1,1,1,1）：
+初始 ones=0 twos=0
+num第1位=1: ones=(0^1)&~0=1, twos=(0^1)&~1=0  → (0,1) 出現1次
+num第1位=1: ones=(1^1)&~0=0, twos=(0^1)&~0=1  → (1,0) 出現2次
+num第1位=1: ones=(0^1)&~1=0, twos=(1^1)&~0=0  → (0,0) 歸零 ✓
+num第1位=1: ones=1                            → (0,1)
+最終 ones 第 1 位 = 1 ✓
+                </pre>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>程式碼實現</h2>
+
+            <div class="code-block">
+                <div class="lang-tabs">
+                    <button class="lang-tab active" onclick="switchLang(event, 'python')">Python</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'cpp')">C++</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'java')">Java</button>
+                </div>
+
+                <div id="python" class="code-content active">
+                    <pre><code class="language-python"># 方法一：位元計數（好理解）
+class Solution:
+    def singleNumber(self, nums: List[int]) -&gt; int:
+        result = 0
+        for i in range(32):
+            bit_sum = 0
+            for num in nums:
+                # 取第 i 位（用 &amp; 0xFFFFFFFF 處理 Python 負數）
+                bit_sum += (num &gt;&gt; i) &amp; 1
+            if bit_sum % 3:
+                result |= (1 &lt;&lt; i)
+        # 處理負數：第 31 位是符號位
+        if result &gt;= (1 &lt;&lt; 31):
+            result -= (1 &lt;&lt; 32)
+        return result
+
+
+# 方法二：狀態機（O(1) 空間最優）
+class Solution:
+    def singleNumber(self, nums: List[int]) -&gt; int:
+        ones = twos = 0
+        for num in nums:
+            ones = (ones ^ num) &amp; ~twos
+            twos = (twos ^ num) &amp; ~ones
+        # Python 無限位元，需手動處理負數
+        return ones if ones &lt; (1 &lt;&lt; 31) else ones - (1 &lt;&lt; 32)
+
+
+# 方法三：用 Counter（不符合 O(1) 空間，但面試可先講）
+class Solution:
+    def singleNumber(self, nums: List[int]) -&gt; int:
+        from collections import Counter
+        for num, cnt in Counter(nums).items():
+            if cnt == 1:
+                return num</code></pre>
+                </div>
+
+                <div id="cpp" class="code-content">
+                    <pre><code class="language-cpp">// 方法一：位元計數
+class Solution {
+public:
+    int singleNumber(vector&lt;int&gt;&amp; nums) {
+        int result = 0;
+        for (int i = 0; i &lt; 32; i++) {
+            int bitSum = 0;
+            for (int num : nums) {
+                bitSum += (num &gt;&gt; i) &amp; 1;
+            }
+            if (bitSum % 3) {
+                result |= (1 &lt;&lt; i);
+            }
+        }
+        return result;
+    }
+};
+
+// 方法二：狀態機（推薦，O(n) 時間 O(1) 空間）
+class Solution {
+public:
+    int singleNumber(vector&lt;int&gt;&amp; nums) {
+        int ones = 0, twos = 0;
+        for (int num : nums) {
+            ones = (ones ^ num) &amp; ~twos;
+            twos = (twos ^ num) &amp; ~ones;
+        }
+        return ones;
+    }
+};</code></pre>
+                </div>
+
+                <div id="java" class="code-content">
+                    <pre><code class="language-java">// 方法一：位元計數
+class Solution {
+    public int singleNumber(int[] nums) {
+        int result = 0;
+        for (int i = 0; i &lt; 32; i++) {
+            int bitSum = 0;
+            for (int num : nums) {
+                bitSum += (num &gt;&gt; i) &amp; 1;
+            }
+            if (bitSum % 3 != 0) {
+                result |= (1 &lt;&lt; i);
+            }
+        }
+        return result;
+    }
+}
+
+// 方法二：狀態機（推薦）
+class Solution {
+    public int singleNumber(int[] nums) {
+        int ones = 0, twos = 0;
+        for (int num : nums) {
+            ones = (ones ^ num) &amp; ~twos;
+            twos = (twos ^ num) &amp; ~ones;
+        }
+        return ones;
+    }
+}</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>複雜度分析</h2>
+            <div class="complexity">
+                <div class="complexity-item">
+                    <strong>時間複雜度：</strong>
+                    <ul>
+                        <li>方法一（位元計數）：O(32n) = O(n)</li>
+                        <li>方法二（狀態機）：O(n)，只跑一次陣列</li>
+                    </ul>
+                </div>
+                <div class="complexity-item">
+                    <strong>空間複雜度：</strong>O(1)，只用固定數量的變數
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>重點提示</h2>
+            <div class="key-point">
+                <strong>💡 關鍵技巧 1：位元計數是萬用解</strong>
+                <p>「其他數字出現 k 次，找出現一次的」→ 每一位加總後 % k。k 換成任何數都通用，這是最容易在面試現場推導出來的方法。</p>
+            </div>
+
+            <div class="key-point">
+                <strong>💡 關鍵技巧 2：狀態機轉移的順序不能換</strong>
+                <p><code>ones</code> 必須先更新，因為 <code>twos</code> 的公式用到了「新的 ones」。順序寫反答案就錯。</p>
+            </div>
+
+            <div class="note">
+                <strong>⚠️ 常見錯誤：</strong>
+                <ul>
+                    <li><strong>Python 的整數是無限位元</strong>，<code>~twos</code> 對負數會出問題，最後要手動轉回 32 位元有號數</li>
+                    <li>方法一忘記處理負數（第 31 位是符號位）</li>
+                    <li>誤以為可以像 #136 那樣直接 XOR</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>相關題目</h2>
+            <ul>
+                <li><strong>#136 Single Number</strong> - 出現兩次，直接 XOR</li>
+                <li><strong>#260 Single Number III</strong> - 有兩個只出現一次的數字</li>
+                <li><strong>#191 Number of 1 Bits</strong> - 位元操作基本功</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>補充說明</h2>
+            <h3>三題比較表</h3>
+            <div class="visual-box">
+                <div class="visual-title">📊 Single Number 系列</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+題號   其他數出現次數  特殊數個數  核心解法
+#136       2 次           1 個     全部 XOR
+#137       3 次           1 個     位元計數 %3 或 狀態機
+#260       2 次           2 個     XOR + lowbit 分組
+
+#136: a^a = 0, 0^b = b  →  直接全 XOR
+#260: 全 XOR 得到 a^b，再用 lowbit 把陣列分兩組各自 XOR
+                </pre>
+            </div>
+
+            <h3>通用模板：其他數出現 k 次</h3>
+            <pre style="background: #f1f5f9; padding: 15px; border-radius: 8px; margin-top: 10px;">
+int singleNumber(vector&lt;int&gt;&amp; nums, int k) {
+    int result = 0;
+    for (int i = 0; i &lt; 32; i++) {
+        int sum = 0;
+        for (int num : nums) sum += (num &gt;&gt; i) &amp; 1;
+        if (sum % k) result |= (1 &lt;&lt; i);
+    }
+    return result;
+}
+            </pre>
+        </div>
+    </div>
+
+    <script>
+        function switchLang(event, lang) {
+            const tabs = document.querySelectorAll('.lang-tab');
+            const contents = document.querySelectorAll('.code-content');
+
+            tabs.forEach(tab => tab.classList.remove('active'));
+            contents.forEach(content => content.classList.remove('active'));
+
+            event.target.classList.add('active');
+            document.getElementById(lang).classList.add('active');
+        }
+
+        hljs.highlightAll();
+    </script>
+</body>
+</html>

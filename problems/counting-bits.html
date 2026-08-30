@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>#338 Counting Bits | LeetCode 學習平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #333; background: #f8fafc; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .header { background: linear-gradient(135deg, #16a34a 0%, #15803d 100%); color: white; padding: 30px; border-radius: 12px; margin-bottom: 30px; box-shadow: 0 4px 6px rgba(22, 163, 74, 0.2); }
+        .header h1 { font-size: 2em; margin-bottom: 10px; }
+        .difficulty { display: inline-block; padding: 6px 16px; background: rgba(255,255,255,0.2); border-radius: 20px; font-size: 0.9em; font-weight: 600; }
+        .tags { margin-top: 15px; }
+        .tag { display: inline-block; background: rgba(255,255,255,0.15); padding: 4px 12px; border-radius: 6px; margin-right: 8px; font-size: 0.85em; }
+        .back-btn { display: inline-block; margin-bottom: 20px; padding: 10px 20px; background: #3b82f6; color: white; text-decoration: none; border-radius: 8px; transition: background 0.3s; }
+        .back-btn:hover { background: #2563eb; }
+        .section { background: white; padding: 30px; border-radius: 12px; margin-bottom: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .section h2 { color: #1e293b; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 3px solid #16a34a; }
+        .section h3 { color: #475569; margin: 25px 0 15px 0; font-size: 1.3em; }
+        .code-block { background: #282c34; border-radius: 8px; overflow: hidden; margin: 15px 0; }
+        .lang-tabs { display: flex; background: #21252b; border-bottom: 1px solid #181a1f; }
+        .lang-tab { padding: 12px 24px; cursor: pointer; color: #abb2bf; border: none; background: none; transition: all 0.3s; font-weight: 500; }
+        .lang-tab.active { color: #61afef; background: #282c34; border-bottom: 2px solid #61afef; }
+        .lang-tab:hover { color: #61afef; background: #2c313a; }
+        .code-content { display: none; }
+        .code-content.active { display: block; }
+        pre { margin: 0; overflow-x: auto; }
+        code { font-family: 'Consolas', 'Monaco', 'Courier New', monospace; font-size: 0.9em; }
+        .example { background: #f0f9ff; border-left: 4px solid #3b82f6; padding: 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .example-title { font-weight: 700; color: #1e40af; margin-bottom: 12px; font-size: 1.05em; }
+        .visual-box { background: #fef3c7; border: 2px solid #f59e0b; padding: 20px; border-radius: 8px; margin: 15px 0; }
+        .visual-title { font-weight: 700; color: #92400e; margin-bottom: 12px; display: flex; align-items: center; font-size: 1.05em; }
+        .complexity { background: #f1f5f9; padding: 15px; border-radius: 8px; margin: 15px 0; }
+        .complexity-item { margin: 8px 0; color: #475569; }
+        .key-point { background: #dcfce7; border-left: 4px solid #16a34a; padding: 15px 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        ul, ol { margin-left: 25px; margin-top: 10px; }
+        li { margin: 8px 0; color: #475569; }
+        strong { color: #1e293b; }
+        .note { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 15px 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        @media (max-width: 768px) {
+            .container { padding: 10px; }
+            .header h1 { font-size: 1.5em; }
+            .section { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="../index.html" class="back-btn">← 返回題目列表</a>
+
+        <div class="header">
+            <h1>#338 Counting Bits</h1>
+            <div class="difficulty">Easy</div>
+            <div class="tags">
+                <span class="tag">Bit Manipulation</span>
+                <span class="tag">Dynamic Programming</span>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>題目描述</h2>
+            <p>給你一個整數 n，對於 0 &lt;= i &lt;= n 中的每個 i，計算其二進位表示中 <strong>1 的個數</strong>，返回一個長度為 n + 1 的陣列 ans 作為答案。</p>
+            <p style="margin-top: 15px;"><strong>進階：</strong>能否只用一次遍歷（O(n) 時間）完成？能否不使用任何內建函數？</p>
+        </div>
+
+        <div class="section">
+            <h2>範例</h2>
+            <div class="example">
+                <div class="example-title">範例 1：</div>
+                <strong>輸入：</strong>n = 2<br>
+                <strong>輸出：</strong>[0,1,1]<br>
+                <strong>解釋：</strong>0 → 0（0 個 1）、1 → 1（1 個）、2 → 10（1 個）
+            </div>
+
+            <div class="example">
+                <div class="example-title">範例 2：</div>
+                <strong>輸入：</strong>n = 5<br>
+                <strong>輸出：</strong>[0,1,1,2,1,2]<br>
+                <strong>解釋：</strong>0→0, 1→1, 2→10, 3→11, 4→100, 5→101
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>解題思路</h2>
+            <div class="visual-box">
+                <div class="visual-title">💡 核心：用 DP 重複利用已算過的結果</div>
+                <p>如果對每個數都跑一次 popcount，是 O(n log n)。但相鄰的數字之間有遞推關係，可以做到 O(n)。</p>
+            </div>
+
+            <h3>遞推式一：dp[i] = dp[i &gt;&gt; 1] + (i &amp; 1)（最好記）</h3>
+            <div class="visual-box">
+                <div class="visual-title">🎯 右移一位 = 去掉最低位</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+i 的 1 的個數 = (i 去掉最低位後的 1 的個數) + (最低位是不是 1)
+
+i = 5 = 101
+i >> 1 = 2 = 10   → dp[2] = 1
+i & 1  = 1
+dp[5] = 1 + 1 = 2 ✓
+
+完整推導 n = 7：
+dp[0] = 0                        0
+dp[1] = dp[0] + 1 = 1            1
+dp[2] = dp[1] + 0 = 1           10
+dp[3] = dp[1] + 1 = 2           11
+dp[4] = dp[2] + 0 = 1          100
+dp[5] = dp[2] + 1 = 2          101
+dp[6] = dp[3] + 0 = 2          110
+dp[7] = dp[3] + 1 = 3          111
+                </pre>
+            </div>
+
+            <h3>遞推式二：dp[i] = dp[i &amp; (i-1)] + 1</h3>
+            <div class="visual-box">
+                <div class="visual-title">🎯 消掉一個 1，個數就少 1</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+i & (i-1) 會消掉最右邊的 1，且結果一定小於 i（已算過）
+
+i = 6 = 110
+i & (i-1) = 110 & 101 = 100 = 4
+dp[6] = dp[4] + 1 = 1 + 1 = 2 ✓
+                </pre>
+            </div>
+
+            <h3>遞推式三：最高有效位法</h3>
+            <div class="visual-box">
+                <div class="visual-title">🎯 dp[i] = dp[i - highBit] + 1</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+當 i 是 2 的冪時更新 highBit = i
+dp[i] = dp[i - highBit] + 1
+
+i=4 → highBit=4, dp[4]=dp[0]+1=1
+i=5 → dp[5]=dp[1]+1=2
+i=6 → dp[6]=dp[2]+1=2
+i=7 → dp[7]=dp[3]+1=3
+                </pre>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>程式碼實現</h2>
+
+            <div class="code-block">
+                <div class="lang-tabs">
+                    <button class="lang-tab active" onclick="switchLang(event, 'python')">Python</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'cpp')">C++</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'java')">Java</button>
+                </div>
+
+                <div id="python" class="code-content active">
+                    <pre><code class="language-python"># 方法一：dp[i] = dp[i &gt;&gt; 1] + (i &amp; 1)（推薦，最好記）
+class Solution:
+    def countBits(self, n: int) -&gt; List[int]:
+        dp = [0] * (n + 1)
+        for i in range(1, n + 1):
+            dp[i] = dp[i &gt;&gt; 1] + (i &amp; 1)
+        return dp
+
+
+# 方法二：dp[i] = dp[i &amp; (i-1)] + 1
+class Solution:
+    def countBits(self, n: int) -&gt; List[int]:
+        dp = [0] * (n + 1)
+        for i in range(1, n + 1):
+            dp[i] = dp[i &amp; (i - 1)] + 1
+        return dp
+
+
+# 方法三：最高有效位
+class Solution:
+    def countBits(self, n: int) -&gt; List[int]:
+        dp = [0] * (n + 1)
+        high_bit = 0
+        for i in range(1, n + 1):
+            if i &amp; (i - 1) == 0:    # i 是 2 的冪
+                high_bit = i
+            dp[i] = dp[i - high_bit] + 1
+        return dp</code></pre>
+                </div>
+
+                <div id="cpp" class="code-content">
+                    <pre><code class="language-cpp">// 方法一：dp[i] = dp[i &gt;&gt; 1] + (i &amp; 1)（推薦）
+class Solution {
+public:
+    vector&lt;int&gt; countBits(int n) {
+        vector&lt;int&gt; dp(n + 1, 0);
+        for (int i = 1; i &lt;= n; i++) {
+            dp[i] = dp[i &gt;&gt; 1] + (i &amp; 1);
+        }
+        return dp;
+    }
+};
+
+// 方法二：dp[i] = dp[i &amp; (i-1)] + 1
+class Solution {
+public:
+    vector&lt;int&gt; countBits(int n) {
+        vector&lt;int&gt; dp(n + 1, 0);
+        for (int i = 1; i &lt;= n; i++) {
+            dp[i] = dp[i &amp; (i - 1)] + 1;
+        }
+        return dp;
+    }
+};
+
+// 方法三：最高有效位
+class Solution {
+public:
+    vector&lt;int&gt; countBits(int n) {
+        vector&lt;int&gt; dp(n + 1, 0);
+        int highBit = 0;
+        for (int i = 1; i &lt;= n; i++) {
+            if ((i &amp; (i - 1)) == 0) highBit = i;
+            dp[i] = dp[i - highBit] + 1;
+        }
+        return dp;
+    }
+};</code></pre>
+                </div>
+
+                <div id="java" class="code-content">
+                    <pre><code class="language-java">// 方法一：dp[i] = dp[i &gt;&gt; 1] + (i &amp; 1)（推薦）
+class Solution {
+    public int[] countBits(int n) {
+        int[] dp = new int[n + 1];
+        for (int i = 1; i &lt;= n; i++) {
+            dp[i] = dp[i &gt;&gt; 1] + (i &amp; 1);
+        }
+        return dp;
+    }
+}
+
+// 方法二：dp[i] = dp[i &amp; (i-1)] + 1
+class Solution {
+    public int[] countBits(int n) {
+        int[] dp = new int[n + 1];
+        for (int i = 1; i &lt;= n; i++) {
+            dp[i] = dp[i &amp; (i - 1)] + 1;
+        }
+        return dp;
+    }
+}</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>複雜度分析</h2>
+            <div class="complexity">
+                <div class="complexity-item">
+                    <strong>時間複雜度：</strong>O(n)
+                    <ul>
+                        <li>每個數字只做 O(1) 的運算</li>
+                        <li>若對每個數獨立做 popcount 則是 O(n log n)</li>
+                    </ul>
+                </div>
+                <div class="complexity-item">
+                    <strong>空間複雜度：</strong>O(1)（不含輸出陣列），輸出佔 O(n)
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>重點提示</h2>
+            <div class="key-point">
+                <strong>💡 關鍵技巧：位元題也能用 DP</strong>
+                <p>看到「對 0~n 每個數都要算」就要想到能不能用小的結果推大的結果，而不是每個都重算。</p>
+            </div>
+
+            <div class="key-point">
+                <strong>💡 三個遞推式選哪個？</strong>
+                <p>面試建議用 <code>dp[i] = dp[i&gt;&gt;1] + (i&amp;1)</code>，因為推導過程最直覺（右移就是去掉最低位），也最不容易寫錯。</p>
+            </div>
+
+            <div class="note">
+                <strong>⚠️ 常見錯誤：</strong>
+                <ul>
+                    <li>陣列大小要開 n + 1，不是 n</li>
+                    <li>C++/Java 中 <code>i &amp; (i-1) == 0</code> 因運算優先級要加括號寫成 <code>(i &amp; (i-1)) == 0</code></li>
+                    <li>直接用 <code>Integer.bitCount()</code> 雖然會過，但面試官通常要你自己推遞推式</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>相關題目</h2>
+            <ul>
+                <li><strong>#191 Number of 1 Bits</strong> - 單一數字的 popcount</li>
+                <li><strong>#231 Power of Two</strong> - 判斷只有一個 1</li>
+                <li><strong>#1356 Sort Integers by The Number of 1 Bits</strong> - 依 popcount 排序</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>補充說明</h2>
+            <h3>為什麼 dp[i &gt;&gt; 1] 一定已經算過？</h3>
+            <div class="visual-box">
+                <div class="visual-title">🔍 DP 的無後效性</div>
+                <p>對 i &gt;= 1，<code>i &gt;&gt; 1 &lt; i</code> 恆成立；同理 <code>i &amp; (i-1) &lt; i</code>。所以由小到大遍歷時，需要的子問題必定已經計算完成。這就是 DP 遞推順序正確性的來源。</p>
+            </div>
+
+            <h3>韌體應用：預先建表</h3>
+            <pre style="background: #f1f5f9; padding: 15px; border-radius: 8px; margin-top: 10px;">
+// 用同樣的遞推在編譯期/開機時建 256 大小的 popcount 表
+static uint8_t popcnt_table[256];
+void init_popcnt_table(void) {
+    popcnt_table[0] = 0;
+    for (int i = 1; i &lt; 256; i++)
+        popcnt_table[i] = popcnt_table[i &gt;&gt; 1] + (i &amp; 1);
+}
+// 之後任何 byte 的 popcount 都是 O(1) 查表
+            </pre>
+        </div>
+    </div>
+
+    <script>
+        function switchLang(event, lang) {
+            const tabs = document.querySelectorAll('.lang-tab');
+            const contents = document.querySelectorAll('.code-content');
+
+            tabs.forEach(tab => tab.classList.remove('active'));
+            contents.forEach(content => content.classList.remove('active'));
+
+            event.target.classList.add('active');
+            document.getElementById(lang).classList.add('active');
+        }
+
+        hljs.highlightAll();
+    </script>
+</body>
+</html>

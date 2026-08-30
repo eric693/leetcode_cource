@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>#234 Palindrome Linked List | LeetCode 學習平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #333; background: #f8fafc; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .header { background: linear-gradient(135deg, #16a34a 0%, #15803d 100%); color: white; padding: 30px; border-radius: 12px; margin-bottom: 30px; box-shadow: 0 4px 6px rgba(22, 163, 74, 0.2); }
+        .header h1 { font-size: 2em; margin-bottom: 10px; }
+        .difficulty { display: inline-block; padding: 6px 16px; background: rgba(255,255,255,0.2); border-radius: 20px; font-size: 0.9em; font-weight: 600; }
+        .tags { margin-top: 15px; }
+        .tag { display: inline-block; background: rgba(255,255,255,0.15); padding: 4px 12px; border-radius: 6px; margin-right: 8px; font-size: 0.85em; }
+        .back-btn { display: inline-block; margin-bottom: 20px; padding: 10px 20px; background: #3b82f6; color: white; text-decoration: none; border-radius: 8px; transition: background 0.3s; }
+        .back-btn:hover { background: #2563eb; }
+        .section { background: white; padding: 30px; border-radius: 12px; margin-bottom: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .section h2 { color: #1e293b; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 3px solid #16a34a; }
+        .section h3 { color: #475569; margin: 25px 0 15px 0; font-size: 1.3em; }
+        .code-block { background: #282c34; border-radius: 8px; overflow: hidden; margin: 15px 0; }
+        .lang-tabs { display: flex; background: #21252b; border-bottom: 1px solid #181a1f; }
+        .lang-tab { padding: 12px 24px; cursor: pointer; color: #abb2bf; border: none; background: none; transition: all 0.3s; font-weight: 500; }
+        .lang-tab.active { color: #61afef; background: #282c34; border-bottom: 2px solid #61afef; }
+        .lang-tab:hover { color: #61afef; background: #2c313a; }
+        .code-content { display: none; }
+        .code-content.active { display: block; }
+        pre { margin: 0; overflow-x: auto; }
+        code { font-family: 'Consolas', 'Monaco', 'Courier New', monospace; font-size: 0.9em; }
+        .example { background: #f0f9ff; border-left: 4px solid #3b82f6; padding: 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .example-title { font-weight: 700; color: #1e40af; margin-bottom: 12px; font-size: 1.05em; }
+        .visual-box { background: #fef3c7; border: 2px solid #f59e0b; padding: 20px; border-radius: 8px; margin: 15px 0; }
+        .visual-title { font-weight: 700; color: #92400e; margin-bottom: 12px; display: flex; align-items: center; font-size: 1.05em; }
+        .complexity { background: #f1f5f9; padding: 15px; border-radius: 8px; margin: 15px 0; }
+        .complexity-item { margin: 8px 0; color: #475569; }
+        .key-point { background: #dcfce7; border-left: 4px solid #16a34a; padding: 15px 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        ul, ol { margin-left: 25px; margin-top: 10px; }
+        li { margin: 8px 0; color: #475569; }
+        strong { color: #1e293b; }
+        .note { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 15px 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        @media (max-width: 768px) {
+            .container { padding: 10px; }
+            .header h1 { font-size: 1.5em; }
+            .section { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="../index.html" class="back-btn">← 返回題目列表</a>
+
+        <div class="header">
+            <h1>#234 Palindrome Linked List</h1>
+            <div class="difficulty">Easy</div>
+            <div class="tags">
+                <span class="tag">Linked List</span>
+                <span class="tag">Two Pointers</span>
+                <span class="tag">Stack</span>
+                <span class="tag">Recursion</span>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>題目描述</h2>
+            <p>給你一個單向鏈結串列的頭節點 head，請你判斷該串列是否為<strong>回文串列</strong>。如果是，返回 true；否則返回 false。</p>
+            <p style="margin-top: 15px;"><strong>進階：</strong>你能否用 <strong>O(n) 時間複雜度和 O(1) 空間複雜度</strong>解決此題？</p>
+        </div>
+
+        <div class="section">
+            <h2>範例</h2>
+            <div class="example">
+                <div class="example-title">範例 1：</div>
+                <strong>輸入：</strong>head = [1,2,2,1]<br>
+                <strong>輸出：</strong>true
+            </div>
+
+            <div class="example">
+                <div class="example-title">範例 2：</div>
+                <strong>輸入：</strong>head = [1,2]<br>
+                <strong>輸出：</strong>false
+            </div>
+
+            <div class="example">
+                <div class="example-title">範例 3：</div>
+                <strong>輸入：</strong>head = [1,2,3,2,1]<br>
+                <strong>輸出：</strong>true（奇數長度，中間節點不影響）
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>解題思路</h2>
+            <div class="visual-box">
+                <div class="visual-title">💡 O(1) 空間解法三部曲</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+單向串列不能往回走，所以要「把後半段反轉」再比對。
+
+步驟 1：快慢指標找中點
+步驟 2：反轉後半段
+步驟 3：從頭和從中點同時往後比對
+
+list = [1,2,3,2,1]
+
+【步驟 1】找中點
+1 → 2 → 3 → 2 → 1
+        ↑ slow（fast 走到尾端）
+
+【步驟 2】反轉後半段（從 slow 開始）
+前半：1 → 2 → 3
+後半：1 → 2 → 3（反轉後）
+
+【步驟 3】同步比對
+  1 vs 1 ✓
+  2 vs 2 ✓
+  遇到 null 結束 → 是回文 ✓
+
+注意：只要比對到其中一邊走完就好，
+      奇數長度時中間節點會被兩邊共用，不影響結果。
+                </pre>
+            </div>
+
+            <h3>反轉串列的標準寫法</h3>
+            <div class="visual-box">
+                <div class="visual-title">🎯 三指標翻轉</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+prev = None, curr = head
+while curr:
+    next_node = curr.next    # 1. 先存下一個
+    curr.next = prev         # 2. 反轉指標方向
+    prev = curr              # 3. prev 前進
+    curr = next_node         # 4. curr 前進
+return prev                  # prev 是新的頭
+
+原：1 → 2 → 3 → null
+後：null ← 1 ← 2 ← 3
+                </pre>
+            </div>
+
+            <h3>其他解法比較</h3>
+            <div class="visual-box">
+                <div class="visual-title">📊 三種做法</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+方法          時間    空間    優點
+--------------------------------------------------
+複製到陣列    O(n)    O(n)   最簡單，5 行搞定
+用堆疊        O(n)    O(n)   前半推入堆疊，後半比對
+反轉後半段    O(n)    O(1)   ★ 進階要求的答案
+遞迴          O(n)    O(n)   優雅但有堆疊深度風險
+                </pre>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>程式碼實現</h2>
+
+            <div class="code-block">
+                <div class="lang-tabs">
+                    <button class="lang-tab active" onclick="switchLang(event, 'python')">Python</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'cpp')">C++</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'java')">Java</button>
+                </div>
+
+                <div id="python" class="code-content active">
+                    <pre><code class="language-python"># 方法一：反轉後半段（O(1) 空間，推薦）
+class Solution:
+    def isPalindrome(self, head: Optional[ListNode]) -&gt; bool:
+        if not head or not head.next:
+            return True
+
+        # 步驟 1：快慢指標找中點
+        slow = fast = head
+        while fast.next and fast.next.next:
+            slow = slow.next
+            fast = fast.next.next
+
+        # 步驟 2：反轉後半段
+        second = self.reverse(slow.next)
+
+        # 步驟 3：比對前後半段
+        p1, p2 = head, second
+        result = True
+        while p2:                     # 後半段較短，以它為準
+            if p1.val != p2.val:
+                result = False
+                break
+            p1 = p1.next
+            p2 = p2.next
+
+        # 步驟 4（好習慣）：把串列還原
+        slow.next = self.reverse(second)
+        return result
+
+    def reverse(self, node):
+        prev = None
+        while node:
+            nxt = node.next
+            node.next = prev
+            prev = node
+            node = nxt
+        return prev
+
+
+# 方法二：複製到陣列（最簡單，O(n) 空間）
+class Solution:
+    def isPalindrome(self, head: Optional[ListNode]) -&gt; bool:
+        vals = []
+        while head:
+            vals.append(head.val)
+            head = head.next
+        return vals == vals[::-1]</code></pre>
+                </div>
+
+                <div id="cpp" class="code-content">
+                    <pre><code class="language-cpp">// 方法一：反轉後半段（O(1) 空間，推薦）
+class Solution {
+    ListNode* reverse(ListNode* node) {
+        ListNode* prev = nullptr;
+        while (node) {
+            ListNode* nxt = node-&gt;next;
+            node-&gt;next = prev;
+            prev = node;
+            node = nxt;
+        }
+        return prev;
+    }
+
+public:
+    bool isPalindrome(ListNode* head) {
+        if (!head || !head-&gt;next) return true;
+
+        // 步驟 1：找中點
+        ListNode *slow = head, *fast = head;
+        while (fast-&gt;next &amp;&amp; fast-&gt;next-&gt;next) {
+            slow = slow-&gt;next;
+            fast = fast-&gt;next-&gt;next;
+        }
+
+        // 步驟 2：反轉後半段
+        ListNode* second = reverse(slow-&gt;next);
+
+        // 步驟 3：比對
+        ListNode *p1 = head, *p2 = second;
+        bool result = true;
+        while (p2) {
+            if (p1-&gt;val != p2-&gt;val) { result = false; break; }
+            p1 = p1-&gt;next;
+            p2 = p2-&gt;next;
+        }
+
+        // 步驟 4：還原串列（面試加分項）
+        slow-&gt;next = reverse(second);
+        return result;
+    }
+};</code></pre>
+                </div>
+
+                <div id="java" class="code-content">
+                    <pre><code class="language-java">// 方法一：反轉後半段（O(1) 空間，推薦）
+class Solution {
+    public boolean isPalindrome(ListNode head) {
+        if (head == null || head.next == null) return true;
+
+        // 步驟 1：找中點
+        ListNode slow = head, fast = head;
+        while (fast.next != null &amp;&amp; fast.next.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+
+        // 步驟 2：反轉後半段
+        ListNode second = reverse(slow.next);
+
+        // 步驟 3：比對
+        ListNode p1 = head, p2 = second;
+        boolean result = true;
+        while (p2 != null) {
+            if (p1.val != p2.val) { result = false; break; }
+            p1 = p1.next;
+            p2 = p2.next;
+        }
+
+        // 步驟 4：還原串列
+        slow.next = reverse(second);
+        return result;
+    }
+
+    private ListNode reverse(ListNode node) {
+        ListNode prev = null;
+        while (node != null) {
+            ListNode nxt = node.next;
+            node.next = prev;
+            prev = node;
+            node = nxt;
+        }
+        return prev;
+    }
+}</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>複雜度分析</h2>
+            <div class="complexity">
+                <div class="complexity-item">
+                    <strong>時間複雜度：</strong>O(n)
+                    <ul>
+                        <li>找中點 O(n/2) + 反轉 O(n/2) + 比對 O(n/2) + 還原 O(n/2)</li>
+                    </ul>
+                </div>
+                <div class="complexity-item">
+                    <strong>空間複雜度：</strong>
+                    <ul>
+                        <li>反轉法：O(1) ★ 進階要求</li>
+                        <li>陣列/堆疊法：O(n)</li>
+                        <li>遞迴法：O(n) 的呼叫堆疊</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>重點提示</h2>
+            <div class="key-point">
+                <strong>💡 關鍵技巧 1：找中點的迴圈條件</strong>
+                <p>用 <code>fast.next &amp;&amp; fast.next.next</code>（而不是 <code>fast &amp;&amp; fast.next</code>），可以讓 slow 停在<strong>前半段的最後一個</strong>，方便用 <code>slow.next</code> 切開，奇偶長度都正確。</p>
+            </div>
+
+            <div class="key-point">
+                <strong>💡 關鍵技巧 2：比對以後半段為準</strong>
+                <p>奇數長度時前半段會多一個（中間節點），所以 <code>while (p2)</code> 才正確。用 p1 當條件會多比一次而出錯。</p>
+            </div>
+
+            <div class="key-point">
+                <strong>💡 面試加分：記得還原串列</strong>
+                <p>修改了輸入資料結構卻不還原，在多執行緒或串列被其他地方參考時是嚴重的副作用。面試時主動提到「我會把串列還原」通常會被加分。</p>
+            </div>
+
+            <div class="note">
+                <strong>⚠️ 常見錯誤：</strong>
+                <ul>
+                    <li>反轉時忘記先存 <code>next</code>，指標一改就找不到後續節點</li>
+                    <li>找中點的邊界條件寫錯，導致奇偶長度其中一種出錯</li>
+                    <li>空串列或單節點沒有提前返回 true</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>相關題目</h2>
+            <ul>
+                <li><strong>#206 Reverse Linked List</strong> - 本題的核心子程序</li>
+                <li><strong>#876 Middle of the Linked List</strong> - 找中點</li>
+                <li><strong>#125 Valid Palindrome</strong> - 字串版回文（雙指標更簡單）</li>
+                <li><strong>#143 Reorder List</strong> - 找中點 + 反轉 + 合併</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>補充說明</h2>
+            <h3>遞迴解法（優雅但費空間）</h3>
+            <div class="visual-box">
+                <div class="visual-title">🔄 利用遞迴回溯模擬「從後往前」</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+class Solution {
+    ListNode* front;
+public:
+    bool check(ListNode* node) {
+        if (!node) return true;
+        if (!check(node-&gt;next)) return false;   // 先遞迴到底
+        if (node-&gt;val != front-&gt;val) return false;  // 回溯時比對
+        front = front-&gt;next;                     // front 往後移
+        return true;
+    }
+    bool isPalindrome(ListNode* head) {
+        front = head;
+        return check(head);
+    }
+};
+
+原理：遞迴回溯的順序是「從尾到頭」，
+      而 front 指標是「從頭到尾」，剛好對撞比對。
+
+缺點：遞迴深度等於串列長度，10 萬個節點會 stack overflow。
+                </pre>
+            </div>
+
+            <h3>相關題型：#143 Reorder List</h3>
+            <p>把 [1,2,3,4,5] 重排成 [1,5,2,4,3]，解法同樣是「找中點 → 反轉後半段 → 交錯合併」。這三個子程序（找中點、反轉、合併）是鏈結串列題目的三大基本功，值得反覆練熟。</p>
+        </div>
+    </div>
+
+    <script>
+        function switchLang(event, lang) {
+            const tabs = document.querySelectorAll('.lang-tab');
+            const contents = document.querySelectorAll('.code-content');
+
+            tabs.forEach(tab => tab.classList.remove('active'));
+            contents.forEach(content => content.classList.remove('active'));
+
+            event.target.classList.add('active');
+            document.getElementById(lang).classList.add('active');
+        }
+
+        hljs.highlightAll();
+    </script>
+</body>
+</html>

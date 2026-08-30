@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>412. Fizz Buzz - LeetCode 學習平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f8fafc; line-height: 1.8; color: #334155; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .header { background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; padding: 40px; border-radius: 16px; margin-bottom: 30px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .back-btn { display: inline-block; color: white; text-decoration: none; background: rgba(255,255,255,0.2); padding: 10px 20px; border-radius: 8px; margin-bottom: 20px; transition: all 0.3s; }
+        .back-btn:hover { background: rgba(255,255,255,0.3); }
+        .problem-title { font-size: 2.5em; font-weight: 800; margin-bottom: 15px; }
+        .difficulty { display: inline-block; background: rgba(255,255,255,0.3); padding: 8px 20px; border-radius: 20px; font-weight: 600; font-size: 0.9em; }
+        .content-section { background: white; padding: 40px; border-radius: 16px; margin-bottom: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .section-title { font-size: 1.8em; color: #1e293b; margin-bottom: 25px; font-weight: 700; padding-bottom: 10px; border-bottom: 3px solid #10b981; }
+        .description { font-size: 1.1em; line-height: 1.9; color: #475569; margin-bottom: 20px; }
+        .example-box { background: #f0fdf4; border-left: 4px solid #10b981; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .example-title { font-weight: 700; color: #059669; margin-bottom: 10px; font-size: 1.1em; }
+        .approach-box { background: #eff6ff; border-left: 4px solid #3b82f6; padding: 25px; border-radius: 8px; margin: 25px 0; }
+        .approach-title { font-weight: 700; color: #1e40af; margin-bottom: 15px; font-size: 1.3em; }
+        .complexity-box { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .complexity-item { margin: 10px 0; font-weight: 600; color: #92400e; }
+        .language-tabs { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+        .tab-btn { padding: 12px 28px; border: 2px solid #10b981; background: white; color: #10b981; border-radius: 8px; cursor: pointer; font-weight: 600; transition: all 0.3s; font-size: 1em; }
+        .tab-btn:hover { background: #f0fdf4; }
+        .tab-btn.active { background: #10b981; color: white; }
+        .code-container { display: none; margin-top: 20px; }
+        .code-container.active { display: block; }
+        pre { background: #282c34 !important; padding: 25px !important; border-radius: 12px; overflow-x: auto; margin: 0; }
+        code { font-family: 'Fira Code', 'Consolas', monospace; font-size: 0.95em; line-height: 1.6; }
+        ol, ul { margin-left: 30px; margin-top: 15px; }
+        li { margin: 12px 0; line-height: 1.8; }
+        strong { color: #1e293b; font-weight: 700; }
+        .tips-box { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        
+        @media (max-width: 768px) {
+            .container { padding: 10px; }
+            .header { padding: 25px; }
+            .problem-title { font-size: 1.8em; }
+            .content-section { padding: 25px; }
+            .tab-btn { padding: 10px 20px; font-size: 0.9em; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="../index.html" class="back-btn">← 返回題目列表</a>
+            <div class="problem-title">412. Fizz Buzz</div>
+            <span class="difficulty">Easy</span>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">題目描述</h2>
+            <div class="description">
+                <p>給定一個整數 <code>n</code>，返回一個長度為 n 的字串陣列 <code>answer</code>（<strong>索引從 1 開始</strong>），其中：</p>
+                <p><code>answer[i] == "FizzBuzz"</code> 如果 i 同時是 3 和 5 的倍數；<code>answer[i] == "Fizz"</code> 如果 i 是 3 的倍數；<code>answer[i] == "Buzz"</code> 如果 i 是 5 的倍數；否則 <code>answer[i] == i</code> 的字串形式。</p>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例 1:</div>
+                <pre><code>輸入: n = 3
+輸出: ["1","2","Fizz"]</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例 2:</div>
+                <pre><code>輸入: n = 5
+輸出: ["1","2","Fizz","4","Buzz"]</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例 3:</div>
+                <pre><code>輸入: n = 15
+輸出: ["1","2","Fizz","4","Buzz","Fizz","7","8","Fizz","Buzz","11","Fizz","13","14","FizzBuzz"]</code></pre>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">解題思路</h2>
+
+            <div class="approach-box">
+                <div class="approach-title">方法一：條件判斷（推薦）</div>
+                <p>從 1 走到 n，對每個數字依序判斷：先判斷「同時被 3 和 5 整除」，再判斷 3，最後判斷 5。</p><p>順序很重要：如果先判斷 3 的倍數，15 會被錯誤地輸出成 Fizz。</p>
+            </div>
+
+            <div class="approach-box">
+                <div class="approach-title">方法二：字串拼接</div>
+                <p>先建立空字串，能被 3 整除就接上 "Fizz"，能被 5 整除就接上 "Buzz"，最後若字串仍為空則放入數字本身。</p><p>這種寫法在需要擴充規則（例如再加一個 7 → "Jazz"）時最容易維護，不會產生指數成長的 if 分支。</p>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">程式碼實現</h2>
+            <div class="language-tabs">
+                <button class="tab-btn active" onclick="showLanguage('python')">Python</button>
+                <button class="tab-btn" onclick="showLanguage('java')">Java</button>
+                <button class="tab-btn" onclick="showLanguage('cpp')">C++</button>
+            </div>
+
+            <div id="python" class="code-container active">
+                <pre><code class="language-python">class Solution:
+    def fizzBuzz(self, n: int) -&gt; List[str]:
+        answer = []
+        for i in range(1, n + 1):
+            s = ""
+            if i % 3 == 0:
+                s += "Fizz"
+            if i % 5 == 0:
+                s += "Buzz"
+            answer.append(s if s else str(i))
+        return answer</code></pre>
+            </div>
+
+            <div id="java" class="code-container">
+                <pre><code class="language-java">class Solution {
+    public List&lt;String&gt; fizzBuzz(int n) {
+        List&lt;String&gt; answer = new ArrayList&lt;&gt;();
+        for (int i = 1; i &lt;= n; i++) {
+            StringBuilder sb = new StringBuilder();
+            if (i % 3 == 0) sb.append("Fizz");
+            if (i % 5 == 0) sb.append("Buzz");
+            answer.add(sb.length() &gt; 0 ? sb.toString() : String.valueOf(i));
+        }
+        return answer;
+    }
+}</code></pre>
+            </div>
+
+            <div id="cpp" class="code-container">
+                <pre><code class="language-cpp">class Solution {
+public:
+    vector&lt;string&gt; fizzBuzz(int n) {
+        vector&lt;string&gt; answer;
+        for (int i = 1; i &lt;= n; i++) {
+            string s;
+            if (i % 3 == 0) s += "Fizz";
+            if (i % 5 == 0) s += "Buzz";
+            answer.push_back(s.empty() ? to_string(i) : s);
+        }
+        return answer;
+    }
+};</code></pre>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">複雜度分析</h2>
+            <div class="complexity-box">
+                <div class="complexity-item">時間複雜度: O(n)</div>
+                <p style="color: #78716c; margin: 10px 0;">需要走訪 1 到 n 每個數字，每次做常數次取餘運算。</p>
+
+                <div class="complexity-item" style="margin-top: 20px;">空間複雜度: O(1)</div>
+                <p style="color: #78716c; margin: 10px 0;">除了必須回傳的答案陣列之外，只用了固定大小的暫存字串。</p>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">重點提示</h2>
+            <div class="tips-box">
+                <ul>
+                    <li><strong>判斷順序：</strong>若使用 if / else if 寫法，必須把 15 的倍數放在最前面，否則會被 3 的分支攔截</li>
+                    <li><strong>用累加取代分支：</strong>字串拼接寫法讓規則彼此獨立，新增規則不需要重寫既有判斷</li>
+                    <li><strong>索引從 1 開始：</strong>題目的 answer 是 1-based，迴圈要寫 1..n 而不是 0..n-1</li>
+                    <li><strong>Java 字串拼接：</strong>迴圈內用 StringBuilder 而非 += 串接，避免產生多餘的字串物件</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        hljs.highlightAll();
+        
+        function showLanguage(lang) {
+            // 隱藏所有程式碼區塊
+            document.querySelectorAll('.code-container').forEach(container => {
+                container.classList.remove('active');
+            });
+            
+            // 移除所有按鈕的 active 狀態
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // 顯示選中的程式碼區塊
+            document.getElementById(lang).classList.add('active');
+            
+            // 設定選中按鈕的 active 狀態
+            event.target.classList.add('active');
+        }
+    </script>
+</body>
+</html>

@@ -85,6 +85,7 @@
             <div class="language-tabs">
                 <button class="tab-btn active" onclick="showLanguage('python')">Python</button>
                 <button class="tab-btn" onclick="showLanguage('java')">Java</button>
+                <button class="tab-btn" onclick="showLanguage('cpp')">C++</button>
             </div>
 
             <div id="python" class="code-container active">
@@ -159,6 +160,43 @@
     }
 }</code></pre>
             </div>
+
+            <div id="cpp" class="code-container">
+                <pre><code class="language-cpp">class Solution {
+public:
+    double findMedianSortedArrays(vector&lt;int&gt;&amp; nums1, vector&lt;int&gt;&amp; nums2) {
+        // 確保 nums1 是較短的陣列
+        if (nums1.size() &gt; nums2.size()) return findMedianSortedArrays(nums2, nums1);
+
+        int m = nums1.size(), n = nums2.size();
+        int left = 0, right = m;
+
+        while (left &lt;= right) {
+            int partition1 = (left + right) / 2;
+            int partition2 = (m + n + 1) / 2 - partition1;
+
+            int maxLeft1 = (partition1 == 0) ? INT_MIN : nums1[partition1 - 1];
+            int minRight1 = (partition1 == m) ? INT_MAX : nums1[partition1];
+
+            int maxLeft2 = (partition2 == 0) ? INT_MIN : nums2[partition2 - 1];
+            int minRight2 = (partition2 == n) ? INT_MAX : nums2[partition2];
+
+            if (maxLeft1 &lt;= minRight2 &amp;&amp; maxLeft2 &lt;= minRight1) {
+                if ((m + n) % 2 == 0) {
+                    return (max(maxLeft1, maxLeft2) + min(minRight1, minRight2)) / 2.0;
+                }
+                return max(maxLeft1, maxLeft2);
+            } else if (maxLeft1 &gt; minRight2) {
+                right = partition1 - 1;
+            } else {
+                left = partition1 + 1;
+            }
+        }
+        return 0.0;
+    }
+};</code></pre>
+            </div>
+
         </div>
 
         <div class="content-section">

@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>#208 Implement Trie (Prefix Tree) | LeetCode 學習平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #333; background: #f8fafc; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .header { background: linear-gradient(135deg, #ea580c 0%, #c2410c 100%); color: white; padding: 30px; border-radius: 12px; margin-bottom: 30px; box-shadow: 0 4px 6px rgba(234, 88, 12, 0.2); }
+        .header h1 { font-size: 2em; margin-bottom: 10px; }
+        .difficulty { display: inline-block; padding: 6px 16px; background: rgba(255,255,255,0.2); border-radius: 20px; font-size: 0.9em; font-weight: 600; }
+        .tags { margin-top: 15px; }
+        .tag { display: inline-block; background: rgba(255,255,255,0.15); padding: 4px 12px; border-radius: 6px; margin-right: 8px; font-size: 0.85em; }
+        .back-btn { display: inline-block; margin-bottom: 20px; padding: 10px 20px; background: #3b82f6; color: white; text-decoration: none; border-radius: 8px; transition: background 0.3s; }
+        .back-btn:hover { background: #2563eb; }
+        .section { background: white; padding: 30px; border-radius: 12px; margin-bottom: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .section h2 { color: #1e293b; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 3px solid #ea580c; }
+        .section h3 { color: #475569; margin: 25px 0 15px 0; font-size: 1.3em; }
+        .code-block { background: #282c34; border-radius: 8px; overflow: hidden; margin: 15px 0; }
+        .lang-tabs { display: flex; background: #21252b; border-bottom: 1px solid #181a1f; }
+        .lang-tab { padding: 12px 24px; cursor: pointer; color: #abb2bf; border: none; background: none; transition: all 0.3s; font-weight: 500; }
+        .lang-tab.active { color: #61afef; background: #282c34; border-bottom: 2px solid #61afef; }
+        .lang-tab:hover { color: #61afef; background: #2c313a; }
+        .code-content { display: none; }
+        .code-content.active { display: block; }
+        pre { margin: 0; overflow-x: auto; }
+        code { font-family: 'Consolas', 'Monaco', 'Courier New', monospace; font-size: 0.9em; }
+        .example { background: #f0f9ff; border-left: 4px solid #3b82f6; padding: 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .example-title { font-weight: 700; color: #1e40af; margin-bottom: 12px; font-size: 1.05em; }
+        .visual-box { background: #fef3c7; border: 2px solid #f59e0b; padding: 20px; border-radius: 8px; margin: 15px 0; }
+        .visual-title { font-weight: 700; color: #92400e; margin-bottom: 12px; display: flex; align-items: center; font-size: 1.05em; }
+        .complexity { background: #f1f5f9; padding: 15px; border-radius: 8px; margin: 15px 0; }
+        .complexity-item { margin: 8px 0; color: #475569; }
+        .key-point { background: #dcfce7; border-left: 4px solid #16a34a; padding: 15px 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        ul, ol { margin-left: 25px; margin-top: 10px; }
+        li { margin: 8px 0; color: #475569; }
+        strong { color: #1e293b; }
+        .note { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 15px 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        @media (max-width: 768px) {
+            .container { padding: 10px; }
+            .header h1 { font-size: 1.5em; }
+            .section { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="../index.html" class="back-btn">← 返回題目列表</a>
+
+        <div class="header">
+            <h1>#208 Implement Trie (Prefix Tree)</h1>
+            <div class="difficulty">Medium</div>
+            <div class="tags">
+                <span class="tag">Design</span>
+                <span class="tag">Trie</span>
+                <span class="tag">Hash Table</span>
+                <span class="tag">String</span>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>題目描述</h2>
+            <p><strong>Trie（前綴樹 / 字典樹）</strong>是一種樹狀資料結構，用於高效地儲存和檢索字串資料集中的鍵。這一資料結構有相當多的應用情境，例如自動補全和拼字檢查。</p>
+            <p style="margin-top: 15px;">請你實現 Trie 類別：</p>
+            <ul>
+                <li><code>Trie()</code>：初始化前綴樹物件</li>
+                <li><code>insert(word)</code>：向前綴樹中插入字串 word</li>
+                <li><code>search(word)</code>：如果 word 在前綴樹中，返回 true</li>
+                <li><code>startsWith(prefix)</code>：如果之前已插入的字串中有以 prefix 為前綴的，返回 true</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>範例</h2>
+            <div class="example">
+                <div class="example-title">範例：</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+Trie trie = new Trie();
+trie.insert("apple");
+trie.search("apple");     // 返回 true
+trie.search("app");       // 返回 false（app 只是前綴，不是完整單字）
+trie.startsWith("app");   // 返回 true
+trie.insert("app");
+trie.search("app");       // 返回 true（現在 app 也是完整單字了）
+                </pre>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>解題思路</h2>
+            <div class="visual-box">
+                <div class="visual-title">💡 核心：把共同前綴合併成同一條路徑</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+插入 "apple", "app", "apt", "bat" 後的樹：
+
+                root
+               /    \
+              a      b
+              |      |
+              p      a
+             / \     |
+            p   t*   t*
+            |
+            l  ← 這裡 isEnd = true（"app"）
+            |
+            e*
+
+* 表示 isEnd = true（該節點是某個單字的結尾）
+
+關鍵設計：
+1. 邊代表字元，節點本身不存字元
+2. 每個節點有 26 個子節點指標（小寫英文字母）
+3. isEnd 標記：區分「完整單字」與「只是前綴」
+                </pre>
+            </div>
+
+            <h3>三個操作的差異只在最後一步</h3>
+            <div class="visual-box">
+                <div class="visual-title">🎯 共用一個 find 函數</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+insert(word)：
+    沿著字元往下走，節點不存在就「建立」
+    走完後把最後一個節點的 isEnd 設為 true
+
+search(word)：
+    沿著字元往下走，中途斷掉就返回 false
+    走完後檢查 node.isEnd 是否為 true
+
+startsWith(prefix)：
+    沿著字元往下走，中途斷掉就返回 false
+    走完後直接返回 true（不管 isEnd）
+
+→ search 和 startsWith 只差在「要不要檢查 isEnd」
+                </pre>
+            </div>
+
+            <h3>為什麼不用 HashSet 就好？</h3>
+            <div class="visual-box">
+                <div class="visual-title">🔍 Trie 的價值在「前綴查詢」</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+操作            HashSet          Trie
+--------------------------------------------------
+精確查詢        O(L) 平均        O(L) 最壞
+前綴查詢        O(n×L) 掃全部    O(L)  ★
+列出某前綴的所有單字  不支援      O(L + 結果數) ★
+按字典序遍歷    需排序 O(n log n) 直接 DFS O(總字元數)
+空間            存完整字串       共享前綴，可能更省
+
+L = 字串長度，n = 單字數量
+Trie 的最壞查詢是 O(L)，不像 HashSet 有雜湊碰撞的風險。
+                </pre>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>程式碼實現</h2>
+
+            <div class="code-block">
+                <div class="lang-tabs">
+                    <button class="lang-tab active" onclick="switchLang(event, 'python')">Python</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'cpp')">C++</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'java')">Java</button>
+                </div>
+
+                <div id="python" class="code-content active">
+                    <pre><code class="language-python">class Trie:
+
+    def __init__(self):
+        self.children = {}      # 字元 -&gt; Trie 節點
+        self.is_end = False     # 是否為某個完整單字的結尾
+
+    def insert(self, word: str) -&gt; None:
+        node = self
+        for ch in word:
+            if ch not in node.children:
+                node.children[ch] = Trie()      # 節點不存在就建立
+            node = node.children[ch]
+        node.is_end = True
+
+    def search(self, word: str) -&gt; bool:
+        node = self._find(word)
+        return node is not None and node.is_end   # 必須是完整單字
+
+    def startsWith(self, prefix: str) -&gt; bool:
+        return self._find(prefix) is not None     # 存在路徑即可
+
+    def _find(self, s: str):
+        # 沿著 s 往下走，回傳終點節點；走不通回傳 None
+        node = self
+        for ch in s:
+            if ch not in node.children:
+                return None
+            node = node.children[ch]
+        return node</code></pre>
+                </div>
+
+                <div id="cpp" class="code-content">
+                    <pre><code class="language-cpp">class Trie {
+private:
+    Trie* children[26];    // 只處理小寫 a-z
+    bool isEnd;
+
+    // 沿著 s 往下走，回傳終點節點；走不通回傳 nullptr
+    Trie* find(const string&amp; s) {
+        Trie* node = this;
+        for (char c : s) {
+            int idx = c - 'a';
+            if (node-&gt;children[idx] == nullptr) return nullptr;
+            node = node-&gt;children[idx];
+        }
+        return node;
+    }
+
+public:
+    Trie() : isEnd(false) {
+        for (int i = 0; i &lt; 26; i++) children[i] = nullptr;
+    }
+
+    void insert(string word) {
+        Trie* node = this;
+        for (char c : word) {
+            int idx = c - 'a';
+            if (node-&gt;children[idx] == nullptr) {
+                node-&gt;children[idx] = new Trie();   // 節點不存在就建立
+            }
+            node = node-&gt;children[idx];
+        }
+        node-&gt;isEnd = true;
+    }
+
+    bool search(string word) {
+        Trie* node = find(word);
+        return node != nullptr &amp;&amp; node-&gt;isEnd;      // 必須是完整單字
+    }
+
+    bool startsWith(string prefix) {
+        return find(prefix) != nullptr;             // 存在路徑即可
+    }
+};</code></pre>
+                </div>
+
+                <div id="java" class="code-content">
+                    <pre><code class="language-java">class Trie {
+    private Trie[] children;   // 26 個小寫字母
+    private boolean isEnd;
+
+    public Trie() {
+        children = new Trie[26];
+        isEnd = false;
+    }
+
+    public void insert(String word) {
+        Trie node = this;
+        for (char c : word.toCharArray()) {
+            int idx = c - 'a';
+            if (node.children[idx] == null) {
+                node.children[idx] = new Trie();    // 節點不存在就建立
+            }
+            node = node.children[idx];
+        }
+        node.isEnd = true;
+    }
+
+    public boolean search(String word) {
+        Trie node = find(word);
+        return node != null &amp;&amp; node.isEnd;          // 必須是完整單字
+    }
+
+    public boolean startsWith(String prefix) {
+        return find(prefix) != null;                // 存在路徑即可
+    }
+
+    // 沿著 s 往下走，回傳終點節點；走不通回傳 null
+    private Trie find(String s) {
+        Trie node = this;
+        for (char c : s.toCharArray()) {
+            int idx = c - 'a';
+            if (node.children[idx] == null) return null;
+            node = node.children[idx];
+        }
+        return node;
+    }
+}</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>複雜度分析</h2>
+            <div class="complexity">
+                <div class="complexity-item">
+                    <strong>時間複雜度：</strong>
+                    <ul>
+                        <li>insert：O(L)，L 為字串長度</li>
+                        <li>search：O(L)</li>
+                        <li>startsWith：O(L)</li>
+                        <li>全部與字典中的單字數量 n 無關，這是 Trie 最大的優勢</li>
+                    </ul>
+                </div>
+                <div class="complexity-item">
+                    <strong>空間複雜度：</strong>O(總字元數 × 字元集大小)
+                    <ul>
+                        <li>陣列版：每個節點固定 26 個指標，可能浪費</li>
+                        <li>HashMap 版：只存實際用到的分支，較省空間但常數較大</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>重點提示</h2>
+            <div class="key-point">
+                <strong>💡 關鍵技巧 1：isEnd 標記不可省</strong>
+                <p>沒有 isEnd 就無法區分 <code>search("app")</code> 和 <code>startsWith("app")</code>。這是本題的核心設計，也是最常被漏掉的地方。</p>
+            </div>
+
+            <div class="key-point">
+                <strong>💡 關鍵技巧 2：陣列 vs HashMap</strong>
+                <p>字元集小且固定（如 a-z）用<strong>陣列</strong>，查詢快；字元集大或稀疏（Unicode、單字很少）用 <strong>HashMap</strong>，省空間。面試時可以主動比較這兩種選擇。</p>
+            </div>
+
+            <div class="key-point">
+                <strong>💡 面試延伸：如何實作 delete？</strong>
+                <p>先走到結尾把 isEnd 設為 false；再從下往上，若某節點沒有子節點且 isEnd 為 false，就可以刪除它。要小心不能刪掉其他單字還在用的節點。</p>
+            </div>
+
+            <div class="note">
+                <strong>⚠️ 常見錯誤：</strong>
+                <ul>
+                    <li>search 忘記檢查 isEnd，變成和 startsWith 一樣</li>
+                    <li>C++ 忘記在建構子把 children 初始化為 nullptr（未初始化指標是災難）</li>
+                    <li>C++ 沒有寫解構子釋放子節點造成記憶體洩漏（LeetCode 不會抓，但面試會被問）</li>
+                    <li>誤以為根節點要存字元；根節點是空的，字元存在「邊」上</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>相關題目</h2>
+            <ul>
+                <li><strong>#211 Design Add and Search Words</strong> - 支援 '.' 萬用字元的 Trie + DFS</li>
+                <li><strong>#212 Word Search II</strong> - Trie + 回溯，經典 Hard 題</li>
+                <li><strong>#648 Replace Words</strong> - 用 Trie 找最短詞根</li>
+                <li><strong>#421 Maximum XOR of Two Numbers</strong> - 二進位 Trie（0/1 Trie）</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>補充說明</h2>
+            <h3>延伸一：二進位 Trie（0/1 Trie）</h3>
+            <div class="visual-box">
+                <div class="visual-title">🔢 把數字當成 32 位元字串</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+每個節點只有 2 個子節點（0 和 1），從最高位往下插入。
+
+應用：求最大 XOR 對（#421）
+  查詢時貪心地往「與當前位相反」的分支走，
+  因為 XOR 要讓高位盡量是 1。
+  複雜度從暴力 O(n²) 降到 O(32n)。
+
+int findMaximumXOR(vector&lt;int&gt;&amp; nums) {
+    // 插入所有數字的 32 位元表示，
+    // 再對每個數字貪心查詢最大 XOR
+}
+                </pre>
+            </div>
+
+            <h3>延伸二：實務應用</h3>
+            <ul>
+                <li><strong>搜尋引擎自動補全</strong>：輸入前綴，DFS 收集該子樹下所有單字</li>
+                <li><strong>IP 路由表（Routing Trie）</strong>：路由器用二進位 Trie 做最長前綴匹配（LPM）</li>
+                <li><strong>輸入法 / 拼字檢查</strong>：結合編輯距離做模糊比對</li>
+                <li><strong>敏感詞過濾</strong>：AC 自動機（Aho-Corasick）就是 Trie + KMP 失配指標</li>
+            </ul>
+
+            <h3>Trie 的變形：壓縮字典樹（Radix Tree）</h3>
+            <p>當很多節點只有單一子節點時（例如只存了 "internationalization" 一個字），普通 Trie 會產生一長串無分支的節點。<strong>Radix Tree</strong> 把這些鏈壓縮成一條邊，大幅節省空間，Linux 核心的 page cache 索引就使用這個結構。</p>
+        </div>
+    </div>
+
+    <script>
+        function switchLang(event, lang) {
+            const tabs = document.querySelectorAll('.lang-tab');
+            const contents = document.querySelectorAll('.code-content');
+
+            tabs.forEach(tab => tab.classList.remove('active'));
+            contents.forEach(content => content.classList.remove('active'));
+
+            event.target.classList.add('active');
+            document.getElementById(lang).classList.add('active');
+        }
+
+        hljs.highlightAll();
+    </script>
+</body>
+</html>

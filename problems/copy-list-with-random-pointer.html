@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>#138 Copy List with Random Pointer | LeetCode 學習平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #333; background: #f8fafc; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .header { background: linear-gradient(135deg, #ea580c 0%, #c2410c 100%); color: white; padding: 30px; border-radius: 12px; margin-bottom: 30px; box-shadow: 0 4px 6px rgba(234, 88, 12, 0.2); }
+        .header h1 { font-size: 2em; margin-bottom: 10px; }
+        .difficulty { display: inline-block; padding: 6px 16px; background: rgba(255,255,255,0.2); border-radius: 20px; font-size: 0.9em; font-weight: 600; }
+        .tags { margin-top: 15px; }
+        .tag { display: inline-block; background: rgba(255,255,255,0.15); padding: 4px 12px; border-radius: 6px; margin-right: 8px; font-size: 0.85em; }
+        .back-btn { display: inline-block; margin-bottom: 20px; padding: 10px 20px; background: #3b82f6; color: white; text-decoration: none; border-radius: 8px; transition: background 0.3s; }
+        .back-btn:hover { background: #2563eb; }
+        .section { background: white; padding: 30px; border-radius: 12px; margin-bottom: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .section h2 { color: #1e293b; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 3px solid #ea580c; }
+        .section h3 { color: #475569; margin: 25px 0 15px 0; font-size: 1.3em; }
+        .code-block { background: #282c34; border-radius: 8px; overflow: hidden; margin: 15px 0; }
+        .lang-tabs { display: flex; background: #21252b; border-bottom: 1px solid #181a1f; }
+        .lang-tab { padding: 12px 24px; cursor: pointer; color: #abb2bf; border: none; background: none; transition: all 0.3s; font-weight: 500; }
+        .lang-tab.active { color: #61afef; background: #282c34; border-bottom: 2px solid #61afef; }
+        .lang-tab:hover { color: #61afef; background: #2c313a; }
+        .code-content { display: none; }
+        .code-content.active { display: block; }
+        pre { margin: 0; overflow-x: auto; }
+        code { font-family: 'Consolas', 'Monaco', 'Courier New', monospace; font-size: 0.9em; }
+        .example { background: #f0f9ff; border-left: 4px solid #3b82f6; padding: 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .example-title { font-weight: 700; color: #1e40af; margin-bottom: 12px; font-size: 1.05em; }
+        .visual-box { background: #fef3c7; border: 2px solid #f59e0b; padding: 20px; border-radius: 8px; margin: 15px 0; }
+        .visual-title { font-weight: 700; color: #92400e; margin-bottom: 12px; display: flex; align-items: center; font-size: 1.05em; }
+        .complexity { background: #f1f5f9; padding: 15px; border-radius: 8px; margin: 15px 0; }
+        .complexity-item { margin: 8px 0; color: #475569; }
+        .key-point { background: #dcfce7; border-left: 4px solid #16a34a; padding: 15px 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        ul, ol { margin-left: 25px; margin-top: 10px; }
+        li { margin: 8px 0; color: #475569; }
+        strong { color: #1e293b; }
+        .note { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 15px 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        @media (max-width: 768px) {
+            .container { padding: 10px; }
+            .header h1 { font-size: 1.5em; }
+            .section { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="../index.html" class="back-btn">← 返回題目列表</a>
+
+        <div class="header">
+            <h1>#138 Copy List with Random Pointer</h1>
+            <div class="difficulty">Medium</div>
+            <div class="tags">
+                <span class="tag">Linked List</span>
+                <span class="tag">Hash Table</span>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>題目描述</h2>
+            <p>給你一個長度為 n 的鏈結串列，每個節點包含一個額外增加的隨機指標 random，該指標可以指向串列中的<strong>任何節點或空節點</strong>。</p>
+            <p style="margin-top: 15px;">請你構造這個串列的<strong>深拷貝（deep copy）</strong>。深拷貝應該由 n 個全新節點組成，其中每個新節點的值都設為其對應原節點的值，且新串列中的指標都應指向<strong>新串列中的節點</strong>，不能指向原串列的任何節點。</p>
+        </div>
+
+        <div class="section">
+            <h2>範例</h2>
+            <div class="example">
+                <div class="example-title">範例 1：</div>
+                <strong>輸入：</strong>head = [[7,null],[13,0],[11,4],[10,2],[1,0]]<br>
+                <strong>輸出：</strong>[[7,null],[13,0],[11,4],[10,2],[1,0]]<br>
+                <strong>解釋：</strong>每組 [val, random_index] 表示節點值與 random 指向的索引。
+            </div>
+
+            <div class="example">
+                <div class="example-title">範例 2：</div>
+                <strong>輸入：</strong>head = [[1,1],[2,1]]<br>
+                <strong>輸出：</strong>[[1,1],[2,1]]
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>解題思路</h2>
+            <div class="note">
+                <strong>⚠️ 難點在哪？</strong>
+                <p>複製 next 很簡單（順序走一遍就好），但 random 可能指向<strong>還沒被建立的節點</strong>。所以核心問題是：<strong>如何把「原節點」對應到「新節點」？</strong></p>
+            </div>
+
+            <h3>方法一：HashMap 建立對應關係（好懂，面試首選）</h3>
+            <div class="visual-box">
+                <div class="visual-title">💡 兩趟掃描</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+第一趟：只複製節點的值，建立 map[原節點] = 新節點
+第二趟：利用 map 把 next 和 random 接起來
+        new.next   = map[old.next]
+        new.random = map[old.random]
+
+原串列：  A → B → C
+          A.random → C
+          B.random → A
+
+第一趟建立 map：
+  {A: A', B: B', C: C'}
+
+第二趟接指標：
+  A'.next = map[B] = B'
+  A'.random = map[C] = C' ✓
+  B'.next = map[C] = C'
+  B'.random = map[A] = A' ✓
+
+因為所有新節點都已存在，random 指到哪裡都查得到 ✓
+                </pre>
+            </div>
+
+            <h3>方法二：節點交錯編織（O(1) 額外空間，最巧妙）</h3>
+            <div class="visual-box">
+                <div class="visual-title">🎯 把新節點插在原節點後面</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+步驟 1：在每個原節點後面插入它的複製節點
+  原：A → B → C
+  後：A → A' → B → B' → C → C'
+
+步驟 2：設定 random（關鍵！）
+  對每個原節點 cur：
+      cur.next.random = cur.random.next
+  意思是「A' 的 random」= 「A 的 random 的下一個」
+        = 「A 的 random 對應的新節點」✓
+
+  A.random = C  →  A'.random = C.next = C' ✓
+
+  這一步不需要 HashMap，因為「新節點就緊跟在對應原節點後面」，
+  這個位置關係本身就是一張隱形的對照表！
+
+步驟 3：拆分成兩條串列，還原原串列
+  A → B → C  和  A' → B' → C'
+                </pre>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>程式碼實現</h2>
+
+            <div class="code-block">
+                <div class="lang-tabs">
+                    <button class="lang-tab active" onclick="switchLang(event, 'python')">Python</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'cpp')">C++</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'java')">Java</button>
+                </div>
+
+                <div id="python" class="code-content active">
+                    <pre><code class="language-python"># Definition for a Node.
+# class Node:
+#     def __init__(self, x: int, next: 'Node' = None, random: 'Node' = None):
+#         self.val = int(x)
+#         self.next = next
+#         self.random = random
+
+# 方法一：HashMap（推薦，好懂好寫）
+class Solution:
+    def copyRandomList(self, head: 'Optional[Node]') -&gt; 'Optional[Node]':
+        if not head:
+            return None
+
+        # 第一趟：建立 原節點 -&gt; 新節點 的對應
+        old_to_new = {}
+        cur = head
+        while cur:
+            old_to_new[cur] = Node(cur.val)
+            cur = cur.next
+
+        # 第二趟：接上 next 和 random
+        cur = head
+        while cur:
+            old_to_new[cur].next = old_to_new.get(cur.next)
+            old_to_new[cur].random = old_to_new.get(cur.random)
+            cur = cur.next
+
+        return old_to_new[head]
+
+
+# 方法二：節點交錯編織（O(1) 額外空間）
+class Solution:
+    def copyRandomList(self, head: 'Optional[Node]') -&gt; 'Optional[Node]':
+        if not head:
+            return None
+
+        # 步驟 1：A → A' → B → B' → ...
+        cur = head
+        while cur:
+            copy = Node(cur.val, cur.next)
+            cur.next = copy
+            cur = copy.next
+
+        # 步驟 2：設定新節點的 random
+        cur = head
+        while cur:
+            if cur.random:
+                cur.next.random = cur.random.next
+            cur = cur.next.next
+
+        # 步驟 3：拆分兩條串列，還原原串列
+        new_head = head.next
+        cur = head
+        while cur:
+            copy = cur.next
+            cur.next = copy.next
+            copy.next = copy.next.next if copy.next else None
+            cur = cur.next
+        return new_head</code></pre>
+                </div>
+
+                <div id="cpp" class="code-content">
+                    <pre><code class="language-cpp">// 方法一：HashMap（推薦）
+class Solution {
+public:
+    Node* copyRandomList(Node* head) {
+        if (!head) return nullptr;
+        unordered_map&lt;Node*, Node*&gt; oldToNew;
+
+        // 第一趟：只複製值
+        for (Node* cur = head; cur; cur = cur-&gt;next) {
+            oldToNew[cur] = new Node(cur-&gt;val);
+        }
+
+        // 第二趟：接 next 和 random
+        for (Node* cur = head; cur; cur = cur-&gt;next) {
+            oldToNew[cur]-&gt;next   = oldToNew[cur-&gt;next];    // 不存在時為 nullptr
+            oldToNew[cur]-&gt;random = oldToNew[cur-&gt;random];
+        }
+        return oldToNew[head];
+    }
+};
+
+// 方法二：節點交錯編織（O(1) 額外空間）
+class Solution {
+public:
+    Node* copyRandomList(Node* head) {
+        if (!head) return nullptr;
+
+        // 步驟 1：A → A' → B → B'
+        for (Node* cur = head; cur; ) {
+            Node* copy = new Node(cur-&gt;val);
+            copy-&gt;next = cur-&gt;next;
+            cur-&gt;next = copy;
+            cur = copy-&gt;next;
+        }
+
+        // 步驟 2：設定 random
+        for (Node* cur = head; cur; cur = cur-&gt;next-&gt;next) {
+            if (cur-&gt;random) cur-&gt;next-&gt;random = cur-&gt;random-&gt;next;
+        }
+
+        // 步驟 3：拆分
+        Node* newHead = head-&gt;next;
+        for (Node* cur = head; cur; ) {
+            Node* copy = cur-&gt;next;
+            cur-&gt;next = copy-&gt;next;
+            copy-&gt;next = cur-&gt;next ? cur-&gt;next-&gt;next : nullptr;
+            cur = cur-&gt;next;
+        }
+        return newHead;
+    }
+};</code></pre>
+                </div>
+
+                <div id="java" class="code-content">
+                    <pre><code class="language-java">// 方法一：HashMap（推薦）
+class Solution {
+    public Node copyRandomList(Node head) {
+        if (head == null) return null;
+        Map&lt;Node, Node&gt; oldToNew = new HashMap&lt;&gt;();
+
+        // 第一趟：只複製值
+        for (Node cur = head; cur != null; cur = cur.next) {
+            oldToNew.put(cur, new Node(cur.val));
+        }
+
+        // 第二趟：接 next 和 random
+        for (Node cur = head; cur != null; cur = cur.next) {
+            oldToNew.get(cur).next   = oldToNew.get(cur.next);
+            oldToNew.get(cur).random = oldToNew.get(cur.random);
+        }
+        return oldToNew.get(head);
+    }
+}
+
+// 方法二：節點交錯編織
+class Solution {
+    public Node copyRandomList(Node head) {
+        if (head == null) return null;
+
+        // 步驟 1：交錯插入
+        for (Node cur = head; cur != null; ) {
+            Node copy = new Node(cur.val);
+            copy.next = cur.next;
+            cur.next = copy;
+            cur = copy.next;
+        }
+
+        // 步驟 2：設定 random
+        for (Node cur = head; cur != null; cur = cur.next.next) {
+            if (cur.random != null) cur.next.random = cur.random.next;
+        }
+
+        // 步驟 3：拆分
+        Node newHead = head.next;
+        for (Node cur = head; cur != null; ) {
+            Node copy = cur.next;
+            cur.next = copy.next;
+            copy.next = (cur.next != null) ? cur.next.next : null;
+            cur = cur.next;
+        }
+        return newHead;
+    }
+}</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>複雜度分析</h2>
+            <div class="complexity">
+                <div class="complexity-item">
+                    <strong>時間複雜度：</strong>O(n)
+                    <ul>
+                        <li>方法一：兩趟掃描 + HashMap 平均 O(1) 查詢</li>
+                        <li>方法二：三趟掃描，常數較大但沒有雜湊開銷</li>
+                    </ul>
+                </div>
+                <div class="complexity-item">
+                    <strong>空間複雜度：</strong>
+                    <ul>
+                        <li>方法一：O(n) 的 HashMap</li>
+                        <li>方法二：O(1) 額外空間 ★（不計算輸出的新串列）</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>重點提示</h2>
+            <div class="key-point">
+                <strong>💡 關鍵技巧 1：先建節點，再接指標</strong>
+                <p>「指標指向尚未建立的物件」是深拷貝的通病。解法一律是<strong>兩階段</strong>：先把所有物件都建出來，第二趟再連線。這在複製圖（#133 Clone Graph）、序列化反序列化中都是同樣套路。</p>
+            </div>
+
+            <div class="key-point">
+                <strong>💡 關鍵技巧 2：交錯編織 = 隱形的對照表</strong>
+                <p><code>cur.next</code> 就是 cur 的複製品，這個位置關係取代了 HashMap。想到這一層就能把空間降到 O(1)，是本題最漂亮的地方。</p>
+            </div>
+
+            <div class="note">
+                <strong>⚠️ 常見錯誤：</strong>
+                <ul>
+                    <li>random 為 null 時沒判斷，直接 <code>cur.random.next</code> 造成崩潰</li>
+                    <li>方法二<strong>忘記還原原串列</strong>（題目要求原串列不能被破壞）</li>
+                    <li>拆分時最後一個節點的 next 沒設為 null</li>
+                    <li>Java/C++ 用 <code>map[cur-&gt;next]</code> 時，若 key 不存在會自動插入 nullptr —— 這裡剛好是我們要的行為，但要理解為什麼</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>相關題目</h2>
+            <ul>
+                <li><strong>#133 Clone Graph</strong> - 複製圖，同樣是 HashMap 對照 + DFS/BFS</li>
+                <li><strong>#206 Reverse Linked List</strong> - 串列指標操作基本功</li>
+                <li><strong>#297 Serialize and Deserialize Binary Tree</strong> - 序列化中的節點對應</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>補充說明</h2>
+            <h3>延伸：深拷貝 vs 淺拷貝</h3>
+            <div class="visual-box">
+                <div class="visual-title">🔍 兩者的差別</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+淺拷貝（shallow copy）：
+  只複製物件本身，內部的指標/參考仍指向原物件
+  → 修改複製品會影響原物件
+
+深拷貝（deep copy）：
+  遞迴複製所有被參考到的物件
+  → 兩者完全獨立
+
+C++ 中若類別有指標成員卻沒有自訂拷貝建構子，
+預設的成員逐一複製就是淺拷貝，會導致：
+  - 兩個物件指向同一塊記憶體
+  - double free 崩潰
+
+這就是「三/五法則（Rule of Three/Five）」的由來：
+若你需要自訂解構子，通常也需要自訂拷貝建構子與拷貝賦值運算子。
+                </pre>
+            </div>
+
+            <h3>遞迴 + 記憶化版本（和 Clone Graph 完全同構）</h3>
+            <pre style="background: #f1f5f9; padding: 15px; border-radius: 8px; margin-top: 10px;">
+class Solution:
+    def __init__(self):
+        self.visited = {}
+
+    def copyRandomList(self, head):
+        if not head:
+            return None
+        if head in self.visited:      # 已複製過，直接回傳（處理環與重複參考）
+            return self.visited[head]
+
+        copy = Node(head.val)
+        self.visited[head] = copy      # 先登記再遞迴，避免無限迴圈
+        copy.next = self.copyRandomList(head.next)
+        copy.random = self.copyRandomList(head.random)
+        return copy
+            </pre>
+        </div>
+    </div>
+
+    <script>
+        function switchLang(event, lang) {
+            const tabs = document.querySelectorAll('.lang-tab');
+            const contents = document.querySelectorAll('.code-content');
+
+            tabs.forEach(tab => tab.classList.remove('active'));
+            contents.forEach(content => content.classList.remove('active'));
+
+            event.target.classList.add('active');
+            document.getElementById(lang).classList.add('active');
+        }
+
+        hljs.highlightAll();
+    </script>
+</body>
+</html>

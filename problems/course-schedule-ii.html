@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>#210 Course Schedule II | LeetCode 學習平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #333; background: #f8fafc; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .header { background: linear-gradient(135deg, #ea580c 0%, #c2410c 100%); color: white; padding: 30px; border-radius: 12px; margin-bottom: 30px; box-shadow: 0 4px 6px rgba(234, 88, 12, 0.2); }
+        .header h1 { font-size: 2em; margin-bottom: 10px; }
+        .difficulty { display: inline-block; padding: 6px 16px; background: rgba(255,255,255,0.2); border-radius: 20px; font-size: 0.9em; font-weight: 600; }
+        .tags { margin-top: 15px; }
+        .tag { display: inline-block; background: rgba(255,255,255,0.15); padding: 4px 12px; border-radius: 6px; margin-right: 8px; font-size: 0.85em; }
+        .back-btn { display: inline-block; margin-bottom: 20px; padding: 10px 20px; background: #3b82f6; color: white; text-decoration: none; border-radius: 8px; transition: background 0.3s; }
+        .back-btn:hover { background: #2563eb; }
+        .section { background: white; padding: 30px; border-radius: 12px; margin-bottom: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .section h2 { color: #1e293b; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 3px solid #ea580c; }
+        .section h3 { color: #475569; margin: 25px 0 15px 0; font-size: 1.3em; }
+        .code-block { background: #282c34; border-radius: 8px; overflow: hidden; margin: 15px 0; }
+        .lang-tabs { display: flex; background: #21252b; border-bottom: 1px solid #181a1f; }
+        .lang-tab { padding: 12px 24px; cursor: pointer; color: #abb2bf; border: none; background: none; transition: all 0.3s; font-weight: 500; }
+        .lang-tab.active { color: #61afef; background: #282c34; border-bottom: 2px solid #61afef; }
+        .lang-tab:hover { color: #61afef; background: #2c313a; }
+        .code-content { display: none; }
+        .code-content.active { display: block; }
+        pre { margin: 0; overflow-x: auto; }
+        code { font-family: 'Consolas', 'Monaco', 'Courier New', monospace; font-size: 0.9em; }
+        .example { background: #f0f9ff; border-left: 4px solid #3b82f6; padding: 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .example-title { font-weight: 700; color: #1e40af; margin-bottom: 12px; font-size: 1.05em; }
+        .visual-box { background: #fef3c7; border: 2px solid #f59e0b; padding: 20px; border-radius: 8px; margin: 15px 0; }
+        .visual-title { font-weight: 700; color: #92400e; margin-bottom: 12px; display: flex; align-items: center; font-size: 1.05em; }
+        .complexity { background: #f1f5f9; padding: 15px; border-radius: 8px; margin: 15px 0; }
+        .complexity-item { margin: 8px 0; color: #475569; }
+        .key-point { background: #dcfce7; border-left: 4px solid #16a34a; padding: 15px 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        ul, ol { margin-left: 25px; margin-top: 10px; }
+        li { margin: 8px 0; color: #475569; }
+        strong { color: #1e293b; }
+        .note { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 15px 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        @media (max-width: 768px) {
+            .container { padding: 10px; }
+            .header h1 { font-size: 1.5em; }
+            .section { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="../index.html" class="back-btn">← 返回題目列表</a>
+
+        <div class="header">
+            <h1>#210 Course Schedule II</h1>
+            <div class="difficulty">Medium</div>
+            <div class="tags">
+                <span class="tag">Graph</span>
+                <span class="tag">Topological Sort</span>
+                <span class="tag">BFS</span>
+                <span class="tag">DFS</span>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>題目描述</h2>
+            <p>現在你總共有 numCourses 門課需要選，記為 0 到 numCourses - 1。給你一個陣列 prerequisites，其中 <code>prerequisites[i] = [a<sub>i</sub>, b<sub>i</sub>]</code> 表示在選修課程 a<sub>i</sub> 前<strong>必須</strong>先選修 b<sub>i</sub>。</p>
+            <p style="margin-top: 15px;">返回你為了學完所有課程所安排的<strong>學習順序</strong>。可能會有多個正確的順序，你只要返回<strong>任意一種</strong>就可以了。如果不可能完成所有課程，返回<strong>空陣列</strong>。</p>
+            <p style="margin-top: 15px;">這題就是 <strong>#207 的進階版</strong>：不只判斷有沒有環，還要輸出具體的拓撲序。</p>
+        </div>
+
+        <div class="section">
+            <h2>範例</h2>
+            <div class="example">
+                <div class="example-title">範例 1：</div>
+                <strong>輸入：</strong>numCourses = 2, prerequisites = [[1,0]]<br>
+                <strong>輸出：</strong>[0,1]
+            </div>
+
+            <div class="example">
+                <div class="example-title">範例 2：</div>
+                <strong>輸入：</strong>numCourses = 4, prerequisites = [[1,0],[2,0],[3,1],[3,2]]<br>
+                <strong>輸出：</strong>[0,1,2,3] 或 [0,2,1,3]<br>
+                <strong>解釋：</strong>課程 0 是課程 1 和 2 的先修課，而 1 和 2 都是 3 的先修課。
+            </div>
+
+            <div class="example">
+                <div class="example-title">範例 3：</div>
+                <strong>輸入：</strong>numCourses = 1, prerequisites = []<br>
+                <strong>輸出：</strong>[0]
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>解題思路</h2>
+            <div class="visual-box">
+                <div class="visual-title">💡 BFS 拓撲排序（Kahn 演算法）</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+和 #207 完全一樣，只是把「出隊的節點」依序記錄下來。
+
+【演算法】
+1. 建圖（b → a）並統計每個節點的入度
+2. 所有入度為 0 的節點入隊
+3. 每次出隊一個節點 u：
+   - 把 u 加入結果
+   - 對每個後繼 v：indegree[v]--，若變成 0 就入隊
+4. 若結果長度 == numCourses → 返回結果
+   否則有環 → 返回空陣列
+
+【完整追蹤】
+numCourses = 4, prerequisites = [[1,0],[2,0],[3,1],[3,2]]
+
+圖：0→1, 0→2, 1→3, 2→3
+入度：[0, 1, 1, 2]
+
+佇列 = [0]，order = []
+出隊 0 → order = [0]
+  1 的入度 1→0，入隊
+  2 的入度 1→0，入隊
+佇列 = [1, 2]
+出隊 1 → order = [0, 1]
+  3 的入度 2→1
+出隊 2 → order = [0, 1, 2]
+  3 的入度 1→0，入隊
+出隊 3 → order = [0, 1, 2, 3]
+
+長度 4 == numCourses → 返回 [0,1,2,3] ✓
+                </pre>
+            </div>
+
+            <h3>方法二：DFS 後序 + 反轉</h3>
+            <div class="visual-box">
+                <div class="visual-title">🔄 「完成時間」的逆序就是拓撲序</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+DFS 的核心洞察：
+  一個節點「完成」（所有後繼都走完）時，
+  它必定排在所有後繼的【前面】。
+
+所以把節點依「完成順序」記錄下來，
+最後【反轉】就是拓撲序。
+
+0→1, 0→2, 1→3, 2→3
+
+dfs(0)
+  dfs(1)
+    dfs(3) → 3 沒有後繼，完成 → post = [3]
+    1 完成 → post = [3, 1]
+  dfs(2)
+    3 已完成（黑色），跳過
+    2 完成 → post = [3, 1, 2]
+  0 完成 → post = [3, 1, 2, 0]
+
+反轉 → [0, 2, 1, 3] ✓（也是合法的拓撲序）
+
+同時用三色標記偵測環：遇到灰色節點就返回空陣列。
+                </pre>
+            </div>
+
+            <h3>拓撲序不唯一</h3>
+            <p>當多個節點同時入度為 0 時，任何順序都合法。所以本題允許返回<strong>任意一種</strong>答案。若要求<strong>字典序最小</strong>的拓撲序，把佇列換成<strong>最小堆積（priority queue）</strong>即可。</p>
+        </div>
+
+        <div class="section">
+            <h2>程式碼實現</h2>
+
+            <div class="code-block">
+                <div class="lang-tabs">
+                    <button class="lang-tab active" onclick="switchLang(event, 'python')">Python</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'cpp')">C++</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'java')">Java</button>
+                </div>
+
+                <div id="python" class="code-content active">
+                    <pre><code class="language-python"># 方法一：BFS 拓撲排序（Kahn，推薦）
+class Solution:
+    def findOrder(self, numCourses: int, prerequisites: List[List[int]]) -&gt; List[int]:
+        from collections import deque
+
+        graph = [[] for _ in range(numCourses)]
+        indegree = [0] * numCourses
+
+        for course, pre in prerequisites:
+            graph[pre].append(course)      # pre → course
+            indegree[course] += 1
+
+        queue = deque(i for i in range(numCourses) if indegree[i] == 0)
+        order = []
+
+        while queue:
+            cur = queue.popleft()
+            order.append(cur)              # 記錄出隊順序
+            for nxt in graph[cur]:
+                indegree[nxt] -= 1
+                if indegree[nxt] == 0:
+                    queue.append(nxt)
+
+        # 若無法排出全部課程，代表有環
+        return order if len(order) == numCourses else []
+
+
+# 方法二：DFS 後序 + 反轉
+class Solution:
+    def findOrder(self, numCourses: int, prerequisites: List[List[int]]) -&gt; List[int]:
+        graph = [[] for _ in range(numCourses)]
+        for course, pre in prerequisites:
+            graph[pre].append(course)
+
+        state = [0] * numCourses   # 0=未訪問, 1=遞迴中, 2=已完成
+        post = []
+
+        def dfs(node):
+            if state[node] == 1:
+                return False        # 遇到灰色 → 有環
+            if state[node] == 2:
+                return True
+
+            state[node] = 1
+            for nxt in graph[node]:
+                if not dfs(nxt):
+                    return False
+            state[node] = 2
+            post.append(node)       # 完成時記錄
+            return True
+
+        for i in range(numCourses):
+            if not dfs(i):
+                return []
+
+        return post[::-1]           # 反轉完成順序</code></pre>
+                </div>
+
+                <div id="cpp" class="code-content">
+                    <pre><code class="language-cpp">// 方法一：BFS 拓撲排序（Kahn，推薦）
+class Solution {
+public:
+    vector&lt;int&gt; findOrder(int numCourses, vector&lt;vector&lt;int&gt;&gt;&amp; prerequisites) {
+        vector&lt;vector&lt;int&gt;&gt; graph(numCourses);
+        vector&lt;int&gt; indegree(numCourses, 0);
+
+        for (auto&amp; p : prerequisites) {
+            graph[p[1]].push_back(p[0]);      // pre → course
+            indegree[p[0]]++;
+        }
+
+        queue&lt;int&gt; q;
+        for (int i = 0; i &lt; numCourses; i++) {
+            if (indegree[i] == 0) q.push(i);
+        }
+
+        vector&lt;int&gt; order;
+        while (!q.empty()) {
+            int cur = q.front(); q.pop();
+            order.push_back(cur);             // 記錄出隊順序
+            for (int nxt : graph[cur]) {
+                if (--indegree[nxt] == 0) q.push(nxt);
+            }
+        }
+
+        if (order.size() != numCourses) return {};   // 有環
+        return order;
+    }
+};
+
+// 延伸：要求字典序最小的拓撲序 → 把 queue 換成 priority_queue
+// priority_queue&lt;int, vector&lt;int&gt;, greater&lt;int&gt;&gt; pq;</code></pre>
+                </div>
+
+                <div id="java" class="code-content">
+                    <pre><code class="language-java">// 方法一：BFS 拓撲排序（Kahn，推薦）
+class Solution {
+    public int[] findOrder(int numCourses, int[][] prerequisites) {
+        List&lt;List&lt;Integer&gt;&gt; graph = new ArrayList&lt;&gt;();
+        for (int i = 0; i &lt; numCourses; i++) graph.add(new ArrayList&lt;&gt;());
+        int[] indegree = new int[numCourses];
+
+        for (int[] p : prerequisites) {
+            graph.get(p[1]).add(p[0]);        // pre → course
+            indegree[p[0]]++;
+        }
+
+        Deque&lt;Integer&gt; queue = new ArrayDeque&lt;&gt;();
+        for (int i = 0; i &lt; numCourses; i++) {
+            if (indegree[i] == 0) queue.offer(i);
+        }
+
+        int[] order = new int[numCourses];
+        int idx = 0;
+        while (!queue.isEmpty()) {
+            int cur = queue.poll();
+            order[idx++] = cur;               // 記錄出隊順序
+            for (int nxt : graph.get(cur)) {
+                if (--indegree[nxt] == 0) queue.offer(nxt);
+            }
+        }
+
+        return idx == numCourses ? order : new int[0];   // 有環回傳空陣列
+    }
+}</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>複雜度分析</h2>
+            <div class="complexity">
+                <div class="complexity-item">
+                    <strong>時間複雜度：</strong>O(V + E)
+                    <ul>
+                        <li>V = numCourses，E = prerequisites 長度</li>
+                        <li>若要求字典序最小（用堆積）則為 O(V log V + E)</li>
+                    </ul>
+                </div>
+                <div class="complexity-item">
+                    <strong>空間複雜度：</strong>O(V + E)，鄰接表 + 入度陣列 + 佇列
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>重點提示</h2>
+            <div class="key-point">
+                <strong>💡 關鍵技巧 1：Kahn 演算法只比 #207 多一行</strong>
+                <p><code>order.push_back(cur)</code>。所以這兩題應該一起準備，掌握一個就等於掌握兩個。</p>
+            </div>
+
+            <div class="key-point">
+                <strong>💡 關鍵技巧 2：DFS 版要記得反轉</strong>
+                <p>DFS 記錄的是「完成順序」，而拓撲序是完成順序的<strong>逆序</strong>。忘記反轉是最常見的錯誤。</p>
+            </div>
+
+            <div class="key-point">
+                <strong>💡 面試延伸：字典序最小的拓撲序</strong>
+                <p>把 Kahn 演算法中的普通佇列換成<strong>最小堆積</strong>，每次都優先取出編號最小的可用節點。這是很常見的追問，答案非常簡單但要想得到。</p>
+            </div>
+
+            <div class="note">
+                <strong>⚠️ 常見錯誤：</strong>
+                <ul>
+                    <li>建圖方向反了（<code>[a,b]</code> 是 b → a）</li>
+                    <li>忘記檢查結果長度，有環時仍返回不完整的順序</li>
+                    <li>DFS 版忘記反轉結果</li>
+                    <li>誤以為拓撲序唯一而執著於配對某個特定答案</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>相關題目</h2>
+            <ul>
+                <li><strong>#207 Course Schedule</strong> - 只判斷是否可完成</li>
+                <li><strong>#269 Alien Dictionary</strong> - 從外星字典推導字母順序</li>
+                <li><strong>#310 Minimum Height Trees</strong> - 無向圖的「剝洋蔥」拓撲</li>
+                <li><strong>#329 Longest Increasing Path in a Matrix</strong> - 隱式 DAG 上的拓撲 DP</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>補充說明</h2>
+            <h3>拓撲排序的三個必記結論</h3>
+            <div class="visual-box">
+                <div class="visual-title">📝 面試觀念題</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+1【存在性】一個有向圖存在拓撲序 ⟺ 它是 DAG（無環有向圖）
+
+2【唯一性】拓撲序唯一 ⟺ 每一步都恰好只有一個入度為 0 的節點
+           （等價於：存在一條經過所有節點的哈密頓路徑）
+
+3【應用】DAG 上的動態規劃必須按拓撲序進行，
+         因為要保證計算某個節點時，它的所有前驅都已算完。
+                </pre>
+            </div>
+
+            <h3>DAG 上的 DP：最長路徑</h3>
+            <pre style="background: #f1f5f9; padding: 15px; border-radius: 8px; margin-top: 10px;">
+一般圖的最長路徑是 NP-Hard，
+但【DAG 上的最長路徑】可以在 O(V+E) 解決：
+
+按拓撲序處理每個節點 u：
+    for (v : graph[u])
+        dp[v] = max(dp[v], dp[u] + 1);
+
+因為拓撲序保證處理 u 時，
+所有能到達 u 的節點都已經計算完畢。
+
+應用：#329 矩陣中的最長遞增路徑
+      （把「較小值 → 較大值」視為有向邊，天然是 DAG）
+            </pre>
+
+            <h3>字典序最小的拓撲序實作</h3>
+            <pre style="background: #f1f5f9; padding: 15px; border-radius: 8px; margin-top: 10px;">
+// 只要把 queue 換成 min-heap
+priority_queue&lt;int, vector&lt;int&gt;, greater&lt;int&gt;&gt; pq;
+for (int i = 0; i &lt; numCourses; i++)
+    if (indegree[i] == 0) pq.push(i);
+
+vector&lt;int&gt; order;
+while (!pq.empty()) {
+    int cur = pq.top(); pq.pop();     // 每次取編號最小的
+    order.push_back(cur);
+    for (int nxt : graph[cur])
+        if (--indegree[nxt] == 0) pq.push(nxt);
+}
+
+複雜度變成 O(V log V + E)。
+這在「任務排程需要穩定輸出」的實務場景很常用。
+            </pre>
+        </div>
+    </div>
+
+    <script>
+        function switchLang(event, lang) {
+            const tabs = document.querySelectorAll('.lang-tab');
+            const contents = document.querySelectorAll('.code-content');
+
+            tabs.forEach(tab => tab.classList.remove('active'));
+            contents.forEach(content => content.classList.remove('active'));
+
+            event.target.classList.add('active');
+            document.getElementById(lang).classList.add('active');
+        }
+
+        hljs.highlightAll();
+    </script>
+</body>
+</html>

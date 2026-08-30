@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>#371 Sum of Two Integers | LeetCode 學習平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #333; background: #f8fafc; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .header { background: linear-gradient(135deg, #ea580c 0%, #c2410c 100%); color: white; padding: 30px; border-radius: 12px; margin-bottom: 30px; box-shadow: 0 4px 6px rgba(234, 88, 12, 0.2); }
+        .header h1 { font-size: 2em; margin-bottom: 10px; }
+        .difficulty { display: inline-block; padding: 6px 16px; background: rgba(255,255,255,0.2); border-radius: 20px; font-size: 0.9em; font-weight: 600; }
+        .tags { margin-top: 15px; }
+        .tag { display: inline-block; background: rgba(255,255,255,0.15); padding: 4px 12px; border-radius: 6px; margin-right: 8px; font-size: 0.85em; }
+        .back-btn { display: inline-block; margin-bottom: 20px; padding: 10px 20px; background: #3b82f6; color: white; text-decoration: none; border-radius: 8px; transition: background 0.3s; }
+        .back-btn:hover { background: #2563eb; }
+        .section { background: white; padding: 30px; border-radius: 12px; margin-bottom: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .section h2 { color: #1e293b; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 3px solid #ea580c; }
+        .section h3 { color: #475569; margin: 25px 0 15px 0; font-size: 1.3em; }
+        .code-block { background: #282c34; border-radius: 8px; overflow: hidden; margin: 15px 0; }
+        .lang-tabs { display: flex; background: #21252b; border-bottom: 1px solid #181a1f; }
+        .lang-tab { padding: 12px 24px; cursor: pointer; color: #abb2bf; border: none; background: none; transition: all 0.3s; font-weight: 500; }
+        .lang-tab.active { color: #61afef; background: #282c34; border-bottom: 2px solid #61afef; }
+        .lang-tab:hover { color: #61afef; background: #2c313a; }
+        .code-content { display: none; }
+        .code-content.active { display: block; }
+        pre { margin: 0; overflow-x: auto; }
+        code { font-family: 'Consolas', 'Monaco', 'Courier New', monospace; font-size: 0.9em; }
+        .example { background: #f0f9ff; border-left: 4px solid #3b82f6; padding: 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .example-title { font-weight: 700; color: #1e40af; margin-bottom: 12px; font-size: 1.05em; }
+        .visual-box { background: #fef3c7; border: 2px solid #f59e0b; padding: 20px; border-radius: 8px; margin: 15px 0; }
+        .visual-title { font-weight: 700; color: #92400e; margin-bottom: 12px; display: flex; align-items: center; font-size: 1.05em; }
+        .complexity { background: #f1f5f9; padding: 15px; border-radius: 8px; margin: 15px 0; }
+        .complexity-item { margin: 8px 0; color: #475569; }
+        .key-point { background: #dcfce7; border-left: 4px solid #16a34a; padding: 15px 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        ul, ol { margin-left: 25px; margin-top: 10px; }
+        li { margin: 8px 0; color: #475569; }
+        strong { color: #1e293b; }
+        .note { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 15px 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        @media (max-width: 768px) {
+            .container { padding: 10px; }
+            .header h1 { font-size: 1.5em; }
+            .section { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="../index.html" class="back-btn">← 返回題目列表</a>
+
+        <div class="header">
+            <h1>#371 Sum of Two Integers</h1>
+            <div class="difficulty">Medium</div>
+            <div class="tags">
+                <span class="tag">Bit Manipulation</span>
+                <span class="tag">Math</span>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>題目描述</h2>
+            <p>給你兩個整數 a 和 b，<strong>不使用運算子 + 和 -</strong>，計算並返回兩整數之和。</p>
+            <p style="margin-top: 15px;">這題本質上是要你用位元運算實作一個<strong>全加器（Full Adder）</strong>，是數位邏輯與韌體面試的高頻題。</p>
+        </div>
+
+        <div class="section">
+            <h2>範例</h2>
+            <div class="example">
+                <div class="example-title">範例 1：</div>
+                <strong>輸入：</strong>a = 1, b = 2<br>
+                <strong>輸出：</strong>3
+            </div>
+
+            <div class="example">
+                <div class="example-title">範例 2：</div>
+                <strong>輸入：</strong>a = 2, b = 3<br>
+                <strong>輸出：</strong>5
+            </div>
+
+            <div class="example">
+                <div class="example-title">範例 3：</div>
+                <strong>輸入：</strong>a = -1, b = 1<br>
+                <strong>輸出：</strong>0
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>解題思路</h2>
+            <div class="visual-box">
+                <div class="visual-title">💡 核心：把加法拆成「無進位和」+「進位」</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+十進位的直式加法：
+   759
+ + 674
+ -----
+無進位和：323  （每位單獨相加不進位：7+6=3, 5+7=2, 9+4=3）
+進位    ：1100 （每位的進位左移一位）
+再把兩者相加 → 重複直到沒有進位
+
+二進位版本：
+無進位和 = a ^ b      （XOR 就是不進位加法）
+進位     = (a & b) << 1
+
+  0 ^ 0 = 0, 進位 0
+  0 ^ 1 = 1, 進位 0
+  1 ^ 0 = 1, 進位 0
+  1 ^ 1 = 0, 進位 1  ← 只有兩個都是 1 才進位
+                </pre>
+            </div>
+
+            <h3>完整推導：a = 5, b = 3</h3>
+            <div class="visual-box">
+                <div class="visual-title">🔄 迭代到進位為 0</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+a = 0101 (5), b = 0011 (3)
+
+第 1 輪：
+  sum   = 0101 ^ 0011 = 0110
+  carry = (0101 & 0011) << 1 = 0001 << 1 = 0010
+  a = 0110, b = 0010
+
+第 2 輪：
+  sum   = 0110 ^ 0010 = 0100
+  carry = (0110 & 0010) << 1 = 0010 << 1 = 0100
+  a = 0100, b = 0100
+
+第 3 輪：
+  sum   = 0100 ^ 0100 = 0000
+  carry = (0100 & 0100) << 1 = 1000
+  a = 0000, b = 1000
+
+第 4 輪：
+  sum   = 0000 ^ 1000 = 1000
+  carry = 0
+  a = 1000 = 8 ✓  b = 0，結束
+                </pre>
+            </div>
+
+            <div class="note">
+                <strong>⚠️ 負數怎麼辦？</strong>
+                <p>因為電腦用<strong>二補數</strong>表示負數，上面的公式對負數<strong>完全不用改</strong>就正確。這正是二補數設計的精妙之處：加法器不需要知道數字是正是負。</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>程式碼實現</h2>
+
+            <div class="code-block">
+                <div class="lang-tabs">
+                    <button class="lang-tab active" onclick="switchLang(event, 'python')">Python</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'cpp')">C++</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'java')">Java</button>
+                </div>
+
+                <div id="python" class="code-content active">
+                    <pre><code class="language-python"># Python 特殊處理：整數是無限位元，要手動遮罩成 32 位元
+class Solution:
+    def getSum(self, a: int, b: int) -&gt; int:
+        MASK = 0xFFFFFFFF        # 32 位元遮罩
+        MAX_INT = 0x7FFFFFFF     # 32 位元有號數最大值
+
+        a &amp;= MASK
+        b &amp;= MASK
+        while b:
+            carry = ((a &amp; b) &lt;&lt; 1) &amp; MASK   # 進位
+            a = (a ^ b) &amp; MASK              # 無進位和
+            b = carry
+
+        # 若超過 MAX_INT，代表是負數，轉回 Python 的負數表示
+        return a if a &lt;= MAX_INT else ~(a ^ MASK)
+
+
+# 遞迴版本
+class Solution:
+    def getSum(self, a: int, b: int) -&gt; int:
+        MASK = 0xFFFFFFFF
+        MAX_INT = 0x7FFFFFFF
+        if b == 0:
+            return a if a &lt;= MAX_INT else ~(a ^ MASK)
+        return self.getSum((a ^ b) &amp; MASK, ((a &amp; b) &lt;&lt; 1) &amp; MASK)</code></pre>
+                </div>
+
+                <div id="cpp" class="code-content">
+                    <pre><code class="language-cpp">// 迭代版（C++ 不需特殊處理負數）
+class Solution {
+public:
+    int getSum(int a, int b) {
+        while (b != 0) {
+            // 用 unsigned 避免有號數左移的 UB
+            unsigned int carry = (unsigned int)(a &amp; b) &lt;&lt; 1;
+            a = a ^ b;      // 無進位和
+            b = carry;      // 進位
+        }
+        return a;
+    }
+};
+
+// 遞迴版
+class Solution {
+public:
+    int getSum(int a, int b) {
+        if (b == 0) return a;
+        return getSum(a ^ b, (unsigned int)(a &amp; b) &lt;&lt; 1);
+    }
+};
+
+// 延伸：不用 - 做減法（a - b = a + (-b) = a + ~b + 1）
+int getSub(int a, int b) {
+    return getSum(a, getSum(~b, 1));
+}</code></pre>
+                </div>
+
+                <div id="java" class="code-content">
+                    <pre><code class="language-java">// 迭代版（推薦）
+class Solution {
+    public int getSum(int a, int b) {
+        while (b != 0) {
+            int carry = (a &amp; b) &lt;&lt; 1;   // 進位
+            a = a ^ b;                  // 無進位和
+            b = carry;
+        }
+        return a;
+    }
+}
+
+// 遞迴版
+class Solution {
+    public int getSum(int a, int b) {
+        return b == 0 ? a : getSum(a ^ b, (a &amp; b) &lt;&lt; 1);
+    }
+}</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>複雜度分析</h2>
+            <div class="complexity">
+                <div class="complexity-item">
+                    <strong>時間複雜度：</strong>O(1)
+                    <ul>
+                        <li>進位每輪至少往左移一位，32 位元最多跑 32 輪</li>
+                    </ul>
+                </div>
+                <div class="complexity-item">
+                    <strong>空間複雜度：</strong>
+                    <ul>
+                        <li>迭代版：O(1)</li>
+                        <li>遞迴版：O(32) = O(1) 的呼叫堆疊</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>重點提示</h2>
+            <div class="key-point">
+                <strong>💡 關鍵技巧 1：XOR = 無進位加法，AND &lt;&lt; 1 = 進位</strong>
+                <p>這就是硬體全加器的邏輯：<code>Sum = A ⊕ B ⊕ Cin</code>、<code>Cout = (A·B) + (Cin·(A⊕B))</code>。位元運算版本是它的並行推廣。</p>
+            </div>
+
+            <div class="key-point">
+                <strong>💡 關鍵技巧 2：二補數讓正負號自動正確</strong>
+                <p>面試官很愛追問「負數為什麼也對？」答案是：二補數把減法變成加法，同一組硬體電路即可處理，不需要額外判斷符號。</p>
+            </div>
+
+            <div class="note">
+                <strong>⚠️ 常見錯誤：</strong>
+                <ul>
+                    <li><strong>Python 陷阱最大</strong>：整數無限位寬，一定要 &amp; 0xFFFFFFFF，最後還要把大於 MAX_INT 的值轉回負數</li>
+                    <li>C++ 對有號數左移溢位是 UB，要轉 <code>unsigned int</code></li>
+                    <li>迴圈條件寫 <code>while (b &gt; 0)</code> 是錯的，負進位會直接跳出</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>相關題目</h2>
+            <ul>
+                <li><strong>#67 Add Binary</strong> - 字串形式的二進位加法</li>
+                <li><strong>#2 Add Two Numbers</strong> - 鏈結串列版的加法與進位</li>
+                <li><strong>#29 Divide Two Integers</strong> - 不用除法做除法</li>
+                <li><strong>#43 Multiply Strings</strong> - 大數乘法</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>補充說明</h2>
+            <h3>數位邏輯對照：全加器</h3>
+            <div class="visual-box">
+                <div class="visual-title">🔧 Full Adder 真值表</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+A  B  Cin | Sum  Cout
+0  0   0  |  0     0
+0  0   1  |  1     0
+0  1   0  |  1     0
+0  1   1  |  0     1
+1  0   0  |  1     0
+1  0   1  |  0     1
+1  1   0  |  0     1
+1  1   1  |  1     1
+
+Sum  = A ⊕ B ⊕ Cin
+Cout = (A · B) + (Cin · (A ⊕ B))
+
+漣波進位加法器（Ripple Carry Adder）就是把 32 個
+全加器串接，進位一級一級傳遞 —— 和我們的迴圈完全對應。
+                </pre>
+            </div>
+
+            <h3>延伸：不用 * 做乘法</h3>
+            <pre style="background: #f1f5f9; padding: 15px; border-radius: 8px; margin-top: 10px;">
+// 俄羅斯農夫乘法（移位 + 加法），硬體乘法器的原理
+int multiply(int a, int b) {
+    int result = 0;
+    while (b) {
+        if (b &amp; 1) result = getSum(result, a);
+        a &lt;&lt;= 1;
+        b &gt;&gt;= 1;
+    }
+    return result;
+}
+            </pre>
+        </div>
+    </div>
+
+    <script>
+        function switchLang(event, lang) {
+            const tabs = document.querySelectorAll('.lang-tab');
+            const contents = document.querySelectorAll('.code-content');
+
+            tabs.forEach(tab => tab.classList.remove('active'));
+            contents.forEach(content => content.classList.remove('active'));
+
+            event.target.classList.add('active');
+            document.getElementById(lang).classList.add('active');
+        }
+
+        hljs.highlightAll();
+    </script>
+</body>
+</html>

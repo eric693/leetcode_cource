@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>#105 Construct Binary Tree from Preorder and Inorder Traversal | LeetCode 學習平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #333; background: #f8fafc; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .header { background: linear-gradient(135deg, #ea580c 0%, #c2410c 100%); color: white; padding: 30px; border-radius: 12px; margin-bottom: 30px; box-shadow: 0 4px 6px rgba(234, 88, 12, 0.2); }
+        .header h1 { font-size: 2em; margin-bottom: 10px; }
+        .difficulty { display: inline-block; padding: 6px 16px; background: rgba(255,255,255,0.2); border-radius: 20px; font-size: 0.9em; font-weight: 600; }
+        .tags { margin-top: 15px; }
+        .tag { display: inline-block; background: rgba(255,255,255,0.15); padding: 4px 12px; border-radius: 6px; margin-right: 8px; font-size: 0.85em; }
+        .back-btn { display: inline-block; margin-bottom: 20px; padding: 10px 20px; background: #3b82f6; color: white; text-decoration: none; border-radius: 8px; transition: background 0.3s; }
+        .back-btn:hover { background: #2563eb; }
+        .section { background: white; padding: 30px; border-radius: 12px; margin-bottom: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .section h2 { color: #1e293b; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 3px solid #ea580c; }
+        .section h3 { color: #475569; margin: 25px 0 15px 0; font-size: 1.3em; }
+        .code-block { background: #282c34; border-radius: 8px; overflow: hidden; margin: 15px 0; }
+        .lang-tabs { display: flex; background: #21252b; border-bottom: 1px solid #181a1f; }
+        .lang-tab { padding: 12px 24px; cursor: pointer; color: #abb2bf; border: none; background: none; transition: all 0.3s; font-weight: 500; }
+        .lang-tab.active { color: #61afef; background: #282c34; border-bottom: 2px solid #61afef; }
+        .lang-tab:hover { color: #61afef; background: #2c313a; }
+        .code-content { display: none; }
+        .code-content.active { display: block; }
+        pre { margin: 0; overflow-x: auto; }
+        code { font-family: 'Consolas', 'Monaco', 'Courier New', monospace; font-size: 0.9em; }
+        .example { background: #f0f9ff; border-left: 4px solid #3b82f6; padding: 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .example-title { font-weight: 700; color: #1e40af; margin-bottom: 12px; font-size: 1.05em; }
+        .visual-box { background: #fef3c7; border: 2px solid #f59e0b; padding: 20px; border-radius: 8px; margin: 15px 0; }
+        .visual-title { font-weight: 700; color: #92400e; margin-bottom: 12px; display: flex; align-items: center; font-size: 1.05em; }
+        .complexity { background: #f1f5f9; padding: 15px; border-radius: 8px; margin: 15px 0; }
+        .complexity-item { margin: 8px 0; color: #475569; }
+        .key-point { background: #dcfce7; border-left: 4px solid #16a34a; padding: 15px 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        ul, ol { margin-left: 25px; margin-top: 10px; }
+        li { margin: 8px 0; color: #475569; }
+        strong { color: #1e293b; }
+        .note { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 15px 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        @media (max-width: 768px) {
+            .container { padding: 10px; }
+            .header h1 { font-size: 1.5em; }
+            .section { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="../index.html" class="back-btn">← 返回題目列表</a>
+
+        <div class="header">
+            <h1>#105 Construct Binary Tree from Preorder and Inorder Traversal</h1>
+            <div class="difficulty">Medium</div>
+            <div class="tags">
+                <span class="tag">Tree</span>
+                <span class="tag">Array</span>
+                <span class="tag">Hash Table</span>
+                <span class="tag">Divide and Conquer</span>
+                <span class="tag">Recursion</span>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>題目描述</h2>
+            <p>給定兩個整數陣列 preorder 和 inorder，其中 preorder 是二元樹的<strong>前序遍歷</strong>，inorder 是同一棵樹的<strong>中序遍歷</strong>，請建構二元樹並返回其根節點。</p>
+            <p style="margin-top: 15px;">題目保證 preorder 和 inorder 中<strong>沒有重複元素</strong>。</p>
+        </div>
+
+        <div class="section">
+            <h2>範例</h2>
+            <div class="example">
+                <div class="example-title">範例 1：</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+輸入：preorder = [3,9,20,15,7], inorder = [9,3,15,20,7]
+輸出：[3,9,20,null,null,15,7]
+
+      3
+     / \
+    9   20
+        / \
+      15   7
+                </pre>
+            </div>
+
+            <div class="example">
+                <div class="example-title">範例 2：</div>
+                <strong>輸入：</strong>preorder = [-1], inorder = [-1]<br>
+                <strong>輸出：</strong>[-1]
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>解題思路</h2>
+            <div class="visual-box">
+                <div class="visual-title">💡 核心：前序給「根」，中序給「左右分界」</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+前序 = [根][左子樹的前序][右子樹的前序]
+中序 = [左子樹的中序][根][右子樹的中序]
+
+preorder = [3, 9, 20, 15, 7]
+             ↑ 第一個一定是根！
+
+inorder  = [9, 3, 15, 20, 7]
+               ↑ 在中序中找到 3 的位置 = 1
+
+  → 左子樹有 1 個節點：[9]
+  → 右子樹有 3 個節點：[15, 20, 7]
+
+回頭切分前序：
+preorder = [3 | 9 | 20, 15, 7]
+            根  左   右（長度由中序決定）
+
+遞迴處理：
+  左子樹：preorder=[9],        inorder=[9]
+  右子樹：preorder=[20,15,7],  inorder=[15,20,7]
+                </pre>
+            </div>
+
+            <h3>索引推導（最容易出錯的地方）</h3>
+            <div class="visual-box">
+                <div class="visual-title">🎯 用長度來推算切割點</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+設當前處理的範圍：
+  preorder[preLeft .. preRight]
+  inorder[inLeft .. inRight]
+
+1. 根節點值 = preorder[preLeft]
+2. 在中序中找到根的位置 rootIdx（用 HashMap 加速）
+3. 左子樹大小 leftSize = rootIdx - inLeft
+
+左子樹：
+  preorder: [preLeft + 1, preLeft + leftSize]
+  inorder:  [inLeft, rootIdx - 1]
+
+右子樹：
+  preorder: [preLeft + leftSize + 1, preRight]
+  inorder:  [rootIdx + 1, inRight]
+
+⭐ 記憶要訣：所有切割點都由 leftSize 推導，
+   把 leftSize 算對，其餘索引就水到渠成。
+                </pre>
+            </div>
+
+            <h3>優化：用 HashMap 加速查找</h3>
+            <div class="visual-box">
+                <div class="visual-title">⚡ 從 O(n²) 降到 O(n)</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+每次都線性搜尋中序找根的位置 → O(n) × n 次 = O(n²)
+
+預先建立 {值: 中序索引} 的對照表 → 查找變成 O(1)
+總複雜度降為 O(n) ✓
+
+（題目保證沒有重複元素，所以值可以直接當 key）
+                </pre>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>程式碼實現</h2>
+
+            <div class="code-block">
+                <div class="lang-tabs">
+                    <button class="lang-tab active" onclick="switchLang(event, 'python')">Python</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'cpp')">C++</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'java')">Java</button>
+                </div>
+
+                <div id="python" class="code-content active">
+                    <pre><code class="language-python">class Solution:
+    def buildTree(self, preorder: List[int], inorder: List[int]) -&gt; Optional[TreeNode]:
+        # 預先建立 值 -&gt; 中序索引 的對照表，把查找降到 O(1)
+        idx_map = {val: i for i, val in enumerate(inorder)}
+
+        def build(pre_left, pre_right, in_left, in_right):
+            if pre_left &gt; pre_right:
+                return None
+
+            # 前序的第一個就是根
+            root_val = preorder[pre_left]
+            root = TreeNode(root_val)
+
+            # 在中序中定位根，算出左子樹大小
+            root_idx = idx_map[root_val]
+            left_size = root_idx - in_left
+
+            # 遞迴建立左右子樹
+            root.left = build(pre_left + 1, pre_left + left_size,
+                              in_left, root_idx - 1)
+            root.right = build(pre_left + left_size + 1, pre_right,
+                               root_idx + 1, in_right)
+            return root
+
+        return build(0, len(preorder) - 1, 0, len(inorder) - 1)</code></pre>
+                </div>
+
+                <div id="cpp" class="code-content">
+                    <pre><code class="language-cpp">class Solution {
+    unordered_map&lt;int, int&gt; idxMap;   // 值 -&gt; 中序索引
+    vector&lt;int&gt; pre;
+
+    TreeNode* build(int preLeft, int preRight, int inLeft, int inRight) {
+        if (preLeft &gt; preRight) return nullptr;
+
+        // 前序的第一個就是根
+        int rootVal = pre[preLeft];
+        TreeNode* root = new TreeNode(rootVal);
+
+        // 在中序中定位根，算出左子樹大小
+        int rootIdx = idxMap[rootVal];
+        int leftSize = rootIdx - inLeft;
+
+        root-&gt;left  = build(preLeft + 1, preLeft + leftSize,
+                            inLeft, rootIdx - 1);
+        root-&gt;right = build(preLeft + leftSize + 1, preRight,
+                            rootIdx + 1, inRight);
+        return root;
+    }
+
+public:
+    TreeNode* buildTree(vector&lt;int&gt;&amp; preorder, vector&lt;int&gt;&amp; inorder) {
+        pre = preorder;
+        for (int i = 0; i &lt; inorder.size(); i++) {
+            idxMap[inorder[i]] = i;
+        }
+        return build(0, preorder.size() - 1, 0, inorder.size() - 1);
+    }
+};</code></pre>
+                </div>
+
+                <div id="java" class="code-content">
+                    <pre><code class="language-java">class Solution {
+    private Map&lt;Integer, Integer&gt; idxMap = new HashMap&lt;&gt;();
+    private int[] preorder;
+
+    public TreeNode buildTree(int[] preorder, int[] inorder) {
+        this.preorder = preorder;
+        // 預先建立 值 -&gt; 中序索引 的對照表
+        for (int i = 0; i &lt; inorder.length; i++) {
+            idxMap.put(inorder[i], i);
+        }
+        return build(0, preorder.length - 1, 0, inorder.length - 1);
+    }
+
+    private TreeNode build(int preLeft, int preRight, int inLeft, int inRight) {
+        if (preLeft &gt; preRight) return null;
+
+        int rootVal = preorder[preLeft];
+        TreeNode root = new TreeNode(rootVal);
+
+        int rootIdx = idxMap.get(rootVal);
+        int leftSize = rootIdx - inLeft;
+
+        root.left  = build(preLeft + 1, preLeft + leftSize,
+                           inLeft, rootIdx - 1);
+        root.right = build(preLeft + leftSize + 1, preRight,
+                           rootIdx + 1, inRight);
+        return root;
+    }
+}</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>複雜度分析</h2>
+            <div class="complexity">
+                <div class="complexity-item">
+                    <strong>時間複雜度：</strong>O(n)
+                    <ul>
+                        <li>每個節點建立一次，HashMap 查找 O(1)</li>
+                        <li>若不用 HashMap，每次線性搜尋會退化成 O(n²)</li>
+                    </ul>
+                </div>
+                <div class="complexity-item">
+                    <strong>空間複雜度：</strong>O(n)
+                    <ul>
+                        <li>HashMap 佔 O(n)</li>
+                        <li>遞迴堆疊 O(h)，最壞 O(n)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>重點提示</h2>
+            <div class="key-point">
+                <strong>💡 關鍵技巧 1：先算 leftSize</strong>
+                <p>四個索引邊界全部由 <code>leftSize = rootIdx - inLeft</code> 推導出來。與其硬背索引公式，不如每次現場用一個小例子推導一遍，更不容易出錯。</p>
+            </div>
+
+            <div class="key-point">
+                <strong>💡 關鍵技巧 2：哪些遍歷組合能唯一還原樹？</strong>
+                <ul>
+                    <li>前序 + 中序 → ✓ 可以（本題）</li>
+                    <li>後序 + 中序 → ✓ 可以（#106）</li>
+                    <li>前序 + 後序 → ✗ 不唯一（無法區分只有一個子節點時是左還是右）</li>
+                    <li>層序 + 中序 → ✓ 可以</li>
+                </ul>
+                <p style="margin-top: 10px;"><strong>中序是關鍵</strong>，因為只有中序能提供「左右子樹的分界」。這是面試很愛問的觀念題。</p>
+            </div>
+
+            <div class="note">
+                <strong>⚠️ 常見錯誤：</strong>
+                <ul>
+                    <li>索引邊界算錯（尤其是右子樹前序的起點 <code>preLeft + leftSize + 1</code>）</li>
+                    <li>沒有用 HashMap，導致 O(n²) 超時</li>
+                    <li>終止條件寫成 <code>preLeft &gt;= preRight</code>，會漏掉單節點的情況</li>
+                    <li>值有重複時 HashMap 會覆蓋（本題保證不重複，但要知道這個限制）</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>相關題目</h2>
+            <ul>
+                <li><strong>#106 Construct Binary Tree from Inorder and Postorder</strong> - 後序版本</li>
+                <li><strong>#889 Construct Binary Tree from Preorder and Postorder</strong> - 前序+後序（答案不唯一）</li>
+                <li><strong>#108 Convert Sorted Array to BST</strong> - 由有序陣列建平衡 BST</li>
+                <li><strong>#297 Serialize and Deserialize Binary Tree</strong> - 序列化與反序列化</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>補充說明</h2>
+            <h3>#106：後序 + 中序</h3>
+            <div class="visual-box">
+                <div class="visual-title">🔄 從後往前取根</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+後序 = [左子樹][右子樹][根]
+       → 根在【最後一個】
+
+所以從 postorder 的尾端開始取根，
+且要【先建右子樹，再建左子樹】
+（因為從後往前取的話，先遇到的是右子樹的根）
+
+TreeNode* build(int postLeft, int postRight, int inLeft, int inRight) {
+    if (postLeft &gt; postRight) return nullptr;
+    int rootVal = post[postRight];        // 最後一個是根
+    TreeNode* root = new TreeNode(rootVal);
+    int rootIdx = idxMap[rootVal];
+    int leftSize = rootIdx - inLeft;
+    root-&gt;left  = build(postLeft, postLeft + leftSize - 1,
+                        inLeft, rootIdx - 1);
+    root-&gt;right = build(postLeft + leftSize, postRight - 1,
+                        rootIdx + 1, inRight);
+    return root;
+}
+                </pre>
+            </div>
+
+            <h3>為什麼「前序 + 後序」無法唯一決定？</h3>
+            <pre style="background: #f1f5f9; padding: 15px; border-radius: 8px; margin-top: 10px;">
+    1           1
+   /               2               2
+
+前序都是 [1, 2]
+後序都是 [2, 1]
+
+兩棵不同的樹產生完全相同的前序與後序！
+因為沒有中序，我們無法知道 2 是左孩子還是右孩子。
+
+只有當每個節點都有 0 或 2 個孩子（滿二元樹）時，
+前序 + 後序才能唯一決定一棵樹。
+        </pre>
+
+            <h3>迭代解法（進階）</h3>
+            <p>本題也有 O(n) 的迭代解法：用堆疊維護當前路徑，前序指標一路往下建左子樹；當 <code>stack.top().val == inorder[inIdx]</code> 時，代表左子樹走完了，開始回退並轉向右子樹。程式碼較難理解但空間常數更小，面試中若時間充裕可以提及，一般寫遞迴版本即可。</p>
+        </div>
+    </div>
+
+    <script>
+        function switchLang(event, lang) {
+            const tabs = document.querySelectorAll('.lang-tab');
+            const contents = document.querySelectorAll('.code-content');
+
+            tabs.forEach(tab => tab.classList.remove('active'));
+            contents.forEach(content => content.classList.remove('active'));
+
+            event.target.classList.add('active');
+            document.getElementById(lang).classList.add('active');
+        }
+
+        hljs.highlightAll();
+    </script>
+</body>
+</html>

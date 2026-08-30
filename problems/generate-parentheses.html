@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>#22 Generate Parentheses | LeetCode 學習平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #333; background: #f8fafc; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .header { background: linear-gradient(135deg, #ea580c 0%, #c2410c 100%); color: white; padding: 30px; border-radius: 12px; margin-bottom: 30px; box-shadow: 0 4px 6px rgba(234, 88, 12, 0.2); }
+        .header h1 { font-size: 2em; margin-bottom: 10px; }
+        .difficulty { display: inline-block; padding: 6px 16px; background: rgba(255,255,255,0.2); border-radius: 20px; font-size: 0.9em; font-weight: 600; }
+        .tags { margin-top: 15px; }
+        .tag { display: inline-block; background: rgba(255,255,255,0.15); padding: 4px 12px; border-radius: 6px; margin-right: 8px; font-size: 0.85em; }
+        .back-btn { display: inline-block; margin-bottom: 20px; padding: 10px 20px; background: #3b82f6; color: white; text-decoration: none; border-radius: 8px; transition: background 0.3s; }
+        .back-btn:hover { background: #2563eb; }
+        .section { background: white; padding: 30px; border-radius: 12px; margin-bottom: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .section h2 { color: #1e293b; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 3px solid #ea580c; }
+        .section h3 { color: #475569; margin: 25px 0 15px 0; font-size: 1.3em; }
+        .code-block { background: #282c34; border-radius: 8px; overflow: hidden; margin: 15px 0; }
+        .lang-tabs { display: flex; background: #21252b; border-bottom: 1px solid #181a1f; }
+        .lang-tab { padding: 12px 24px; cursor: pointer; color: #abb2bf; border: none; background: none; transition: all 0.3s; font-weight: 500; }
+        .lang-tab.active { color: #61afef; background: #282c34; border-bottom: 2px solid #61afef; }
+        .lang-tab:hover { color: #61afef; background: #2c313a; }
+        .code-content { display: none; }
+        .code-content.active { display: block; }
+        pre { margin: 0; overflow-x: auto; }
+        code { font-family: 'Consolas', 'Monaco', 'Courier New', monospace; font-size: 0.9em; }
+        .example { background: #f0f9ff; border-left: 4px solid #3b82f6; padding: 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .example-title { font-weight: 700; color: #1e40af; margin-bottom: 12px; font-size: 1.05em; }
+        .visual-box { background: #fef3c7; border: 2px solid #f59e0b; padding: 20px; border-radius: 8px; margin: 15px 0; }
+        .visual-title { font-weight: 700; color: #92400e; margin-bottom: 12px; display: flex; align-items: center; font-size: 1.05em; }
+        .complexity { background: #f1f5f9; padding: 15px; border-radius: 8px; margin: 15px 0; }
+        .complexity-item { margin: 8px 0; color: #475569; }
+        .key-point { background: #dcfce7; border-left: 4px solid #16a34a; padding: 15px 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        ul, ol { margin-left: 25px; margin-top: 10px; }
+        li { margin: 8px 0; color: #475569; }
+        strong { color: #1e293b; }
+        .note { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 15px 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        @media (max-width: 768px) {
+            .container { padding: 10px; }
+            .header h1 { font-size: 1.5em; }
+            .section { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="../index.html" class="back-btn">← 返回題目列表</a>
+
+        <div class="header">
+            <h1>#22 Generate Parentheses</h1>
+            <div class="difficulty">Medium</div>
+            <div class="tags">
+                <span class="tag">Backtracking</span>
+                <span class="tag">String</span>
+                <span class="tag">Dynamic Programming</span>
+                <span class="tag">Recursion</span>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>題目描述</h2>
+            <p>數字 n 代表生成括號的對數，請你設計一個函數，用於能夠生成所有可能的並且<strong>有效的</strong>括號組合。</p>
+            <p style="margin-top: 15px;">「有效」指的是括號必須正確配對且閉合，例如 <code>"(())"</code> 有效，<code>")("</code> 無效。</p>
+        </div>
+
+        <div class="section">
+            <h2>範例</h2>
+            <div class="example">
+                <div class="example-title">範例 1：</div>
+                <strong>輸入：</strong>n = 3<br>
+                <strong>輸出：</strong>["((()))","(()())","(())()","()(())","()()()"]<br>
+                <strong>解釋：</strong>共 5 種，正是第 3 個卡塔蘭數。
+            </div>
+
+            <div class="example">
+                <div class="example-title">範例 2：</div>
+                <strong>輸入：</strong>n = 1<br>
+                <strong>輸出：</strong>["()"]
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>解題思路</h2>
+            <div class="visual-box">
+                <div class="visual-title">💡 核心：邊生成邊剪枝，只走合法的路</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+❌ 笨方法：生成所有 2^(2n) 種字串，再逐一檢查是否合法
+✓ 好方法：在生成過程中就保證合法，永遠不走無效分支
+
+【兩個規則】維護已使用的左括號數 open、右括號數 close
+
+規則 1：open < n           才能放左括號
+        （左括號總數不能超過 n）
+
+規則 2：close < open       才能放右括號
+        （右括號數量永遠不能超過左括號，
+          否則會出現 ")(" 這種未配對就閉合的情況）
+
+只要遵守這兩條，生成的字串必定合法 ✓
+                </pre>
+            </div>
+
+            <h3>決策樹：n = 2</h3>
+            <div class="visual-box">
+                <div class="visual-title">🌲 灰色分支被剪掉</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+                    ""  (open=0, close=0)
+                   /  \
+              "("      ✗ 不能放 ')' （close < open 不成立）
+           (1,0)
+            /    \
+       "(("       "()"
+      (2,0)      (1,1)
+         |          |
+      "(()"      "()("   （"()" 後不能再放 ')'，因為 close==open）
+      (2,1)      (2,1)
+         |          |
+     "(())" ✓   "()()" ✓
+     (2,2)      (2,2)
+
+答案：["(())", "()()"] ✓
+
+終止條件：字串長度達到 2n（也等價於 open == n 且 close == n）
+                </pre>
+            </div>
+
+            <h3>為什麼「close &lt; open」就能保證合法？</h3>
+            <div class="visual-box">
+                <div class="visual-title">🔍 合法括號序列的充要條件</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+一個括號序列合法 ⟺ 同時滿足：
+  1. 左右括號總數相等
+  2. 任何一個前綴中，右括號數量 <= 左括號數量
+
+條件 2 正是我們的規則 2。
+如果某個前綴的 ')' 比 '(' 多，
+就代表出現了「沒有對應左括號的右括號」，
+之後不管怎麼補都救不回來。
+
+驗證 "())(" ：
+  前綴 "(" → 0 <= 1 ✓
+  前綴 "()" → 1 <= 1 ✓
+  前綴 "())" → 2 > 1 ✗ 在這裡就已經不合法了
+                </pre>
+            </div>
+
+            <h3>答案的數量：卡塔蘭數（Catalan Number）</h3>
+            <pre style="background: #f1f5f9; padding: 15px; border-radius: 8px; margin-top: 10px;">
+n 對括號的合法組合數 = 第 n 個卡塔蘭數
+
+C(n) = (2n)! / ((n+1)! × n!) = C(2n, n) / (n + 1)
+
+n:      1   2   3   4   5    6    7     8
+C(n):   1   2   5   14  42   132  429   1430
+
+遞推式：C(n) = Σ C(i) × C(n-1-i)  for i = 0..n-1
+        （對應「第一個左括號的配對位置」的分割）
+            </pre>
+        </div>
+
+        <div class="section">
+            <h2>程式碼實現</h2>
+
+            <div class="code-block">
+                <div class="lang-tabs">
+                    <button class="lang-tab active" onclick="switchLang(event, 'python')">Python</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'cpp')">C++</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'java')">Java</button>
+                </div>
+
+                <div id="python" class="code-content active">
+                    <pre><code class="language-python"># 回溯 + 剪枝（推薦）
+class Solution:
+    def generateParenthesis(self, n: int) -&gt; List[str]:
+        result = []
+        path = []
+
+        def backtrack(open_count, close_count):
+            # 終止條件：用完所有括號
+            if len(path) == 2 * n:
+                result.append(''.join(path))
+                return
+
+            # 規則 1：左括號還沒用完就可以放
+            if open_count &lt; n:
+                path.append('(')
+                backtrack(open_count + 1, close_count)
+                path.pop()
+
+            # 規則 2：右括號數量不能超過左括號
+            if close_count &lt; open_count:
+                path.append(')')
+                backtrack(open_count, close_count + 1)
+                path.pop()
+
+        backtrack(0, 0)
+        return result
+
+
+# 方法二：動態規劃（按「第一個括號配對的位置」分割）
+class Solution:
+    def generateParenthesis(self, n: int) -&gt; List[str]:
+        # dp[i] = i 對括號的所有合法組合
+        dp = [[] for _ in range(n + 1)]
+        dp[0] = ['']
+
+        for i in range(1, n + 1):
+            for j in range(i):
+                # 形式：( 內部 j 對 ) 外部 i-1-j 對
+                for inner in dp[j]:
+                    for outer in dp[i - 1 - j]:
+                        dp[i].append('(' + inner + ')' + outer)
+        return dp[n]</code></pre>
+                </div>
+
+                <div id="cpp" class="code-content">
+                    <pre><code class="language-cpp">// 回溯 + 剪枝（推薦）
+class Solution {
+    vector&lt;string&gt; result;
+    string path;
+
+    void backtrack(int n, int openCount, int closeCount) {
+        if (path.size() == 2 * n) {
+            result.push_back(path);
+            return;
+        }
+
+        // 規則 1：左括號還沒用完
+        if (openCount &lt; n) {
+            path.push_back('(');
+            backtrack(n, openCount + 1, closeCount);
+            path.pop_back();
+        }
+
+        // 規則 2：右括號不能超過左括號
+        if (closeCount &lt; openCount) {
+            path.push_back(')');
+            backtrack(n, openCount, closeCount + 1);
+            path.pop_back();
+        }
+    }
+
+public:
+    vector&lt;string&gt; generateParenthesis(int n) {
+        backtrack(n, 0, 0);
+        return result;
+    }
+};</code></pre>
+                </div>
+
+                <div id="java" class="code-content">
+                    <pre><code class="language-java">// 回溯 + 剪枝（推薦）
+class Solution {
+    private List&lt;String&gt; result = new ArrayList&lt;&gt;();
+    private StringBuilder path = new StringBuilder();
+
+    public List&lt;String&gt; generateParenthesis(int n) {
+        backtrack(n, 0, 0);
+        return result;
+    }
+
+    private void backtrack(int n, int openCount, int closeCount) {
+        if (path.length() == 2 * n) {
+            result.add(path.toString());
+            return;
+        }
+
+        // 規則 1：左括號還沒用完
+        if (openCount &lt; n) {
+            path.append('(');
+            backtrack(n, openCount + 1, closeCount);
+            path.deleteCharAt(path.length() - 1);
+        }
+
+        // 規則 2：右括號不能超過左括號
+        if (closeCount &lt; openCount) {
+            path.append(')');
+            backtrack(n, openCount, closeCount + 1);
+            path.deleteCharAt(path.length() - 1);
+        }
+    }
+}</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>複雜度分析</h2>
+            <div class="complexity">
+                <div class="complexity-item">
+                    <strong>時間複雜度：</strong>O(4ⁿ / √n)
+                    <ul>
+                        <li>答案數量是第 n 個卡塔蘭數，漸近為 4ⁿ / (n^1.5 √π)</li>
+                        <li>每個答案需要 O(n) 的建構成本</li>
+                        <li>由於剪枝完全，<strong>不會走任何無效分支</strong>，所以複雜度就等於輸出規模</li>
+                    </ul>
+                </div>
+                <div class="complexity-item">
+                    <strong>空間複雜度：</strong>O(n)
+                    <ul>
+                        <li>遞迴深度 2n，path 長度 2n</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>重點提示</h2>
+            <div class="key-point">
+                <strong>💡 關鍵技巧 1：「生成時剪枝」勝過「生成後過濾」</strong>
+                <p>先生成 2^(2n) 種再驗證是 O(2^(2n) × n)，而邊生成邊剪枝只有 O(4ⁿ/√n)。<strong>把約束條件融入搜尋過程</strong>是回溯優化的核心思想，在 N-Queens、數獨等題目中都是同樣的道理。</p>
+            </div>
+
+            <div class="key-point">
+                <strong>💡 關鍵技巧 2：這題沒有 for 迴圈</strong>
+                <p>與大多數回溯題不同，本題每層只有兩個固定選擇（放 '(' 或放 ')'），所以直接寫兩個 if 而不是 for 迴圈。這是「二元決策樹」型回溯的典型寫法。</p>
+            </div>
+
+            <div class="key-point">
+                <strong>💡 面試延伸：驗證括號合法性</strong>
+                <p>用一個計數器：遇 '(' 加 1、遇 ')' 減 1，過程中<strong>不能為負</strong>，結束時<strong>必須為 0</strong>。若有多種括號（<code>[]{}</code>）則要用堆疊（#20）。</p>
+            </div>
+
+            <div class="note">
+                <strong>⚠️ 常見錯誤：</strong>
+                <ul>
+                    <li>剪枝條件寫成 <code>close &lt;= open</code>，會產生 "()）" 這類非法字串</li>
+                    <li>忘記撤銷選擇（Java 的 <code>deleteCharAt</code>）</li>
+                    <li>終止條件只檢查 <code>open == n</code>，漏掉右括號還沒補完</li>
+                    <li>先生成全部再過濾，n 稍大就超時</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>相關題目</h2>
+            <ul>
+                <li><strong>#20 Valid Parentheses</strong> - 驗證括號是否合法（堆疊）</li>
+                <li><strong>#32 Longest Valid Parentheses</strong> - 最長合法括號子串（DP/堆疊）</li>
+                <li><strong>#301 Remove Invalid Parentheses</strong> - 移除最少括號使其合法（BFS）</li>
+                <li><strong>#241 Different Ways to Add Parentheses</strong> - 分治法</li>
+                <li><strong>#46 Permutations</strong> - 回溯基礎</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>補充說明</h2>
+            <h3>卡塔蘭數的其他化身</h3>
+            <div class="visual-box">
+                <div class="visual-title">🔢 同一個數列，多種問題</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+第 n 個卡塔蘭數 C(n) 同時是以下問題的答案：
+
+1. n 對括號的合法組合數（本題）
+2. n 個節點能組成多少種不同的【二元搜尋樹】（#96）
+3. n+1 個矩陣連乘有多少種加括號方式
+4. 凸 n+2 邊形有多少種三角剖分方式
+5. n × n 網格中從左下走到右上、不越過對角線的路徑數
+6. n 個元素的合法出堆疊序列數
+
+這些問題「長得完全不同」卻有相同答案，
+是因為它們都可以雙射到「合法括號序列」。
+
+C(n) = C(2n, n) / (n+1)
+     = 1, 1, 2, 5, 14, 42, 132, 429, 1430, 4862, ...
+                </pre>
+            </div>
+
+            <h3>#96 Unique BST 的 DP（同樣的遞推）</h3>
+            <pre style="background: #f1f5f9; padding: 15px; border-radius: 8px; margin-top: 10px;">
+int numTrees(int n) {
+    vector&lt;int&gt; dp(n + 1, 0);
+    dp[0] = 1;
+    for (int i = 1; i &lt;= n; i++)
+        for (int j = 0; j &lt; i; j++)
+            dp[i] += dp[j] * dp[i - 1 - j];   // 左子樹 j 個、右子樹 i-1-j 個
+    return dp[n];
+}
+
+和本題方法二的 DP 結構完全一樣：
+  括號版：( 內部 j 對 ) 外部 i-1-j 對
+  BST 版：左子樹 j 個節點，根，右子樹 i-1-j 個節點
+            </pre>
+
+            <h3>#20 驗證括號的標準做法</h3>
+            <pre style="background: #f1f5f9; padding: 15px; border-radius: 8px; margin-top: 10px;">
+bool isValid(string s) {
+    stack&lt;char&gt; stk;
+    unordered_map&lt;char, char&gt; pairs = {{')','('}, {']','['}, {'}','{'}};
+    for (char c : s) {
+        if (pairs.count(c)) {                  // 是右括號
+            if (stk.empty() || stk.top() != pairs[c]) return false;
+            stk.pop();
+        } else {
+            stk.push(c);                       // 是左括號
+        }
+    }
+    return stk.empty();                        // 全部配對完才合法
+}
+
+若只有一種括號，可以用計數器取代堆疊，空間降到 O(1)。
+            </pre>
+        </div>
+    </div>
+
+    <script>
+        function switchLang(event, lang) {
+            const tabs = document.querySelectorAll('.lang-tab');
+            const contents = document.querySelectorAll('.code-content');
+
+            tabs.forEach(tab => tab.classList.remove('active'));
+            contents.forEach(content => content.classList.remove('active'));
+
+            event.target.classList.add('active');
+            document.getElementById(lang).classList.add('active');
+        }
+
+        hljs.highlightAll();
+    </script>
+</body>
+</html>

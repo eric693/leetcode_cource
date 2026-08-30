@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>#213 House Robber II | LeetCode 學習平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #333; background: #f8fafc; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .header { background: linear-gradient(135deg, #ea580c 0%, #c2410c 100%); color: white; padding: 30px; border-radius: 12px; margin-bottom: 30px; box-shadow: 0 4px 6px rgba(234, 88, 12, 0.2); }
+        .header h1 { font-size: 2em; margin-bottom: 10px; }
+        .difficulty { display: inline-block; padding: 6px 16px; background: rgba(255,255,255,0.2); border-radius: 20px; font-size: 0.9em; font-weight: 600; }
+        .tags { margin-top: 15px; }
+        .tag { display: inline-block; background: rgba(255,255,255,0.15); padding: 4px 12px; border-radius: 6px; margin-right: 8px; font-size: 0.85em; }
+        .back-btn { display: inline-block; margin-bottom: 20px; padding: 10px 20px; background: #3b82f6; color: white; text-decoration: none; border-radius: 8px; transition: background 0.3s; }
+        .back-btn:hover { background: #2563eb; }
+        .section { background: white; padding: 30px; border-radius: 12px; margin-bottom: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .section h2 { color: #1e293b; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 3px solid #ea580c; }
+        .section h3 { color: #475569; margin: 25px 0 15px 0; font-size: 1.3em; }
+        .code-block { background: #282c34; border-radius: 8px; overflow: hidden; margin: 15px 0; }
+        .lang-tabs { display: flex; background: #21252b; border-bottom: 1px solid #181a1f; }
+        .lang-tab { padding: 12px 24px; cursor: pointer; color: #abb2bf; border: none; background: none; transition: all 0.3s; font-weight: 500; }
+        .lang-tab.active { color: #61afef; background: #282c34; border-bottom: 2px solid #61afef; }
+        .lang-tab:hover { color: #61afef; background: #2c313a; }
+        .code-content { display: none; }
+        .code-content.active { display: block; }
+        pre { margin: 0; overflow-x: auto; }
+        code { font-family: 'Consolas', 'Monaco', 'Courier New', monospace; font-size: 0.9em; }
+        .example { background: #f0f9ff; border-left: 4px solid #3b82f6; padding: 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .example-title { font-weight: 700; color: #1e40af; margin-bottom: 12px; font-size: 1.05em; }
+        .visual-box { background: #fef3c7; border: 2px solid #f59e0b; padding: 20px; border-radius: 8px; margin: 15px 0; }
+        .visual-title { font-weight: 700; color: #92400e; margin-bottom: 12px; display: flex; align-items: center; font-size: 1.05em; }
+        .complexity { background: #f1f5f9; padding: 15px; border-radius: 8px; margin: 15px 0; }
+        .complexity-item { margin: 8px 0; color: #475569; }
+        .key-point { background: #dcfce7; border-left: 4px solid #16a34a; padding: 15px 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        ul, ol { margin-left: 25px; margin-top: 10px; }
+        li { margin: 8px 0; color: #475569; }
+        strong { color: #1e293b; }
+        .note { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 15px 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        @media (max-width: 768px) {
+            .container { padding: 10px; }
+            .header h1 { font-size: 1.5em; }
+            .section { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="../index.html" class="back-btn">← 返回題目列表</a>
+
+        <div class="header">
+            <h1>#213 House Robber II</h1>
+            <div class="difficulty">Medium</div>
+            <div class="tags">
+                <span class="tag">Dynamic Programming</span>
+                <span class="tag">Array</span>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>題目描述</h2>
+            <p>你是一個專業的小偷，計劃偷竊沿街的房屋，每間房內都藏有一定的現金。這個地方所有的房屋都<strong>圍成一圈</strong>，這意味著<strong>第一個房屋和最後一個房屋是緊挨著的</strong>。</p>
+            <p style="margin-top: 15px;">同時，相鄰的房屋裝有相互連通的防盜系統，如果<strong>兩間相鄰的房屋在同一晚上被小偷闖入，系統會自動報警</strong>。</p>
+            <p style="margin-top: 15px;">給定一個代表每個房屋存放金額的非負整數陣列，計算你在<strong>不觸動警報裝置</strong>的情況下，能夠偷竊到的最高金額。</p>
+        </div>
+
+        <div class="section">
+            <h2>範例</h2>
+            <div class="example">
+                <div class="example-title">範例 1：</div>
+                <strong>輸入：</strong>nums = [2,3,2]<br>
+                <strong>輸出：</strong>3<br>
+                <strong>解釋：</strong>不能先偷房屋 1（2）再偷房屋 3（2），因為它們是相鄰的（環狀）。所以只能偷房屋 2 得到 3。
+            </div>
+
+            <div class="example">
+                <div class="example-title">範例 2：</div>
+                <strong>輸入：</strong>nums = [1,2,3,1]<br>
+                <strong>輸出：</strong>4<br>
+                <strong>解釋：</strong>偷房屋 1（1）和房屋 3（3），總計 1 + 3 = 4。
+            </div>
+
+            <div class="example">
+                <div class="example-title">範例 3：</div>
+                <strong>輸入：</strong>nums = [1,2,3]<br>
+                <strong>輸出：</strong>3
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>解題思路</h2>
+            <div class="visual-box">
+                <div class="visual-title">💡 核心：把「環」拆成兩個「線」</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+環狀的麻煩在於：首尾相鄰，不能同時偷。
+
+【關鍵洞察】第一間房只有兩種可能：偷 或 不偷
+
+情況 A：不偷第一間 → 最後一間就沒有限制了
+        → 對 nums[1 .. n-1] 跑普通的 #198
+情況 B：偷第一間   → 最後一間一定不能偷
+        → 對 nums[0 .. n-2] 跑普通的 #198
+
+答案 = max(情況 A, 情況 B)
+
+⚠️ 注意：情況 B 的範圍 [0, n-2] 中，
+   我們並沒有「強制」偷第一間，
+   但這沒關係 —— 因為「偷第一間」的所有可能方案
+   都被包含在這個範圍的解裡了，
+   而任何不偷第一間的方案又被情況 A 涵蓋。
+   兩者的聯集覆蓋了所有合法方案 ✓
+                </pre>
+            </div>
+
+            <h3>回顧 #198：線性版的狀態轉移</h3>
+            <div class="visual-box">
+                <div class="visual-title">🎯 dp[i] = max(不偷第 i 間, 偷第 i 間)</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+dp[i] = 前 i 間房能偷到的最大金額
+
+dp[i] = max(dp[i-1],              # 不偷第 i 間
+            dp[i-2] + nums[i])    # 偷第 i 間（則 i-1 不能偷）
+
+因為只依賴前兩個狀態，可以用兩個變數滾動：
+
+int rob(vector<int>& nums, int start, int end) {
+    int prev2 = 0, prev1 = 0;      // dp[i-2], dp[i-1]
+    for (int i = start; i <= end; i++) {
+        int cur = max(prev1, prev2 + nums[i]);
+        prev2 = prev1;
+        prev1 = cur;
+    }
+    return prev1;
+}
+
+空間 O(1)。
+                </pre>
+            </div>
+
+            <h3>完整追蹤：nums = [1,2,3,1]</h3>
+            <div class="visual-box">
+                <div class="visual-title">🔄 兩種情況各跑一次</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+【情況 A】不偷第 0 間 → 處理 nums[1..3] = [2,3,1]
+  i=1: cur = max(0, 0+2) = 2   → prev2=0, prev1=2
+  i=2: cur = max(2, 0+3) = 3   → prev2=2, prev1=3
+  i=3: cur = max(3, 2+1) = 3   → 結果 3
+
+【情況 B】可偷第 0 間 → 處理 nums[0..2] = [1,2,3]
+  i=0: cur = max(0, 0+1) = 1   → prev2=0, prev1=1
+  i=1: cur = max(1, 0+2) = 2   → prev2=1, prev1=2
+  i=2: cur = max(2, 1+3) = 4   → 結果 4 ★
+
+答案 = max(3, 4) = 4 ✓（偷房屋 0 和 2，即 1 + 3）
+                </pre>
+            </div>
+
+            <h3>邊界情況</h3>
+            <p>當 <code>n == 1</code> 時不能拆成兩段（會產生空範圍），必須直接返回 <code>nums[0]</code>。這是本題唯一的特判。</p>
+        </div>
+
+        <div class="section">
+            <h2>程式碼實現</h2>
+
+            <div class="code-block">
+                <div class="lang-tabs">
+                    <button class="lang-tab active" onclick="switchLang(event, 'python')">Python</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'cpp')">C++</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'java')">Java</button>
+                </div>
+
+                <div id="python" class="code-content active">
+                    <pre><code class="language-python">class Solution:
+    def rob(self, nums: List[int]) -&gt; int:
+        n = len(nums)
+
+        # 特判：只有一間房，沒有環的問題
+        if n == 1:
+            return nums[0]
+
+        def rob_line(start, end):
+            # 對 nums[start..end] 跑線性版的打家劫舍
+            prev2, prev1 = 0, 0        # dp[i-2], dp[i-1]
+            for i in range(start, end + 1):
+                cur = max(prev1, prev2 + nums[i])
+                prev2, prev1 = prev1, cur
+            return prev1
+
+        # 情況 A：不偷第一間，範圍 [1, n-1]
+        # 情況 B：可偷第一間，範圍 [0, n-2]（則最後一間不能偷）
+        return max(rob_line(1, n - 1), rob_line(0, n - 2))</code></pre>
+                </div>
+
+                <div id="cpp" class="code-content">
+                    <pre><code class="language-cpp">class Solution {
+    // 對 nums[start..end] 跑線性版打家劫舍（#198）
+    int robLine(vector&lt;int&gt;&amp; nums, int start, int end) {
+        int prev2 = 0, prev1 = 0;      // dp[i-2], dp[i-1]
+        for (int i = start; i &lt;= end; i++) {
+            int cur = max(prev1, prev2 + nums[i]);
+            prev2 = prev1;
+            prev1 = cur;
+        }
+        return prev1;
+    }
+
+public:
+    int rob(vector&lt;int&gt;&amp; nums) {
+        int n = nums.size();
+        if (n == 1) return nums[0];    // 特判：只有一間房
+
+        // 情況 A：不偷第一間 [1, n-1]
+        // 情況 B：可偷第一間 [0, n-2]
+        return max(robLine(nums, 1, n - 1),
+                   robLine(nums, 0, n - 2));
+    }
+};</code></pre>
+                </div>
+
+                <div id="java" class="code-content">
+                    <pre><code class="language-java">class Solution {
+    public int rob(int[] nums) {
+        int n = nums.length;
+        if (n == 1) return nums[0];    // 特判：只有一間房
+
+        // 情況 A：不偷第一間 [1, n-1]
+        // 情況 B：可偷第一間 [0, n-2]
+        return Math.max(robLine(nums, 1, n - 1),
+                        robLine(nums, 0, n - 2));
+    }
+
+    // 對 nums[start..end] 跑線性版打家劫舍
+    private int robLine(int[] nums, int start, int end) {
+        int prev2 = 0, prev1 = 0;      // dp[i-2], dp[i-1]
+        for (int i = start; i &lt;= end; i++) {
+            int cur = Math.max(prev1, prev2 + nums[i]);
+            prev2 = prev1;
+            prev1 = cur;
+        }
+        return prev1;
+    }
+}</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>複雜度分析</h2>
+            <div class="complexity">
+                <div class="complexity-item">
+                    <strong>時間複雜度：</strong>O(n)
+                    <ul>
+                        <li>跑兩次線性 DP，各 O(n)</li>
+                        <li>常數是 2，但仍是 O(n)</li>
+                    </ul>
+                </div>
+                <div class="complexity-item">
+                    <strong>空間複雜度：</strong>O(1)
+                    <ul>
+                        <li>滾動變數版本只用了兩個變數</li>
+                        <li>若用 dp 陣列則是 O(n)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>重點提示</h2>
+            <div class="key-point">
+                <strong>💡 關鍵技巧：環狀問題「拆環成鏈」</strong>
+                <p>環狀 DP 的通用套路：<strong>對「某個特殊元素選或不選」分情況討論，把環拆成兩個線性問題</strong>。這個技巧在環狀陣列的各種問題中都適用。</p>
+            </div>
+
+            <div class="key-point">
+                <strong>💡 為什麼「不強制偷第一間」也是對的？</strong>
+                <p>情況 B 的範圍 [0, n-2] 其實包含了「偷第一間」和「不偷第一間但也不偷最後一間」兩類方案。雖然有重疊，但因為我們取的是 <strong>max</strong>，重複計算不會造成錯誤（不像求「方案數」時重複會出錯）。這是很值得注意的細節。</p>
+            </div>
+
+            <div class="key-point">
+                <strong>💡 打家劫舍系列三部曲</strong>
+                <ul>
+                    <li><strong>#198</strong> 線性排列 → 基礎 DP</li>
+                    <li><strong>#213</strong> 環狀排列 → 拆環成鏈（本題）</li>
+                    <li><strong>#337</strong> 二元樹排列 → 樹型 DP，每個節點回傳「偷/不偷」兩個值</li>
+                </ul>
+            </div>
+
+            <div class="note">
+                <strong>⚠️ 常見錯誤：</strong>
+                <ul>
+                    <li>忘記 <code>n == 1</code> 的特判（範圍 [0, -1] 和 [1, 0] 都是空的，會回傳 0）</li>
+                    <li>範圍寫錯（應該是 [1, n-1] 和 [0, n-2]）</li>
+                    <li>試圖用一次 DP 解決環狀問題（狀態會很複雜且容易出錯）</li>
+                    <li>滾動變數更新順序寫錯（要先更新 prev2 再更新 prev1）</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>相關題目</h2>
+            <ul>
+                <li><strong>#198 House Robber</strong> - 線性版本，本題的基礎</li>
+                <li><strong>#337 House Robber III</strong> - 二元樹版本（樹型 DP）</li>
+                <li><strong>#740 Delete and Earn</strong> - 換皮版的打家劫舍</li>
+                <li><strong>#918 Maximum Sum Circular Subarray</strong> - 環狀最大子陣列和</li>
+                <li><strong>#152 Maximum Product Subarray</strong> - 狀態設計的變形</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>補充說明</h2>
+            <h3>#337 House Robber III：樹型版本</h3>
+            <div class="visual-box">
+                <div class="visual-title">🌲 每個節點回傳兩個狀態</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+房屋排成二元樹，父子節點不能同時偷。
+
+回傳 pair&lt;偷這個節點的最大值, 不偷這個節點的最大值&gt;
+
+pair&lt;int,int&gt; dfs(TreeNode* node) {
+    if (!node) return {0, 0};
+    auto [lRob, lSkip] = dfs(node-&gt;left);
+    auto [rRob, rSkip] = dfs(node-&gt;right);
+
+    int rob  = node-&gt;val + lSkip + rSkip;      // 偷自己 → 子節點都不能偷
+    int skip = max(lRob, lSkip) + max(rRob, rSkip);  // 不偷自己 → 子節點隨意
+    return {rob, skip};
+}
+
+答案 = max(dfs(root).first, dfs(root).second)
+
+⭐ 這種「回傳多個狀態」的技巧是樹型 DP 的核心。
+                </pre>
+            </div>
+
+            <h3>#918 環狀最大子陣列和：另一種拆環思路</h3>
+            <pre style="background: #f1f5f9; padding: 15px; border-radius: 8px; margin-top: 10px;">
+求環狀陣列的最大子陣列和，有兩種情況：
+
+情況 A：答案不跨越邊界 → 就是普通的 Kadane 演算法
+情況 B：答案跨越邊界   → 等價於「總和 - 中間那段最小子陣列和」
+
+答案 = max(maxSubarray, total - minSubarray)
+
+⚠️ 特例：若全部都是負數，
+   total - minSubarray 會等於 0（把整個陣列都當成最小段），
+   但題目要求子陣列非空，所以要特判返回 maxSubarray。
+
+int maxSubarraySumCircular(vector&lt;int&gt;&amp; nums) {
+    int total = 0, maxSum = INT_MIN, curMax = 0;
+    int minSum = INT_MAX, curMin = 0;
+    for (int x : nums) {
+        curMax = max(curMax + x, x);  maxSum = max(maxSum, curMax);
+        curMin = min(curMin + x, x);  minSum = min(minSum, curMin);
+        total += x;
+    }
+    return maxSum &gt; 0 ? max(maxSum, total - minSum) : maxSum;
+}
+
+這是「拆環」的另一種思路 —— 用補集轉換，
+和本題的「分情況討論」是環狀問題的兩大武器。
+            </pre>
+
+            <h3>DP 空間優化的通用觀念</h3>
+            <ul>
+                <li>若 <code>dp[i]</code> 只依賴 <code>dp[i-1]</code> → 用<strong>一個變數</strong></li>
+                <li>若依賴 <code>dp[i-1]</code> 和 <code>dp[i-2]</code> → 用<strong>兩個變數</strong>（本題）</li>
+                <li>若二維 <code>dp[i][j]</code> 只依賴上一行 → 用<strong>一維滾動陣列</strong></li>
+                <li>優化前務必先寫出正確的完整版本，確認無誤後再壓縮</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        function switchLang(event, lang) {
+            const tabs = document.querySelectorAll('.lang-tab');
+            const contents = document.querySelectorAll('.code-content');
+
+            tabs.forEach(tab => tab.classList.remove('active'));
+            contents.forEach(content => content.classList.remove('active'));
+
+            event.target.classList.add('active');
+            document.getElementById(lang).classList.add('active');
+        }
+
+        hljs.highlightAll();
+    </script>
+</body>
+</html>

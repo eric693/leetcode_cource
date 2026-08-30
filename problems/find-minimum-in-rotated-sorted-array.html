@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>#153 Find Minimum in Rotated Sorted Array | LeetCode 學習平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #333; background: #f8fafc; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .header { background: linear-gradient(135deg, #ea580c 0%, #c2410c 100%); color: white; padding: 30px; border-radius: 12px; margin-bottom: 30px; box-shadow: 0 4px 6px rgba(234, 88, 12, 0.2); }
+        .header h1 { font-size: 2em; margin-bottom: 10px; }
+        .difficulty { display: inline-block; padding: 6px 16px; background: rgba(255,255,255,0.2); border-radius: 20px; font-size: 0.9em; font-weight: 600; }
+        .tags { margin-top: 15px; }
+        .tag { display: inline-block; background: rgba(255,255,255,0.15); padding: 4px 12px; border-radius: 6px; margin-right: 8px; font-size: 0.85em; }
+        .back-btn { display: inline-block; margin-bottom: 20px; padding: 10px 20px; background: #3b82f6; color: white; text-decoration: none; border-radius: 8px; transition: background 0.3s; }
+        .back-btn:hover { background: #2563eb; }
+        .section { background: white; padding: 30px; border-radius: 12px; margin-bottom: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .section h2 { color: #1e293b; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 3px solid #ea580c; }
+        .section h3 { color: #475569; margin: 25px 0 15px 0; font-size: 1.3em; }
+        .code-block { background: #282c34; border-radius: 8px; overflow: hidden; margin: 15px 0; }
+        .lang-tabs { display: flex; background: #21252b; border-bottom: 1px solid #181a1f; }
+        .lang-tab { padding: 12px 24px; cursor: pointer; color: #abb2bf; border: none; background: none; transition: all 0.3s; font-weight: 500; }
+        .lang-tab.active { color: #61afef; background: #282c34; border-bottom: 2px solid #61afef; }
+        .lang-tab:hover { color: #61afef; background: #2c313a; }
+        .code-content { display: none; }
+        .code-content.active { display: block; }
+        pre { margin: 0; overflow-x: auto; }
+        code { font-family: 'Consolas', 'Monaco', 'Courier New', monospace; font-size: 0.9em; }
+        .example { background: #f0f9ff; border-left: 4px solid #3b82f6; padding: 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .example-title { font-weight: 700; color: #1e40af; margin-bottom: 12px; font-size: 1.05em; }
+        .visual-box { background: #fef3c7; border: 2px solid #f59e0b; padding: 20px; border-radius: 8px; margin: 15px 0; }
+        .visual-title { font-weight: 700; color: #92400e; margin-bottom: 12px; display: flex; align-items: center; font-size: 1.05em; }
+        .complexity { background: #f1f5f9; padding: 15px; border-radius: 8px; margin: 15px 0; }
+        .complexity-item { margin: 8px 0; color: #475569; }
+        .key-point { background: #dcfce7; border-left: 4px solid #16a34a; padding: 15px 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        ul, ol { margin-left: 25px; margin-top: 10px; }
+        li { margin: 8px 0; color: #475569; }
+        strong { color: #1e293b; }
+        .note { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 15px 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        @media (max-width: 768px) {
+            .container { padding: 10px; }
+            .header h1 { font-size: 1.5em; }
+            .section { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="../index.html" class="back-btn">← 返回題目列表</a>
+
+        <div class="header">
+            <h1>#153 Find Minimum in Rotated Sorted Array</h1>
+            <div class="difficulty">Medium</div>
+            <div class="tags">
+                <span class="tag">Array</span>
+                <span class="tag">Binary Search</span>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>題目描述</h2>
+            <p>已知一個長度為 n 的陣列，預先按照升序排列，經由 1 到 n 次<strong>旋轉</strong>後，得到輸入陣列。</p>
+            <p style="margin-top: 15px;">例如原陣列 <code>[0,1,2,4,5,6,7]</code> 旋轉後可能變為 <code>[4,5,6,7,0,1,2]</code>。</p>
+            <p style="margin-top: 15px;">給你一個元素值<strong>互不相同</strong>的陣列 nums，請你找出並返回陣列中的<strong>最小元素</strong>。</p>
+            <p style="margin-top: 15px;">你必須設計一個時間複雜度為 <strong>O(log n)</strong> 的演算法解決此問題。</p>
+        </div>
+
+        <div class="section">
+            <h2>範例</h2>
+            <div class="example">
+                <div class="example-title">範例 1：</div>
+                <strong>輸入：</strong>nums = [3,4,5,1,2]<br>
+                <strong>輸出：</strong>1
+            </div>
+
+            <div class="example">
+                <div class="example-title">範例 2：</div>
+                <strong>輸入：</strong>nums = [4,5,6,7,0,1,2]<br>
+                <strong>輸出：</strong>0
+            </div>
+
+            <div class="example">
+                <div class="example-title">範例 3：</div>
+                <strong>輸入：</strong>nums = [11,13,15,17]<br>
+                <strong>輸出：</strong>11（旋轉了 n 次，等於沒轉）
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>解題思路</h2>
+            <div class="visual-box">
+                <div class="visual-title">💡 核心：和「最右邊的元素」比較</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+旋轉後的陣列長這樣（兩段遞增）：
+
+    值
+     |    /|
+     |   / |
+     |  /  |      /|
+     | /   |     / |
+     |/    |    /  |
+     +-----+---+---+--→ 索引
+              ↑
+            最小值（旋轉點）
+
+關鍵觀察：把 nums[mid] 和 nums[right] 比較
+
+若 nums[mid] > nums[right]：
+    mid 在「左邊那段高的」，最小值一定在 mid 右側
+    → left = mid + 1
+
+若 nums[mid] < nums[right]：
+    mid 在「右邊那段低的」，最小值可能就是 mid
+    → right = mid（不能寫 mid - 1，會錯過答案！）
+                </pre>
+            </div>
+
+            <h3>為什麼比 right 而不是比 left？</h3>
+            <div class="visual-box">
+                <div class="visual-title">🔍 比 left 會有二義性</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+考慮 nums[mid] > nums[left] 的情況：
+
+[3,4,5,1,2]  mid=5 > left=3 → mid 在左段，答案在右邊
+[1,2,3,4,5]  mid=3 > left=1 → 沒旋轉，答案在左邊
+
+同樣的條件卻導出相反的結論 → 無法判斷 ✗
+
+改比 right 就沒有這個問題：
+[3,4,5,1,2]  mid=5 > right=2 → 一定在右邊 ✓
+[1,2,3,4,5]  mid=3 < right=5 → 一定在左邊（含 mid）✓
+
+💡 這是旋轉陣列二分搜尋的通用心法：與右端點比較。
+                </pre>
+            </div>
+
+            <h3>完整追蹤：nums = [4,5,6,7,0,1,2]</h3>
+            <div class="visual-box">
+                <div class="visual-title">🔄 逐步收斂</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+left=0, right=6
+  mid=3, nums[3]=7 > nums[6]=2 → left = 4
+
+left=4, right=6
+  mid=5, nums[5]=1 < nums[6]=2 → right = 5
+
+left=4, right=5
+  mid=4, nums[4]=0 < nums[5]=1 → right = 4
+
+left == right == 4，結束
+答案 nums[4] = 0 ✓
+                </pre>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>程式碼實現</h2>
+
+            <div class="code-block">
+                <div class="lang-tabs">
+                    <button class="lang-tab active" onclick="switchLang(event, 'python')">Python</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'cpp')">C++</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'java')">Java</button>
+                </div>
+
+                <div id="python" class="code-content active">
+                    <pre><code class="language-python"># 二分搜尋（與右端點比較）
+class Solution:
+    def findMin(self, nums: List[int]) -&gt; int:
+        left, right = 0, len(nums) - 1
+
+        while left &lt; right:              # 注意：不是 &lt;=
+            mid = left + (right - left) // 2
+            if nums[mid] &gt; nums[right]:
+                left = mid + 1           # 最小值在 mid 右側
+            else:
+                right = mid              # 最小值可能就是 mid
+        return nums[left]                # left == right 時即答案
+
+
+# 延伸 #154：允許重複元素
+class Solution:
+    def findMin(self, nums: List[int]) -&gt; int:
+        left, right = 0, len(nums) - 1
+        while left &lt; right:
+            mid = left + (right - left) // 2
+            if nums[mid] &gt; nums[right]:
+                left = mid + 1
+            elif nums[mid] &lt; nums[right]:
+                right = mid
+            else:
+                right -= 1               # 相等時無法判斷，保守縮小
+        return nums[left]</code></pre>
+                </div>
+
+                <div id="cpp" class="code-content">
+                    <pre><code class="language-cpp">// 二分搜尋（與右端點比較）
+class Solution {
+public:
+    int findMin(vector&lt;int&gt;&amp; nums) {
+        int left = 0, right = nums.size() - 1;
+
+        while (left &lt; right) {                  // 注意：不是 &lt;=
+            int mid = left + (right - left) / 2;
+            if (nums[mid] &gt; nums[right]) {
+                left = mid + 1;                 // 最小值在右側
+            } else {
+                right = mid;                    // 最小值可能是 mid
+            }
+        }
+        return nums[left];
+    }
+};
+
+// 延伸 #154：允許重複元素（最壞退化為 O(n)）
+class Solution {
+public:
+    int findMin(vector&lt;int&gt;&amp; nums) {
+        int left = 0, right = nums.size() - 1;
+        while (left &lt; right) {
+            int mid = left + (right - left) / 2;
+            if (nums[mid] &gt; nums[right])      left = mid + 1;
+            else if (nums[mid] &lt; nums[right]) right = mid;
+            else                              right--;   // 相等時保守縮小
+        }
+        return nums[left];
+    }
+};</code></pre>
+                </div>
+
+                <div id="java" class="code-content">
+                    <pre><code class="language-java">// 二分搜尋（與右端點比較）
+class Solution {
+    public int findMin(int[] nums) {
+        int left = 0, right = nums.length - 1;
+
+        while (left &lt; right) {                  // 注意：不是 &lt;=
+            int mid = left + (right - left) / 2;
+            if (nums[mid] &gt; nums[right]) {
+                left = mid + 1;                 // 最小值在右側
+            } else {
+                right = mid;                    // 最小值可能是 mid
+            }
+        }
+        return nums[left];
+    }
+}</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>複雜度分析</h2>
+            <div class="complexity">
+                <div class="complexity-item">
+                    <strong>時間複雜度：</strong>O(log n)
+                    <ul>
+                        <li>每次都把搜尋範圍減半</li>
+                        <li>#154（含重複元素）最壞為 O(n)，例如 [1,1,1,1,1]</li>
+                    </ul>
+                </div>
+                <div class="complexity-item">
+                    <strong>空間複雜度：</strong>O(1)
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>重點提示</h2>
+            <div class="key-point">
+                <strong>💡 關鍵技巧 1：迴圈條件用 <code>left &lt; right</code></strong>
+                <p>因為答案一定存在於區間內，收斂到 <code>left == right</code> 時就是答案。若寫 <code>&lt;=</code> 配上 <code>right = mid</code> 會無限迴圈。</p>
+            </div>
+
+            <div class="key-point">
+                <strong>💡 關鍵技巧 2：<code>right = mid</code> 不能寫 <code>mid - 1</code></strong>
+                <p>因為 mid 本身可能就是最小值，減 1 會直接跳過正確答案。這與「找目標值」的二分不同，要特別注意。</p>
+            </div>
+
+            <div class="key-point">
+                <strong>💡 關鍵技巧 3：<code>mid = left + (right-left)/2</code></strong>
+                <p>避免 <code>(left+right)/2</code> 在大陣列時整數溢位。這是 Java 官方 binarySearch 曾經存在近十年的著名 bug。</p>
+            </div>
+
+            <div class="note">
+                <strong>⚠️ 常見錯誤：</strong>
+                <ul>
+                    <li>拿 nums[mid] 和 nums[left] 比較（會有二義性，無法判斷）</li>
+                    <li><code>right = mid - 1</code> 漏掉答案</li>
+                    <li>迴圈條件與更新方式不匹配造成無限迴圈</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>相關題目</h2>
+            <ul>
+                <li><strong>#33 Search in Rotated Sorted Array</strong> - 在旋轉陣列中找目標值</li>
+                <li><strong>#154 Find Minimum II</strong> - 含重複元素的版本</li>
+                <li><strong>#162 Find Peak Element</strong> - 同樣是「無序」陣列的二分</li>
+                <li><strong>#704 Binary Search</strong> - 二分搜尋基礎</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>補充說明</h2>
+            <h3>二分搜尋的本質：找到「單調的判斷條件」</h3>
+            <div class="visual-box">
+                <div class="visual-title">🎯 不是只有有序陣列才能二分</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+二分搜尋真正需要的不是「陣列有序」，而是：
+存在一個判斷函數 check(mid)，其結果呈現
+  false false false | true true true
+的單調變化，我們要找的就是那個分界點。
+
+本題的 check(mid) = 「nums[mid] <= nums[right]」
+  [4,5,6,7,0,1,2]
+   F F F F T T T
+           ↑ 第一個 true 就是最小值
+
+其他例子：
+  #162 找峰值        check = nums[mid] > nums[mid+1]
+  #875 吃香蕉速度    check = 用速度 k 能否在 h 小時內吃完
+  #410 分割陣列      check = 限制最大和為 x 時能否分成 m 段
+                </pre>
+            </div>
+
+            <h3>二分搜尋三種模板</h3>
+            <pre style="background: #f1f5f9; padding: 15px; border-radius: 8px; margin-top: 10px;">
+【模板一】找確切值（閉區間）
+while (left &lt;= right) {
+    if (nums[mid] == target) return mid;
+    else if (nums[mid] &lt; target) left = mid + 1;
+    else right = mid - 1;
+}
+return -1;
+
+【模板二】找左邊界 / 第一個滿足條件的（本題用這個）
+while (left &lt; right) {
+    if (check(mid)) right = mid;      // mid 可能是答案，保留
+    else left = mid + 1;
+}
+return left;
+
+【模板三】找右邊界 / 最後一個滿足條件的
+while (left &lt; right) {
+    int mid = left + (right - left + 1) / 2;   // 注意要上取整！
+    if (check(mid)) left = mid;
+    else right = mid - 1;
+}
+return left;
+            </pre>
+        </div>
+    </div>
+
+    <script>
+        function switchLang(event, lang) {
+            const tabs = document.querySelectorAll('.lang-tab');
+            const contents = document.querySelectorAll('.code-content');
+
+            tabs.forEach(tab => tab.classList.remove('active'));
+            contents.forEach(content => content.classList.remove('active'));
+
+            event.target.classList.add('active');
+            document.getElementById(lang).classList.add('active');
+        }
+
+        hljs.highlightAll();
+    </script>
+</body>
+</html>

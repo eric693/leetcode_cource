@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>#201 Bitwise AND of Numbers Range | LeetCode 學習平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #333; background: #f8fafc; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .header { background: linear-gradient(135deg, #ea580c 0%, #c2410c 100%); color: white; padding: 30px; border-radius: 12px; margin-bottom: 30px; box-shadow: 0 4px 6px rgba(234, 88, 12, 0.2); }
+        .header h1 { font-size: 2em; margin-bottom: 10px; }
+        .difficulty { display: inline-block; padding: 6px 16px; background: rgba(255,255,255,0.2); border-radius: 20px; font-size: 0.9em; font-weight: 600; }
+        .tags { margin-top: 15px; }
+        .tag { display: inline-block; background: rgba(255,255,255,0.15); padding: 4px 12px; border-radius: 6px; margin-right: 8px; font-size: 0.85em; }
+        .back-btn { display: inline-block; margin-bottom: 20px; padding: 10px 20px; background: #3b82f6; color: white; text-decoration: none; border-radius: 8px; transition: background 0.3s; }
+        .back-btn:hover { background: #2563eb; }
+        .section { background: white; padding: 30px; border-radius: 12px; margin-bottom: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .section h2 { color: #1e293b; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 3px solid #ea580c; }
+        .section h3 { color: #475569; margin: 25px 0 15px 0; font-size: 1.3em; }
+        .code-block { background: #282c34; border-radius: 8px; overflow: hidden; margin: 15px 0; }
+        .lang-tabs { display: flex; background: #21252b; border-bottom: 1px solid #181a1f; }
+        .lang-tab { padding: 12px 24px; cursor: pointer; color: #abb2bf; border: none; background: none; transition: all 0.3s; font-weight: 500; }
+        .lang-tab.active { color: #61afef; background: #282c34; border-bottom: 2px solid #61afef; }
+        .lang-tab:hover { color: #61afef; background: #2c313a; }
+        .code-content { display: none; }
+        .code-content.active { display: block; }
+        pre { margin: 0; overflow-x: auto; }
+        code { font-family: 'Consolas', 'Monaco', 'Courier New', monospace; font-size: 0.9em; }
+        .example { background: #f0f9ff; border-left: 4px solid #3b82f6; padding: 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .example-title { font-weight: 700; color: #1e40af; margin-bottom: 12px; font-size: 1.05em; }
+        .visual-box { background: #fef3c7; border: 2px solid #f59e0b; padding: 20px; border-radius: 8px; margin: 15px 0; }
+        .visual-title { font-weight: 700; color: #92400e; margin-bottom: 12px; display: flex; align-items: center; font-size: 1.05em; }
+        .complexity { background: #f1f5f9; padding: 15px; border-radius: 8px; margin: 15px 0; }
+        .complexity-item { margin: 8px 0; color: #475569; }
+        .key-point { background: #dcfce7; border-left: 4px solid #16a34a; padding: 15px 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        ul, ol { margin-left: 25px; margin-top: 10px; }
+        li { margin: 8px 0; color: #475569; }
+        strong { color: #1e293b; }
+        .note { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 15px 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        @media (max-width: 768px) {
+            .container { padding: 10px; }
+            .header h1 { font-size: 1.5em; }
+            .section { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="../index.html" class="back-btn">← 返回題目列表</a>
+
+        <div class="header">
+            <h1>#201 Bitwise AND of Numbers Range</h1>
+            <div class="difficulty">Medium</div>
+            <div class="tags">
+                <span class="tag">Bit Manipulation</span>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>題目描述</h2>
+            <p>給你兩個整數 left 和 right，表示區間 <code>[left, right]</code>，返回此區間內<strong>所有數字按位元 AND 的結果</strong>（包含 left、right 端點）。</p>
+            <p style="margin-top: 15px;">範圍可能非常大（0 &lt;= left &lt;= right &lt;= 2<sup>31</sup> - 1），不能暴力逐一 AND。</p>
+        </div>
+
+        <div class="section">
+            <h2>範例</h2>
+            <div class="example">
+                <div class="example-title">範例 1：</div>
+                <strong>輸入：</strong>left = 5, right = 7<br>
+                <strong>輸出：</strong>4<br>
+                <strong>解釋：</strong>5 &amp; 6 &amp; 7 = 101 &amp; 110 &amp; 111 = 100 = 4
+            </div>
+
+            <div class="example">
+                <div class="example-title">範例 2：</div>
+                <strong>輸入：</strong>left = 0, right = 0<br>
+                <strong>輸出：</strong>0
+            </div>
+
+            <div class="example">
+                <div class="example-title">範例 3：</div>
+                <strong>輸入：</strong>left = 1, right = 2147483647<br>
+                <strong>輸出：</strong>0
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>解題思路</h2>
+            <div class="visual-box">
+                <div class="visual-title">💡 核心洞察：答案就是 left 和 right 的「共同前綴」</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+只要區間內有任何一個數的第 i 位是 0，AND 後該位就是 0。
+所以只有「從最高位開始，left 和 right 一路相同的那段」會保留。
+
+left  = 5 = 1 0 1
+        6 = 1 1 0
+right = 7 = 1 1 1
+            ↑
+        共同前綴只有最高位 → 答案 100 = 4 ✓
+
+為什麼共同前綴之後的位一定是 0？
+因為 left != right 時，區間內必定跨過一次「進位」，
+那個位置一定同時出現過 0 和 1。
+                </pre>
+            </div>
+
+            <h3>方法一：同時右移找共同前綴</h3>
+            <div class="visual-box">
+                <div class="visual-title">🎯 移到相等為止，再移回來</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+left = 5 (101), right = 7 (111)
+
+shift = 0
+5 != 7 → 右移：left=2(10), right=3(11), shift=1
+2 != 3 → 右移：left=1(1),  right=1(1),  shift=2
+1 == 1 → 停止
+
+答案 = 1 << 2 = 100 = 4 ✓
+                </pre>
+            </div>
+
+            <h3>方法二：Brian Kernighan（更快）</h3>
+            <div class="visual-box">
+                <div class="visual-title">🎯 不斷消掉 right 最右邊的 1</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+持續執行 right &= right - 1，直到 right <= left。
+剩下的 right 就是共同前綴。
+
+left = 5 (101), right = 7 (111)
+  7 & 6 = 110 = 6，6 > 5 繼續
+  6 & 5 = 100 = 4，4 <= 5 停止
+答案 = 4 ✓
+
+比方法一快，因為只跑「1 的個數」次。
+                </pre>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>程式碼實現</h2>
+
+            <div class="code-block">
+                <div class="lang-tabs">
+                    <button class="lang-tab active" onclick="switchLang(event, 'python')">Python</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'cpp')">C++</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'java')">Java</button>
+                </div>
+
+                <div id="python" class="code-content active">
+                    <pre><code class="language-python"># 方法一：同時右移找共同前綴
+class Solution:
+    def rangeBitwiseAnd(self, left: int, right: int) -&gt; int:
+        shift = 0
+        while left &lt; right:
+            left &gt;&gt;= 1
+            right &gt;&gt;= 1
+            shift += 1
+        return left &lt;&lt; shift
+
+
+# 方法二：Brian Kernighan（推薦，更快）
+class Solution:
+    def rangeBitwiseAnd(self, left: int, right: int) -&gt; int:
+        while left &lt; right:
+            right &amp;= right - 1     # 消掉 right 最右邊的 1
+        return right</code></pre>
+                </div>
+
+                <div id="cpp" class="code-content">
+                    <pre><code class="language-cpp">// 方法一：同時右移找共同前綴
+class Solution {
+public:
+    int rangeBitwiseAnd(int left, int right) {
+        int shift = 0;
+        while (left &lt; right) {
+            left &gt;&gt;= 1;
+            right &gt;&gt;= 1;
+            shift++;
+        }
+        return left &lt;&lt; shift;
+    }
+};
+
+// 方法二：Brian Kernighan（推薦）
+class Solution {
+public:
+    int rangeBitwiseAnd(int left, int right) {
+        while (left &lt; right) {
+            right &amp;= (right - 1);
+        }
+        return right;
+    }
+};</code></pre>
+                </div>
+
+                <div id="java" class="code-content">
+                    <pre><code class="language-java">// 方法一：同時右移找共同前綴
+class Solution {
+    public int rangeBitwiseAnd(int left, int right) {
+        int shift = 0;
+        while (left &lt; right) {
+            left &gt;&gt;= 1;
+            right &gt;&gt;= 1;
+            shift++;
+        }
+        return left &lt;&lt; shift;
+    }
+}
+
+// 方法二：Brian Kernighan（推薦）
+class Solution {
+    public int rangeBitwiseAnd(int left, int right) {
+        while (left &lt; right) {
+            right &amp;= (right - 1);
+        }
+        return right;
+    }
+}</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>複雜度分析</h2>
+            <div class="complexity">
+                <div class="complexity-item">
+                    <strong>時間複雜度：</strong>O(log n) = O(32) = O(1)
+                    <ul>
+                        <li>方法一：最多右移 32 次</li>
+                        <li>方法二：最多消掉 32 個 1</li>
+                    </ul>
+                </div>
+                <div class="complexity-item">
+                    <strong>空間複雜度：</strong>O(1)
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>重點提示</h2>
+            <div class="key-point">
+                <strong>💡 關鍵技巧：把區間問題轉成「共同前綴」問題</strong>
+                <p>暴力做法是 O(right - left)，會超時。看到「大範圍區間的位元運算」就要想：哪些位一定是 0？答案往往只跟端點有關。</p>
+            </div>
+
+            <div class="key-point">
+                <strong>💡 網路應用：這就是子網路遮罩</strong>
+                <p>IP 位址的網段前綴（如 192.168.1.0/24）本質就是一段位址範圍的共同前綴，這題的技巧在網路韌體中天天用到。</p>
+            </div>
+
+            <div class="note">
+                <strong>⚠️ 常見錯誤：</strong>
+                <ul>
+                    <li>暴力迴圈逐一 AND，範圍到 2³¹ 會直接 TLE</li>
+                    <li>方法一最後忘記把結果左移回去</li>
+                    <li>迴圈條件要用 <code>left &lt; right</code>，用 <code>!=</code> 也可以但語意較不清楚</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>相關題目</h2>
+            <ul>
+                <li><strong>#191 Number of 1 Bits</strong> - n &amp; (n-1) 的基礎</li>
+                <li><strong>#231 Power of Two</strong> - 同樣的位元技巧</li>
+                <li><strong>#1178 Number of Valid Words</strong> - 位元遮罩應用</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>補充說明</h2>
+            <h3>網路實務：CIDR 與子網路遮罩</h3>
+            <div class="visual-box">
+                <div class="visual-title">🌐 共同前綴 = 網段</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+192.168.1.0/24 表示前 24 位是網段前綴
+
+遮罩 = 0xFFFFFF00
+網段 = ip & mask          ← 取共同前綴
+廣播 = ip | ~mask
+主機數 = 2^(32-24) - 2 = 254
+
+判斷兩個 IP 是否同網段：
+    (ip1 & mask) == (ip2 & mask)
+                </pre>
+            </div>
+
+            <h3>邊界情況檢查</h3>
+            <ul>
+                <li>left == right → 直接返回 left（迴圈不執行）</li>
+                <li>left = 0 → 答案必為 0（0 AND 任何數都是 0）</li>
+                <li>區間跨過 2 的冪（如 [3, 4]）→ 最高位不同，答案為 0</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        function switchLang(event, lang) {
+            const tabs = document.querySelectorAll('.lang-tab');
+            const contents = document.querySelectorAll('.code-content');
+
+            tabs.forEach(tab => tab.classList.remove('active'));
+            contents.forEach(content => content.classList.remove('active'));
+
+            event.target.classList.add('active');
+            document.getElementById(lang).classList.add('active');
+        }
+
+        hljs.highlightAll();
+    </script>
+</body>
+</html>

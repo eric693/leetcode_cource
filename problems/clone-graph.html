@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>#133 Clone Graph | LeetCode 學習平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #333; background: #f8fafc; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .header { background: linear-gradient(135deg, #ea580c 0%, #c2410c 100%); color: white; padding: 30px; border-radius: 12px; margin-bottom: 30px; box-shadow: 0 4px 6px rgba(234, 88, 12, 0.2); }
+        .header h1 { font-size: 2em; margin-bottom: 10px; }
+        .difficulty { display: inline-block; padding: 6px 16px; background: rgba(255,255,255,0.2); border-radius: 20px; font-size: 0.9em; font-weight: 600; }
+        .tags { margin-top: 15px; }
+        .tag { display: inline-block; background: rgba(255,255,255,0.15); padding: 4px 12px; border-radius: 6px; margin-right: 8px; font-size: 0.85em; }
+        .back-btn { display: inline-block; margin-bottom: 20px; padding: 10px 20px; background: #3b82f6; color: white; text-decoration: none; border-radius: 8px; transition: background 0.3s; }
+        .back-btn:hover { background: #2563eb; }
+        .section { background: white; padding: 30px; border-radius: 12px; margin-bottom: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .section h2 { color: #1e293b; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 3px solid #ea580c; }
+        .section h3 { color: #475569; margin: 25px 0 15px 0; font-size: 1.3em; }
+        .code-block { background: #282c34; border-radius: 8px; overflow: hidden; margin: 15px 0; }
+        .lang-tabs { display: flex; background: #21252b; border-bottom: 1px solid #181a1f; }
+        .lang-tab { padding: 12px 24px; cursor: pointer; color: #abb2bf; border: none; background: none; transition: all 0.3s; font-weight: 500; }
+        .lang-tab.active { color: #61afef; background: #282c34; border-bottom: 2px solid #61afef; }
+        .lang-tab:hover { color: #61afef; background: #2c313a; }
+        .code-content { display: none; }
+        .code-content.active { display: block; }
+        pre { margin: 0; overflow-x: auto; }
+        code { font-family: 'Consolas', 'Monaco', 'Courier New', monospace; font-size: 0.9em; }
+        .example { background: #f0f9ff; border-left: 4px solid #3b82f6; padding: 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .example-title { font-weight: 700; color: #1e40af; margin-bottom: 12px; font-size: 1.05em; }
+        .visual-box { background: #fef3c7; border: 2px solid #f59e0b; padding: 20px; border-radius: 8px; margin: 15px 0; }
+        .visual-title { font-weight: 700; color: #92400e; margin-bottom: 12px; display: flex; align-items: center; font-size: 1.05em; }
+        .complexity { background: #f1f5f9; padding: 15px; border-radius: 8px; margin: 15px 0; }
+        .complexity-item { margin: 8px 0; color: #475569; }
+        .key-point { background: #dcfce7; border-left: 4px solid #16a34a; padding: 15px 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        ul, ol { margin-left: 25px; margin-top: 10px; }
+        li { margin: 8px 0; color: #475569; }
+        strong { color: #1e293b; }
+        .note { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 15px 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        @media (max-width: 768px) {
+            .container { padding: 10px; }
+            .header h1 { font-size: 1.5em; }
+            .section { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="../index.html" class="back-btn">← 返回題目列表</a>
+
+        <div class="header">
+            <h1>#133 Clone Graph</h1>
+            <div class="difficulty">Medium</div>
+            <div class="tags">
+                <span class="tag">Graph</span>
+                <span class="tag">DFS</span>
+                <span class="tag">BFS</span>
+                <span class="tag">Hash Table</span>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>題目描述</h2>
+            <p>給你無向<strong>連通</strong>圖中一個節點的參考，請你返回該圖的<strong>深拷貝（複製）</strong>。</p>
+            <p style="margin-top: 15px;">圖中的每個節點都包含它的值 val 和其鄰居的列表 neighbors：</p>
+            <pre style="background: #f1f5f9; padding: 15px; border-radius: 8px; margin-top: 10px;">
+class Node {
+    public int val;
+    public List&lt;Node&gt; neighbors;
+}
+            </pre>
+        </div>
+
+        <div class="section">
+            <h2>範例</h2>
+            <div class="example">
+                <div class="example-title">範例 1：</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+輸入：adjList = [[2,4],[1,3],[2,4],[1,3]]
+輸出：[[2,4],[1,3],[2,4],[1,3]]
+
+    1 --- 2
+    |     |
+    4 --- 3
+
+節點 1 的鄰居是 2 和 4
+節點 2 的鄰居是 1 和 3
+節點 3 的鄰居是 2 和 4
+節點 4 的鄰居是 1 和 3
+                </pre>
+            </div>
+
+            <div class="example">
+                <div class="example-title">範例 2：</div>
+                <strong>輸入：</strong>adjList = [[]]<br>
+                <strong>輸出：</strong>[[]]<br>
+                <strong>解釋：</strong>只有一個節點，沒有任何鄰居。
+            </div>
+
+            <div class="example">
+                <div class="example-title">範例 3：</div>
+                <strong>輸入：</strong>adjList = []<br>
+                <strong>輸出：</strong>[]（空圖）
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>解題思路</h2>
+            <div class="note">
+                <strong>⚠️ 難點：圖有環，會無限遞迴！</strong>
+                <p>1 → 2 → 1 → 2 → ... 如果單純遞迴複製鄰居，會永遠停不下來。解法是用 <strong>HashMap 記錄「已複製過的節點」</strong>，遇到已複製的就直接回傳，不再往下遞迴。</p>
+            </div>
+
+            <h3>核心：visited 對照表既防重複也防無限迴圈</h3>
+            <div class="visual-box">
+                <div class="visual-title">💡 一石二鳥</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+visited[原節點] = 對應的新節點
+
+⭐ 關鍵順序：【先建節點並登記，再遞迴處理鄰居】
+
+dfs(node):
+    if node in visited:
+        return visited[node]        # 已複製過，直接回傳
+
+    copy = new Node(node.val)
+    visited[node] = copy            # ← 必須在遞迴【之前】登記！
+
+    for nb in node.neighbors:
+        copy.neighbors.append(dfs(nb))
+
+    return copy
+
+【為什麼登記要在遞迴之前？】
+1 --- 2
+
+dfs(1)：建立 1'，登記 visited[1] = 1'
+        遞迴 dfs(2)
+          建立 2'，登記 visited[2] = 2'
+          遞迴 dfs(1) → visited 中有！直接回傳 1' ✓
+          （若登記在遞迴之後，這裡會再建一個新的 1'，
+            然後又遞迴 dfs(2)…… 無限迴圈 ✗）
+                </pre>
+            </div>
+
+            <h3>DFS vs BFS</h3>
+            <div class="visual-box">
+                <div class="visual-title">🔄 兩種寫法都要會</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+【DFS】遞迴，程式碼短
+  優點：直覺、好寫
+  缺點：圖很深時可能 stack overflow
+
+【BFS】用佇列，迭代
+  1. 先複製起點，放入 visited 和佇列
+  2. 每次取出一個原節點，走訪它的鄰居：
+     - 鄰居沒複製過 → 複製並入隊
+     - 把對應的新鄰居加進當前新節點的 neighbors
+  優點：沒有堆疊深度限制
+  缺點：程式碼稍長
+
+兩者的核心都是同一件事：visited 對照表。
+                </pre>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>程式碼實現</h2>
+
+            <div class="code-block">
+                <div class="lang-tabs">
+                    <button class="lang-tab active" onclick="switchLang(event, 'python')">Python</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'cpp')">C++</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'java')">Java</button>
+                </div>
+
+                <div id="python" class="code-content active">
+                    <pre><code class="language-python"># 方法一：DFS 遞迴（推薦，簡潔）
+class Solution:
+    def cloneGraph(self, node: Optional['Node']) -&gt; Optional['Node']:
+        visited = {}     # 原節點 -&gt; 新節點
+
+        def dfs(cur):
+            if not cur:
+                return None
+            if cur in visited:
+                return visited[cur]      # 已複製過，直接回傳
+
+            copy = Node(cur.val)
+            visited[cur] = copy          # 關鍵：先登記，再遞迴
+
+            for nb in cur.neighbors:
+                copy.neighbors.append(dfs(nb))
+            return copy
+
+        return dfs(node)
+
+
+# 方法二：BFS 迭代
+class Solution:
+    def cloneGraph(self, node: Optional['Node']) -&gt; Optional['Node']:
+        if not node:
+            return None
+        from collections import deque
+
+        visited = {node: Node(node.val)}
+        queue = deque([node])
+
+        while queue:
+            cur = queue.popleft()
+            for nb in cur.neighbors:
+                if nb not in visited:
+                    visited[nb] = Node(nb.val)   # 複製新節點
+                    queue.append(nb)
+                # 把新鄰居接上
+                visited[cur].neighbors.append(visited[nb])
+
+        return visited[node]</code></pre>
+                </div>
+
+                <div id="cpp" class="code-content">
+                    <pre><code class="language-cpp">// 方法一：DFS 遞迴（推薦）
+class Solution {
+    unordered_map&lt;Node*, Node*&gt; visited;    // 原節點 -&gt; 新節點
+
+public:
+    Node* cloneGraph(Node* node) {
+        if (!node) return nullptr;
+        if (visited.count(node)) return visited[node];   // 已複製過
+
+        Node* copy = new Node(node-&gt;val);
+        visited[node] = copy;               // 關鍵：先登記，再遞迴
+
+        for (Node* nb : node-&gt;neighbors) {
+            copy-&gt;neighbors.push_back(cloneGraph(nb));
+        }
+        return copy;
+    }
+};
+
+// 方法二：BFS 迭代
+class Solution {
+public:
+    Node* cloneGraph(Node* node) {
+        if (!node) return nullptr;
+
+        unordered_map&lt;Node*, Node*&gt; visited;
+        visited[node] = new Node(node-&gt;val);
+        queue&lt;Node*&gt; q;
+        q.push(node);
+
+        while (!q.empty()) {
+            Node* cur = q.front(); q.pop();
+            for (Node* nb : cur-&gt;neighbors) {
+                if (!visited.count(nb)) {
+                    visited[nb] = new Node(nb-&gt;val);
+                    q.push(nb);
+                }
+                visited[cur]-&gt;neighbors.push_back(visited[nb]);
+            }
+        }
+        return visited[node];
+    }
+};</code></pre>
+                </div>
+
+                <div id="java" class="code-content">
+                    <pre><code class="language-java">// 方法一：DFS 遞迴（推薦）
+class Solution {
+    private Map&lt;Node, Node&gt; visited = new HashMap&lt;&gt;();
+
+    public Node cloneGraph(Node node) {
+        if (node == null) return null;
+        if (visited.containsKey(node)) return visited.get(node);
+
+        Node copy = new Node(node.val, new ArrayList&lt;&gt;());
+        visited.put(node, copy);            // 關鍵：先登記，再遞迴
+
+        for (Node nb : node.neighbors) {
+            copy.neighbors.add(cloneGraph(nb));
+        }
+        return copy;
+    }
+}
+
+// 方法二：BFS 迭代
+class Solution {
+    public Node cloneGraph(Node node) {
+        if (node == null) return null;
+
+        Map&lt;Node, Node&gt; visited = new HashMap&lt;&gt;();
+        visited.put(node, new Node(node.val, new ArrayList&lt;&gt;()));
+        Deque&lt;Node&gt; queue = new ArrayDeque&lt;&gt;();
+        queue.offer(node);
+
+        while (!queue.isEmpty()) {
+            Node cur = queue.poll();
+            for (Node nb : cur.neighbors) {
+                if (!visited.containsKey(nb)) {
+                    visited.put(nb, new Node(nb.val, new ArrayList&lt;&gt;()));
+                    queue.offer(nb);
+                }
+                visited.get(cur).neighbors.add(visited.get(nb));
+            }
+        }
+        return visited.get(node);
+    }
+}</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>複雜度分析</h2>
+            <div class="complexity">
+                <div class="complexity-item">
+                    <strong>時間複雜度：</strong>O(V + E)
+                    <ul>
+                        <li>每個節點複製一次，每條邊處理一次（無向圖每條邊看兩次）</li>
+                    </ul>
+                </div>
+                <div class="complexity-item">
+                    <strong>空間複雜度：</strong>O(V)
+                    <ul>
+                        <li>visited 對照表 O(V)</li>
+                        <li>DFS 遞迴堆疊最壞 O(V)；BFS 佇列最壞 O(V)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>重點提示</h2>
+            <div class="key-point">
+                <strong>💡 關鍵技巧 1：先登記，再遞迴</strong>
+                <p><code>visited[cur] = copy</code> 必須寫在遞迴呼叫<strong>之前</strong>。這一行的位置決定了程式會不會無限迴圈，是本題唯一但最關鍵的細節。</p>
+            </div>
+
+            <div class="key-point">
+                <strong>💡 關鍵技巧 2：這是「圖走訪 + 記憶化」的通用模式</strong>
+                <p>凡是在有環的結構上做遞迴（複製、序列化、計算），都需要一個 visited 集合來打破循環。#138 複製隨機指標串列、#297 序列化二元樹（含環的變形）都是同一個模式。</p>
+            </div>
+
+            <div class="note">
+                <strong>⚠️ 常見錯誤：</strong>
+                <ul>
+                    <li>登記寫在遞迴之後 → 無限遞迴 stack overflow</li>
+                    <li>沒有處理 <code>node == null</code>（空圖）</li>
+                    <li>用「值」當 HashMap 的 key（若題目允許重複值就會出錯，應該用節點參考）</li>
+                    <li>BFS 版本忘記在建立新節點時初始化空的 neighbors 列表（Java）</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>相關題目</h2>
+            <ul>
+                <li><strong>#138 Copy List with Random Pointer</strong> - 幾乎完全相同的解法</li>
+                <li><strong>#200 Number of Islands</strong> - 圖走訪基礎</li>
+                <li><strong>#207 Course Schedule</strong> - 有向圖的環偵測</li>
+                <li><strong>#547 Number of Provinces</strong> - 連通分量計數</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>補充說明</h2>
+            <h3>圖的兩種表示法</h3>
+            <div class="visual-box">
+                <div class="visual-title">📊 鄰接表 vs 鄰接矩陣</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+                鄰接表                鄰接矩陣
+                vector&lt;vector&lt;int&gt;&gt;   bool[V][V]
+-------------------------------------------------------------
+空間            O(V + E)              O(V²)
+查詢是否有邊    O(deg(v))             O(1) ★
+走訪某點的鄰居  O(deg(v)) ★           O(V)
+適用            稀疏圖（實務多數）     稠密圖、需頻繁查邊
+
+LeetCode 大多數圖題是稀疏圖，用鄰接表。
+本題的 Node 結構本身就是鄰接表的物件版本。
+                </pre>
+            </div>
+
+            <h3>圖走訪模板（背下來受用無窮）</h3>
+            <pre style="background: #f1f5f9; padding: 15px; border-radius: 8px; margin-top: 10px;">
+【DFS 遞迴】
+void dfs(int u) {
+    visited[u] = true;
+    process(u);
+    for (int v : graph[u])
+        if (!visited[v]) dfs(v);
+}
+
+【BFS 佇列】
+void bfs(int start) {
+    queue&lt;int&gt; q;  q.push(start);  visited[start] = true;
+    while (!q.empty()) {
+        int u = q.front(); q.pop();
+        process(u);
+        for (int v : graph[u]) {
+            if (!visited[v]) { visited[v] = true; q.push(v); }
+        }
+    }
+}
+
+⭐ 重點：BFS 要在【入隊時】標記 visited，
+   不是出隊時 —— 否則同一個節點會被重複入隊。
+            </pre>
+
+            <h3>DFS 與 BFS 各自的長處</h3>
+            <ul>
+                <li><strong>BFS</strong>：無權圖的<strong>最短路徑</strong>、層級走訪、最少步數問題（#127 單詞接龍、#994 腐爛橘子）</li>
+                <li><strong>DFS</strong>：連通性、環偵測、拓撲排序、回溯搜尋所有路徑、樹的遞迴結構</li>
+                <li><strong>本題兩者皆可</strong>，因為只是要「走遍所有節點」，沒有距離或順序的要求</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        function switchLang(event, lang) {
+            const tabs = document.querySelectorAll('.lang-tab');
+            const contents = document.querySelectorAll('.code-content');
+
+            tabs.forEach(tab => tab.classList.remove('active'));
+            contents.forEach(content => content.classList.remove('active'));
+
+            event.target.classList.add('active');
+            document.getElementById(lang).classList.add('active');
+        }
+
+        hljs.highlightAll();
+    </script>
+</body>
+</html>

@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>#191 Number of 1 Bits | LeetCode 學習平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #333; background: #f8fafc; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .header { background: linear-gradient(135deg, #16a34a 0%, #15803d 100%); color: white; padding: 30px; border-radius: 12px; margin-bottom: 30px; box-shadow: 0 4px 6px rgba(22, 163, 74, 0.2); }
+        .header h1 { font-size: 2em; margin-bottom: 10px; }
+        .difficulty { display: inline-block; padding: 6px 16px; background: rgba(255,255,255,0.2); border-radius: 20px; font-size: 0.9em; font-weight: 600; }
+        .tags { margin-top: 15px; }
+        .tag { display: inline-block; background: rgba(255,255,255,0.15); padding: 4px 12px; border-radius: 6px; margin-right: 8px; font-size: 0.85em; }
+        .back-btn { display: inline-block; margin-bottom: 20px; padding: 10px 20px; background: #3b82f6; color: white; text-decoration: none; border-radius: 8px; transition: background 0.3s; }
+        .back-btn:hover { background: #2563eb; }
+        .section { background: white; padding: 30px; border-radius: 12px; margin-bottom: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .section h2 { color: #1e293b; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 3px solid #16a34a; }
+        .section h3 { color: #475569; margin: 25px 0 15px 0; font-size: 1.3em; }
+        .code-block { background: #282c34; border-radius: 8px; overflow: hidden; margin: 15px 0; }
+        .lang-tabs { display: flex; background: #21252b; border-bottom: 1px solid #181a1f; }
+        .lang-tab { padding: 12px 24px; cursor: pointer; color: #abb2bf; border: none; background: none; transition: all 0.3s; font-weight: 500; }
+        .lang-tab.active { color: #61afef; background: #282c34; border-bottom: 2px solid #61afef; }
+        .lang-tab:hover { color: #61afef; background: #2c313a; }
+        .code-content { display: none; }
+        .code-content.active { display: block; }
+        pre { margin: 0; overflow-x: auto; }
+        code { font-family: 'Consolas', 'Monaco', 'Courier New', monospace; font-size: 0.9em; }
+        .example { background: #f0f9ff; border-left: 4px solid #3b82f6; padding: 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .example-title { font-weight: 700; color: #1e40af; margin-bottom: 12px; font-size: 1.05em; }
+        .visual-box { background: #fef3c7; border: 2px solid #f59e0b; padding: 20px; border-radius: 8px; margin: 15px 0; }
+        .visual-title { font-weight: 700; color: #92400e; margin-bottom: 12px; display: flex; align-items: center; font-size: 1.05em; }
+        .complexity { background: #f1f5f9; padding: 15px; border-radius: 8px; margin: 15px 0; }
+        .complexity-item { margin: 8px 0; color: #475569; }
+        .key-point { background: #dcfce7; border-left: 4px solid #16a34a; padding: 15px 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        ul, ol { margin-left: 25px; margin-top: 10px; }
+        li { margin: 8px 0; color: #475569; }
+        strong { color: #1e293b; }
+        .note { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 15px 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        @media (max-width: 768px) {
+            .container { padding: 10px; }
+            .header h1 { font-size: 1.5em; }
+            .section { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="../index.html" class="back-btn">← 返回題目列表</a>
+
+        <div class="header">
+            <h1>#191 Number of 1 Bits</h1>
+            <div class="difficulty">Easy</div>
+            <div class="tags">
+                <span class="tag">Bit Manipulation</span>
+                <span class="tag">Divide and Conquer</span>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>題目描述</h2>
+            <p>撰寫一個函數，輸入一個無號整數（以二進位字串形式），返回其二進位表示中數字位數為 <strong>1</strong> 的個數（也被稱為<strong>漢明重量 Hamming Weight</strong>）。</p>
+            <p style="margin-top: 15px;">這是韌體/嵌入式面試最經典的第一題，考的是你對位元運算的熟練度。</p>
+            <ul>
+                <li>輸入為 32 位元無號整數</li>
+                <li>在 Java / C++ 中要特別注意有號與無號的差異</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>範例</h2>
+            <div class="example">
+                <div class="example-title">範例 1：</div>
+                <strong>輸入：</strong>n = 00000000000000000000000000001011<br>
+                <strong>輸出：</strong>3<br>
+                <strong>解釋：</strong>輸入的二進位字串中共有三位為 '1'。
+            </div>
+
+            <div class="example">
+                <div class="example-title">範例 2：</div>
+                <strong>輸入：</strong>n = 10000000000000000000000000000000<br>
+                <strong>輸出：</strong>1
+            </div>
+
+            <div class="example">
+                <div class="example-title">範例 3：</div>
+                <strong>輸入：</strong>n = 11111111111111111111111111111101<br>
+                <strong>輸出：</strong>31
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>解題思路</h2>
+            <div class="visual-box">
+                <div class="visual-title">💡 方法一：逐位檢查（最直覺）</div>
+                <p>檢查每一位是否為 1，共檢查 32 次。</p>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+n = 1011
+
+i=0: (n >> 0) & 1 = 1  ✓
+i=1: (n >> 1) & 1 = 1  ✓
+i=2: (n >> 2) & 1 = 0
+i=3: (n >> 3) & 1 = 1  ✓
+→ 共 3 個 1
+                </pre>
+            </div>
+
+            <h3>方法二：Brian Kernighan 演算法（最重要！）</h3>
+            <div class="visual-box">
+                <div class="visual-title">🎯 n &amp; (n - 1) 會消掉最右邊的一個 1</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+原理：n-1 會把最右邊的 1 變成 0，其右邊的 0 全變成 1
+     再和 n 做 AND，就正好消掉最右邊的那個 1
+
+n     = 1011 1000
+n - 1 = 1011 0111
+n&(n-1)=1011 0000   ← 最右邊的 1 消失了
+
+迴圈次數 = 1 的個數，而不是 32 次！
+
+n = 1011
+第 1 次：1011 & 1010 = 1010   count=1
+第 2 次：1010 & 1001 = 1000   count=2
+第 3 次：1000 & 0111 = 0000   count=3
+n == 0，結束 → 答案 3
+                </pre>
+            </div>
+
+            <h3>方法三：查表法（韌體常用）</h3>
+            <div class="visual-box">
+                <div class="visual-title">⚡ 空間換時間</div>
+                <p>預先建好 0~255 的 popcount 表，一個 32 位元數只要查 4 次表。這是嵌入式系統在沒有硬體 popcount 指令時的標準做法。</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>程式碼實現</h2>
+
+            <div class="code-block">
+                <div class="lang-tabs">
+                    <button class="lang-tab active" onclick="switchLang(event, 'python')">Python</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'cpp')">C++</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'java')">Java</button>
+                </div>
+
+                <div id="python" class="code-content active">
+                    <pre><code class="language-python"># 方法一：逐位檢查
+class Solution:
+    def hammingWeight(self, n: int) -&gt; int:
+        count = 0
+        for i in range(32):
+            if (n &gt;&gt; i) &amp; 1:
+                count += 1
+        return count
+
+
+# 方法二：Brian Kernighan（推薦，迴圈次數 = 1 的個數）
+class Solution:
+    def hammingWeight(self, n: int) -&gt; int:
+        count = 0
+        while n:
+            n &amp;= n - 1      # 消掉最右邊的 1
+            count += 1
+        return count
+
+
+# 方法三：Python 內建
+class Solution:
+    def hammingWeight(self, n: int) -&gt; int:
+        return bin(n).count('1')     # 或 n.bit_count() (Python 3.10+)</code></pre>
+                </div>
+
+                <div id="cpp" class="code-content">
+                    <pre><code class="language-cpp">// 方法一：逐位檢查
+class Solution {
+public:
+    int hammingWeight(uint32_t n) {
+        int count = 0;
+        for (int i = 0; i &lt; 32; i++) {
+            if ((n &gt;&gt; i) &amp; 1) count++;
+        }
+        return count;
+    }
+};
+
+// 方法二：Brian Kernighan（推薦）
+class Solution {
+public:
+    int hammingWeight(uint32_t n) {
+        int count = 0;
+        while (n) {
+            n &amp;= (n - 1);   // 消掉最右邊的 1
+            count++;
+        }
+        return count;
+    }
+};
+
+// 方法三：查表法（韌體常用，空間換時間）
+class Solution {
+    // 0~255 每個數字的 1 的個數
+    static uint8_t table[256];
+public:
+    int hammingWeight(uint32_t n) {
+        return table[n &amp; 0xFF] + table[(n &gt;&gt; 8) &amp; 0xFF]
+             + table[(n &gt;&gt; 16) &amp; 0xFF] + table[(n &gt;&gt; 24) &amp; 0xFF];
+    }
+};
+
+// 方法四：編譯器內建指令（實務上最快）
+int hammingWeight(uint32_t n) {
+    return __builtin_popcount(n);   // GCC/Clang，會編成 POPCNT 指令
+}</code></pre>
+                </div>
+
+                <div id="java" class="code-content">
+                    <pre><code class="language-java">// 方法一：逐位檢查
+class Solution {
+    public int hammingWeight(int n) {
+        int count = 0;
+        for (int i = 0; i &lt; 32; i++) {
+            if (((n &gt;&gt; i) &amp; 1) == 1) count++;
+        }
+        return count;
+    }
+}
+
+// 方法二：Brian Kernighan（推薦）
+class Solution {
+    public int hammingWeight(int n) {
+        int count = 0;
+        while (n != 0) {
+            n &amp;= (n - 1);   // 消掉最右邊的 1
+            count++;
+        }
+        return count;
+    }
+}
+
+// 方法三：Java 內建
+class Solution {
+    public int hammingWeight(int n) {
+        return Integer.bitCount(n);
+    }
+}</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>複雜度分析</h2>
+            <div class="complexity">
+                <div class="complexity-item">
+                    <strong>時間複雜度：</strong>
+                    <ul>
+                        <li>方法一（逐位檢查）：O(32) = O(1)，固定跑 32 次</li>
+                        <li>方法二（Brian Kernighan）：O(k)，k 為 1 的個數，最多 32 次</li>
+                        <li>方法三（查表）：O(4) = O(1)</li>
+                    </ul>
+                </div>
+                <div class="complexity-item">
+                    <strong>空間複雜度：</strong>
+                    <ul>
+                        <li>方法一、二：O(1)</li>
+                        <li>方法三：O(256) 的查表空間</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>重點提示</h2>
+            <div class="key-point">
+                <strong>💡 關鍵技巧 1：n &amp; (n-1) 消最右邊的 1</strong>
+                <p>這是位元運算的萬用技巧，也可用來判斷 2 的冪次方（n &amp; (n-1) == 0）。務必背起來。</p>
+            </div>
+
+            <div class="key-point">
+                <strong>💡 關鍵技巧 2：n &amp; (-n) 取出最右邊的 1</strong>
+                <p>負數是二補數，-n = ~n + 1，所以 n &amp; -n 剛好保留最低位的 1（lowbit），是樹狀陣列的核心。</p>
+            </div>
+
+            <div class="note">
+                <strong>⚠️ 常見錯誤：</strong>
+                <ul>
+                    <li><strong>Java 沒有 unsigned</strong>：用 <code>n != 0</code> 判斷，不要用 <code>n &gt; 0</code>，否則負數會直接跳出</li>
+                    <li>Java 右移要用無號右移 <code>&gt;&gt;&gt;</code>，用 <code>&gt;&gt;</code> 會補符號位造成無限迴圈</li>
+                    <li>C/C++ 對有號數右移是實作定義行為，請用 <code>uint32_t</code></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>相關題目</h2>
+            <ul>
+                <li><strong>#190 Reverse Bits</strong> - 位元反轉，同樣的位元操作家族</li>
+                <li><strong>#231 Power of Two</strong> - 直接應用 n &amp; (n-1) == 0</li>
+                <li><strong>#338 Counting Bits</strong> - 對 0~n 每個數都算一次（DP）</li>
+                <li><strong>#461 Hamming Distance</strong> - 先 XOR 再算 popcount</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>補充說明</h2>
+            <h3>位元運算速查表（面試必背）</h3>
+            <div class="visual-box">
+                <div class="visual-title">📝 常用位元技巧</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+取得第 i 位          (n >> i) & 1
+設定第 i 位為 1      n |= (1 << i)
+清除第 i 位為 0      n &= ~(1 << i)
+反轉第 i 位          n ^= (1 << i)
+消掉最右邊的 1       n &= (n - 1)
+取出最右邊的 1       n & (-n)
+判斷是否為 2 的冪    n > 0 && (n & (n-1)) == 0
+判斷奇偶             n & 1
+乘 2 / 除 2          n << 1 / n >> 1
+交換兩數（不用暫存） a ^= b; b ^= a; a ^= b;
+                </pre>
+            </div>
+
+            <h3>硬體層面的補充</h3>
+            <ul>
+                <li>x86 有 <code>POPCNT</code> 指令、ARM 有 <code>VCNT</code>，單一指令即可完成</li>
+                <li>GCC/Clang 的 <code>__builtin_popcount()</code> 會在支援時直接編成該指令</li>
+                <li>面試時如果直接答內建函數，通常會被追問「不用內建怎麼做」，所以方法二一定要會</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        function switchLang(event, lang) {
+            const tabs = document.querySelectorAll('.lang-tab');
+            const contents = document.querySelectorAll('.code-content');
+
+            tabs.forEach(tab => tab.classList.remove('active'));
+            contents.forEach(content => content.classList.remove('active'));
+
+            event.target.classList.add('active');
+            document.getElementById(lang).classList.add('active');
+        }
+
+        hljs.highlightAll();
+    </script>
+</body>
+</html>

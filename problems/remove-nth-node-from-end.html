@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>#19 Remove Nth Node From End of List | LeetCode 學習平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #333; background: #f8fafc; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .header { background: linear-gradient(135deg, #ea580c 0%, #c2410c 100%); color: white; padding: 30px; border-radius: 12px; margin-bottom: 30px; box-shadow: 0 4px 6px rgba(234, 88, 12, 0.2); }
+        .header h1 { font-size: 2em; margin-bottom: 10px; }
+        .difficulty { display: inline-block; padding: 6px 16px; background: rgba(255,255,255,0.2); border-radius: 20px; font-size: 0.9em; font-weight: 600; }
+        .tags { margin-top: 15px; }
+        .tag { display: inline-block; background: rgba(255,255,255,0.15); padding: 4px 12px; border-radius: 6px; margin-right: 8px; font-size: 0.85em; }
+        .back-btn { display: inline-block; margin-bottom: 20px; padding: 10px 20px; background: #3b82f6; color: white; text-decoration: none; border-radius: 8px; transition: background 0.3s; }
+        .back-btn:hover { background: #2563eb; }
+        .section { background: white; padding: 30px; border-radius: 12px; margin-bottom: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .section h2 { color: #1e293b; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 3px solid #ea580c; }
+        .section h3 { color: #475569; margin: 25px 0 15px 0; font-size: 1.3em; }
+        .code-block { background: #282c34; border-radius: 8px; overflow: hidden; margin: 15px 0; }
+        .lang-tabs { display: flex; background: #21252b; border-bottom: 1px solid #181a1f; }
+        .lang-tab { padding: 12px 24px; cursor: pointer; color: #abb2bf; border: none; background: none; transition: all 0.3s; font-weight: 500; }
+        .lang-tab.active { color: #61afef; background: #282c34; border-bottom: 2px solid #61afef; }
+        .lang-tab:hover { color: #61afef; background: #2c313a; }
+        .code-content { display: none; }
+        .code-content.active { display: block; }
+        pre { margin: 0; overflow-x: auto; }
+        code { font-family: 'Consolas', 'Monaco', 'Courier New', monospace; font-size: 0.9em; }
+        .example { background: #f0f9ff; border-left: 4px solid #3b82f6; padding: 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .example-title { font-weight: 700; color: #1e40af; margin-bottom: 12px; font-size: 1.05em; }
+        .visual-box { background: #fef3c7; border: 2px solid #f59e0b; padding: 20px; border-radius: 8px; margin: 15px 0; }
+        .visual-title { font-weight: 700; color: #92400e; margin-bottom: 12px; display: flex; align-items: center; font-size: 1.05em; }
+        .complexity { background: #f1f5f9; padding: 15px; border-radius: 8px; margin: 15px 0; }
+        .complexity-item { margin: 8px 0; color: #475569; }
+        .key-point { background: #dcfce7; border-left: 4px solid #16a34a; padding: 15px 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        ul, ol { margin-left: 25px; margin-top: 10px; }
+        li { margin: 8px 0; color: #475569; }
+        strong { color: #1e293b; }
+        .note { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 15px 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        @media (max-width: 768px) {
+            .container { padding: 10px; }
+            .header h1 { font-size: 1.5em; }
+            .section { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="../index.html" class="back-btn">← 返回題目列表</a>
+
+        <div class="header">
+            <h1>#19 Remove Nth Node From End of List</h1>
+            <div class="difficulty">Medium</div>
+            <div class="tags">
+                <span class="tag">Linked List</span>
+                <span class="tag">Two Pointers</span>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>題目描述</h2>
+            <p>給你一個鏈結串列，刪除串列的<strong>倒數第 n 個</strong>節點，並且返回串列的頭節點。</p>
+            <p style="margin-top: 15px;"><strong>進階：</strong>你能嘗試使用<strong>一趟掃描</strong>實現嗎？</p>
+        </div>
+
+        <div class="section">
+            <h2>範例</h2>
+            <div class="example">
+                <div class="example-title">範例 1：</div>
+                <strong>輸入：</strong>head = [1,2,3,4,5], n = 2<br>
+                <strong>輸出：</strong>[1,2,3,5]<br>
+                <strong>解釋：</strong>倒數第 2 個是 4，刪除它。
+            </div>
+
+            <div class="example">
+                <div class="example-title">範例 2：</div>
+                <strong>輸入：</strong>head = [1], n = 1<br>
+                <strong>輸出：</strong>[]
+            </div>
+
+            <div class="example">
+                <div class="example-title">範例 3：</div>
+                <strong>輸入：</strong>head = [1,2], n = 1<br>
+                <strong>輸出：</strong>[1]
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>解題思路</h2>
+            <div class="visual-box">
+                <div class="visual-title">💡 核心：快慢指標保持 n 的間距</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+讓 fast 先走 n + 1 步，然後 fast 和 slow 一起走。
+當 fast 走到 null 時，slow 剛好停在「要刪除節點的前一個」。
+
+list = [1,2,3,4,5], n = 2（要刪 4）
+
+dummy → 1 → 2 → 3 → 4 → 5 → null
+  ↑
+slow/fast
+
+fast 先走 3 步（n+1 = 3）：
+dummy → 1 → 2 → 3 → 4 → 5 → null
+  ↑              ↑
+slow           fast
+
+一起走，直到 fast == null：
+dummy → 1 → 2 → 3 → 4 → 5 → null
+              ↑              ↑
+            slow           fast
+
+slow.next = 4，正是要刪的節點
+slow.next = slow.next.next → 跳過 4 ✓
+                </pre>
+            </div>
+
+            <h3>為什麼要用 dummy 節點？</h3>
+            <div class="visual-box">
+                <div class="visual-title">🎯 統一處理「刪除頭節點」的情況</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+list = [1], n = 1 → 要刪的正是頭節點
+
+沒有 dummy：slow 無法停在「頭節點的前一個」，
+            必須特判 return head.next
+
+有 dummy： dummy → 1 → null
+          slow 停在 dummy，slow.next = head，
+          直接刪除，程式碼零特判 ✓
+
+最後永遠 return dummy.next（不是 return head，
+因為 head 可能已被刪掉）
+
+💡 通用原則：任何「可能刪除或修改頭節點」的鏈結串列題，
+   第一件事就是建 dummy 節點。
+                </pre>
+            </div>
+
+            <h3>為什麼是 n + 1 步而不是 n 步？</h3>
+            <p>因為要刪除節點必須拿到<strong>它的前一個節點</strong>。走 n 步的話 slow 會停在待刪節點本身，就接不上前面了。</p>
+        </div>
+
+        <div class="section">
+            <h2>程式碼實現</h2>
+
+            <div class="code-block">
+                <div class="lang-tabs">
+                    <button class="lang-tab active" onclick="switchLang(event, 'python')">Python</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'cpp')">C++</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'java')">Java</button>
+                </div>
+
+                <div id="python" class="code-content active">
+                    <pre><code class="language-python"># Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+
+# 一趟掃描：快慢指標（推薦）
+class Solution:
+    def removeNthFromEnd(self, head: Optional[ListNode], n: int) -&gt; Optional[ListNode]:
+        dummy = ListNode(0, head)      # 虛擬頭節點，避免特判刪除頭節點
+        slow = fast = dummy
+
+        # fast 先走 n + 1 步
+        for _ in range(n + 1):
+            fast = fast.next
+
+        # 一起走到底，slow 停在待刪節點的前一個
+        while fast:
+            slow = slow.next
+            fast = fast.next
+
+        slow.next = slow.next.next     # 刪除
+        return dummy.next
+
+
+# 兩趟掃描：先算長度（較直覺）
+class Solution:
+    def removeNthFromEnd(self, head: Optional[ListNode], n: int) -&gt; Optional[ListNode]:
+        dummy = ListNode(0, head)
+        length = 0
+        node = head
+        while node:
+            length += 1
+            node = node.next
+
+        # 倒數第 n 個 = 正數第 (length - n + 1) 個
+        prev = dummy
+        for _ in range(length - n):
+            prev = prev.next
+        prev.next = prev.next.next
+        return dummy.next</code></pre>
+                </div>
+
+                <div id="cpp" class="code-content">
+                    <pre><code class="language-cpp">/**
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ * };
+ */
+
+// 一趟掃描：快慢指標（推薦）
+class Solution {
+public:
+    ListNode* removeNthFromEnd(ListNode* head, int n) {
+        ListNode dummy(0, head);       // 虛擬頭節點
+        ListNode *slow = &amp;dummy, *fast = &amp;dummy;
+
+        // fast 先走 n + 1 步
+        for (int i = 0; i &lt;= n; i++) {
+            fast = fast-&gt;next;
+        }
+
+        // 一起走到底
+        while (fast) {
+            slow = slow-&gt;next;
+            fast = fast-&gt;next;
+        }
+
+        ListNode* toDelete = slow-&gt;next;
+        slow-&gt;next = slow-&gt;next-&gt;next;
+        delete toDelete;               // C++ 記得釋放記憶體
+        return dummy.next;
+    }
+};</code></pre>
+                </div>
+
+                <div id="java" class="code-content">
+                    <pre><code class="language-java">/**
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+
+// 一趟掃描：快慢指標（推薦）
+class Solution {
+    public ListNode removeNthFromEnd(ListNode head, int n) {
+        ListNode dummy = new ListNode(0, head);   // 虛擬頭節點
+        ListNode slow = dummy, fast = dummy;
+
+        // fast 先走 n + 1 步
+        for (int i = 0; i &lt;= n; i++) {
+            fast = fast.next;
+        }
+
+        // 一起走到底，slow 停在待刪節點的前一個
+        while (fast != null) {
+            slow = slow.next;
+            fast = fast.next;
+        }
+
+        slow.next = slow.next.next;
+        return dummy.next;
+    }
+}</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>複雜度分析</h2>
+            <div class="complexity">
+                <div class="complexity-item">
+                    <strong>時間複雜度：</strong>O(L)，L 為串列長度
+                    <ul>
+                        <li>快慢指標版本只掃描一趟</li>
+                        <li>兩趟版本是 O(2L)，同樣是 O(L)</li>
+                    </ul>
+                </div>
+                <div class="complexity-item">
+                    <strong>空間複雜度：</strong>O(1)，只用了固定數量的指標
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>重點提示</h2>
+            <div class="key-point">
+                <strong>💡 關鍵技巧 1：dummy 節點</strong>
+                <p>鏈結串列題目只要「頭節點可能被刪除或改變」，就建一個 dummy，可以消除大量邊界判斷。最後 return <code>dummy.next</code>。</p>
+            </div>
+
+            <div class="key-point">
+                <strong>💡 關鍵技巧 2：固定間距的雙指標</strong>
+                <p>「倒數第 k 個」類型的問題，都可以用「讓一個指標先走 k 步」把倒數轉成正數，一趟掃描搞定。</p>
+            </div>
+
+            <div class="note">
+                <strong>⚠️ 常見錯誤：</strong>
+                <ul>
+                    <li>fast 走 n 步而不是 n + 1 步，導致 slow 停在待刪節點本身</li>
+                    <li>沒用 dummy，忘記處理「刪除頭節點」的情況</li>
+                    <li>最後 <code>return head</code> 而不是 <code>return dummy.next</code>（head 可能已被刪）</li>
+                    <li>C++ 沒有 delete 被刪的節點造成記憶體洩漏</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>相關題目</h2>
+            <ul>
+                <li><strong>#876 Middle of the Linked List</strong> - 快慢指標找中點</li>
+                <li><strong>#141 Linked List Cycle</strong> - 快慢指標判環</li>
+                <li><strong>#203 Remove Linked List Elements</strong> - dummy 節點的經典應用</li>
+                <li><strong>#83 Remove Duplicates from Sorted List</strong> - 刪除節點</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>補充說明</h2>
+            <h3>鏈結串列雙指標模板總整理</h3>
+            <div class="visual-box">
+                <div class="visual-title">📝 四種常見的快慢指標配置</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+【固定間距 k】倒數第 k 個節點
+  fast 先走 k 步，再一起走
+
+【速度 1:2】找中點
+  while (fast && fast->next) { slow=slow->next; fast=fast->next->next; }
+  偶數長度時 slow 停在後半段第一個
+
+【速度 1:2】判斷有環
+  相遇即有環；再從 head 和相遇點同速走，會在入口相遇（Floyd）
+
+【兩串列同步】找交點
+  走完自己的走對方的，兩指標走過的總長度相同必定相遇
+                </pre>
+            </div>
+
+            <h3>邊界情況檢查清單</h3>
+            <ul>
+                <li>串列只有一個節點，n = 1 → 返回空串列</li>
+                <li>刪除的是頭節點（n == 串列長度）→ dummy 自動處理</li>
+                <li>刪除的是尾節點（n == 1）→ slow 停在倒數第二個，正確</li>
+                <li>題目保證 1 &le; n &le; 串列長度，所以不需要處理 n 越界</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        function switchLang(event, lang) {
+            const tabs = document.querySelectorAll('.lang-tab');
+            const contents = document.querySelectorAll('.code-content');
+
+            tabs.forEach(tab => tab.classList.remove('active'));
+            contents.forEach(content => content.classList.remove('active'));
+
+            event.target.classList.add('active');
+            document.getElementById(lang).classList.add('active');
+        }
+
+        hljs.highlightAll();
+    </script>
+</body>
+</html>

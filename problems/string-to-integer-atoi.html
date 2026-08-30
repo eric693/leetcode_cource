@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>#8 String to Integer (atoi) | LeetCode 學習平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #333; background: #f8fafc; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .header { background: linear-gradient(135deg, #ea580c 0%, #c2410c 100%); color: white; padding: 30px; border-radius: 12px; margin-bottom: 30px; box-shadow: 0 4px 6px rgba(234, 88, 12, 0.2); }
+        .header h1 { font-size: 2em; margin-bottom: 10px; }
+        .difficulty { display: inline-block; padding: 6px 16px; background: rgba(255,255,255,0.2); border-radius: 20px; font-size: 0.9em; font-weight: 600; }
+        .tags { margin-top: 15px; }
+        .tag { display: inline-block; background: rgba(255,255,255,0.15); padding: 4px 12px; border-radius: 6px; margin-right: 8px; font-size: 0.85em; }
+        .back-btn { display: inline-block; margin-bottom: 20px; padding: 10px 20px; background: #3b82f6; color: white; text-decoration: none; border-radius: 8px; transition: background 0.3s; }
+        .back-btn:hover { background: #2563eb; }
+        .section { background: white; padding: 30px; border-radius: 12px; margin-bottom: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .section h2 { color: #1e293b; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 3px solid #ea580c; }
+        .section h3 { color: #475569; margin: 25px 0 15px 0; font-size: 1.3em; }
+        .code-block { background: #282c34; border-radius: 8px; overflow: hidden; margin: 15px 0; }
+        .lang-tabs { display: flex; background: #21252b; border-bottom: 1px solid #181a1f; }
+        .lang-tab { padding: 12px 24px; cursor: pointer; color: #abb2bf; border: none; background: none; transition: all 0.3s; font-weight: 500; }
+        .lang-tab.active { color: #61afef; background: #282c34; border-bottom: 2px solid #61afef; }
+        .lang-tab:hover { color: #61afef; background: #2c313a; }
+        .code-content { display: none; }
+        .code-content.active { display: block; }
+        pre { margin: 0; overflow-x: auto; }
+        code { font-family: 'Consolas', 'Monaco', 'Courier New', monospace; font-size: 0.9em; }
+        .example { background: #f0f9ff; border-left: 4px solid #3b82f6; padding: 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .example-title { font-weight: 700; color: #1e40af; margin-bottom: 12px; font-size: 1.05em; }
+        .visual-box { background: #fef3c7; border: 2px solid #f59e0b; padding: 20px; border-radius: 8px; margin: 15px 0; }
+        .visual-title { font-weight: 700; color: #92400e; margin-bottom: 12px; display: flex; align-items: center; font-size: 1.05em; }
+        .complexity { background: #f1f5f9; padding: 15px; border-radius: 8px; margin: 15px 0; }
+        .complexity-item { margin: 8px 0; color: #475569; }
+        .key-point { background: #dcfce7; border-left: 4px solid #16a34a; padding: 15px 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        ul, ol { margin-left: 25px; margin-top: 10px; }
+        li { margin: 8px 0; color: #475569; }
+        strong { color: #1e293b; }
+        .note { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 15px 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        @media (max-width: 768px) {
+            .container { padding: 10px; }
+            .header h1 { font-size: 1.5em; }
+            .section { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="../index.html" class="back-btn">← 返回題目列表</a>
+
+        <div class="header">
+            <h1>#8 String to Integer (atoi)</h1>
+            <div class="difficulty">Medium</div>
+            <div class="tags">
+                <span class="tag">String</span>
+                <span class="tag">Simulation</span>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>題目描述</h2>
+            <p>請你來實現一個 <code>myAtoi(string s)</code> 函數，使其能將字串轉換成一個 32 位元有號整數。</p>
+            <p style="margin-top: 15px;">函數的演算法如下：</p>
+            <ol>
+                <li>讀入字串並<strong>丟棄開頭的空格</strong></li>
+                <li>檢查下一個字元是 <code>'-'</code> 還是 <code>'+'</code>，讀取該字元作為<strong>正負號</strong>；如果兩者都不存在，則預設為正數</li>
+                <li>讀入<strong>連續的數字字元</strong>，直到遇到非數字字元或到達字串結尾</li>
+                <li>將這些數字轉換成整數；如果沒有讀入任何數字，則整數為 0</li>
+                <li>如果整數超出 32 位元有號整數範圍 <code>[-2³¹, 2³¹-1]</code>，則<strong>截斷</strong>這個整數（-2147483648 或 2147483647）</li>
+            </ol>
+            <p style="margin-top: 15px;">這題考的不是演算法，而是<strong>邊界條件的嚴謹度</strong>，是韌體/系統程式面試很愛出的題目。</p>
+        </div>
+
+        <div class="section">
+            <h2>範例</h2>
+            <div class="example">
+                <div class="example-title">範例 1：</div>
+                <strong>輸入：</strong>s = "42"<br>
+                <strong>輸出：</strong>42
+            </div>
+
+            <div class="example">
+                <div class="example-title">範例 2：</div>
+                <strong>輸入：</strong>s = "   -42"<br>
+                <strong>輸出：</strong>-42（前置空格被忽略）
+            </div>
+
+            <div class="example">
+                <div class="example-title">範例 3：</div>
+                <strong>輸入：</strong>s = "4193 with words"<br>
+                <strong>輸出：</strong>4193（遇到空格停止）
+            </div>
+
+            <div class="example">
+                <div class="example-title">範例 4：</div>
+                <strong>輸入：</strong>s = "words and 987"<br>
+                <strong>輸出：</strong>0（第一個非空格字元不是數字或符號）
+            </div>
+
+            <div class="example">
+                <div class="example-title">範例 5：</div>
+                <strong>輸入：</strong>s = "-91283472332"<br>
+                <strong>輸出：</strong>-2147483648（超出下界，截斷）
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>解題思路</h2>
+            <div class="visual-box">
+                <div class="visual-title">💡 四個階段循序處理</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+輸入 "   -42abc"
+
+【階段 1】跳過前置空格
+  i 移到 '-'
+
+【階段 2】處理正負號（最多一個）
+  sign = -1，i 移到 '4'
+
+【階段 3】逐字讀數字並累加
+  result = 0
+  '4' → result = 0*10 + 4 = 4
+  '2' → result = 4*10 + 2 = 42
+  'a' → 非數字，停止
+
+【階段 4】套用正負號並檢查邊界
+  結果 = -42 ✓
+                </pre>
+            </div>
+
+            <h3>難點：如何在不溢位的情況下檢查溢位？</h3>
+            <div class="visual-box">
+                <div class="visual-title">🎯 在乘以 10 之前就先判斷</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+INT_MAX = 2147483647
+INT_MIN = -2147483648
+
+錯誤做法：先算 result = result * 10 + digit，再檢查
+          → 這行本身就已經溢位了！C/C++ 中有號數溢位是 UB
+
+正確做法：在運算「之前」預判
+
+  若 result > INT_MAX / 10                → 一定溢位
+     （因為 result * 10 必超過 INT_MAX）
+
+  若 result == INT_MAX / 10 (= 214748364)
+     且 digit > 7 (INT_MAX % 10)          → 也會溢位
+
+範例：s = "2147483648"
+  讀到 "214748364" 時 result = 214748364
+  下一位 digit = 8
+  result == INT_MAX/10 且 8 > 7 → 溢位 → 返回 INT_MAX ✓
+
+負數同理。技巧：先用正數累加，
+最後再套上符號，只是負數上限要多允許 1（因為 |INT_MIN| = INT_MAX + 1）。
+                </pre>
+            </div>
+
+            <h3>另一個做法：用更大的型別</h3>
+            <p>用 <code>long long</code>（C++）或 Python 的無限精度整數累加，每一步檢查是否已超出 32 位元範圍，超過就提早返回。程式碼較簡單，但在只有 32 位元的嵌入式環境中不一定可行，面試時最好兩種都能講。</p>
+        </div>
+
+        <div class="section">
+            <h2>程式碼實現</h2>
+
+            <div class="code-block">
+                <div class="lang-tabs">
+                    <button class="lang-tab active" onclick="switchLang(event, 'python')">Python</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'cpp')">C++</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'java')">Java</button>
+                </div>
+
+                <div id="python" class="code-content active">
+                    <pre><code class="language-python">class Solution:
+    def myAtoi(self, s: str) -&gt; int:
+        INT_MAX = 2**31 - 1        # 2147483647
+        INT_MIN = -2**31           # -2147483648
+
+        i, n = 0, len(s)
+
+        # 階段 1：跳過前置空格
+        while i &lt; n and s[i] == ' ':
+            i += 1
+
+        # 階段 2：處理正負號
+        sign = 1
+        if i &lt; n and s[i] in '+-':
+            sign = -1 if s[i] == '-' else 1
+            i += 1
+
+        # 階段 3：讀數字並累加（Python 無溢位問題，但仍提早檢查）
+        result = 0
+        while i &lt; n and s[i].isdigit():
+            digit = int(s[i])
+            result = result * 10 + digit
+            # 提早截斷，避免處理超長字串
+            if sign == 1 and result &gt; INT_MAX:
+                return INT_MAX
+            if sign == -1 and -result &lt; INT_MIN:
+                return INT_MIN
+            i += 1
+
+        # 階段 4：套用符號
+        return sign * result</code></pre>
+                </div>
+
+                <div id="cpp" class="code-content">
+                    <pre><code class="language-cpp">class Solution {
+public:
+    int myAtoi(string s) {
+        int i = 0, n = s.size();
+
+        // 階段 1：跳過前置空格
+        while (i &lt; n &amp;&amp; s[i] == ' ') i++;
+
+        // 階段 2：處理正負號
+        int sign = 1;
+        if (i &lt; n &amp;&amp; (s[i] == '+' || s[i] == '-')) {
+            sign = (s[i] == '-') ? -1 : 1;
+            i++;
+        }
+
+        // 階段 3：讀數字，在運算前預判溢位
+        int result = 0;
+        while (i &lt; n &amp;&amp; isdigit(s[i])) {
+            int digit = s[i] - '0';
+
+            // 溢位檢查（在乘 10 之前！）
+            if (result &gt; INT_MAX / 10 ||
+                (result == INT_MAX / 10 &amp;&amp; digit &gt; INT_MAX % 10)) {
+                return (sign == 1) ? INT_MAX : INT_MIN;
+            }
+
+            result = result * 10 + digit;
+            i++;
+        }
+
+        return sign * result;
+    }
+};</code></pre>
+                </div>
+
+                <div id="java" class="code-content">
+                    <pre><code class="language-java">class Solution {
+    public int myAtoi(String s) {
+        int i = 0, n = s.length();
+
+        // 階段 1：跳過前置空格
+        while (i &lt; n &amp;&amp; s.charAt(i) == ' ') i++;
+
+        // 階段 2：處理正負號
+        int sign = 1;
+        if (i &lt; n &amp;&amp; (s.charAt(i) == '+' || s.charAt(i) == '-')) {
+            sign = (s.charAt(i) == '-') ? -1 : 1;
+            i++;
+        }
+
+        // 階段 3：讀數字，在運算前預判溢位
+        int result = 0;
+        while (i &lt; n &amp;&amp; Character.isDigit(s.charAt(i))) {
+            int digit = s.charAt(i) - '0';
+
+            if (result &gt; Integer.MAX_VALUE / 10 ||
+                (result == Integer.MAX_VALUE / 10 &amp;&amp; digit &gt; 7)) {
+                return (sign == 1) ? Integer.MAX_VALUE : Integer.MIN_VALUE;
+            }
+
+            result = result * 10 + digit;
+            i++;
+        }
+
+        return sign * result;
+    }
+}</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>複雜度分析</h2>
+            <div class="complexity">
+                <div class="complexity-item">
+                    <strong>時間複雜度：</strong>O(n)，n 為字串長度，只掃描一次
+                </div>
+                <div class="complexity-item">
+                    <strong>空間複雜度：</strong>O(1)，只用了幾個變數
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>重點提示</h2>
+            <div class="key-point">
+                <strong>💡 關鍵技巧 1：溢位要「事前預判」而非「事後檢查」</strong>
+                <p>在 C/C++ 中，有號整數溢位是<strong>未定義行為（UB）</strong>，編譯器可以假設它不會發生並做出激進優化，所以 <code>if (result * 10 &lt; result)</code> 這種事後檢查完全不可靠。必須在運算前用除法預判。</p>
+            </div>
+
+            <div class="key-point">
+                <strong>💡 關鍵技巧 2：INT_MIN 的絕對值無法用 int 表示</strong>
+                <p><code>|-2147483648| = 2147483648 &gt; INT_MAX</code>，所以 <code>-INT_MIN</code> 會溢位。這是 32 位元二補數的經典陷阱，很多實務 bug 都源自於此。</p>
+            </div>
+
+            <div class="key-point">
+                <strong>💡 面試回答框架</strong>
+                <p>這題的重點是<strong>把規格逐條翻譯成程式碼</strong>。建議先把所有邊界情況列出來（空字串、只有空格、只有符號、雙重符號、前置零、超長數字、中途出現字母），再逐一實作。展現「先釐清規格再寫程式」的習慣，比寫得快更重要。</p>
+            </div>
+
+            <div class="note">
+                <strong>⚠️ 邊界情況檢查清單：</strong>
+                <ul>
+                    <li><code>""</code> 空字串 → 0</li>
+                    <li><code>"   "</code> 只有空格 → 0</li>
+                    <li><code>"+"</code> / <code>"-"</code> 只有符號 → 0</li>
+                    <li><code>"+-12"</code> 雙重符號 → 0（讀完 '+' 後 '-' 不是數字，停止）</li>
+                    <li><code>"00000123"</code> 前置零 → 123</li>
+                    <li><code>"3.14"</code> → 3（遇到 '.' 停止）</li>
+                    <li><code>"  +0 123"</code> → 0</li>
+                    <li><code>"-2147483649"</code> → -2147483648（截斷）</li>
+                    <li>注意題目只跳過<strong>前置</strong>空格，中間的空格會終止解析</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>相關題目</h2>
+            <ul>
+                <li><strong>#7 Reverse Integer</strong> - 同樣的溢位檢查技巧</li>
+                <li><strong>#65 Valid Number</strong> - 更複雜的數字字串驗證（含小數、科學記號）</li>
+                <li><strong>#12/#13 Roman to Integer</strong> - 字串轉數字的另一種形式</li>
+                <li><strong>#67 Add Binary</strong> - 字串形式的運算</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>補充說明</h2>
+            <h3>溢位檢查的通用模板</h3>
+            <div class="visual-box">
+                <div class="visual-title">🛡️ 三種安全的檢查方式</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+【方式一】除法預判（最通用，本題使用）
+  if (result &gt; INT_MAX / 10) 溢位;
+  if (result == INT_MAX / 10 &amp;&amp; digit &gt; INT_MAX % 10) 溢位;
+
+【方式二】用更大的型別
+  long long tmp = (long long)result * 10 + digit;
+  if (tmp &gt; INT_MAX) 溢位;
+  （但 64 位元本身溢位時就沒轍了）
+
+【方式三】編譯器內建（GCC/Clang，實務最推薦）
+  int out;
+  if (__builtin_mul_overflow(result, 10, &amp;out)) 溢位;
+  if (__builtin_add_overflow(out, digit, &amp;result)) 溢位;
+  → 會直接使用 CPU 的溢位旗標，最快也最安全
+                </pre>
+            </div>
+
+            <h3>#7 Reverse Integer 的溢位檢查</h3>
+            <pre style="background: #f1f5f9; padding: 15px; border-radius: 8px; margin-top: 10px;">
+int reverse(int x) {
+    int result = 0;
+    while (x != 0) {
+        int digit = x % 10;
+        x /= 10;
+        // 完全相同的預判技巧
+        if (result &gt; INT_MAX / 10 || (result == INT_MAX / 10 &amp;&amp; digit &gt; 7))
+            return 0;
+        if (result &lt; INT_MIN / 10 || (result == INT_MIN / 10 &amp;&amp; digit &lt; -8))
+            return 0;
+        result = result * 10 + digit;
+    }
+    return result;
+}
+            </pre>
+
+            <h3>實務補充：標準函式庫的做法</h3>
+            <ul>
+                <li><code>atoi()</code>：溢位時是<strong>未定義行為</strong>，實務上不該用於處理不可信的輸入</li>
+                <li><code>strtol()</code>：溢位時返回 LONG_MAX/LONG_MIN 並設定 <code>errno = ERANGE</code>，是 C 中<strong>正確的做法</strong></li>
+                <li>解析網路封包、設定檔、使用者輸入時，一律使用有錯誤回報機制的版本</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        function switchLang(event, lang) {
+            const tabs = document.querySelectorAll('.lang-tab');
+            const contents = document.querySelectorAll('.code-content');
+
+            tabs.forEach(tab => tab.classList.remove('active'));
+            contents.forEach(content => content.classList.remove('active'));
+
+            event.target.classList.add('active');
+            document.getElementById(lang).classList.add('active');
+        }
+
+        hljs.highlightAll();
+    </script>
+</body>
+</html>

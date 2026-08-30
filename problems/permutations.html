@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>#46 Permutations | LeetCode 學習平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #333; background: #f8fafc; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .header { background: linear-gradient(135deg, #ea580c 0%, #c2410c 100%); color: white; padding: 30px; border-radius: 12px; margin-bottom: 30px; box-shadow: 0 4px 6px rgba(234, 88, 12, 0.2); }
+        .header h1 { font-size: 2em; margin-bottom: 10px; }
+        .difficulty { display: inline-block; padding: 6px 16px; background: rgba(255,255,255,0.2); border-radius: 20px; font-size: 0.9em; font-weight: 600; }
+        .tags { margin-top: 15px; }
+        .tag { display: inline-block; background: rgba(255,255,255,0.15); padding: 4px 12px; border-radius: 6px; margin-right: 8px; font-size: 0.85em; }
+        .back-btn { display: inline-block; margin-bottom: 20px; padding: 10px 20px; background: #3b82f6; color: white; text-decoration: none; border-radius: 8px; transition: background 0.3s; }
+        .back-btn:hover { background: #2563eb; }
+        .section { background: white; padding: 30px; border-radius: 12px; margin-bottom: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .section h2 { color: #1e293b; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 3px solid #ea580c; }
+        .section h3 { color: #475569; margin: 25px 0 15px 0; font-size: 1.3em; }
+        .code-block { background: #282c34; border-radius: 8px; overflow: hidden; margin: 15px 0; }
+        .lang-tabs { display: flex; background: #21252b; border-bottom: 1px solid #181a1f; }
+        .lang-tab { padding: 12px 24px; cursor: pointer; color: #abb2bf; border: none; background: none; transition: all 0.3s; font-weight: 500; }
+        .lang-tab.active { color: #61afef; background: #282c34; border-bottom: 2px solid #61afef; }
+        .lang-tab:hover { color: #61afef; background: #2c313a; }
+        .code-content { display: none; }
+        .code-content.active { display: block; }
+        pre { margin: 0; overflow-x: auto; }
+        code { font-family: 'Consolas', 'Monaco', 'Courier New', monospace; font-size: 0.9em; }
+        .example { background: #f0f9ff; border-left: 4px solid #3b82f6; padding: 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .example-title { font-weight: 700; color: #1e40af; margin-bottom: 12px; font-size: 1.05em; }
+        .visual-box { background: #fef3c7; border: 2px solid #f59e0b; padding: 20px; border-radius: 8px; margin: 15px 0; }
+        .visual-title { font-weight: 700; color: #92400e; margin-bottom: 12px; display: flex; align-items: center; font-size: 1.05em; }
+        .complexity { background: #f1f5f9; padding: 15px; border-radius: 8px; margin: 15px 0; }
+        .complexity-item { margin: 8px 0; color: #475569; }
+        .key-point { background: #dcfce7; border-left: 4px solid #16a34a; padding: 15px 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        ul, ol { margin-left: 25px; margin-top: 10px; }
+        li { margin: 8px 0; color: #475569; }
+        strong { color: #1e293b; }
+        .note { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 15px 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        @media (max-width: 768px) {
+            .container { padding: 10px; }
+            .header h1 { font-size: 1.5em; }
+            .section { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="../index.html" class="back-btn">← 返回題目列表</a>
+
+        <div class="header">
+            <h1>#46 Permutations</h1>
+            <div class="difficulty">Medium</div>
+            <div class="tags">
+                <span class="tag">Backtracking</span>
+                <span class="tag">Array</span>
+                <span class="tag">Recursion</span>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>題目描述</h2>
+            <p>給定一個<strong>不含重複數字</strong>的陣列 nums，返回其<strong>所有可能的全排列</strong>。你可以按任意順序返回答案。</p>
+            <p style="margin-top: 15px;">n 個元素的全排列共有 <strong>n!</strong> 種。</p>
+        </div>
+
+        <div class="section">
+            <h2>範例</h2>
+            <div class="example">
+                <div class="example-title">範例 1：</div>
+                <strong>輸入：</strong>nums = [1,2,3]<br>
+                <strong>輸出：</strong>[[1,2,3],[1,3,2],[2,1,3],[2,3,1],[3,1,2],[3,2,1]]
+            </div>
+
+            <div class="example">
+                <div class="example-title">範例 2：</div>
+                <strong>輸入：</strong>nums = [0,1]<br>
+                <strong>輸出：</strong>[[0,1],[1,0]]
+            </div>
+
+            <div class="example">
+                <div class="example-title">範例 3：</div>
+                <strong>輸入：</strong>nums = [1]<br>
+                <strong>輸出：</strong>[[1]]
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>解題思路</h2>
+            <div class="visual-box">
+                <div class="visual-title">💡 核心：決策樹 + 回溯</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+每一層決定「這個位置放哪個數字」，
+已經用過的數字不能再用（用 used 陣列標記）。
+
+nums = [1,2,3] 的決策樹：
+
+                    []
+        /            |            \
+      [1]           [2]           [3]
+     /   \         /   \         /   \
+  [1,2] [1,3]   [2,1] [2,3]   [3,1] [3,2]
+    |     |       |     |       |     |
+ [1,2,3][1,3,2][2,1,3][2,3,1][3,1,2][3,2,1]
+
+葉子節點就是一組完整的排列，共 3! = 6 個。
+                </pre>
+            </div>
+
+            <h3>回溯三部曲</h3>
+            <div class="visual-box">
+                <div class="visual-title">🎯 做選擇 → 遞迴 → 撤銷選擇</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+void backtrack(path, used) {
+    if (path.size() == n) {        // 終止條件
+        result.push_back(path);     // 記錄答案（注意要複製一份！）
+        return;
+    }
+
+    for (int i = 0; i < n; i++) {
+        if (used[i]) continue;      // 剪枝：已用過就跳過
+
+        path.push_back(nums[i]);    // ① 做選擇
+        used[i] = true;
+
+        backtrack(path, used);      // ② 遞迴進入下一層
+
+        path.pop_back();            // ③ 撤銷選擇（回溯！）
+        used[i] = false;
+    }
+}
+
+⭐ 「撤銷選擇」是回溯的靈魂。
+   因為 path 和 used 是共用的狀態，
+   探索完一條分支後必須還原，才能正確探索下一條分支。
+                </pre>
+            </div>
+
+            <h3>執行過程追蹤（部分）</h3>
+            <div class="visual-box">
+                <div class="visual-title">🔄 看 path 如何伸縮</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+path=[]        選 1 → path=[1]
+path=[1]       選 2 → path=[1,2]
+path=[1,2]     選 3 → path=[1,2,3] ✓ 記錄
+               撤銷 3 → path=[1,2]
+               撤銷 2 → path=[1]
+path=[1]       選 3 → path=[1,3]
+path=[1,3]     選 2 → path=[1,3,2] ✓ 記錄
+               撤銷 2 → path=[1,3]
+               撤銷 3 → path=[1]
+               撤銷 1 → path=[]
+path=[]        選 2 → ...（同理繼續）
+
+可以看到 path 像手風琴一樣「伸展 → 收縮 → 再伸展」，
+這正是回溯的運作方式。
+                </pre>
+            </div>
+
+            <h3>兩種實作：used 陣列 vs 原地交換</h3>
+            <div class="visual-box">
+                <div class="visual-title">⚖️ 各有優缺點</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+【方法 A】used 布林陣列（推薦，最好理解）
+  額外 O(n) 空間，但邏輯清晰，且容易擴充到有重複元素的 #47
+
+【方法 B】原地交換
+  把 nums[first] 和 nums[i] 交換，遞迴處理 first+1，再換回來
+  不需要 used 陣列和 path，直接在原陣列上操作
+  缺點：產生的順序不是字典序，且處理重複元素時較難去重
+                </pre>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>程式碼實現</h2>
+
+            <div class="code-block">
+                <div class="lang-tabs">
+                    <button class="lang-tab active" onclick="switchLang(event, 'python')">Python</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'cpp')">C++</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'java')">Java</button>
+                </div>
+
+                <div id="python" class="code-content active">
+                    <pre><code class="language-python"># 方法 A：used 陣列（推薦）
+class Solution:
+    def permute(self, nums: List[int]) -&gt; List[List[int]]:
+        result = []
+        path = []
+        used = [False] * len(nums)
+
+        def backtrack():
+            # 終止條件：路徑長度等於陣列長度
+            if len(path) == len(nums):
+                result.append(path[:])       # 注意：要複製一份！
+                return
+
+            for i in range(len(nums)):
+                if used[i]:                  # 剪枝：已用過
+                    continue
+
+                path.append(nums[i])         # ① 做選擇
+                used[i] = True
+
+                backtrack()                  # ② 遞迴
+
+                path.pop()                   # ③ 撤銷選擇
+                used[i] = False
+
+        backtrack()
+        return result
+
+
+# 方法 B：原地交換
+class Solution:
+    def permute(self, nums: List[int]) -&gt; List[List[int]]:
+        result = []
+
+        def backtrack(first):
+            if first == len(nums):
+                result.append(nums[:])
+                return
+            for i in range(first, len(nums)):
+                nums[first], nums[i] = nums[i], nums[first]   # 交換
+                backtrack(first + 1)
+                nums[first], nums[i] = nums[i], nums[first]   # 換回來
+
+        backtrack(0)
+        return result</code></pre>
+                </div>
+
+                <div id="cpp" class="code-content">
+                    <pre><code class="language-cpp">// 方法 A：used 陣列（推薦）
+class Solution {
+    vector&lt;vector&lt;int&gt;&gt; result;
+    vector&lt;int&gt; path;
+    vector&lt;bool&gt; used;
+
+    void backtrack(vector&lt;int&gt;&amp; nums) {
+        if (path.size() == nums.size()) {
+            result.push_back(path);          // 記錄一組完整排列
+            return;
+        }
+
+        for (int i = 0; i &lt; nums.size(); i++) {
+            if (used[i]) continue;           // 剪枝
+
+            path.push_back(nums[i]);         // ① 做選擇
+            used[i] = true;
+
+            backtrack(nums);                 // ② 遞迴
+
+            path.pop_back();                 // ③ 撤銷選擇
+            used[i] = false;
+        }
+    }
+
+public:
+    vector&lt;vector&lt;int&gt;&gt; permute(vector&lt;int&gt;&amp; nums) {
+        used.assign(nums.size(), false);
+        backtrack(nums);
+        return result;
+    }
+};
+
+// 方法 B：原地交換
+class Solution {
+    vector&lt;vector&lt;int&gt;&gt; result;
+    void backtrack(vector&lt;int&gt;&amp; nums, int first) {
+        if (first == nums.size()) { result.push_back(nums); return; }
+        for (int i = first; i &lt; nums.size(); i++) {
+            swap(nums[first], nums[i]);
+            backtrack(nums, first + 1);
+            swap(nums[first], nums[i]);      // 換回來
+        }
+    }
+public:
+    vector&lt;vector&lt;int&gt;&gt; permute(vector&lt;int&gt;&amp; nums) {
+        backtrack(nums, 0);
+        return result;
+    }
+};</code></pre>
+                </div>
+
+                <div id="java" class="code-content">
+                    <pre><code class="language-java">// 方法 A：used 陣列（推薦）
+class Solution {
+    private List&lt;List&lt;Integer&gt;&gt; result = new ArrayList&lt;&gt;();
+    private List&lt;Integer&gt; path = new ArrayList&lt;&gt;();
+    private boolean[] used;
+
+    public List&lt;List&lt;Integer&gt;&gt; permute(int[] nums) {
+        used = new boolean[nums.length];
+        backtrack(nums);
+        return result;
+    }
+
+    private void backtrack(int[] nums) {
+        if (path.size() == nums.length) {
+            result.add(new ArrayList&lt;&gt;(path));   // 必須複製一份！
+            return;
+        }
+
+        for (int i = 0; i &lt; nums.length; i++) {
+            if (used[i]) continue;               // 剪枝
+
+            path.add(nums[i]);                   // ① 做選擇
+            used[i] = true;
+
+            backtrack(nums);                     // ② 遞迴
+
+            path.remove(path.size() - 1);        // ③ 撤銷選擇
+            used[i] = false;
+        }
+    }
+}</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>複雜度分析</h2>
+            <div class="complexity">
+                <div class="complexity-item">
+                    <strong>時間複雜度：</strong>O(n × n!)
+                    <ul>
+                        <li>共有 n! 種排列</li>
+                        <li>每產生一組排列需要 O(n) 的複製成本</li>
+                        <li>這是輸出規模決定的下界，無法再優化</li>
+                    </ul>
+                </div>
+                <div class="complexity-item">
+                    <strong>空間複雜度：</strong>O(n)
+                    <ul>
+                        <li>遞迴堆疊深度 O(n)、path O(n)、used O(n)</li>
+                        <li>不計算儲存結果所需的 O(n × n!) 空間</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>重點提示</h2>
+            <div class="key-point">
+                <strong>💡 關鍵技巧 1：記錄答案時一定要「複製」</strong>
+                <p><code>result.append(path[:])</code>（Python）、<code>new ArrayList&lt;&gt;(path)</code>（Java）。直接放入 path 的話，所有結果都會指向同一個物件，最後全部變成空陣列。這是回溯題<strong>最經典的 bug</strong>。</p>
+            </div>
+
+            <div class="key-point">
+                <strong>💡 關鍵技巧 2：排列 vs 組合的差別</strong>
+                <ul>
+                    <li><strong>排列</strong>（本題）：順序有關，每層從 <code>i = 0</code> 開始，用 used 排除已選的</li>
+                    <li><strong>組合</strong>（#77、#78）：順序無關，每層從 <code>i = start</code> 開始，靠 start 避免重複</li>
+                </ul>
+                <p style="margin-top: 10px;">記住這個差別，一整類回溯題就通了。</p>
+            </div>
+
+            <div class="key-point">
+                <strong>💡 延伸 #47：有重複數字的排列</strong>
+                <p>先<strong>排序</strong>，然後加上剪枝條件：<code>if (i &gt; 0 &amp;&amp; nums[i] == nums[i-1] &amp;&amp; !used[i-1]) continue;</code>。意思是「同一層中，相同的數字只在第一個未使用時取用」，避免產生重複的排列。</p>
+            </div>
+
+            <div class="note">
+                <strong>⚠️ 常見錯誤：</strong>
+                <ul>
+                    <li>記錄結果時沒有複製，導致所有答案相同或為空</li>
+                    <li>忘記撤銷選擇（<code>path.pop()</code> 和 <code>used[i] = false</code>），狀態污染後續分支</li>
+                    <li>撤銷時只還原了 path 沒還原 used（或反之）</li>
+                    <li>把排列的迴圈起點寫成 <code>start</code>（那會變成組合）</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>相關題目</h2>
+            <ul>
+                <li><strong>#47 Permutations II</strong> - 含重複數字的排列（需排序+剪枝）</li>
+                <li><strong>#78 Subsets</strong> - 子集（組合型回溯）</li>
+                <li><strong>#39 Combination Sum</strong> - 組合總和</li>
+                <li><strong>#31 Next Permutation</strong> - 求下一個字典序排列（非回溯）</li>
+                <li><strong>#51 N-Queens</strong> - 回溯的經典 Hard 題</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>補充說明</h2>
+            <h3>回溯演算法通用模板（務必背熟）</h3>
+            <div class="visual-box">
+                <div class="visual-title">📝 一個框架解所有回溯題</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+void backtrack(路徑, 選擇列表) {
+    if (滿足結束條件) {
+        result.add(路徑的複本);      ← 一定要複製！
+        return;
+    }
+
+    for (選擇 : 選擇列表) {
+        if (不合法) continue;        ← 剪枝
+
+        做選擇;                      ← 修改狀態
+        backtrack(路徑, 選擇列表);   ← 進入下一層
+        撤銷選擇;                    ← 還原狀態
+    }
+}
+
+三個要素：
+1【路徑】已經做出的選擇
+2【選擇列表】當前還能做的選擇
+3【結束條件】到達決策樹底層
+                </pre>
+            </div>
+
+            <h3>回溯題型速查表</h3>
+            <pre style="background: #f1f5f9; padding: 15px; border-radius: 8px; margin-top: 10px;">
+題型            迴圈起點      去重方式               代表題
+--------------------------------------------------------------------
+排列（不重複）  i = 0        used 陣列              #46
+排列（有重複）  i = 0        排序 + 同層跳過相同值   #47
+組合（不重複）  i = start    start 天然避免重複      #77 #78
+組合（有重複）  i = start    排序 + i&gt;start 跳過相同 #40 #90
+組合（可重複選）i = start    遞迴傳 i 而非 i+1       #39
+分割字串        i = start    每次切一段              #131
+棋盤問題        逐行/逐格    合法性檢查              #51 #37
+        </pre>
+
+            <h3>#31 Next Permutation：不用回溯的排列題</h3>
+            <pre style="background: #f1f5f9; padding: 15px; border-radius: 8px; margin-top: 10px;">
+求「字典序的下一個排列」，O(n) 就能完成：
+
+1. 從右往左找第一個 nums[i] &lt; nums[i+1]（升序的轉折點）
+2. 從右往左找第一個 nums[j] &gt; nums[i]
+3. 交換 nums[i] 和 nums[j]
+4. 反轉 i+1 到結尾（讓後綴變成最小）
+
+[1,2,3] → [1,3,2] → [2,1,3] → [2,3,1] → [3,1,2] → [3,2,1] → [1,2,3]
+
+這也是 C++ std::next_permutation 的實作方式。
+連續呼叫 n! 次就能生成所有排列，且保證字典序。
+            </pre>
+        </div>
+    </div>
+
+    <script>
+        function switchLang(event, lang) {
+            const tabs = document.querySelectorAll('.lang-tab');
+            const contents = document.querySelectorAll('.code-content');
+
+            tabs.forEach(tab => tab.classList.remove('active'));
+            contents.forEach(content => content.classList.remove('active'));
+
+            event.target.classList.add('active');
+            document.getElementById(lang).classList.add('active');
+        }
+
+        hljs.highlightAll();
+    </script>
+</body>
+</html>

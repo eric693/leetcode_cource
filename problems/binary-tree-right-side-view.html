@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>#199 Binary Tree Right Side View | LeetCode 學習平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #333; background: #f8fafc; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .header { background: linear-gradient(135deg, #ea580c 0%, #c2410c 100%); color: white; padding: 30px; border-radius: 12px; margin-bottom: 30px; box-shadow: 0 4px 6px rgba(234, 88, 12, 0.2); }
+        .header h1 { font-size: 2em; margin-bottom: 10px; }
+        .difficulty { display: inline-block; padding: 6px 16px; background: rgba(255,255,255,0.2); border-radius: 20px; font-size: 0.9em; font-weight: 600; }
+        .tags { margin-top: 15px; }
+        .tag { display: inline-block; background: rgba(255,255,255,0.15); padding: 4px 12px; border-radius: 6px; margin-right: 8px; font-size: 0.85em; }
+        .back-btn { display: inline-block; margin-bottom: 20px; padding: 10px 20px; background: #3b82f6; color: white; text-decoration: none; border-radius: 8px; transition: background 0.3s; }
+        .back-btn:hover { background: #2563eb; }
+        .section { background: white; padding: 30px; border-radius: 12px; margin-bottom: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .section h2 { color: #1e293b; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 3px solid #ea580c; }
+        .section h3 { color: #475569; margin: 25px 0 15px 0; font-size: 1.3em; }
+        .code-block { background: #282c34; border-radius: 8px; overflow: hidden; margin: 15px 0; }
+        .lang-tabs { display: flex; background: #21252b; border-bottom: 1px solid #181a1f; }
+        .lang-tab { padding: 12px 24px; cursor: pointer; color: #abb2bf; border: none; background: none; transition: all 0.3s; font-weight: 500; }
+        .lang-tab.active { color: #61afef; background: #282c34; border-bottom: 2px solid #61afef; }
+        .lang-tab:hover { color: #61afef; background: #2c313a; }
+        .code-content { display: none; }
+        .code-content.active { display: block; }
+        pre { margin: 0; overflow-x: auto; }
+        code { font-family: 'Consolas', 'Monaco', 'Courier New', monospace; font-size: 0.9em; }
+        .example { background: #f0f9ff; border-left: 4px solid #3b82f6; padding: 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .example-title { font-weight: 700; color: #1e40af; margin-bottom: 12px; font-size: 1.05em; }
+        .visual-box { background: #fef3c7; border: 2px solid #f59e0b; padding: 20px; border-radius: 8px; margin: 15px 0; }
+        .visual-title { font-weight: 700; color: #92400e; margin-bottom: 12px; display: flex; align-items: center; font-size: 1.05em; }
+        .complexity { background: #f1f5f9; padding: 15px; border-radius: 8px; margin: 15px 0; }
+        .complexity-item { margin: 8px 0; color: #475569; }
+        .key-point { background: #dcfce7; border-left: 4px solid #16a34a; padding: 15px 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        ul, ol { margin-left: 25px; margin-top: 10px; }
+        li { margin: 8px 0; color: #475569; }
+        strong { color: #1e293b; }
+        .note { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 15px 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        @media (max-width: 768px) {
+            .container { padding: 10px; }
+            .header h1 { font-size: 1.5em; }
+            .section { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="../index.html" class="back-btn">← 返回題目列表</a>
+
+        <div class="header">
+            <h1>#199 Binary Tree Right Side View</h1>
+            <div class="difficulty">Medium</div>
+            <div class="tags">
+                <span class="tag">Tree</span>
+                <span class="tag">BFS</span>
+                <span class="tag">DFS</span>
+                <span class="tag">Binary Tree</span>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>題目描述</h2>
+            <p>給定一個二元樹的根節點 root，想像自己站在它的<strong>右側</strong>，按照從頂部到底部的順序，返回從右側所能看到的節點值。</p>
+            <p style="margin-top: 15px;">換句話說：<strong>每一層最右邊的那個節點</strong>。</p>
+        </div>
+
+        <div class="section">
+            <h2>範例</h2>
+            <div class="example">
+                <div class="example-title">範例 1：</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+輸入：root = [1,2,3,null,5,null,4]
+
+      1        ← 看得到 1
+     / \
+    2   3      ← 看得到 3
+     \   \
+      5   4    ← 看得到 4
+
+輸出：[1,3,4]
+                </pre>
+            </div>
+
+            <div class="example">
+                <div class="example-title">範例 2：</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+輸入：root = [1,2,3,4,null,null,null,5]
+
+      1
+     / \
+    2   3
+   /
+  4
+ /
+5
+
+輸出：[1,3,4,5]
+⚠️ 注意第 3 層看到的是 4（右子樹在該層沒有節點），
+   這說明「右側視圖」不等於「一直往右走」！
+                </pre>
+            </div>
+
+            <div class="example">
+                <div class="example-title">範例 3：</div>
+                <strong>輸入：</strong>root = []<br>
+                <strong>輸出：</strong>[]
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>解題思路</h2>
+            <div class="note">
+                <strong>⚠️ 第一個陷阱：不能只是「一直往右走」</strong>
+                <p>如範例 2，若某一層的右子樹是空的，那一層看到的就是左子樹的節點。所以必須<strong>逐層</strong>處理，而不是沿著 right 指標往下。</p>
+            </div>
+
+            <h3>方法一：BFS 層序遍歷（最直覺）</h3>
+            <div class="visual-box">
+                <div class="visual-title">💡 每層取最後一個節點</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+標準的層序遍歷，每一層記錄【最後一個】出隊的節點。
+
+while (!queue.empty()) {
+    int size = queue.size();          // 這一層的節點數
+    for (int i = 0; i < size; i++) {
+        node = queue.pop();
+        if (i == size - 1) result.push_back(node->val);  // 該層最後一個
+        if (node->left)  queue.push(node->left);
+        if (node->right) queue.push(node->right);
+    }
+}
+
+【追蹤範例 2】
+第 1 層：[1]        → 最後一個 = 1
+第 2 層：[2, 3]     → 最後一個 = 3
+第 3 層：[4]        → 最後一個 = 4（3 沒有子節點）
+第 4 層：[5]        → 最後一個 = 5
+
+結果 [1, 3, 4, 5] ✓
+                </pre>
+            </div>
+
+            <h3>方法二：DFS「先右後左」（更巧妙）</h3>
+            <div class="visual-box">
+                <div class="visual-title">🎯 每層第一個到達的節點就是答案</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+用 DFS 且【先遞迴右子樹】，
+那麼每一層【第一個】被訪問到的節點，
+必定是該層最右邊的節點！
+
+void dfs(node, depth) {
+    if (!node) return;
+
+    // 第一次到達這個深度 → 記錄
+    if (depth == result.size()) result.push_back(node->val);
+
+    dfs(node->right, depth + 1);   // ★ 先右！
+    dfs(node->left,  depth + 1);
+}
+
+【追蹤範例 2】
+dfs(1, 0)：result.size()=0 == depth=0 → 記錄 1，result=[1]
+  dfs(3, 1)：size=1 == 1 → 記錄 3，result=[1,3]
+    （3 沒有子節點）
+  dfs(2, 1)：size=2 != 1 → 不記錄（該層已有 3）
+    dfs(null, 2) 跳過
+    dfs(4, 2)：size=2 == 2 → 記錄 4，result=[1,3,4]
+      dfs(null, 3) 跳過
+      dfs(5, 3)：size=3 == 3 → 記錄 5，result=[1,3,4,5] ✓
+
+⭐ 條件 `depth == result.size()` 非常精妙：
+   它表示「這是第一次到達這個深度」。
+                </pre>
+            </div>
+
+            <h3>兩種方法比較</h3>
+            <pre style="background: #f1f5f9; padding: 15px; border-radius: 8px; margin-top: 10px;">
+           BFS                    DFS
+------------------------------------------------------
+時間       O(n)                   O(n)
+空間       O(w) 最寬一層的寬度     O(h) 樹高
+直覺性     ★★★ 很直觀            ★★ 需要理解「先右」的巧思
+變形擴充   容易（左側視圖只要取第一個）  容易（改成先左）
+極端情況   完全二元樹時 w = n/2    退化成鏈時 h = n
+
+兩種都要會，面試時可以先寫 BFS 再提 DFS 版本。
+            </pre>
+        </div>
+
+        <div class="section">
+            <h2>程式碼實現</h2>
+
+            <div class="code-block">
+                <div class="lang-tabs">
+                    <button class="lang-tab active" onclick="switchLang(event, 'python')">Python</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'cpp')">C++</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'java')">Java</button>
+                </div>
+
+                <div id="python" class="code-content active">
+                    <pre><code class="language-python"># 方法一：BFS 層序遍歷（推薦，最直覺）
+class Solution:
+    def rightSideView(self, root: Optional[TreeNode]) -&gt; List[int]:
+        if not root:
+            return []
+        from collections import deque
+
+        result = []
+        queue = deque([root])
+
+        while queue:
+            size = len(queue)              # 這一層的節點數
+            for i in range(size):
+                node = queue.popleft()
+                if i == size - 1:          # 該層最後一個 = 最右邊
+                    result.append(node.val)
+                if node.left:
+                    queue.append(node.left)
+                if node.right:
+                    queue.append(node.right)
+
+        return result
+
+
+# 方法二：DFS 先右後左
+class Solution:
+    def rightSideView(self, root: Optional[TreeNode]) -&gt; List[int]:
+        result = []
+
+        def dfs(node, depth):
+            if not node:
+                return
+            # 第一次到達這個深度 → 必定是該層最右邊
+            if depth == len(result):
+                result.append(node.val)
+
+            dfs(node.right, depth + 1)     # ★ 先遞迴右子樹
+            dfs(node.left, depth + 1)
+
+        dfs(root, 0)
+        return result</code></pre>
+                </div>
+
+                <div id="cpp" class="code-content">
+                    <pre><code class="language-cpp">// 方法一：BFS 層序遍歷（推薦）
+class Solution {
+public:
+    vector&lt;int&gt; rightSideView(TreeNode* root) {
+        vector&lt;int&gt; result;
+        if (!root) return result;
+
+        queue&lt;TreeNode*&gt; q;
+        q.push(root);
+
+        while (!q.empty()) {
+            int size = q.size();               // 這一層的節點數
+            for (int i = 0; i &lt; size; i++) {
+                TreeNode* node = q.front(); q.pop();
+                if (i == size - 1) result.push_back(node-&gt;val);  // 最右邊
+                if (node-&gt;left)  q.push(node-&gt;left);
+                if (node-&gt;right) q.push(node-&gt;right);
+            }
+        }
+        return result;
+    }
+};
+
+// 方法二：DFS 先右後左
+class Solution {
+    vector&lt;int&gt; result;
+
+    void dfs(TreeNode* node, int depth) {
+        if (!node) return;
+
+        // 第一次到達這個深度
+        if (depth == result.size()) result.push_back(node-&gt;val);
+
+        dfs(node-&gt;right, depth + 1);    // ★ 先右
+        dfs(node-&gt;left,  depth + 1);
+    }
+
+public:
+    vector&lt;int&gt; rightSideView(TreeNode* root) {
+        dfs(root, 0);
+        return result;
+    }
+};</code></pre>
+                </div>
+
+                <div id="java" class="code-content">
+                    <pre><code class="language-java">// 方法一：BFS 層序遍歷（推薦）
+class Solution {
+    public List&lt;Integer&gt; rightSideView(TreeNode root) {
+        List&lt;Integer&gt; result = new ArrayList&lt;&gt;();
+        if (root == null) return result;
+
+        Deque&lt;TreeNode&gt; queue = new ArrayDeque&lt;&gt;();
+        queue.offer(root);
+
+        while (!queue.isEmpty()) {
+            int size = queue.size();               // 這一層的節點數
+            for (int i = 0; i &lt; size; i++) {
+                TreeNode node = queue.poll();
+                if (i == size - 1) result.add(node.val);   // 該層最右
+                if (node.left  != null) queue.offer(node.left);
+                if (node.right != null) queue.offer(node.right);
+            }
+        }
+        return result;
+    }
+}
+
+// 方法二：DFS 先右後左
+class Solution {
+    private List&lt;Integer&gt; result = new ArrayList&lt;&gt;();
+
+    public List&lt;Integer&gt; rightSideView(TreeNode root) {
+        dfs(root, 0);
+        return result;
+    }
+
+    private void dfs(TreeNode node, int depth) {
+        if (node == null) return;
+
+        if (depth == result.size()) result.add(node.val);  // 第一次到這層
+
+        dfs(node.right, depth + 1);    // ★ 先右
+        dfs(node.left,  depth + 1);
+    }
+}</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>複雜度分析</h2>
+            <div class="complexity">
+                <div class="complexity-item">
+                    <strong>時間複雜度：</strong>O(n)
+                    <ul>
+                        <li>每個節點恰好被訪問一次</li>
+                    </ul>
+                </div>
+                <div class="complexity-item">
+                    <strong>空間複雜度：</strong>
+                    <ul>
+                        <li>BFS：O(w)，w 為樹的最大寬度；完全二元樹時最壞 O(n/2) = O(n)</li>
+                        <li>DFS：O(h)，h 為樹高；退化成鏈時最壞 O(n)</li>
+                        <li>不計輸出所需的 O(h) 空間</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>重點提示</h2>
+            <div class="key-point">
+                <strong>💡 關鍵技巧 1：「右側視圖」≠「一直往右走」</strong>
+                <p>當右子樹在某一層沒有節點時，該層看到的是左子樹的節點。必須逐層判斷，這是本題最重要的觀念，也是面試官設下的第一個陷阱。</p>
+            </div>
+
+            <div class="key-point">
+                <strong>💡 關鍵技巧 2：<code>depth == result.size()</code> 的妙用</strong>
+                <p>這個條件優雅地表達了「第一次到達這個深度」，不需要額外的 visited 或 maxDepth 變數。同樣的技巧可以用在「每層第一個/最後一個節點」的各種變形題。</p>
+            </div>
+
+            <div class="key-point">
+                <strong>💡 BFS 分層的標準寫法</strong>
+                <p><code>int size = queue.size()</code> 先固定住這一層的數量，再用 for 迴圈處理。這是所有「層序遍歷」題目的核心模板（#102、#103、#107、#515、#637 全都用它）。</p>
+            </div>
+
+            <div class="note">
+                <strong>⚠️ 常見錯誤：</strong>
+                <ul>
+                    <li>直接沿著 <code>node.right</code> 往下走（範例 2 會錯）</li>
+                    <li>DFS 版本寫成「先左後右」（會變成左側視圖）</li>
+                    <li>BFS 內層迴圈直接用 <code>queue.size()</code> 當條件（會把下一層也算進來）</li>
+                    <li>沒處理空樹</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>相關題目</h2>
+            <ul>
+                <li><strong>#102 Binary Tree Level Order Traversal</strong> - 層序遍歷基礎</li>
+                <li><strong>#103 Zigzag Level Order Traversal</strong> - 鋸齒狀層序遍歷</li>
+                <li><strong>#515 Find Largest Value in Each Tree Row</strong> - 每層最大值</li>
+                <li><strong>#637 Average of Levels</strong> - 每層平均值</li>
+                <li><strong>#116 Populating Next Right Pointers</strong> - 連接每層的右指標</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>補充說明</h2>
+            <h3>層序遍歷題型全家福</h3>
+            <div class="visual-box">
+                <div class="visual-title">📝 同一個模板，改一行就是新題</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+while (!q.empty()) {
+    int size = q.size();
+    // ← 在這裡初始化「本層的聚合變數」
+    for (int i = 0; i &lt; size; i++) {
+        node = q.pop();
+        // ← 在這裡處理本層的邏輯
+        if (node-&gt;left)  q.push(node-&gt;left);
+        if (node-&gt;right) q.push(node-&gt;right);
+    }
+    // ← 在這裡把本層結果加入答案
+}
+
+題目                    本層邏輯
+------------------------------------------------------
+#199 右側視圖           取 i == size-1 的節點 ★
+#102 層序遍歷           收集整層放進 vector
+#103 鋸齒遍歷           奇數層時把該層反轉
+#107 自底向上           最後把 result 整個反轉
+#515 每層最大值         取 max
+#637 每層平均值         求 sum / size
+#116 連接右指標         node-&gt;next = (i &lt; size-1) ? q.front() : nullptr
+#111 最小深度           遇到第一個葉子節點就返回當前層數
+                </pre>
+            </div>
+
+            <h3>延伸：左側視圖怎麼寫？</h3>
+            <pre style="background: #f1f5f9; padding: 15px; border-radius: 8px; margin-top: 10px;">
+BFS 版：把 `i == size - 1` 改成 `i == 0`
+DFS 版：把遞迴順序改成「先左後右」
+
+// 左側視圖 DFS
+void dfs(TreeNode* node, int depth) {
+    if (!node) return;
+    if (depth == result.size()) result.push_back(node-&gt;val);
+    dfs(node-&gt;left,  depth + 1);    // ★ 先左
+    dfs(node-&gt;right, depth + 1);
+}
+
+【俯視圖 / 底視圖】（#314 垂直遍歷的變形）
+則要按「水平距離」分組：
+  根節點的 col = 0，左子 col-1，右子 col+1
+  同一個 col 中取最上面（或最下面）的節點
+            </pre>
+
+            <h3>面試延伸問題</h3>
+            <ul>
+                <li>「如果樹非常深（10 萬層）？」→ DFS 遞迴會 stack overflow，改用 BFS 或顯式堆疊</li>
+                <li>「如果樹非常寬？」→ BFS 佇列會很大，改用 DFS 較省空間</li>
+                <li>「如果要輸出每一層的所有節點？」→ #102，把整層收集起來即可</li>
+                <li>「如果是 N 元樹？」→ 把 <code>left/right</code> 換成 <code>for (child : children)</code>，邏輯完全相同</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        function switchLang(event, lang) {
+            const tabs = document.querySelectorAll('.lang-tab');
+            const contents = document.querySelectorAll('.code-content');
+
+            tabs.forEach(tab => tab.classList.remove('active'));
+            contents.forEach(content => content.classList.remove('active'));
+
+            event.target.classList.add('active');
+            document.getElementById(lang).classList.add('active');
+        }
+
+        hljs.highlightAll();
+    </script>
+</body>
+</html>

@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>#43 Multiply Strings | LeetCode 學習平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #333; background: #f8fafc; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .header { background: linear-gradient(135deg, #ea580c 0%, #c2410c 100%); color: white; padding: 30px; border-radius: 12px; margin-bottom: 30px; box-shadow: 0 4px 6px rgba(234, 88, 12, 0.2); }
+        .header h1 { font-size: 2em; margin-bottom: 10px; }
+        .difficulty { display: inline-block; padding: 6px 16px; background: rgba(255,255,255,0.2); border-radius: 20px; font-size: 0.9em; font-weight: 600; }
+        .tags { margin-top: 15px; }
+        .tag { display: inline-block; background: rgba(255,255,255,0.15); padding: 4px 12px; border-radius: 6px; margin-right: 8px; font-size: 0.85em; }
+        .back-btn { display: inline-block; margin-bottom: 20px; padding: 10px 20px; background: #3b82f6; color: white; text-decoration: none; border-radius: 8px; transition: background 0.3s; }
+        .back-btn:hover { background: #2563eb; }
+        .section { background: white; padding: 30px; border-radius: 12px; margin-bottom: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .section h2 { color: #1e293b; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 3px solid #ea580c; }
+        .section h3 { color: #475569; margin: 25px 0 15px 0; font-size: 1.3em; }
+        .code-block { background: #282c34; border-radius: 8px; overflow: hidden; margin: 15px 0; }
+        .lang-tabs { display: flex; background: #21252b; border-bottom: 1px solid #181a1f; }
+        .lang-tab { padding: 12px 24px; cursor: pointer; color: #abb2bf; border: none; background: none; transition: all 0.3s; font-weight: 500; }
+        .lang-tab.active { color: #61afef; background: #282c34; border-bottom: 2px solid #61afef; }
+        .lang-tab:hover { color: #61afef; background: #2c313a; }
+        .code-content { display: none; }
+        .code-content.active { display: block; }
+        pre { margin: 0; overflow-x: auto; }
+        code { font-family: 'Consolas', 'Monaco', 'Courier New', monospace; font-size: 0.9em; }
+        .example { background: #f0f9ff; border-left: 4px solid #3b82f6; padding: 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .example-title { font-weight: 700; color: #1e40af; margin-bottom: 12px; font-size: 1.05em; }
+        .visual-box { background: #fef3c7; border: 2px solid #f59e0b; padding: 20px; border-radius: 8px; margin: 15px 0; }
+        .visual-title { font-weight: 700; color: #92400e; margin-bottom: 12px; display: flex; align-items: center; font-size: 1.05em; }
+        .complexity { background: #f1f5f9; padding: 15px; border-radius: 8px; margin: 15px 0; }
+        .complexity-item { margin: 8px 0; color: #475569; }
+        .key-point { background: #dcfce7; border-left: 4px solid #16a34a; padding: 15px 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        ul, ol { margin-left: 25px; margin-top: 10px; }
+        li { margin: 8px 0; color: #475569; }
+        strong { color: #1e293b; }
+        .note { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 15px 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        @media (max-width: 768px) {
+            .container { padding: 10px; }
+            .header h1 { font-size: 1.5em; }
+            .section { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="../index.html" class="back-btn">← 返回題目列表</a>
+
+        <div class="header">
+            <h1>#43 Multiply Strings</h1>
+            <div class="difficulty">Medium</div>
+            <div class="tags">
+                <span class="tag">String</span>
+                <span class="tag">Math</span>
+                <span class="tag">Simulation</span>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>題目描述</h2>
+            <p>給定兩個以字串形式表示的<strong>非負整數</strong> num1 和 num2，返回 num1 和 num2 的乘積，它們的乘積也表示為字串形式。</p>
+            <p style="margin-top: 15px;"><strong>注意：</strong>不能使用任何內建的 BigInteger 函式庫或直接將輸入轉換為整數。</p>
+            <p style="margin-top: 15px;">字串長度可達 200，遠遠超過 64 位元整數的範圍，所以這題本質上是在<strong>手動實作大數乘法</strong>。</p>
+        </div>
+
+        <div class="section">
+            <h2>範例</h2>
+            <div class="example">
+                <div class="example-title">範例 1：</div>
+                <strong>輸入：</strong>num1 = "2", num2 = "3"<br>
+                <strong>輸出：</strong>"6"
+            </div>
+
+            <div class="example">
+                <div class="example-title">範例 2：</div>
+                <strong>輸入：</strong>num1 = "123", num2 = "456"<br>
+                <strong>輸出：</strong>"56088"
+            </div>
+
+            <div class="example">
+                <div class="example-title">範例 3：</div>
+                <strong>輸入：</strong>num1 = "0", num2 = "12345"<br>
+                <strong>輸出：</strong>"0"
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>解題思路</h2>
+            <div class="visual-box">
+                <div class="visual-title">💡 核心：優化過的直式乘法</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+【關鍵觀察】
+num1[i] × num2[j] 的結果，
+一定落在答案的第 (i + j) 和 (i + j + 1) 這兩個位置！
+
+  m 位數 × n 位數 → 最多 m + n 位數
+
+    1 2 3        索引 i: 0 1 2
+  × 4 5 6        索引 j: 0 1 2
+  ---------
+  結果陣列索引:  0 1 2 3 4    （長度 3 + 3 = 5）
+
+例：i=2 (數字3), j=2 (數字6)
+    3 × 6 = 18
+    放在 result[4]（個位）和 result[3]（進位）
+
+這個「i + j 定位法」讓我們不用逐行計算再相加，
+可以一次把所有乘積累加到對應位置，最後統一處理進位。
+                </pre>
+            </div>
+
+            <h3>完整推導：123 × 456</h3>
+            <div class="visual-box">
+                <div class="visual-title">🔢 兩階段：先全部累加，再統一進位</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+result = [0, 0, 0, 0, 0]  （長度 3+3 = 5）
+
+【階段 1】所有兩兩乘積累加到 result[i+j+1]
+
+i=2(3) × j=2(6) = 18 → result[4] += 18  → [0,0,0,0,18]
+i=2(3) × j=1(5) = 15 → result[3] += 15  → [0,0,0,15,18]
+i=2(3) × j=0(4) = 12 → result[2] += 12  → [0,0,12,15,18]
+i=1(2) × j=2(6) = 12 → result[3] += 12  → [0,0,12,27,18]
+i=1(2) × j=1(5) = 10 → result[2] += 10  → [0,0,22,27,18]
+i=1(2) × j=0(4) = 8  → result[1] += 8   → [0,8,22,27,18]
+i=0(1) × j=2(6) = 6  → result[2] += 6   → [0,8,28,27,18]
+i=0(1) × j=1(5) = 5  → result[1] += 5   → [0,13,28,27,18]
+i=0(1) × j=0(4) = 4  → result[0] += 4   → [4,13,28,27,18]
+
+【階段 2】從最低位往前統一處理進位
+
+result[4] = 18 → 留 8，進位 1 給 result[3]
+result[3] = 27 + 1 = 28 → 留 8，進位 2
+result[2] = 28 + 2 = 30 → 留 0，進位 3
+result[1] = 13 + 3 = 16 → 留 6，進位 1
+result[0] = 4 + 1 = 5
+
+result = [5, 6, 0, 8, 8] → "56088" ✓
+
+【為什麼可以先累加再統一進位？】
+因為每個位置最大值是 9×9×200 = 16200，
+遠小於 int 範圍，不會溢位。這讓程式碼簡潔很多。
+                </pre>
+            </div>
+
+            <h3>邊界處理：前置零</h3>
+            <p>若 result 開頭是 0（例如 <code>[0, 6]</code> 代表 6），要把前置零去掉。特例是結果本身為 0（<code>"0" × "12345"</code>），此時要保留一個 "0"。</p>
+        </div>
+
+        <div class="section">
+            <h2>程式碼實現</h2>
+
+            <div class="code-block">
+                <div class="lang-tabs">
+                    <button class="lang-tab active" onclick="switchLang(event, 'python')">Python</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'cpp')">C++</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'java')">Java</button>
+                </div>
+
+                <div id="python" class="code-content active">
+                    <pre><code class="language-python">class Solution:
+    def multiply(self, num1: str, num2: str) -&gt; str:
+        if num1 == "0" or num2 == "0":
+            return "0"
+
+        m, n = len(num1), len(num2)
+        result = [0] * (m + n)          # 最多 m + n 位
+
+        # 階段 1：所有兩兩乘積累加到 result[i+j+1]
+        for i in range(m - 1, -1, -1):
+            d1 = int(num1[i])
+            for j in range(n - 1, -1, -1):
+                d2 = int(num2[j])
+                result[i + j + 1] += d1 * d2
+
+        # 階段 2：從最低位開始統一處理進位
+        for k in range(m + n - 1, 0, -1):
+            result[k - 1] += result[k] // 10
+            result[k] %= 10
+
+        # 去除前置零
+        start = 0
+        while start &lt; len(result) - 1 and result[start] == 0:
+            start += 1
+
+        return ''.join(map(str, result[start:]))</code></pre>
+                </div>
+
+                <div id="cpp" class="code-content">
+                    <pre><code class="language-cpp">class Solution {
+public:
+    string multiply(string num1, string num2) {
+        if (num1 == "0" || num2 == "0") return "0";
+
+        int m = num1.size(), n = num2.size();
+        vector&lt;int&gt; result(m + n, 0);         // 最多 m + n 位
+
+        // 階段 1：所有兩兩乘積累加到 result[i+j+1]
+        for (int i = m - 1; i &gt;= 0; i--) {
+            int d1 = num1[i] - '0';
+            for (int j = n - 1; j &gt;= 0; j--) {
+                int d2 = num2[j] - '0';
+                result[i + j + 1] += d1 * d2;
+            }
+        }
+
+        // 階段 2：統一處理進位
+        for (int k = m + n - 1; k &gt; 0; k--) {
+            result[k - 1] += result[k] / 10;
+            result[k] %= 10;
+        }
+
+        // 去除前置零並組成字串
+        string ans;
+        int start = (result[0] == 0) ? 1 : 0;
+        for (int i = start; i &lt; m + n; i++) {
+            ans += ('0' + result[i]);
+        }
+        return ans;
+    }
+};</code></pre>
+                </div>
+
+                <div id="java" class="code-content">
+                    <pre><code class="language-java">class Solution {
+    public String multiply(String num1, String num2) {
+        if (num1.equals("0") || num2.equals("0")) return "0";
+
+        int m = num1.length(), n = num2.length();
+        int[] result = new int[m + n];        // 最多 m + n 位
+
+        // 階段 1：所有兩兩乘積累加到 result[i+j+1]
+        for (int i = m - 1; i &gt;= 0; i--) {
+            int d1 = num1.charAt(i) - '0';
+            for (int j = n - 1; j &gt;= 0; j--) {
+                int d2 = num2.charAt(j) - '0';
+                result[i + j + 1] += d1 * d2;
+            }
+        }
+
+        // 階段 2：統一處理進位
+        for (int k = m + n - 1; k &gt; 0; k--) {
+            result[k - 1] += result[k] / 10;
+            result[k] %= 10;
+        }
+
+        // 去除前置零
+        StringBuilder sb = new StringBuilder();
+        int start = (result[0] == 0) ? 1 : 0;
+        for (int i = start; i &lt; m + n; i++) {
+            sb.append(result[i]);
+        }
+        return sb.toString();
+    }
+}</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>複雜度分析</h2>
+            <div class="complexity">
+                <div class="complexity-item">
+                    <strong>時間複雜度：</strong>O(m × n)
+                    <ul>
+                        <li>雙層迴圈計算所有位數的兩兩乘積</li>
+                        <li>進位處理只需 O(m + n)</li>
+                        <li>這是「小學直式乘法」的複雜度；更快的演算法見補充說明</li>
+                    </ul>
+                </div>
+                <div class="complexity-item">
+                    <strong>空間複雜度：</strong>O(m + n)，存放結果的陣列
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>重點提示</h2>
+            <div class="key-point">
+                <strong>💡 關鍵技巧 1：i + j 定位法</strong>
+                <p><code>num1[i] × num2[j]</code> 落在 <code>result[i+j]</code> 和 <code>result[i+j+1]</code>。記住這個定位公式，本題就解決了一大半。</p>
+            </div>
+
+            <div class="key-point">
+                <strong>💡 關鍵技巧 2：先全部累加，最後統一進位</strong>
+                <p>不需要每一步都處理進位（那樣程式碼會很亂）。因為單一位置最大只到約 16200，int 完全裝得下，最後統一處理反而更簡潔、更不容易出錯。</p>
+            </div>
+
+            <div class="key-point">
+                <strong>💡 關鍵技巧 3：長度必為 m + n 或 m + n - 1</strong>
+                <p>99 × 99 = 9801（4 位 = 2+2），9 × 9 = 81（2 位 = 1+1），1 × 1 = 1（1 位 = 1+1-1）。所以開 m+n 的陣列一定夠，最多只會有一個前置零。</p>
+            </div>
+
+            <div class="note">
+                <strong>⚠️ 常見錯誤：</strong>
+                <ul>
+                    <li>忘記處理任一數為 "0" 的情況，會輸出 "0000..."</li>
+                    <li>去除前置零時把結果 "0" 也刪光了（要保留至少一位）</li>
+                    <li>索引寫成 <code>result[i+j]</code> 而非 <code>result[i+j+1]</code>，整體偏移一位</li>
+                    <li>試圖用 <code>long long</code> 直接轉換 —— 200 位數遠遠超出範圍</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>相關題目</h2>
+            <ul>
+                <li><strong>#2 Add Two Numbers</strong> - 鏈結串列版的大數加法</li>
+                <li><strong>#67 Add Binary</strong> - 二進位字串加法</li>
+                <li><strong>#415 Add Strings</strong> - 大數加法（本題的簡化版）</li>
+                <li><strong>#66 Plus One</strong> - 陣列形式的加一</li>
+                <li><strong>#371 Sum of Two Integers</strong> - 位元運算實作加法</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>補充說明</h2>
+            <h3>大數加法（#415，本題的基礎）</h3>
+            <pre style="background: #f1f5f9; padding: 15px; border-radius: 8px; margin-top: 10px;">
+string addStrings(string num1, string num2) {
+    int i = num1.size() - 1, j = num2.size() - 1, carry = 0;
+    string result;
+    while (i &gt;= 0 || j &gt;= 0 || carry) {
+        int sum = carry;
+        if (i &gt;= 0) sum += num1[i--] - '0';
+        if (j &gt;= 0) sum += num2[j--] - '0';
+        result += ('0' + sum % 10);
+        carry = sum / 10;
+    }
+    reverse(result.begin(), result.end());
+    return result;
+}
+
+⭐ 迴圈條件 `i &gt;= 0 || j &gt;= 0 || carry` 一次處理三種情況：
+   長度不同、最後還有進位，非常值得記住的模板。
+            </pre>
+
+            <h3>更快的乘法演算法</h3>
+            <div class="visual-box">
+                <div class="visual-title">⚡ 從 O(n²) 到 O(n log n)</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+演算法              複雜度          說明
+----------------------------------------------------------
+直式乘法（本題）    O(n²)          小數字最快（常數小）
+Karatsuba          O(n^1.585)      分治，把 4 次乘法減為 3 次
+Toom-Cook          O(n^1.465)      Karatsuba 的推廣
+Schönhage-Strassen O(n log n loglog n)  基於 FFT
+Harvey-van der Hoeven O(n log n)   2019 年的理論最優解
+
+【Karatsuba 的核心】
+  x = a·10^m + b,  y = c·10^m + d
+  x·y = ac·10^2m + (ad + bc)·10^m + bd
+
+  樸素做法需要 4 次乘法（ac, ad, bc, bd）
+  但 ad + bc = (a+b)(c+d) - ac - bd
+  → 只需要 3 次乘法：ac、bd、(a+b)(c+d) ✓
+
+實務上（GMP、Python 的 int）會根據數字大小
+自動切換演算法：小數用直式，大數用 Karatsuba 或 FFT。
+                </pre>
+            </div>
+
+            <h3>面試延伸問題</h3>
+            <ul>
+                <li>「如果要支援負數怎麼辦？」→ 先取出符號，用絕對值相乘，最後再套符號</li>
+                <li>「如果要支援小數？」→ 記錄小數點位置，當成整數相乘後再插回小數點</li>
+                <li>「為什麼不能先轉成 long long？」→ 200 位數約等於 10²⁰⁰，而 int64 上限只有約 9.2×10¹⁸</li>
+                <li>「能不能用更大的進位基底？」→ 可以。實務的大數函式庫用 2³² 或 10⁹ 為一個「位」，大幅減少迴圈次數</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        function switchLang(event, lang) {
+            const tabs = document.querySelectorAll('.lang-tab');
+            const contents = document.querySelectorAll('.code-content');
+
+            tabs.forEach(tab => tab.classList.remove('active'));
+            contents.forEach(content => content.classList.remove('active'));
+
+            event.target.classList.add('active');
+            document.getElementById(lang).classList.add('active');
+        }
+
+        hljs.highlightAll();
+    </script>
+</body>
+</html>

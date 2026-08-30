@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>#63 Unique Paths II | LeetCode 學習平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #333; background: #f8fafc; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .header { background: linear-gradient(135deg, #ea580c 0%, #c2410c 100%); color: white; padding: 30px; border-radius: 12px; margin-bottom: 30px; box-shadow: 0 4px 6px rgba(234, 88, 12, 0.2); }
+        .header h1 { font-size: 2em; margin-bottom: 10px; }
+        .difficulty { display: inline-block; padding: 6px 16px; background: rgba(255,255,255,0.2); border-radius: 20px; font-size: 0.9em; font-weight: 600; }
+        .tags { margin-top: 15px; }
+        .tag { display: inline-block; background: rgba(255,255,255,0.15); padding: 4px 12px; border-radius: 6px; margin-right: 8px; font-size: 0.85em; }
+        .back-btn { display: inline-block; margin-bottom: 20px; padding: 10px 20px; background: #3b82f6; color: white; text-decoration: none; border-radius: 8px; transition: background 0.3s; }
+        .back-btn:hover { background: #2563eb; }
+        .section { background: white; padding: 30px; border-radius: 12px; margin-bottom: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .section h2 { color: #1e293b; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 3px solid #ea580c; }
+        .section h3 { color: #475569; margin: 25px 0 15px 0; font-size: 1.3em; }
+        .code-block { background: #282c34; border-radius: 8px; overflow: hidden; margin: 15px 0; }
+        .lang-tabs { display: flex; background: #21252b; border-bottom: 1px solid #181a1f; }
+        .lang-tab { padding: 12px 24px; cursor: pointer; color: #abb2bf; border: none; background: none; transition: all 0.3s; font-weight: 500; }
+        .lang-tab.active { color: #61afef; background: #282c34; border-bottom: 2px solid #61afef; }
+        .lang-tab:hover { color: #61afef; background: #2c313a; }
+        .code-content { display: none; }
+        .code-content.active { display: block; }
+        pre { margin: 0; overflow-x: auto; }
+        code { font-family: 'Consolas', 'Monaco', 'Courier New', monospace; font-size: 0.9em; }
+        .example { background: #f0f9ff; border-left: 4px solid #3b82f6; padding: 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .example-title { font-weight: 700; color: #1e40af; margin-bottom: 12px; font-size: 1.05em; }
+        .visual-box { background: #fef3c7; border: 2px solid #f59e0b; padding: 20px; border-radius: 8px; margin: 15px 0; }
+        .visual-title { font-weight: 700; color: #92400e; margin-bottom: 12px; display: flex; align-items: center; font-size: 1.05em; }
+        .complexity { background: #f1f5f9; padding: 15px; border-radius: 8px; margin: 15px 0; }
+        .complexity-item { margin: 8px 0; color: #475569; }
+        .key-point { background: #dcfce7; border-left: 4px solid #16a34a; padding: 15px 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        ul, ol { margin-left: 25px; margin-top: 10px; }
+        li { margin: 8px 0; color: #475569; }
+        strong { color: #1e293b; }
+        .note { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 15px 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        @media (max-width: 768px) {
+            .container { padding: 10px; }
+            .header h1 { font-size: 1.5em; }
+            .section { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="../index.html" class="back-btn">← 返回題目列表</a>
+
+        <div class="header">
+            <h1>#63 Unique Paths II</h1>
+            <div class="difficulty">Medium</div>
+            <div class="tags">
+                <span class="tag">Dynamic Programming</span>
+                <span class="tag">Matrix</span>
+                <span class="tag">Array</span>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>題目描述</h2>
+            <p>一個機器人位於一個 m × n 網格的左上角（起始點標記為 Start）。機器人每次只能<strong>向下或向右</strong>移動一步。機器人試圖達到網格的右下角（標記為 Finish）。</p>
+            <p style="margin-top: 15px;">現在考慮網格中<strong>有障礙物</strong>，那麼從左上角到右下角將會有多少條不同的路徑？</p>
+            <p style="margin-top: 15px;">網格中的障礙物和空位置分別用 <code>1</code> 和 <code>0</code> 來表示。題目保證答案小於等於 2 × 10⁹。</p>
+        </div>
+
+        <div class="section">
+            <h2>範例</h2>
+            <div class="example">
+                <div class="example-title">範例 1：</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+輸入：obstacleGrid = [[0,0,0],[0,1,0],[0,0,0]]
+輸出：2
+
+  S 0 0
+  0 X 0
+  0 0 F
+
+3×3 網格正中間有一個障礙物，共有 2 條路徑：
+  1. 右 → 右 → 下 → 下
+  2. 下 → 下 → 右 → 右
+                </pre>
+            </div>
+
+            <div class="example">
+                <div class="example-title">範例 2：</div>
+                <strong>輸入：</strong>obstacleGrid = [[0,1],[0,0]]<br>
+                <strong>輸出：</strong>1
+            </div>
+
+            <div class="example">
+                <div class="example-title">範例 3：</div>
+                <strong>輸入：</strong>obstacleGrid = [[1]]<br>
+                <strong>輸出：</strong>0（起點就是障礙物）
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>解題思路</h2>
+            <div class="visual-box">
+                <div class="visual-title">💡 狀態定義與轉移</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+dp[i][j] = 從起點走到 (i, j) 的不同路徑數
+
+因為只能向右或向下走，
+到達 (i,j) 的前一步只可能是 (i-1,j) 或 (i,j-1)：
+
+  若 (i,j) 是障礙物：dp[i][j] = 0     ← 走不到，也不能經過
+  否則：             dp[i][j] = dp[i-1][j] + dp[i][j-1]
+
+這就是本題與 #62 的<strong>唯一差別</strong>：多了障礙物的判斷。
+                </pre>
+            </div>
+
+            <h3>完整推導：[[0,0,0],[0,1,0],[0,0,0]]</h3>
+            <div class="visual-box">
+                <div class="visual-title">📊 手推 DP 表格</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+原網格：           dp 表格：
+0 0 0              1 1 1
+0 X 0       →      1 0 1
+0 0 0              1 1 2   ← 答案
+
+逐格計算：
+dp[0][0] = 1（起點，非障礙）
+第一行：dp[0][1] = dp[0][0] = 1，dp[0][2] = 1
+第一列：dp[1][0] = 1，dp[2][0] = 1
+
+dp[1][1] = 障礙物 → 0
+dp[1][2] = dp[0][2] + dp[1][1] = 1 + 0 = 1
+dp[2][1] = dp[1][1] + dp[2][0] = 0 + 1 = 1
+dp[2][2] = dp[1][2] + dp[2][1] = 1 + 1 = 2 ✓
+
+答案 = 2 ✓
+                </pre>
+            </div>
+
+            <h3>邊界處理的陷阱（本題重點）</h3>
+            <div class="visual-box">
+                <div class="visual-title">⚠️ 第一行/第一列遇到障礙物後全部為 0</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+第一行只能一路向右走，
+所以一旦遇到障礙物，它【右邊的所有格子】都到不了！
+
+  0 0 X 0 0
+  dp: 1 1 0 0 0    ← 障礙物之後全是 0，不是 1
+
+同理第一列：一旦遇到障礙物，下面全部為 0。
+
+❌ 錯誤寫法（照抄 #62）：
+   for j in range(n): dp[0][j] = 1     ← 沒考慮障礙物！
+
+✓ 正確寫法：
+   for j in range(n):
+       if grid[0][j] == 1: break        # 遇到障礙就停
+       dp[0][j] = 1
+
+💡 更好的做法：多開一行一列的「虛擬邊界」，
+   讓 dp[0][*] = dp[*][0] = 0，
+   再設 dp[1][1] = 1 當起點，
+   這樣第一行第一列也能用統一的轉移公式，不需特判。
+                </pre>
+            </div>
+
+            <h3>起點與終點也可能是障礙物</h3>
+            <p>若 <code>obstacleGrid[0][0] == 1</code>，機器人根本無法出發，答案是 0。用上述的「虛擬邊界」寫法會自然處理這種情況。</p>
+        </div>
+
+        <div class="section">
+            <h2>程式碼實現</h2>
+
+            <div class="code-block">
+                <div class="lang-tabs">
+                    <button class="lang-tab active" onclick="switchLang(event, 'python')">Python</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'cpp')">C++</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'java')">Java</button>
+                </div>
+
+                <div id="python" class="code-content active">
+                    <pre><code class="language-python"># 方法一：二維 DP，虛擬邊界（推薦，不用特判第一行列）
+class Solution:
+    def uniquePathsWithObstacles(self, obstacleGrid: List[List[int]]) -&gt; int:
+        m, n = len(obstacleGrid), len(obstacleGrid[0])
+        # 多開一行一列當虛擬邊界，全部初始化為 0
+        dp = [[0] * (n + 1) for _ in range(m + 1)]
+
+        # 起點的「入口」設為 1（相當於從外面走進 (0,0) 有 1 種方式）
+        dp[0][1] = 1
+
+        for i in range(1, m + 1):
+            for j in range(1, n + 1):
+                if obstacleGrid[i - 1][j - 1] == 1:
+                    dp[i][j] = 0                      # 障礙物走不到
+                else:
+                    dp[i][j] = dp[i - 1][j] + dp[i][j - 1]
+
+        return dp[m][n]
+
+
+# 方法二：一維滾動陣列（空間 O(n)）
+class Solution:
+    def uniquePathsWithObstacles(self, obstacleGrid: List[List[int]]) -&gt; int:
+        m, n = len(obstacleGrid), len(obstacleGrid[0])
+        dp = [0] * n
+        dp[0] = 1 if obstacleGrid[0][0] == 0 else 0
+
+        for i in range(m):
+            for j in range(n):
+                if obstacleGrid[i][j] == 1:
+                    dp[j] = 0                # 障礙物歸零
+                elif j &gt; 0:
+                    dp[j] += dp[j - 1]       # dp[j] 是上方，dp[j-1] 是左方
+                # j == 0 時 dp[0] 保持不變（只能從上方來）
+
+        return dp[n - 1]</code></pre>
+                </div>
+
+                <div id="cpp" class="code-content">
+                    <pre><code class="language-cpp">// 方法一：二維 DP + 虛擬邊界（推薦）
+class Solution {
+public:
+    int uniquePathsWithObstacles(vector&lt;vector&lt;int&gt;&gt;&amp; obstacleGrid) {
+        int m = obstacleGrid.size(), n = obstacleGrid[0].size();
+        // 多開一行一列，用 long long 避免溢位
+        vector&lt;vector&lt;long long&gt;&gt; dp(m + 1, vector&lt;long long&gt;(n + 1, 0));
+
+        dp[0][1] = 1;      // 虛擬入口
+
+        for (int i = 1; i &lt;= m; i++) {
+            for (int j = 1; j &lt;= n; j++) {
+                if (obstacleGrid[i - 1][j - 1] == 1) {
+                    dp[i][j] = 0;                       // 障礙物
+                } else {
+                    dp[i][j] = dp[i - 1][j] + dp[i][j - 1];
+                }
+            }
+        }
+        return (int)dp[m][n];
+    }
+};
+
+// 方法二：一維滾動陣列（空間 O(n)）
+class Solution {
+public:
+    int uniquePathsWithObstacles(vector&lt;vector&lt;int&gt;&gt;&amp; obstacleGrid) {
+        int m = obstacleGrid.size(), n = obstacleGrid[0].size();
+        vector&lt;long long&gt; dp(n, 0);
+        dp[0] = (obstacleGrid[0][0] == 0) ? 1 : 0;
+
+        for (int i = 0; i &lt; m; i++) {
+            for (int j = 0; j &lt; n; j++) {
+                if (obstacleGrid[i][j] == 1) dp[j] = 0;   // 障礙物歸零
+                else if (j &gt; 0)              dp[j] += dp[j - 1];
+            }
+        }
+        return (int)dp[n - 1];
+    }
+};</code></pre>
+                </div>
+
+                <div id="java" class="code-content">
+                    <pre><code class="language-java">// 方法一：二維 DP + 虛擬邊界（推薦）
+class Solution {
+    public int uniquePathsWithObstacles(int[][] obstacleGrid) {
+        int m = obstacleGrid.length, n = obstacleGrid[0].length;
+        int[][] dp = new int[m + 1][n + 1];   // 多開一行一列
+
+        dp[0][1] = 1;      // 虛擬入口
+
+        for (int i = 1; i &lt;= m; i++) {
+            for (int j = 1; j &lt;= n; j++) {
+                if (obstacleGrid[i - 1][j - 1] == 1) {
+                    dp[i][j] = 0;                       // 障礙物
+                } else {
+                    dp[i][j] = dp[i - 1][j] + dp[i][j - 1];
+                }
+            }
+        }
+        return dp[m][n];
+    }
+}
+
+// 方法二：一維滾動陣列
+class Solution {
+    public int uniquePathsWithObstacles(int[][] obstacleGrid) {
+        int m = obstacleGrid.length, n = obstacleGrid[0].length;
+        int[] dp = new int[n];
+        dp[0] = (obstacleGrid[0][0] == 0) ? 1 : 0;
+
+        for (int i = 0; i &lt; m; i++) {
+            for (int j = 0; j &lt; n; j++) {
+                if (obstacleGrid[i][j] == 1) dp[j] = 0;
+                else if (j &gt; 0)              dp[j] += dp[j - 1];
+            }
+        }
+        return dp[n - 1];
+    }
+}</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>複雜度分析</h2>
+            <div class="complexity">
+                <div class="complexity-item">
+                    <strong>時間複雜度：</strong>O(m × n)
+                    <ul>
+                        <li>每個格子計算一次，每次 O(1)</li>
+                    </ul>
+                </div>
+                <div class="complexity-item">
+                    <strong>空間複雜度：</strong>
+                    <ul>
+                        <li>二維 DP：O(m × n)</li>
+                        <li>滾動陣列：O(n) ★</li>
+                        <li>也可以原地修改 obstacleGrid 達到 O(1)（但破壞輸入）</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>重點提示</h2>
+            <div class="key-point">
+                <strong>💡 關鍵技巧 1：用「虛擬邊界」消除特判</strong>
+                <p>多開一行一列讓 dp 的邊界自然為 0，配合 <code>dp[0][1] = 1</code> 當虛擬入口，就能讓第一行、第一列、起點是障礙物等所有情況<strong>共用同一條轉移式</strong>。這個技巧在矩陣 DP 中非常好用。</p>
+            </div>
+
+            <div class="key-point">
+                <strong>💡 關鍵技巧 2：滾動陣列的巧妙之處</strong>
+                <p>在一維版本中，更新 <code>dp[j] += dp[j-1]</code> 時：<code>dp[j]</code> 還是<strong>上一行</strong>的值（代表從上方來），<code>dp[j-1]</code> 已經是<strong>當前行</strong>的值（代表從左方來）。剛好就是我們要的兩個方向，非常優雅。</p>
+            </div>
+
+            <div class="key-point">
+                <strong>💡 對比 #62（無障礙物）</strong>
+                <p>#62 有<strong>數學解</strong>：總共要走 m-1 步下、n-1 步右，答案就是組合數 <code>C(m+n-2, m-1)</code>，可以 O(min(m,n)) 算出。但本題有障礙物，組合數學失效，<strong>只能用 DP</strong>。</p>
+            </div>
+
+            <div class="note">
+                <strong>⚠️ 常見錯誤：</strong>
+                <ul>
+                    <li>第一行/第一列直接全部設為 1，沒考慮障礙物後面應該是 0</li>
+                    <li>沒處理起點或終點就是障礙物的情況</li>
+                    <li>結果可能超過 int 範圍（題目保證 ≤ 2×10⁹，接近 int 上限，用 long 較保險）</li>
+                    <li>滾動陣列時 <code>j == 0</code> 忘記不加 <code>dp[j-1]</code>（會越界）</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>相關題目</h2>
+            <ul>
+                <li><strong>#62 Unique Paths</strong> - 無障礙物版本（可用組合數）</li>
+                <li><strong>#64 Minimum Path Sum</strong> - 求最小路徑和（max 改 min）</li>
+                <li><strong>#120 Triangle</strong> - 三角形最小路徑和</li>
+                <li><strong>#980 Unique Paths III</strong> - 必須走過所有格子（回溯）</li>
+                <li><strong>#221 Maximal Square</strong> - 另一款矩陣 DP</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>補充說明</h2>
+            <h3>矩陣路徑 DP 家族</h3>
+            <div class="visual-box">
+                <div class="visual-title">📝 同一個框架，換個聚合函數</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+題目           dp 意義              轉移式
+--------------------------------------------------------------------
+#62 唯一路徑   路徑【數量】          dp[i][j] = 上 + 左
+#63 有障礙     路徑數量（障礙為 0）  同上，障礙時設 0
+#64 最小路徑和 最小【成本】          dp[i][j] = grid + min(上, 左)
+#120 三角形    最小成本              dp[i][j] = tri + min(上, 左上)
+#174 地下城    倒推所需最小血量       從右下往左上推！
+#931 下降路徑  最小成本              三個方向 min(左上, 上, 右上)
+
+⭐ 求【數量】用加法，求【最優值】用 min/max。
+   這是所有 DP 題的兩大類別。
+                </pre>
+            </div>
+
+            <h3>#62 的組合數學解法</h3>
+            <pre style="background: #f1f5f9; padding: 15px; border-radius: 8px; margin-top: 10px;">
+從 (0,0) 走到 (m-1, n-1)，
+總共要走 (m-1) 步「下」和 (n-1) 步「右」，共 m+n-2 步。
+問題等價於：在 m+n-2 個位置中選 m-1 個放「下」
+
+答案 = C(m+n-2, m-1)
+
+int uniquePaths(int m, int n) {
+    long long result = 1;
+    // C(m+n-2, m-1)，邊乘邊除避免溢位
+    for (int i = 1; i &lt;= m - 1; i++) {
+        result = result * (n - 1 + i) / i;
+    }
+    return (int)result;
+}
+
+O(min(m,n)) 時間，O(1) 空間 —— 比 DP 更快。
+但只要加上任何限制（障礙物、必經點），
+組合數學就失效，必須回到 DP。
+            </pre>
+
+            <h3>#174 地下城遊戲：為什麼要「倒推」？</h3>
+            <div class="visual-box">
+                <div class="visual-title">🔄 一個很有啟發性的變形</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+問題：騎士從左上走到右下救公主，
+      每格會加血或扣血，血量歸零就死亡。
+      問出發時最少需要多少血？
+
+為什麼不能正推？
+  因為「當前血量最大」不代表「後續需求最小」。
+  某條路徑現在血多，但後面可能有巨大扣血；
+  正推時無法判斷哪條路才是最優，違反了【無後效性】。
+
+倒推：dp[i][j] = 從 (i,j) 出發到終點所需的【最低初始血量】
+  dp[i][j] = max(1, min(dp[i+1][j], dp[i][j+1]) - dungeon[i][j])
+
+  取 max(1, ...) 是因為血量至少要 1 才活著。
+
+⭐ 教訓：當「正向」的狀態不滿足無後效性時，
+   試試【反向】定義狀態。這是 DP 的重要思維工具。
+                </pre>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function switchLang(event, lang) {
+            const tabs = document.querySelectorAll('.lang-tab');
+            const contents = document.querySelectorAll('.code-content');
+
+            tabs.forEach(tab => tab.classList.remove('active'));
+            contents.forEach(content => content.classList.remove('active'));
+
+            event.target.classList.add('active');
+            document.getElementById(lang).classList.add('active');
+        }
+
+        hljs.highlightAll();
+    </script>
+</body>
+</html>

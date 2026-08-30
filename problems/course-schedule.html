@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>#207 Course Schedule | LeetCode 學習平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #333; background: #f8fafc; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .header { background: linear-gradient(135deg, #ea580c 0%, #c2410c 100%); color: white; padding: 30px; border-radius: 12px; margin-bottom: 30px; box-shadow: 0 4px 6px rgba(234, 88, 12, 0.2); }
+        .header h1 { font-size: 2em; margin-bottom: 10px; }
+        .difficulty { display: inline-block; padding: 6px 16px; background: rgba(255,255,255,0.2); border-radius: 20px; font-size: 0.9em; font-weight: 600; }
+        .tags { margin-top: 15px; }
+        .tag { display: inline-block; background: rgba(255,255,255,0.15); padding: 4px 12px; border-radius: 6px; margin-right: 8px; font-size: 0.85em; }
+        .back-btn { display: inline-block; margin-bottom: 20px; padding: 10px 20px; background: #3b82f6; color: white; text-decoration: none; border-radius: 8px; transition: background 0.3s; }
+        .back-btn:hover { background: #2563eb; }
+        .section { background: white; padding: 30px; border-radius: 12px; margin-bottom: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .section h2 { color: #1e293b; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 3px solid #ea580c; }
+        .section h3 { color: #475569; margin: 25px 0 15px 0; font-size: 1.3em; }
+        .code-block { background: #282c34; border-radius: 8px; overflow: hidden; margin: 15px 0; }
+        .lang-tabs { display: flex; background: #21252b; border-bottom: 1px solid #181a1f; }
+        .lang-tab { padding: 12px 24px; cursor: pointer; color: #abb2bf; border: none; background: none; transition: all 0.3s; font-weight: 500; }
+        .lang-tab.active { color: #61afef; background: #282c34; border-bottom: 2px solid #61afef; }
+        .lang-tab:hover { color: #61afef; background: #2c313a; }
+        .code-content { display: none; }
+        .code-content.active { display: block; }
+        pre { margin: 0; overflow-x: auto; }
+        code { font-family: 'Consolas', 'Monaco', 'Courier New', monospace; font-size: 0.9em; }
+        .example { background: #f0f9ff; border-left: 4px solid #3b82f6; padding: 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .example-title { font-weight: 700; color: #1e40af; margin-bottom: 12px; font-size: 1.05em; }
+        .visual-box { background: #fef3c7; border: 2px solid #f59e0b; padding: 20px; border-radius: 8px; margin: 15px 0; }
+        .visual-title { font-weight: 700; color: #92400e; margin-bottom: 12px; display: flex; align-items: center; font-size: 1.05em; }
+        .complexity { background: #f1f5f9; padding: 15px; border-radius: 8px; margin: 15px 0; }
+        .complexity-item { margin: 8px 0; color: #475569; }
+        .key-point { background: #dcfce7; border-left: 4px solid #16a34a; padding: 15px 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        ul, ol { margin-left: 25px; margin-top: 10px; }
+        li { margin: 8px 0; color: #475569; }
+        strong { color: #1e293b; }
+        .note { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 15px 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        @media (max-width: 768px) {
+            .container { padding: 10px; }
+            .header h1 { font-size: 1.5em; }
+            .section { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="../index.html" class="back-btn">← 返回題目列表</a>
+
+        <div class="header">
+            <h1>#207 Course Schedule</h1>
+            <div class="difficulty">Medium</div>
+            <div class="tags">
+                <span class="tag">Graph</span>
+                <span class="tag">Topological Sort</span>
+                <span class="tag">BFS</span>
+                <span class="tag">DFS</span>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>題目描述</h2>
+            <p>你這個學期必須選修 numCourses 門課程，記為 0 到 numCourses - 1。</p>
+            <p style="margin-top: 15px;">在選修某些課程之前需要一些先修課程。先修課程按陣列 prerequisites 給出，其中 <code>prerequisites[i] = [a<sub>i</sub>, b<sub>i</sub>]</code> 表示如果要學習課程 a<sub>i</sub> 則<strong>必須</strong>先學習課程 b<sub>i</sub>。</p>
+            <p style="margin-top: 15px;">請你判斷是否可能完成所有課程的學習？如果可以返回 true，否則返回 false。</p>
+            <p style="margin-top: 15px;">本題的本質是：<strong>判斷有向圖是否有環</strong>。</p>
+        </div>
+
+        <div class="section">
+            <h2>範例</h2>
+            <div class="example">
+                <div class="example-title">範例 1：</div>
+                <strong>輸入：</strong>numCourses = 2, prerequisites = [[1,0]]<br>
+                <strong>輸出：</strong>true<br>
+                <strong>解釋：</strong>總共 2 門課，學習課程 1 之前要先完成課程 0，可能的順序是 [0, 1]。
+            </div>
+
+            <div class="example">
+                <div class="example-title">範例 2：</div>
+                <strong>輸入：</strong>numCourses = 2, prerequisites = [[1,0],[0,1]]<br>
+                <strong>輸出：</strong>false<br>
+                <strong>解釋：</strong>學 1 要先學 0，學 0 又要先學 1 —— 互相依賴，形成環，不可能完成。
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>解題思路</h2>
+            <div class="visual-box">
+                <div class="visual-title">💡 建模：把課程依賴變成有向圖</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+prerequisites[i] = [a, b] 表示「學 a 之前要先學 b」
+
+建圖方向：b → a （先修 → 後修）
+
+  numCourses = 4
+  prerequisites = [[1,0],[2,0],[3,1],[3,2]]
+
+      0
+     / \
+    1   2
+     \ /
+      3
+
+可以完成 ⟺ 圖中【沒有環】
+（有環代表 A 要先修 B、B 又要先修 A，永遠無解）
+                </pre>
+            </div>
+
+            <h3>方法一：BFS 拓撲排序（Kahn 演算法，推薦）</h3>
+            <div class="visual-box">
+                <div class="visual-title">🎯 不斷移除「入度為 0」的節點</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+入度（in-degree）= 有幾個先修課還沒修完
+
+演算法：
+1. 計算每個節點的入度
+2. 把所有入度為 0 的節點放進佇列（可以立刻修的課）
+3. 每次取出一門課，把它的所有後繼課程入度 -1
+   若某個後繼課程入度變成 0，加入佇列
+4. 最後檢查「修完的課程數」是否等於 numCourses
+
+【完整追蹤】
+圖：0→1, 0→2, 1→3, 2→3
+入度：[0, 1, 1, 2]
+
+佇列 = [0]（入度為 0）
+取出 0，count=1 → 1 和 2 的入度各 -1 → [0,0,0,2]
+                                        佇列 = [1, 2]
+取出 1，count=2 → 3 的入度 -1 → 3 的入度變 1
+取出 2，count=3 → 3 的入度 -1 → 3 的入度變 0，加入佇列
+取出 3，count=4
+
+count == 4 == numCourses → true ✓
+
+【有環的情況】
+0→1, 1→0，入度都是 1
+沒有任何節點入度為 0，佇列一開始就是空的
+count = 0 != 2 → false ✓
+                </pre>
+            </div>
+
+            <h3>方法二：DFS 三色標記法</h3>
+            <div class="visual-box">
+                <div class="visual-title">🎨 用三種狀態偵測環</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+0 = 白色（未訪問）
+1 = 灰色（正在遞迴堆疊中，還沒走完）
+2 = 黑色（已完成，確認無環）
+
+DFS 過程中：
+  遇到【灰色】節點 → 找到環！返回 false
+  遇到【黑色】節點 → 已驗證過，直接跳過
+
+⚠️ 為什麼需要三種顏色而不是兩種？
+  只用「訪問過/沒訪問過」無法區分：
+    - 這個節點在【當前路徑】上（=環）
+    - 這個節點在【之前的路徑】上（不是環，只是共用節點）
+
+  例：0→1, 0→2, 1→2
+      走 0→1→2 完成後 2 是黑色，
+      回到 0 再走 0→2 時遇到黑色 → 不是環 ✓
+      若只用兩色會誤判成環 ✗
+                </pre>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>程式碼實現</h2>
+
+            <div class="code-block">
+                <div class="lang-tabs">
+                    <button class="lang-tab active" onclick="switchLang(event, 'python')">Python</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'cpp')">C++</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'java')">Java</button>
+                </div>
+
+                <div id="python" class="code-content active">
+                    <pre><code class="language-python"># 方法一：BFS 拓撲排序（Kahn，推薦）
+class Solution:
+    def canFinish(self, numCourses: int, prerequisites: List[List[int]]) -&gt; bool:
+        from collections import deque
+
+        graph = [[] for _ in range(numCourses)]   # 鄰接表
+        indegree = [0] * numCourses               # 入度
+
+        for course, pre in prerequisites:
+            graph[pre].append(course)             # pre → course
+            indegree[course] += 1
+
+        # 所有入度為 0 的課程可以立刻開始
+        queue = deque(i for i in range(numCourses) if indegree[i] == 0)
+
+        count = 0
+        while queue:
+            cur = queue.popleft()
+            count += 1
+            for nxt in graph[cur]:
+                indegree[nxt] -= 1                # 修完一門先修課
+                if indegree[nxt] == 0:
+                    queue.append(nxt)
+
+        return count == numCourses                # 全部修完才代表無環
+
+
+# 方法二：DFS 三色標記
+class Solution:
+    def canFinish(self, numCourses: int, prerequisites: List[List[int]]) -&gt; bool:
+        graph = [[] for _ in range(numCourses)]
+        for course, pre in prerequisites:
+            graph[pre].append(course)
+
+        # 0=未訪問, 1=正在遞迴中, 2=已完成
+        state = [0] * numCourses
+
+        def dfs(node):
+            if state[node] == 1:      # 遇到灰色 → 有環
+                return False
+            if state[node] == 2:      # 已驗證過
+                return True
+
+            state[node] = 1           # 標記為「正在處理」
+            for nxt in graph[node]:
+                if not dfs(nxt):
+                    return False
+            state[node] = 2           # 標記為「已完成」
+            return True
+
+        return all(dfs(i) for i in range(numCourses))</code></pre>
+                </div>
+
+                <div id="cpp" class="code-content">
+                    <pre><code class="language-cpp">// 方法一：BFS 拓撲排序（Kahn，推薦）
+class Solution {
+public:
+    bool canFinish(int numCourses, vector&lt;vector&lt;int&gt;&gt;&amp; prerequisites) {
+        vector&lt;vector&lt;int&gt;&gt; graph(numCourses);
+        vector&lt;int&gt; indegree(numCourses, 0);
+
+        for (auto&amp; p : prerequisites) {
+            graph[p[1]].push_back(p[0]);      // pre → course
+            indegree[p[0]]++;
+        }
+
+        queue&lt;int&gt; q;
+        for (int i = 0; i &lt; numCourses; i++) {
+            if (indegree[i] == 0) q.push(i);
+        }
+
+        int count = 0;
+        while (!q.empty()) {
+            int cur = q.front(); q.pop();
+            count++;
+            for (int nxt : graph[cur]) {
+                if (--indegree[nxt] == 0) q.push(nxt);
+            }
+        }
+        return count == numCourses;
+    }
+};
+
+// 方法二：DFS 三色標記
+class Solution {
+    vector&lt;vector&lt;int&gt;&gt; graph;
+    vector&lt;int&gt; state;    // 0=未訪問, 1=遞迴中, 2=已完成
+
+    bool dfs(int node) {
+        if (state[node] == 1) return false;   // 灰色 → 有環
+        if (state[node] == 2) return true;    // 黑色 → 已驗證
+
+        state[node] = 1;
+        for (int nxt : graph[node]) {
+            if (!dfs(nxt)) return false;
+        }
+        state[node] = 2;
+        return true;
+    }
+
+public:
+    bool canFinish(int numCourses, vector&lt;vector&lt;int&gt;&gt;&amp; prerequisites) {
+        graph.assign(numCourses, {});
+        state.assign(numCourses, 0);
+        for (auto&amp; p : prerequisites) graph[p[1]].push_back(p[0]);
+
+        for (int i = 0; i &lt; numCourses; i++) {
+            if (!dfs(i)) return false;
+        }
+        return true;
+    }
+};</code></pre>
+                </div>
+
+                <div id="java" class="code-content">
+                    <pre><code class="language-java">// 方法一：BFS 拓撲排序（Kahn，推薦）
+class Solution {
+    public boolean canFinish(int numCourses, int[][] prerequisites) {
+        List&lt;List&lt;Integer&gt;&gt; graph = new ArrayList&lt;&gt;();
+        for (int i = 0; i &lt; numCourses; i++) graph.add(new ArrayList&lt;&gt;());
+        int[] indegree = new int[numCourses];
+
+        for (int[] p : prerequisites) {
+            graph.get(p[1]).add(p[0]);        // pre → course
+            indegree[p[0]]++;
+        }
+
+        Deque&lt;Integer&gt; queue = new ArrayDeque&lt;&gt;();
+        for (int i = 0; i &lt; numCourses; i++) {
+            if (indegree[i] == 0) queue.offer(i);
+        }
+
+        int count = 0;
+        while (!queue.isEmpty()) {
+            int cur = queue.poll();
+            count++;
+            for (int nxt : graph.get(cur)) {
+                if (--indegree[nxt] == 0) queue.offer(nxt);
+            }
+        }
+        return count == numCourses;
+    }
+}</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>複雜度分析</h2>
+            <div class="complexity">
+                <div class="complexity-item">
+                    <strong>時間複雜度：</strong>O(V + E)
+                    <ul>
+                        <li>V = numCourses（節點數），E = prerequisites 長度（邊數）</li>
+                        <li>每個節點入隊出隊各一次，每條邊處理一次</li>
+                    </ul>
+                </div>
+                <div class="complexity-item">
+                    <strong>空間複雜度：</strong>O(V + E)
+                    <ul>
+                        <li>鄰接表 O(V + E)、入度陣列 O(V)、佇列 O(V)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>重點提示</h2>
+            <div class="key-point">
+                <strong>💡 關鍵技巧 1：建圖方向不要弄反</strong>
+                <p><code>[a, b]</code> 表示「學 a 前要先學 b」，所以邊是 <strong>b → a</strong>，且 <strong>a 的入度 +1</strong>。方向弄反答案就完全錯了，這是本題最常見的失分點。</p>
+            </div>
+
+            <div class="key-point">
+                <strong>💡 關鍵技巧 2：BFS 版用「計數」判斷有環</strong>
+                <p>如果最後修完的課程數 &lt; numCourses，代表有些課程的入度永遠降不到 0 —— 它們互相依賴形成環。這個判斷法非常簡潔，不需要額外的環偵測邏輯。</p>
+            </div>
+
+            <div class="key-point">
+                <strong>💡 BFS vs DFS 怎麼選？</strong>
+                <ul>
+                    <li><strong>BFS（Kahn）</strong>：不會 stack overflow，還能順便輸出拓撲序（#210），推薦首選</li>
+                    <li><strong>DFS 三色</strong>：程式碼較短，但深度大時有堆疊風險；輸出拓撲序時需要把完成順序反轉</li>
+                </ul>
+            </div>
+
+            <div class="note">
+                <strong>⚠️ 常見錯誤：</strong>
+                <ul>
+                    <li>建圖方向反了</li>
+                    <li>DFS 只用兩種狀態（訪問/未訪問），把「共用節點」誤判成環</li>
+                    <li>忘記處理孤立節點（沒有任何先修關係的課程，入度為 0 要一開始就入隊）</li>
+                    <li>DFS 版本只從節點 0 開始，沒有對每個節點都嘗試（圖可能不連通）</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>相關題目</h2>
+            <ul>
+                <li><strong>#210 Course Schedule II</strong> - 輸出具體的修課順序</li>
+                <li><strong>#269 Alien Dictionary</strong> - 從字典序推導字母順序（拓撲排序 Hard）</li>
+                <li><strong>#310 Minimum Height Trees</strong> - 拓撲排序的變形（剝洋蔥法）</li>
+                <li><strong>#802 Find Eventual Safe States</strong> - 反向圖的拓撲排序</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>補充說明</h2>
+            <h3>拓撲排序的應用場景</h3>
+            <div class="visual-box">
+                <div class="visual-title">🔧 實務中無處不在</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+• 建置系統：make / bazel 決定編譯順序（.c → .o → 可執行檔）
+• 套件管理：npm / pip / apt 解析依賴，偵測循環依賴
+• 任務排程：CI/CD pipeline、Airflow DAG 的執行順序
+• 課程規劃：大學必修課的先後順序（本題原型）
+• 試算表：Excel 儲存格公式的重算順序（循環參照 = 有環）
+• 編譯器：指令排程、資料流分析
+• 資料庫：交易的相依關係與死鎖偵測
+
+有環 = 循環依賴 = 系統無解，
+所以「偵測環」在這些系統中都是必要的錯誤檢查。
+                </pre>
+            </div>
+
+            <h3>有向圖 vs 無向圖的環偵測</h3>
+            <pre style="background: #f1f5f9; padding: 15px; border-radius: 8px; margin-top: 10px;">
+【有向圖】
+  方法 1：拓撲排序，看是否所有節點都能排出來（本題）
+  方法 2：DFS 三色標記，遇到「灰色」節點即有環
+
+【無向圖】
+  方法 1：DFS 時記錄父節點，
+          若遇到已訪問且【不是父節點】的節點 → 有環
+  方法 2：Union-Find，若一條邊的兩端已在同一集合 → 有環
+  方法 3：若 邊數 &gt;= 節點數，必定有環（連通圖）
+
+⚠️ 無向圖不能直接用「遇到已訪問就是環」，
+   因為 A→B 走過後，從 B 看回 A 會誤判。
+            </pre>
+
+            <h3>#210 Course Schedule II：輸出順序</h3>
+            <pre style="background: #f1f5f9; padding: 15px; border-radius: 8px; margin-top: 10px;">
+只要把 Kahn 演算法中出隊的節點依序記錄下來即可：
+
+vector&lt;int&gt; order;
+while (!q.empty()) {
+    int cur = q.front(); q.pop();
+    order.push_back(cur);              // ← 多這一行
+    for (int nxt : graph[cur])
+        if (--indegree[nxt] == 0) q.push(nxt);
+}
+return order.size() == numCourses ? order : vector&lt;int&gt;{};
+
+DFS 版本則是把「完成時間」由晚到早排列
+（也就是把後序完成的順序反轉）。
+            </pre>
+        </div>
+    </div>
+
+    <script>
+        function switchLang(event, lang) {
+            const tabs = document.querySelectorAll('.lang-tab');
+            const contents = document.querySelectorAll('.code-content');
+
+            tabs.forEach(tab => tab.classList.remove('active'));
+            contents.forEach(content => content.classList.remove('active'));
+
+            event.target.classList.add('active');
+            document.getElementById(lang).classList.add('active');
+        }
+
+        hljs.highlightAll();
+    </script>
+</body>
+</html>

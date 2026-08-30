@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>#160 Intersection of Two Linked Lists | LeetCode 學習平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #333; background: #f8fafc; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .header { background: linear-gradient(135deg, #16a34a 0%, #15803d 100%); color: white; padding: 30px; border-radius: 12px; margin-bottom: 30px; box-shadow: 0 4px 6px rgba(22, 163, 74, 0.2); }
+        .header h1 { font-size: 2em; margin-bottom: 10px; }
+        .difficulty { display: inline-block; padding: 6px 16px; background: rgba(255,255,255,0.2); border-radius: 20px; font-size: 0.9em; font-weight: 600; }
+        .tags { margin-top: 15px; }
+        .tag { display: inline-block; background: rgba(255,255,255,0.15); padding: 4px 12px; border-radius: 6px; margin-right: 8px; font-size: 0.85em; }
+        .back-btn { display: inline-block; margin-bottom: 20px; padding: 10px 20px; background: #3b82f6; color: white; text-decoration: none; border-radius: 8px; transition: background 0.3s; }
+        .back-btn:hover { background: #2563eb; }
+        .section { background: white; padding: 30px; border-radius: 12px; margin-bottom: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .section h2 { color: #1e293b; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 3px solid #16a34a; }
+        .section h3 { color: #475569; margin: 25px 0 15px 0; font-size: 1.3em; }
+        .code-block { background: #282c34; border-radius: 8px; overflow: hidden; margin: 15px 0; }
+        .lang-tabs { display: flex; background: #21252b; border-bottom: 1px solid #181a1f; }
+        .lang-tab { padding: 12px 24px; cursor: pointer; color: #abb2bf; border: none; background: none; transition: all 0.3s; font-weight: 500; }
+        .lang-tab.active { color: #61afef; background: #282c34; border-bottom: 2px solid #61afef; }
+        .lang-tab:hover { color: #61afef; background: #2c313a; }
+        .code-content { display: none; }
+        .code-content.active { display: block; }
+        pre { margin: 0; overflow-x: auto; }
+        code { font-family: 'Consolas', 'Monaco', 'Courier New', monospace; font-size: 0.9em; }
+        .example { background: #f0f9ff; border-left: 4px solid #3b82f6; padding: 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .example-title { font-weight: 700; color: #1e40af; margin-bottom: 12px; font-size: 1.05em; }
+        .visual-box { background: #fef3c7; border: 2px solid #f59e0b; padding: 20px; border-radius: 8px; margin: 15px 0; }
+        .visual-title { font-weight: 700; color: #92400e; margin-bottom: 12px; display: flex; align-items: center; font-size: 1.05em; }
+        .complexity { background: #f1f5f9; padding: 15px; border-radius: 8px; margin: 15px 0; }
+        .complexity-item { margin: 8px 0; color: #475569; }
+        .key-point { background: #dcfce7; border-left: 4px solid #16a34a; padding: 15px 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        ul, ol { margin-left: 25px; margin-top: 10px; }
+        li { margin: 8px 0; color: #475569; }
+        strong { color: #1e293b; }
+        .note { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 15px 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        @media (max-width: 768px) {
+            .container { padding: 10px; }
+            .header h1 { font-size: 1.5em; }
+            .section { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="../index.html" class="back-btn">← 返回題目列表</a>
+
+        <div class="header">
+            <h1>#160 Intersection of Two Linked Lists</h1>
+            <div class="difficulty">Easy</div>
+            <div class="tags">
+                <span class="tag">Linked List</span>
+                <span class="tag">Two Pointers</span>
+                <span class="tag">Hash Table</span>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>題目描述</h2>
+            <p>給你兩個單向鏈結串列的頭節點 headA 和 headB，請你找出並返回兩個單向串列<strong>相交的起始節點</strong>。如果兩個串列不存在相交節點，返回 null。</p>
+            <p style="margin-top: 15px;">題目資料<strong>保證</strong>整個鏈式結構中不存在環，且函數返回結果後，串列必須<strong>保持其原始結構</strong>。</p>
+            <p style="margin-top: 15px;"><strong>進階：</strong>能否設計一個時間複雜度 O(m+n)、僅用 O(1) 記憶體的解決方案？</p>
+        </div>
+
+        <div class="section">
+            <h2>範例</h2>
+            <div class="example">
+                <div class="example-title">範例 1：</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+A: 4 → 1 ↘
+           8 → 4 → 5
+B: 5 → 6 → 1 ↗
+
+輸入：intersectVal = 8, listA = [4,1,8,4,5], listB = [5,6,1,8,4,5]
+輸出：值為 8 的節點
+                </pre>
+            </div>
+
+            <div class="example">
+                <div class="example-title">範例 2：</div>
+                <strong>輸入：</strong>listA = [2,6,4], listB = [1,5]<br>
+                <strong>輸出：</strong>null（不相交）
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>解題思路</h2>
+            <div class="note">
+                <strong>⚠️ 重要觀念：「相交」指的是節點<strong>位址相同</strong>，不是值相同！</strong>
+                <p>一旦兩條串列相交，從交點之後就完全共用同一段節點，所以尾巴一定一樣長。</p>
+            </div>
+
+            <h3>方法一：雙指標「走完自己走對方」（最優雅）</h3>
+            <div class="visual-box">
+                <div class="visual-title">💡 消除長度差的神技</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+設 A 獨有長度 a、B 獨有長度 b、共同部分長度 c
+
+指標 pA：走 A（a + c）再走 B（b + c）→ 總共 a + c + b
+指標 pB：走 B（b + c）再走 A（a + c）→ 總共 b + c + a
+
+兩者走過的總步數完全相同！所以第二輪必定同時抵達交點。
+
+實例：A = [4,1,8,4,5]  B = [5,6,1,8,4,5]  交點值 8
+pA: 4 1 8 4 5 | 5 6 1 [8] ...
+pB: 5 6 1 8 4 5 | 4 1 [8] ...
+                     ↑ 第 9 步同時抵達 ✓
+
+若不相交：兩者會同時走到 null，null == null 迴圈結束，
+          自然返回 null，不需要特判 ✓
+                </pre>
+            </div>
+
+            <h3>方法二：對齊長度</h3>
+            <div class="visual-box">
+                <div class="visual-title">🎯 先算長度差，長的先走</div>
+                <p>分別算出兩條串列長度 lenA、lenB，讓較長的那條先走 |lenA - lenB| 步，之後同步前進，第一個相同的節點就是交點。邏輯較直白，但程式碼比方法一長。</p>
+            </div>
+
+            <h3>方法三：HashSet</h3>
+            <p>把 A 的所有節點放進 HashSet，再遍歷 B 找第一個在集合中的節點。O(m+n) 時間但需要 O(m) 空間，不符合進階要求，適合當作面試的第一個答案再優化。</p>
+        </div>
+
+        <div class="section">
+            <h2>程式碼實現</h2>
+
+            <div class="code-block">
+                <div class="lang-tabs">
+                    <button class="lang-tab active" onclick="switchLang(event, 'python')">Python</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'cpp')">C++</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'java')">Java</button>
+                </div>
+
+                <div id="python" class="code-content active">
+                    <pre><code class="language-python"># 方法一：走完自己走對方（推薦，O(1) 空間）
+class Solution:
+    def getIntersectionNode(self, headA: ListNode, headB: ListNode) -&gt; Optional[ListNode]:
+        if not headA or not headB:
+            return None
+
+        pA, pB = headA, headB
+        # 兩指標走過的總長度相同：a+c+b == b+c+a
+        while pA is not pB:
+            pA = pA.next if pA else headB   # 走完 A 就換到 B 開頭
+            pB = pB.next if pB else headA   # 走完 B 就換到 A 開頭
+        return pA        # 交點，或不相交時的 None
+
+
+# 方法二：對齊長度
+class Solution:
+    def getIntersectionNode(self, headA: ListNode, headB: ListNode) -&gt; Optional[ListNode]:
+        def length(node):
+            n = 0
+            while node:
+                n += 1
+                node = node.next
+            return n
+
+        lenA, lenB = length(headA), length(headB)
+        # 讓較長的先走完長度差
+        while lenA &gt; lenB:
+            headA = headA.next
+            lenA -= 1
+        while lenB &gt; lenA:
+            headB = headB.next
+            lenB -= 1
+
+        while headA is not headB:
+            headA = headA.next
+            headB = headB.next
+        return headA</code></pre>
+                </div>
+
+                <div id="cpp" class="code-content">
+                    <pre><code class="language-cpp">// 方法一：走完自己走對方（推薦）
+class Solution {
+public:
+    ListNode *getIntersectionNode(ListNode *headA, ListNode *headB) {
+        if (!headA || !headB) return nullptr;
+
+        ListNode *pA = headA, *pB = headB;
+        while (pA != pB) {
+            pA = pA ? pA-&gt;next : headB;   // 走完 A 換到 B
+            pB = pB ? pB-&gt;next : headA;   // 走完 B 換到 A
+        }
+        return pA;   // 交點，或都是 nullptr
+    }
+};
+
+// 方法二：對齊長度
+class Solution {
+    int getLength(ListNode* node) {
+        int n = 0;
+        while (node) { n++; node = node-&gt;next; }
+        return n;
+    }
+public:
+    ListNode *getIntersectionNode(ListNode *headA, ListNode *headB) {
+        int lenA = getLength(headA), lenB = getLength(headB);
+        while (lenA &gt; lenB) { headA = headA-&gt;next; lenA--; }
+        while (lenB &gt; lenA) { headB = headB-&gt;next; lenB--; }
+        while (headA != headB) { headA = headA-&gt;next; headB = headB-&gt;next; }
+        return headA;
+    }
+};</code></pre>
+                </div>
+
+                <div id="java" class="code-content">
+                    <pre><code class="language-java">// 方法一：走完自己走對方（推薦）
+public class Solution {
+    public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
+        if (headA == null || headB == null) return null;
+
+        ListNode pA = headA, pB = headB;
+        while (pA != pB) {
+            pA = (pA == null) ? headB : pA.next;   // 走完 A 換到 B
+            pB = (pB == null) ? headA : pB.next;   // 走完 B 換到 A
+        }
+        return pA;
+    }
+}
+
+// 方法三：HashSet（好懂但費空間）
+public class Solution {
+    public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
+        Set&lt;ListNode&gt; set = new HashSet&lt;&gt;();
+        while (headA != null) { set.add(headA); headA = headA.next; }
+        while (headB != null) {
+            if (set.contains(headB)) return headB;
+            headB = headB.next;
+        }
+        return null;
+    }
+}</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>複雜度分析</h2>
+            <div class="complexity">
+                <div class="complexity-item">
+                    <strong>時間複雜度：</strong>O(m + n)
+                    <ul>
+                        <li>方法一：每個指標最多走 m + n 步</li>
+                        <li>方法二：算長度 O(m+n) + 同步走 O(min(m,n))</li>
+                    </ul>
+                </div>
+                <div class="complexity-item">
+                    <strong>空間複雜度：</strong>
+                    <ul>
+                        <li>方法一、二：O(1) ★ 符合進階要求</li>
+                        <li>方法三（HashSet）：O(m)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>重點提示</h2>
+            <div class="key-point">
+                <strong>💡 關鍵技巧：用「換軌」消除長度差</strong>
+                <p><code>pA = pA ? pA-&gt;next : headB</code> 這一行是本題精華。注意判斷的是<strong>指標本身</strong>是否為 null，不是 <code>pA-&gt;next</code>，否則會少走一步而錯過交點。</p>
+            </div>
+
+            <div class="key-point">
+                <strong>💡 不相交的情況自動處理</strong>
+                <p>若不相交，兩指標會在第二輪同時變成 null，<code>null == null</code> 使迴圈結束並返回 null，完全不需要特判。這是這個寫法最漂亮的地方。</p>
+            </div>
+
+            <div class="note">
+                <strong>⚠️ 常見錯誤：</strong>
+                <ul>
+                    <li>比較節點的<strong>值</strong>而不是<strong>參考</strong>（值可能重複，一定要比位址）</li>
+                    <li>寫成 <code>pA = pA-&gt;next ? pA-&gt;next : headB</code>，少走一步導致不相交時無限迴圈</li>
+                    <li>Python 用 <code>==</code> 比較節點物件時，若自訂了 <code>__eq__</code> 會出錯，建議用 <code>is</code></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>相關題目</h2>
+            <ul>
+                <li><strong>#141/#142 Linked List Cycle</strong> - 雙指標的另一種應用</li>
+                <li><strong>#19 Remove Nth Node From End</strong> - 固定間距雙指標</li>
+                <li><strong>#21 Merge Two Sorted Lists</strong> - 雙串列同步遍歷</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>補充說明</h2>
+            <h3>為什麼相交後不會再分開？</h3>
+            <div class="visual-box">
+                <div class="visual-title">🔍 單向串列的結構限制</div>
+                <p>每個節點只有<strong>一個</strong> next 指標，所以一旦兩條路徑進入同一個節點，之後的路徑必然完全相同。這代表相交部分一定是「Y 字形」，不可能是「X 字形」。理解這點，長度差的解法就很自然了。</p>
+            </div>
+
+            <h3>延伸：如果串列可能有環怎麼辦？</h3>
+            <ul>
+                <li>先用 Floyd 判圈找出兩條串列各自的環入口</li>
+                <li>兩條都無環 → 用本題方法</li>
+                <li>一條有環一條無環 → 不可能相交</li>
+                <li>兩條都有環且入口相同 → 在入環前相交，把入口當終點用本題方法</li>
+                <li>兩條都有環但入口不同 → 從一個入口繞環一圈，若能碰到另一個入口則共用同一個環，否則不相交</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        function switchLang(event, lang) {
+            const tabs = document.querySelectorAll('.lang-tab');
+            const contents = document.querySelectorAll('.code-content');
+
+            tabs.forEach(tab => tab.classList.remove('active'));
+            contents.forEach(content => content.classList.remove('active'));
+
+            event.target.classList.add('active');
+            document.getElementById(lang).classList.add('active');
+        }
+
+        hljs.highlightAll();
+    </script>
+</body>
+</html>

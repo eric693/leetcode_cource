@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>#142 Linked List Cycle II | LeetCode 學習平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #333; background: #f8fafc; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .header { background: linear-gradient(135deg, #ea580c 0%, #c2410c 100%); color: white; padding: 30px; border-radius: 12px; margin-bottom: 30px; box-shadow: 0 4px 6px rgba(234, 88, 12, 0.2); }
+        .header h1 { font-size: 2em; margin-bottom: 10px; }
+        .difficulty { display: inline-block; padding: 6px 16px; background: rgba(255,255,255,0.2); border-radius: 20px; font-size: 0.9em; font-weight: 600; }
+        .tags { margin-top: 15px; }
+        .tag { display: inline-block; background: rgba(255,255,255,0.15); padding: 4px 12px; border-radius: 6px; margin-right: 8px; font-size: 0.85em; }
+        .back-btn { display: inline-block; margin-bottom: 20px; padding: 10px 20px; background: #3b82f6; color: white; text-decoration: none; border-radius: 8px; transition: background 0.3s; }
+        .back-btn:hover { background: #2563eb; }
+        .section { background: white; padding: 30px; border-radius: 12px; margin-bottom: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .section h2 { color: #1e293b; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 3px solid #ea580c; }
+        .section h3 { color: #475569; margin: 25px 0 15px 0; font-size: 1.3em; }
+        .code-block { background: #282c34; border-radius: 8px; overflow: hidden; margin: 15px 0; }
+        .lang-tabs { display: flex; background: #21252b; border-bottom: 1px solid #181a1f; }
+        .lang-tab { padding: 12px 24px; cursor: pointer; color: #abb2bf; border: none; background: none; transition: all 0.3s; font-weight: 500; }
+        .lang-tab.active { color: #61afef; background: #282c34; border-bottom: 2px solid #61afef; }
+        .lang-tab:hover { color: #61afef; background: #2c313a; }
+        .code-content { display: none; }
+        .code-content.active { display: block; }
+        pre { margin: 0; overflow-x: auto; }
+        code { font-family: 'Consolas', 'Monaco', 'Courier New', monospace; font-size: 0.9em; }
+        .example { background: #f0f9ff; border-left: 4px solid #3b82f6; padding: 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .example-title { font-weight: 700; color: #1e40af; margin-bottom: 12px; font-size: 1.05em; }
+        .visual-box { background: #fef3c7; border: 2px solid #f59e0b; padding: 20px; border-radius: 8px; margin: 15px 0; }
+        .visual-title { font-weight: 700; color: #92400e; margin-bottom: 12px; display: flex; align-items: center; font-size: 1.05em; }
+        .complexity { background: #f1f5f9; padding: 15px; border-radius: 8px; margin: 15px 0; }
+        .complexity-item { margin: 8px 0; color: #475569; }
+        .key-point { background: #dcfce7; border-left: 4px solid #16a34a; padding: 15px 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        ul, ol { margin-left: 25px; margin-top: 10px; }
+        li { margin: 8px 0; color: #475569; }
+        strong { color: #1e293b; }
+        .note { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 15px 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        @media (max-width: 768px) {
+            .container { padding: 10px; }
+            .header h1 { font-size: 1.5em; }
+            .section { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="../index.html" class="back-btn">← 返回題目列表</a>
+
+        <div class="header">
+            <h1>#142 Linked List Cycle II</h1>
+            <div class="difficulty">Medium</div>
+            <div class="tags">
+                <span class="tag">Linked List</span>
+                <span class="tag">Two Pointers</span>
+                <span class="tag">Hash Table</span>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>題目描述</h2>
+            <p>給定一個鏈結串列的頭節點 head，返回<strong>鏈結串列開始入環的第一個節點</strong>。如果串列無環，則返回 null。</p>
+            <p style="margin-top: 15px;"><strong>進階：</strong>你是否可以使用 O(1) 空間解決此題？（這是本題的重點，也是面試的必考推導）</p>
+        </div>
+
+        <div class="section">
+            <h2>範例</h2>
+            <div class="example">
+                <div class="example-title">範例 1：</div>
+                <strong>輸入：</strong>head = [3,2,0,-4], pos = 1<br>
+                <strong>輸出：</strong>返回索引為 1 的節點（值為 2）<br>
+                <strong>解釋：</strong>鏈結串列中有一個環，尾部連接到第二個節點。
+            </div>
+
+            <div class="example">
+                <div class="example-title">範例 2：</div>
+                <strong>輸入：</strong>head = [1,2], pos = 0<br>
+                <strong>輸出：</strong>返回索引為 0 的節點
+            </div>
+
+            <div class="example">
+                <div class="example-title">範例 3：</div>
+                <strong>輸入：</strong>head = [1], pos = -1<br>
+                <strong>輸出：</strong>null（無環）
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>解題思路</h2>
+            <div class="visual-box">
+                <div class="visual-title">💡 Floyd 判圈演算法（龜兔賽跑）</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+第一階段：slow 走 1 步、fast 走 2 步，若相遇則有環
+第二階段：把其中一個指標移回 head，兩者都改成每次走 1 步，
+          再次相遇的位置就是「環的入口」
+
+聽起來很神奇，但可以嚴格證明。
+                </pre>
+            </div>
+
+            <h3>數學證明（面試必問）</h3>
+            <div class="visual-box">
+                <div class="visual-title">🧮 為什麼移回 head 就會在入口相遇？</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+定義：
+  a = head 到「環入口」的距離
+  b = 環入口 到「相遇點」的距離
+  c = 相遇點 繞回「環入口」的距離
+  環長 = b + c
+
+    head --- a ---> 入口 --- b ---> 相遇點
+                     ↑                |
+                     +------- c -------+
+
+相遇時：
+  slow 走的距離 = a + b
+  fast 走的距離 = a + b + k(b + c)   （在環裡多繞了 k 圈，k >= 1）
+
+因為 fast 速度是 slow 的兩倍：
+  2(a + b) = a + b + k(b + c)
+  a + b = k(b + c)
+  a = k(b + c) - b
+  a = (k-1)(b + c) + c
+
+【結論】a = c + (k-1) × 環長
+
+意義：從 head 走 a 步，和從相遇點走 c 步（再繞 k-1 圈），
+      會停在同一個位置 —— 也就是環的入口！
+
+所以第二階段兩個指標同速前進，必定在入口相遇 ✓
+                </pre>
+            </div>
+
+            <h3>為什麼 fast 一定追得上 slow？</h3>
+            <p>進入環後，fast 每一步都比 slow 多前進 1 個節點，兩者距離每輪縮小 1，因此<strong>絕不會跳過</strong>，必定在有限步內相遇。這也是為什麼速度差要設為 1（fast 走 2、slow 走 1）。</p>
+        </div>
+
+        <div class="section">
+            <h2>程式碼實現</h2>
+
+            <div class="code-block">
+                <div class="lang-tabs">
+                    <button class="lang-tab active" onclick="switchLang(event, 'python')">Python</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'cpp')">C++</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'java')">Java</button>
+                </div>
+
+                <div id="python" class="code-content active">
+                    <pre><code class="language-python"># 方法一：Floyd 判圈（O(1) 空間，推薦）
+class Solution:
+    def detectCycle(self, head: Optional[ListNode]) -&gt; Optional[ListNode]:
+        slow = fast = head
+
+        # 第一階段：找相遇點
+        while fast and fast.next:
+            slow = slow.next
+            fast = fast.next.next
+            if slow == fast:
+                # 第二階段：一個指標回到 head，同速前進
+                ptr = head
+                while ptr != slow:
+                    ptr = ptr.next
+                    slow = slow.next
+                return ptr          # 相遇處即為環的入口
+        return None                 # fast 走到底，無環
+
+
+# 方法二：HashSet（O(n) 空間，最直覺）
+class Solution:
+    def detectCycle(self, head: Optional[ListNode]) -&gt; Optional[ListNode]:
+        visited = set()
+        node = head
+        while node:
+            if node in visited:
+                return node         # 第一個重複出現的節點就是入口
+            visited.add(node)
+            node = node.next
+        return None</code></pre>
+                </div>
+
+                <div id="cpp" class="code-content">
+                    <pre><code class="language-cpp">// 方法一：Floyd 判圈（O(1) 空間，推薦）
+class Solution {
+public:
+    ListNode *detectCycle(ListNode *head) {
+        ListNode *slow = head, *fast = head;
+
+        // 第一階段：找相遇點
+        while (fast &amp;&amp; fast-&gt;next) {
+            slow = slow-&gt;next;
+            fast = fast-&gt;next-&gt;next;
+            if (slow == fast) {
+                // 第二階段：ptr 從 head 出發，同速前進
+                ListNode *ptr = head;
+                while (ptr != slow) {
+                    ptr = ptr-&gt;next;
+                    slow = slow-&gt;next;
+                }
+                return ptr;         // 環的入口
+            }
+        }
+        return nullptr;             // 無環
+    }
+};
+
+// 方法二：HashSet
+class Solution {
+public:
+    ListNode *detectCycle(ListNode *head) {
+        unordered_set&lt;ListNode*&gt; visited;
+        while (head) {
+            if (visited.count(head)) return head;
+            visited.insert(head);
+            head = head-&gt;next;
+        }
+        return nullptr;
+    }
+};</code></pre>
+                </div>
+
+                <div id="java" class="code-content">
+                    <pre><code class="language-java">// 方法一：Floyd 判圈（O(1) 空間，推薦）
+public class Solution {
+    public ListNode detectCycle(ListNode head) {
+        ListNode slow = head, fast = head;
+
+        // 第一階段：找相遇點
+        while (fast != null &amp;&amp; fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+            if (slow == fast) {
+                // 第二階段：ptr 從 head 出發，同速前進
+                ListNode ptr = head;
+                while (ptr != slow) {
+                    ptr = ptr.next;
+                    slow = slow.next;
+                }
+                return ptr;         // 環的入口
+            }
+        }
+        return null;                // 無環
+    }
+}
+
+// 方法二：HashSet
+public class Solution {
+    public ListNode detectCycle(ListNode head) {
+        Set&lt;ListNode&gt; visited = new HashSet&lt;&gt;();
+        while (head != null) {
+            if (!visited.add(head)) return head;
+            head = head.next;
+        }
+        return null;
+    }
+}</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>複雜度分析</h2>
+            <div class="complexity">
+                <div class="complexity-item">
+                    <strong>時間複雜度：</strong>O(n)
+                    <ul>
+                        <li>第一階段最多走 n + 環長 步</li>
+                        <li>第二階段最多走 a 步（a &lt; n）</li>
+                    </ul>
+                </div>
+                <div class="complexity-item">
+                    <strong>空間複雜度：</strong>
+                    <ul>
+                        <li>Floyd：O(1) ★ 這是本題要考的重點</li>
+                        <li>HashSet：O(n)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>重點提示</h2>
+            <div class="key-point">
+                <strong>💡 關鍵技巧：記住結論 a = c（模環長）</strong>
+                <p>「head 到入口的距離」等於「相遇點到入口的距離」（可能多繞幾圈）。這個結論是本題唯一需要記的東西，但<strong>面試官幾乎一定會要你推導</strong>，務必練習寫出證明過程。</p>
+            </div>
+
+            <div class="key-point">
+                <strong>💡 延伸：如何求環的長度？</strong>
+                <p>從相遇點出發，讓一個指標繞一圈回到相遇點，計數即為環長。配合入口位置，就能完整描述整個環的結構。</p>
+            </div>
+
+            <div class="note">
+                <strong>⚠️ 常見錯誤：</strong>
+                <ul>
+                    <li>迴圈條件必須是 <code>fast &amp;&amp; fast-&gt;next</code>，少一個判斷就會對無環串列 null pointer 崩潰</li>
+                    <li>第二階段誤用 fast 而不是相遇點（其實用 slow 或 fast 都可以，因為它們此刻在同一位置）</li>
+                    <li>第二階段忘記把速度改成 1:1，仍用 1:2 會錯</li>
+                    <li>Python 比較節點要用 <code>is</code> / <code>==</code> 比較物件參考，不要比 val（值可能重複）</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>相關題目</h2>
+            <ul>
+                <li><strong>#141 Linked List Cycle</strong> - 只判斷有沒有環（本題的第一階段）</li>
+                <li><strong>#287 Find the Duplicate Number</strong> - 把陣列當成鏈結串列用 Floyd 解</li>
+                <li><strong>#876 Middle of the Linked List</strong> - 快慢指標找中點</li>
+                <li><strong>#202 Happy Number</strong> - 數字迭代的判圈</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>補充說明</h2>
+            <h3>Floyd 判圈的通用性</h3>
+            <div class="visual-box">
+                <div class="visual-title">🔄 只要是「函數迭代」就能用</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+任何形如 x → f(x) 的迭代序列，只要狀態空間有限，
+最終必定進入循環（ρ 形結構），都可以用 Floyd 找出：
+  - 循環的起點
+  - 循環的長度
+
+應用實例：
+  #141/#142  鏈結串列        f(node) = node.next
+  #287       找重複數字      f(i) = nums[i]
+  #202       快樂數          f(n) = 各位數平方和
+  隨機數產生器週期檢測       f(x) = LCG 遞推式
+  Pollard's rho 大數分解     f(x) = (x² + c) mod n
+                </pre>
+            </div>
+
+            <h3>#287 的巧妙轉化</h3>
+            <pre style="background: #f1f5f9; padding: 15px; border-radius: 8px; margin-top: 10px;">
+nums 有 n+1 個元素，值域是 [1, n]，必有重複。
+把 i → nums[i] 看成一條鏈結串列的邊，
+因為有兩個索引指向同一個值，必定形成環，
+環的入口就是重複的數字！
+
+int findDuplicate(vector&lt;int&gt;&amp; nums) {
+    int slow = nums[0], fast = nums[nums[0]];
+    while (slow != fast) { slow = nums[slow]; fast = nums[nums[fast]]; }
+    slow = 0;
+    while (slow != fast) { slow = nums[slow]; fast = nums[fast]; }
+    return slow;
+}
+            </pre>
+        </div>
+    </div>
+
+    <script>
+        function switchLang(event, lang) {
+            const tabs = document.querySelectorAll('.lang-tab');
+            const contents = document.querySelectorAll('.code-content');
+
+            tabs.forEach(tab => tab.classList.remove('active'));
+            contents.forEach(content => content.classList.remove('active'));
+
+            event.target.classList.add('active');
+            document.getElementById(lang).classList.add('active');
+        }
+
+        hljs.highlightAll();
+    </script>
+</body>
+</html>

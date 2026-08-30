@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>#231 Power of Two | LeetCode 學習平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #333; background: #f8fafc; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .header { background: linear-gradient(135deg, #16a34a 0%, #15803d 100%); color: white; padding: 30px; border-radius: 12px; margin-bottom: 30px; box-shadow: 0 4px 6px rgba(22, 163, 74, 0.2); }
+        .header h1 { font-size: 2em; margin-bottom: 10px; }
+        .difficulty { display: inline-block; padding: 6px 16px; background: rgba(255,255,255,0.2); border-radius: 20px; font-size: 0.9em; font-weight: 600; }
+        .tags { margin-top: 15px; }
+        .tag { display: inline-block; background: rgba(255,255,255,0.15); padding: 4px 12px; border-radius: 6px; margin-right: 8px; font-size: 0.85em; }
+        .back-btn { display: inline-block; margin-bottom: 20px; padding: 10px 20px; background: #3b82f6; color: white; text-decoration: none; border-radius: 8px; transition: background 0.3s; }
+        .back-btn:hover { background: #2563eb; }
+        .section { background: white; padding: 30px; border-radius: 12px; margin-bottom: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .section h2 { color: #1e293b; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 3px solid #16a34a; }
+        .section h3 { color: #475569; margin: 25px 0 15px 0; font-size: 1.3em; }
+        .code-block { background: #282c34; border-radius: 8px; overflow: hidden; margin: 15px 0; }
+        .lang-tabs { display: flex; background: #21252b; border-bottom: 1px solid #181a1f; }
+        .lang-tab { padding: 12px 24px; cursor: pointer; color: #abb2bf; border: none; background: none; transition: all 0.3s; font-weight: 500; }
+        .lang-tab.active { color: #61afef; background: #282c34; border-bottom: 2px solid #61afef; }
+        .lang-tab:hover { color: #61afef; background: #2c313a; }
+        .code-content { display: none; }
+        .code-content.active { display: block; }
+        pre { margin: 0; overflow-x: auto; }
+        code { font-family: 'Consolas', 'Monaco', 'Courier New', monospace; font-size: 0.9em; }
+        .example { background: #f0f9ff; border-left: 4px solid #3b82f6; padding: 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .example-title { font-weight: 700; color: #1e40af; margin-bottom: 12px; font-size: 1.05em; }
+        .visual-box { background: #fef3c7; border: 2px solid #f59e0b; padding: 20px; border-radius: 8px; margin: 15px 0; }
+        .visual-title { font-weight: 700; color: #92400e; margin-bottom: 12px; display: flex; align-items: center; font-size: 1.05em; }
+        .complexity { background: #f1f5f9; padding: 15px; border-radius: 8px; margin: 15px 0; }
+        .complexity-item { margin: 8px 0; color: #475569; }
+        .key-point { background: #dcfce7; border-left: 4px solid #16a34a; padding: 15px 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        ul, ol { margin-left: 25px; margin-top: 10px; }
+        li { margin: 8px 0; color: #475569; }
+        strong { color: #1e293b; }
+        .note { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 15px 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        @media (max-width: 768px) {
+            .container { padding: 10px; }
+            .header h1 { font-size: 1.5em; }
+            .section { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="../index.html" class="back-btn">← 返回題目列表</a>
+
+        <div class="header">
+            <h1>#231 Power of Two</h1>
+            <div class="difficulty">Easy</div>
+            <div class="tags">
+                <span class="tag">Bit Manipulation</span>
+                <span class="tag">Math</span>
+                <span class="tag">Recursion</span>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>題目描述</h2>
+            <p>給定一個整數 n，判斷它是否為 2 的冪次方。若是則返回 true，否則返回 false。</p>
+            <p style="margin-top: 15px;">若存在整數 x 使得 <code>n == 2<sup>x</sup></code>，則認為 n 是 2 的冪次方。</p>
+            <p style="margin-top: 15px;"><strong>進階：</strong>你能不使用迴圈或遞迴來完成嗎？</p>
+        </div>
+
+        <div class="section">
+            <h2>範例</h2>
+            <div class="example">
+                <div class="example-title">範例 1：</div>
+                <strong>輸入：</strong>n = 1<br>
+                <strong>輸出：</strong>true<br>
+                <strong>解釋：</strong>2<sup>0</sup> = 1
+            </div>
+
+            <div class="example">
+                <div class="example-title">範例 2：</div>
+                <strong>輸入：</strong>n = 16<br>
+                <strong>輸出：</strong>true<br>
+                <strong>解釋：</strong>2<sup>4</sup> = 16
+            </div>
+
+            <div class="example">
+                <div class="example-title">範例 3：</div>
+                <strong>輸入：</strong>n = 3<br>
+                <strong>輸出：</strong>false
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>解題思路</h2>
+            <div class="visual-box">
+                <div class="visual-title">💡 核心觀察：2 的冪次方在二進位中只有一個 1</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+1  = 0001    ✓ 只有一個 1
+2  = 0010    ✓
+4  = 0100    ✓
+8  = 1000    ✓
+16 = 10000   ✓
+
+3  = 0011    ✗ 兩個 1
+6  = 0110    ✗
+                </pre>
+            </div>
+
+            <h3>方法一：n &amp; (n - 1) == 0（最經典）</h3>
+            <div class="visual-box">
+                <div class="visual-title">🎯 一行解法</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+n     = 1000  (8)
+n - 1 = 0111  (7)
+n & (n-1) = 0000  → 是 2 的冪 ✓
+
+n     = 0110  (6)
+n - 1 = 0101  (5)
+n & (n-1) = 0100 ≠ 0  → 不是 ✗
+
+⚠️ 必須先判斷 n > 0
+   n = 0 時：0 & -1 = 0 會誤判為 true
+                </pre>
+            </div>
+
+            <h3>方法二：n &amp; (-n) == n</h3>
+            <div class="visual-box">
+                <div class="visual-title">🎯 lowbit 等於自己</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+-n 是二補數 = ~n + 1
+n & (-n) 會取出最右邊的 1（lowbit）
+
+如果 n 只有一個 1，那 lowbit 就等於 n 本身
+
+n = 1000 (8),  -n = 1000...1000 → n & -n = 1000 = n ✓
+n = 0110 (6),  n & -n = 0010 ≠ n ✗
+                </pre>
+            </div>
+
+            <h3>方法三：數學法（不用迴圈也不用遞迴）</h3>
+            <div class="visual-box">
+                <div class="visual-title">🧮 用最大的 2 的冪來整除</div>
+                <p>32 位元 int 中最大的 2 的冪是 2<sup>30</sup> = 1073741824。如果 n 是 2 的冪，它必定能整除 2<sup>30</sup>。</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>程式碼實現</h2>
+
+            <div class="code-block">
+                <div class="lang-tabs">
+                    <button class="lang-tab active" onclick="switchLang(event, 'python')">Python</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'cpp')">C++</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'java')">Java</button>
+                </div>
+
+                <div id="python" class="code-content active">
+                    <pre><code class="language-python"># 方法一：n &amp; (n-1) == 0（推薦）
+class Solution:
+    def isPowerOfTwo(self, n: int) -&gt; bool:
+        return n &gt; 0 and (n &amp; (n - 1)) == 0
+
+
+# 方法二：n &amp; (-n) == n
+class Solution:
+    def isPowerOfTwo(self, n: int) -&gt; bool:
+        return n &gt; 0 and (n &amp; -n) == n
+
+
+# 方法三：數學法（不用迴圈/遞迴）
+class Solution:
+    def isPowerOfTwo(self, n: int) -&gt; bool:
+        return n &gt; 0 and (1 &lt;&lt; 30) % n == 0
+
+
+# 方法四：迴圈除法（最直覺）
+class Solution:
+    def isPowerOfTwo(self, n: int) -&gt; bool:
+        if n &lt;= 0:
+            return False
+        while n % 2 == 0:
+            n //= 2
+        return n == 1</code></pre>
+                </div>
+
+                <div id="cpp" class="code-content">
+                    <pre><code class="language-cpp">// 方法一：n &amp; (n-1) == 0（推薦）
+class Solution {
+public:
+    bool isPowerOfTwo(int n) {
+        return n &gt; 0 &amp;&amp; (n &amp; (n - 1)) == 0;
+    }
+};
+
+// 方法二：n &amp; (-n) == n
+class Solution {
+public:
+    bool isPowerOfTwo(int n) {
+        if (n &lt;= 0) return false;
+        // 用 long long 避免 INT_MIN 取負號溢位
+        long long x = n;
+        return (x &amp; -x) == x;
+    }
+};
+
+// 方法三：數學法（不用迴圈/遞迴）
+class Solution {
+public:
+    bool isPowerOfTwo(int n) {
+        return n &gt; 0 &amp;&amp; (1 &lt;&lt; 30) % n == 0;
+    }
+};</code></pre>
+                </div>
+
+                <div id="java" class="code-content">
+                    <pre><code class="language-java">// 方法一：n &amp; (n-1) == 0（推薦）
+class Solution {
+    public boolean isPowerOfTwo(int n) {
+        return n &gt; 0 &amp;&amp; (n &amp; (n - 1)) == 0;
+    }
+}
+
+// 方法二：n &amp; (-n) == n
+class Solution {
+    public boolean isPowerOfTwo(int n) {
+        return n &gt; 0 &amp;&amp; (n &amp; -n) == n;
+    }
+}
+
+// 方法三：內建 bitCount
+class Solution {
+    public boolean isPowerOfTwo(int n) {
+        return n &gt; 0 &amp;&amp; Integer.bitCount(n) == 1;
+    }
+}</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>複雜度分析</h2>
+            <div class="complexity">
+                <div class="complexity-item">
+                    <strong>時間複雜度：</strong>
+                    <ul>
+                        <li>方法一、二、三：O(1)，只做一次位元運算</li>
+                        <li>方法四（迴圈除法）：O(log n)</li>
+                    </ul>
+                </div>
+                <div class="complexity-item">
+                    <strong>空間複雜度：</strong>O(1)
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>重點提示</h2>
+            <div class="key-point">
+                <strong>💡 關鍵技巧：n &gt; 0 的判斷不能少</strong>
+                <p>n = 0 時 <code>0 &amp; -1 = 0</code> 會誤判為 true；負數也會出錯。這是本題最常見的扣分點。</p>
+            </div>
+
+            <div class="key-point">
+                <strong>💡 韌體應用：對齊與遮罩</strong>
+                <p>只有當 size 是 2 的冪時，<code>x % size</code> 才能用 <code>x &amp; (size-1)</code> 取代。這就是為什麼記憶體分頁、cache line、ring buffer 大小都設計成 2 的冪。</p>
+            </div>
+
+            <div class="note">
+                <strong>⚠️ 常見錯誤：</strong>
+                <ul>
+                    <li>忘記處理 n &lt;= 0</li>
+                    <li>C++ 中對 <code>INT_MIN</code> 取負號會溢位（UB），要轉成 long long</li>
+                    <li>用 <code>log2(n) % 1 == 0</code> 會有浮點誤差，不建議</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>相關題目</h2>
+            <ul>
+                <li><strong>#191 Number of 1 Bits</strong> - 同樣用 n &amp; (n-1)</li>
+                <li><strong>#326 Power of Three</strong> - 3 的冪，不能用位元技巧</li>
+                <li><strong>#342 Power of Four</strong> - 需要額外檢查 1 在偶數位</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>補充說明</h2>
+            <h3>延伸：Power of Four（#342）</h3>
+            <div class="visual-box">
+                <div class="visual-title">🎯 多一個遮罩判斷</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+4 的冪 = 是 2 的冪，而且那個 1 落在偶數位（第 0, 2, 4... 位）
+
+1   = 0000 0001  ✓ 第 0 位
+4   = 0000 0100  ✓ 第 2 位
+16  = 0001 0000  ✓ 第 4 位
+8   = 0000 1000  ✗ 第 3 位（奇數位）
+
+遮罩 0x55555555 = 0101 0101...（只保留偶數位）
+
+bool isPowerOfFour(int n) {
+    return n > 0 && (n & (n-1)) == 0 && (n & 0x55555555) != 0;
+}
+                </pre>
+            </div>
+
+            <h3>韌體實務：向上對齊到 2 的冪</h3>
+            <pre style="background: #f1f5f9; padding: 15px; border-radius: 8px; margin-top: 10px;">
+// 把 x 向上取整到 align 的倍數（align 必須是 2 的冪）
+#define ALIGN_UP(x, align)   (((x) + (align) - 1) & ~((align) - 1))
+
+// 取得大於等於 n 的最小 2 的冪
+uint32_t next_pow2(uint32_t n) {
+    n--;
+    n |= n >> 1;  n |= n >> 2;  n |= n >> 4;
+    n |= n >> 8;  n |= n >> 16;
+    return n + 1;
+}
+            </pre>
+        </div>
+    </div>
+
+    <script>
+        function switchLang(event, lang) {
+            const tabs = document.querySelectorAll('.lang-tab');
+            const contents = document.querySelectorAll('.code-content');
+
+            tabs.forEach(tab => tab.classList.remove('active'));
+            contents.forEach(content => content.classList.remove('active'));
+
+            event.target.classList.add('active');
+            document.getElementById(lang).classList.add('active');
+        }
+
+        hljs.highlightAll();
+    </script>
+</body>
+</html>

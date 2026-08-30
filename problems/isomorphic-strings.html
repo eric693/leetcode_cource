@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>205. Isomorphic Strings - LeetCode 學習平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f8fafc; line-height: 1.8; color: #334155; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .header { background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; padding: 40px; border-radius: 16px; margin-bottom: 30px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .back-btn { display: inline-block; color: white; text-decoration: none; background: rgba(255,255,255,0.2); padding: 10px 20px; border-radius: 8px; margin-bottom: 20px; transition: all 0.3s; }
+        .back-btn:hover { background: rgba(255,255,255,0.3); }
+        .problem-title { font-size: 2.5em; font-weight: 800; margin-bottom: 15px; }
+        .difficulty { display: inline-block; background: rgba(255,255,255,0.3); padding: 8px 20px; border-radius: 20px; font-weight: 600; font-size: 0.9em; }
+        .content-section { background: white; padding: 40px; border-radius: 16px; margin-bottom: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .section-title { font-size: 1.8em; color: #1e293b; margin-bottom: 25px; font-weight: 700; padding-bottom: 10px; border-bottom: 3px solid #10b981; }
+        .description { font-size: 1.1em; line-height: 1.9; color: #475569; margin-bottom: 20px; }
+        .example-box { background: #f0fdf4; border-left: 4px solid #10b981; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .example-title { font-weight: 700; color: #059669; margin-bottom: 10px; font-size: 1.1em; }
+        .approach-box { background: #eff6ff; border-left: 4px solid #3b82f6; padding: 25px; border-radius: 8px; margin: 25px 0; }
+        .approach-title { font-weight: 700; color: #1e40af; margin-bottom: 15px; font-size: 1.3em; }
+        .complexity-box { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .complexity-item { margin: 10px 0; font-weight: 600; color: #92400e; }
+        .language-tabs { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+        .tab-btn { padding: 12px 28px; border: 2px solid #10b981; background: white; color: #10b981; border-radius: 8px; cursor: pointer; font-weight: 600; transition: all 0.3s; font-size: 1em; }
+        .tab-btn:hover { background: #f0fdf4; }
+        .tab-btn.active { background: #10b981; color: white; }
+        .code-container { display: none; margin-top: 20px; }
+        .code-container.active { display: block; }
+        pre { background: #282c34 !important; padding: 25px !important; border-radius: 12px; overflow-x: auto; margin: 0; }
+        code { font-family: 'Fira Code', 'Consolas', monospace; font-size: 0.95em; line-height: 1.6; }
+        ol, ul { margin-left: 30px; margin-top: 15px; }
+        li { margin: 12px 0; line-height: 1.8; }
+        strong { color: #1e293b; font-weight: 700; }
+        .tips-box { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        
+        @media (max-width: 768px) {
+            .container { padding: 10px; }
+            .header { padding: 25px; }
+            .problem-title { font-size: 1.8em; }
+            .content-section { padding: 25px; }
+            .tab-btn { padding: 10px 20px; font-size: 0.9em; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="../index.html" class="back-btn">← 返回題目列表</a>
+            <div class="problem-title">205. Isomorphic Strings</div>
+            <span class="difficulty">Easy</span>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">題目描述</h2>
+            <div class="description">
+                <p>給定兩個字串 <code>s</code> 和 <code>t</code>，判斷它們是否<strong>同構</strong>。</p>
+                <p>如果 <code>s</code> 中的字元可以按某種映射關係替換得到 <code>t</code>，那麼這兩個字串是同構的。每個出現的字元都應當映射到另一個字元，同時不改變字元的順序，且<strong>不同字元不能映射到同一個字元</strong>，相同字元只能映射到同一個字元。</p>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例 1:</div>
+                <pre><code>輸入: s = "egg", t = "add"
+輸出: true
+解釋: e -&gt; a，g -&gt; d</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例 2:</div>
+                <pre><code>輸入: s = "foo", t = "bar"
+輸出: false
+解釋: o 需要同時映射到 a 和 r，矛盾</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例 3:</div>
+                <pre><code>輸入: s = "paper", t = "title"
+輸出: true</code></pre>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">解題思路</h2>
+
+            <div class="approach-box">
+                <div class="approach-title">方法一：雙向映射表（推薦）</div>
+                <p>同時維護兩張映射：s→t 與 t→s。逐位檢查每一對字元 (a, b)。</p><p>若 s→t 中已有 a 但對應值不是 b，或 t→s 中已有 b 但對應值不是 a，即代表衝突，回傳 false。</p><p><strong>雙向都要檢查</strong>：只檢查單向時，"badc" 與 "baba" 會被誤判為同構（d、c 都映射到 b、a 之外會漏掉 b 被兩個字元指向的情況）。</p>
+            </div>
+
+            <div class="approach-box">
+                <div class="approach-title">方法二：比較首次出現位置</div>
+                <p>對兩個字串各記錄每個字元「上一次出現的位置」，若兩邊在每個索引上的值都相同，即為同構。</p><p>本質上是把字串正規化成同一種模式編碼再比較，一次遍歷即可完成。</p>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">程式碼實現</h2>
+            <div class="language-tabs">
+                <button class="tab-btn active" onclick="showLanguage('python')">Python</button>
+                <button class="tab-btn" onclick="showLanguage('java')">Java</button>
+                <button class="tab-btn" onclick="showLanguage('cpp')">C++</button>
+            </div>
+
+            <div id="python" class="code-container active">
+                <pre><code class="language-python">class Solution:
+    def isIsomorphic(self, s: str, t: str) -&gt; bool:
+        if len(s) != len(t):
+            return False
+        s_to_t, t_to_s = {}, {}
+        for a, b in zip(s, t):
+            if a in s_to_t and s_to_t[a] != b:
+                return False
+            if b in t_to_s and t_to_s[b] != a:
+                return False
+            s_to_t[a] = b
+            t_to_s[b] = a
+        return True</code></pre>
+            </div>
+
+            <div id="java" class="code-container">
+                <pre><code class="language-java">class Solution {
+    public boolean isIsomorphic(String s, String t) {
+        if (s.length() != t.length()) return false;
+        Map&lt;Character, Character&gt; sToT = new HashMap&lt;&gt;();
+        Map&lt;Character, Character&gt; tToS = new HashMap&lt;&gt;();
+        for (int i = 0; i &lt; s.length(); i++) {
+            char a = s.charAt(i), b = t.charAt(i);
+            if (sToT.containsKey(a) &amp;&amp; sToT.get(a) != b) return false;
+            if (tToS.containsKey(b) &amp;&amp; tToS.get(b) != a) return false;
+            sToT.put(a, b);
+            tToS.put(b, a);
+        }
+        return true;
+    }
+}</code></pre>
+            </div>
+
+            <div id="cpp" class="code-container">
+                <pre><code class="language-cpp">class Solution {
+public:
+    bool isIsomorphic(string s, string t) {
+        if (s.size() != t.size()) return false;
+        unordered_map&lt;char, char&gt; sToT, tToS;
+        for (int i = 0; i &lt; (int)s.size(); i++) {
+            char a = s[i], b = t[i];
+            if (sToT.count(a) &amp;&amp; sToT[a] != b) return false;
+            if (tToS.count(b) &amp;&amp; tToS[b] != a) return false;
+            sToT[a] = b;
+            tToS[b] = a;
+        }
+        return true;
+    }
+};</code></pre>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">複雜度分析</h2>
+            <div class="complexity-box">
+                <div class="complexity-item">時間複雜度: O(n)</div>
+                <p style="color: #78716c; margin: 10px 0;">單次走訪字串，每個位置做常數次雜湊查詢與插入。</p>
+
+                <div class="complexity-item" style="margin-top: 20px;">空間複雜度: O(k)</div>
+                <p style="color: #78716c; margin: 10px 0;">k 為字元集大小（本題最多 256），映射表的大小與字串長度無關。</p>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">重點提示</h2>
+            <div class="tips-box">
+                <ul>
+                    <li><strong>必須雙向檢查：</strong>只檢查 s→t 會漏掉「兩個不同字元映射到同一字元」的違規情況</li>
+                    <li><strong>先比長度：</strong>長度不同必定不同構，可提早回傳</li>
+                    <li><strong>與 Word Pattern 同型：</strong>同樣的雙向映射技巧可直接套用在 LeetCode 290 Word Pattern</li>
+                    <li><strong>位置編碼解法：</strong>把字串轉成「每個字元上次出現位置」的序列，兩序列相等即同構</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        hljs.highlightAll();
+        
+        function showLanguage(lang) {
+            // 隱藏所有程式碼區塊
+            document.querySelectorAll('.code-container').forEach(container => {
+                container.classList.remove('active');
+            });
+            
+            // 移除所有按鈕的 active 狀態
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // 顯示選中的程式碼區塊
+            document.getElementById(lang).classList.add('active');
+            
+            // 設定選中按鈕的 active 狀態
+            event.target.classList.add('active');
+        }
+    </script>
+</body>
+</html>

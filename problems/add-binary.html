@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>67. Add Binary - LeetCode 學習平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f8fafc; line-height: 1.8; color: #334155; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .header { background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; padding: 40px; border-radius: 16px; margin-bottom: 30px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .back-btn { display: inline-block; color: white; text-decoration: none; background: rgba(255,255,255,0.2); padding: 10px 20px; border-radius: 8px; margin-bottom: 20px; transition: all 0.3s; }
+        .back-btn:hover { background: rgba(255,255,255,0.3); }
+        .problem-title { font-size: 2.5em; font-weight: 800; margin-bottom: 15px; }
+        .difficulty { display: inline-block; background: rgba(255,255,255,0.3); padding: 8px 20px; border-radius: 20px; font-weight: 600; font-size: 0.9em; }
+        .content-section { background: white; padding: 40px; border-radius: 16px; margin-bottom: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .section-title { font-size: 1.8em; color: #1e293b; margin-bottom: 25px; font-weight: 700; padding-bottom: 10px; border-bottom: 3px solid #10b981; }
+        .description { font-size: 1.1em; line-height: 1.9; color: #475569; margin-bottom: 20px; }
+        .example-box { background: #f0fdf4; border-left: 4px solid #10b981; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .example-title { font-weight: 700; color: #059669; margin-bottom: 10px; font-size: 1.1em; }
+        .approach-box { background: #eff6ff; border-left: 4px solid #3b82f6; padding: 25px; border-radius: 8px; margin: 25px 0; }
+        .approach-title { font-weight: 700; color: #1e40af; margin-bottom: 15px; font-size: 1.3em; }
+        .complexity-box { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .complexity-item { margin: 10px 0; font-weight: 600; color: #92400e; }
+        .language-tabs { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+        .tab-btn { padding: 12px 28px; border: 2px solid #10b981; background: white; color: #10b981; border-radius: 8px; cursor: pointer; font-weight: 600; transition: all 0.3s; font-size: 1em; }
+        .tab-btn:hover { background: #f0fdf4; }
+        .tab-btn.active { background: #10b981; color: white; }
+        .code-container { display: none; margin-top: 20px; }
+        .code-container.active { display: block; }
+        pre { background: #282c34 !important; padding: 25px !important; border-radius: 12px; overflow-x: auto; margin: 0; }
+        code { font-family: 'Fira Code', 'Consolas', monospace; font-size: 0.95em; line-height: 1.6; }
+        ol, ul { margin-left: 30px; margin-top: 15px; }
+        li { margin: 12px 0; line-height: 1.8; }
+        strong { color: #1e293b; font-weight: 700; }
+        .tips-box { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        
+        @media (max-width: 768px) {
+            .container { padding: 10px; }
+            .header { padding: 25px; }
+            .problem-title { font-size: 1.8em; }
+            .content-section { padding: 25px; }
+            .tab-btn { padding: 10px 20px; font-size: 0.9em; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="../index.html" class="back-btn">← 返回題目列表</a>
+            <div class="problem-title">67. Add Binary</div>
+            <span class="difficulty">Easy</span>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">題目描述</h2>
+            <div class="description">
+                <p>給定兩個二進位字串 <code>a</code> 和 <code>b</code>，以二進位字串的形式返回它們的和。</p>
+                <p>字串僅由字元 <code>0</code> 或 <code>1</code> 組成，且除了 "0" 本身外不含前導零。</p>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例 1:</div>
+                <pre><code>輸入: a = "11", b = "1"
+輸出: "100"</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例 2:</div>
+                <pre><code>輸入: a = "1010", b = "1011"
+輸出: "10101"</code></pre>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">解題思路</h2>
+
+            <div class="approach-box">
+                <div class="approach-title">方法一：模擬直式加法（推薦）</div>
+                <p>從兩個字串的最低位（最右端）開始，逐位相加並維護進位 carry。</p><p>每一位的和 sum = carry + a 的當前位 + b 的當前位；輸出位為 sum % 2，新的進位為 sum / 2。</p><p>較短的字串走完後補 0 繼續，迴圈結束時若 carry 仍為 1 要再補上一位，最後把結果反轉。</p>
+            </div>
+
+            <div class="approach-box">
+                <div class="approach-title">方法二：轉成整數相加（不推薦）</div>
+                <p>把兩個字串轉成整數相加再轉回二進位，寫法很短。</p><p>但題目字串長度可達 10^4，遠超過 64 位元整數範圍；除了 Python 的大整數之外，其他語言會直接溢位，因此實務上仍應使用逐位模擬。</p>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">程式碼實現</h2>
+            <div class="language-tabs">
+                <button class="tab-btn active" onclick="showLanguage('python')">Python</button>
+                <button class="tab-btn" onclick="showLanguage('java')">Java</button>
+                <button class="tab-btn" onclick="showLanguage('cpp')">C++</button>
+            </div>
+
+            <div id="python" class="code-container active">
+                <pre><code class="language-python">class Solution:
+    def addBinary(self, a: str, b: str) -&gt; str:
+        i, j = len(a) - 1, len(b) - 1
+        carry = 0
+        result = []
+        while i &gt;= 0 or j &gt;= 0 or carry:
+            total = carry
+            if i &gt;= 0:
+                total += int(a[i])
+                i -= 1
+            if j &gt;= 0:
+                total += int(b[j])
+                j -= 1
+            result.append(str(total % 2))
+            carry = total // 2
+        return ''.join(reversed(result))</code></pre>
+            </div>
+
+            <div id="java" class="code-container">
+                <pre><code class="language-java">class Solution {
+    public String addBinary(String a, String b) {
+        int i = a.length() - 1, j = b.length() - 1, carry = 0;
+        StringBuilder sb = new StringBuilder();
+        while (i &gt;= 0 || j &gt;= 0 || carry != 0) {
+            int total = carry;
+            if (i &gt;= 0) total += a.charAt(i--) - '0';
+            if (j &gt;= 0) total += b.charAt(j--) - '0';
+            sb.append(total % 2);
+            carry = total / 2;
+        }
+        return sb.reverse().toString();
+    }
+}</code></pre>
+            </div>
+
+            <div id="cpp" class="code-container">
+                <pre><code class="language-cpp">class Solution {
+public:
+    string addBinary(string a, string b) {
+        int i = (int)a.size() - 1, j = (int)b.size() - 1, carry = 0;
+        string result;
+        while (i &gt;= 0 || j &gt;= 0 || carry) {
+            int total = carry;
+            if (i &gt;= 0) total += a[i--] - '0';
+            if (j &gt;= 0) total += b[j--] - '0';
+            result += char('0' + total % 2);
+            carry = total / 2;
+        }
+        reverse(result.begin(), result.end());
+        return result;
+    }
+};</code></pre>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">複雜度分析</h2>
+            <div class="complexity-box">
+                <div class="complexity-item">時間複雜度: O(max(m, n))</div>
+                <p style="color: #78716c; margin: 10px 0;">m、n 為兩個字串的長度，迴圈次數為較長字串的長度（最多再多一位進位）。</p>
+
+                <div class="complexity-item" style="margin-top: 20px;">空間複雜度: O(max(m, n))</div>
+                <p style="color: #78716c; margin: 10px 0;">結果字串的長度最多為較長輸入加一位。</p>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">重點提示</h2>
+            <div class="tips-box">
+                <ul>
+                    <li><strong>迴圈條件要含 carry：</strong>寫成 while (i >= 0 || j >= 0 || carry) 才能自然處理最高位進位，不必事後補判斷</li>
+                    <li><strong>字元轉數字：</strong>Java / C++ 用 c 減去字元 0 取得數值，比呼叫轉換函式更直接</li>
+                    <li><strong>別用整數轉換：</strong>輸入長度可達 10^4 位，遠超過 long long 的範圍</li>
+                    <li><strong>記得反轉：</strong>結果是從低位往高位產生的，回傳前必須反轉</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        hljs.highlightAll();
+        
+        function showLanguage(lang) {
+            // 隱藏所有程式碼區塊
+            document.querySelectorAll('.code-container').forEach(container => {
+                container.classList.remove('active');
+            });
+            
+            // 移除所有按鈕的 active 狀態
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // 顯示選中的程式碼區塊
+            document.getElementById(lang).classList.add('active');
+            
+            // 設定選中按鈕的 active 狀態
+            event.target.classList.add('active');
+        }
+    </script>
+</body>
+</html>

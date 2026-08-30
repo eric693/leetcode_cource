@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>#543 Diameter of Binary Tree | LeetCode 學習平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #333; background: #f8fafc; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .header { background: linear-gradient(135deg, #16a34a 0%, #15803d 100%); color: white; padding: 30px; border-radius: 12px; margin-bottom: 30px; box-shadow: 0 4px 6px rgba(22, 163, 74, 0.2); }
+        .header h1 { font-size: 2em; margin-bottom: 10px; }
+        .difficulty { display: inline-block; padding: 6px 16px; background: rgba(255,255,255,0.2); border-radius: 20px; font-size: 0.9em; font-weight: 600; }
+        .tags { margin-top: 15px; }
+        .tag { display: inline-block; background: rgba(255,255,255,0.15); padding: 4px 12px; border-radius: 6px; margin-right: 8px; font-size: 0.85em; }
+        .back-btn { display: inline-block; margin-bottom: 20px; padding: 10px 20px; background: #3b82f6; color: white; text-decoration: none; border-radius: 8px; transition: background 0.3s; }
+        .back-btn:hover { background: #2563eb; }
+        .section { background: white; padding: 30px; border-radius: 12px; margin-bottom: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .section h2 { color: #1e293b; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 3px solid #16a34a; }
+        .section h3 { color: #475569; margin: 25px 0 15px 0; font-size: 1.3em; }
+        .code-block { background: #282c34; border-radius: 8px; overflow: hidden; margin: 15px 0; }
+        .lang-tabs { display: flex; background: #21252b; border-bottom: 1px solid #181a1f; }
+        .lang-tab { padding: 12px 24px; cursor: pointer; color: #abb2bf; border: none; background: none; transition: all 0.3s; font-weight: 500; }
+        .lang-tab.active { color: #61afef; background: #282c34; border-bottom: 2px solid #61afef; }
+        .lang-tab:hover { color: #61afef; background: #2c313a; }
+        .code-content { display: none; }
+        .code-content.active { display: block; }
+        pre { margin: 0; overflow-x: auto; }
+        code { font-family: 'Consolas', 'Monaco', 'Courier New', monospace; font-size: 0.9em; }
+        .example { background: #f0f9ff; border-left: 4px solid #3b82f6; padding: 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .example-title { font-weight: 700; color: #1e40af; margin-bottom: 12px; font-size: 1.05em; }
+        .visual-box { background: #fef3c7; border: 2px solid #f59e0b; padding: 20px; border-radius: 8px; margin: 15px 0; }
+        .visual-title { font-weight: 700; color: #92400e; margin-bottom: 12px; display: flex; align-items: center; font-size: 1.05em; }
+        .complexity { background: #f1f5f9; padding: 15px; border-radius: 8px; margin: 15px 0; }
+        .complexity-item { margin: 8px 0; color: #475569; }
+        .key-point { background: #dcfce7; border-left: 4px solid #16a34a; padding: 15px 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        ul, ol { margin-left: 25px; margin-top: 10px; }
+        li { margin: 8px 0; color: #475569; }
+        strong { color: #1e293b; }
+        .note { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 15px 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        @media (max-width: 768px) {
+            .container { padding: 10px; }
+            .header h1 { font-size: 1.5em; }
+            .section { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="../index.html" class="back-btn">← 返回題目列表</a>
+
+        <div class="header">
+            <h1>#543 Diameter of Binary Tree</h1>
+            <div class="difficulty">Easy</div>
+            <div class="tags">
+                <span class="tag">Tree</span>
+                <span class="tag">DFS</span>
+                <span class="tag">Binary Tree</span>
+                <span class="tag">Recursion</span>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>題目描述</h2>
+            <p>給你一棵二元樹的根節點，返回該樹的<strong>直徑</strong>。</p>
+            <p style="margin-top: 15px;">二元樹的直徑是指樹中<strong>任意兩個節點之間最長路徑的長度</strong>。這條路徑<strong>可能經過也可能不經過根節點</strong> root。</p>
+            <p style="margin-top: 15px;">兩節點之間路徑的長度由它們之間<strong>邊數</strong>表示（不是節點數）。</p>
+        </div>
+
+        <div class="section">
+            <h2>範例</h2>
+            <div class="example">
+                <div class="example-title">範例 1：</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+輸入：root = [1,2,3,4,5]
+
+      1
+     / \
+    2   3
+   / \
+  4   5
+
+輸出：3
+解釋：最長路徑是 [4,2,1,3] 或 [5,2,1,3]，共 3 條邊。
+                </pre>
+            </div>
+
+            <div class="example">
+                <div class="example-title">範例 2：</div>
+                <strong>輸入：</strong>root = [1,2]<br>
+                <strong>輸出：</strong>1
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>解題思路</h2>
+            <div class="visual-box">
+                <div class="visual-title">💡 核心：對每個節點，算「經過它」的最長路徑</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+對任意節點 node，經過它的最長路徑 =
+    左子樹的最大深度 + 右子樹的最大深度
+
+答案 = 所有節點中這個值的最大值
+
+      1
+     / \
+    2   3
+   / \
+  4   5
+
+節點 4：左深 0 + 右深 0 = 0
+節點 5：0 + 0 = 0
+節點 2：左深 1（節點4）+ 右深 1（節點5）= 2
+節點 3：0 + 0 = 0
+節點 1：左深 2（2→4）+ 右深 1（3）= 3 ★
+
+答案 = 3 ✓
+                </pre>
+            </div>
+
+            <h3>關鍵：函數的回傳值 ≠ 答案</h3>
+            <div class="visual-box">
+                <div class="visual-title">🎯 一個遞迴，兩個用途</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+遞迴函數 depth(node)：
+  【回傳】以 node 為端點「往下」的最大深度
+          = 1 + max(左深, 右深)
+
+  【副作用】順便更新全域答案
+          answer = max(answer, 左深 + 右深)
+
+⚠️ 為什麼回傳的不是「左深 + 右深」？
+
+因為路徑不能「分岔後又往上」！
+若父節點要用這條路徑，只能從 node 選【一邊】往下走。
+
+      A
+      |
+      B          若在 B 處算出 左深+右深，
+     / \         那條路徑是 C→B→D，
+    C   D        它已經「用掉」了 B 的兩個方向，
+                 無法再往上延伸到 A。
+
+所以：
+  往上回報 → 只能選一邊：1 + max(左, 右)
+  更新答案 → 可以用兩邊：左 + 右
+                </pre>
+            </div>
+
+            <h3>這是「後序遍歷 + 全域變數」的經典模式</h3>
+            <pre style="background: #f1f5f9; padding: 15px; border-radius: 8px; margin-top: 10px;">
+int answer = 0;
+
+int dfs(node) {
+    if (!node) return 0;
+    int left  = dfs(node-&gt;left);      // 先取得子樹資訊
+    int right = dfs(node-&gt;right);
+
+    answer = max(answer, left + right);   // 更新全域答案（用兩邊）
+
+    return 1 + max(left, right);          // 往上回報（只能選一邊）
+}
+            </pre>
+        </div>
+
+        <div class="section">
+            <h2>程式碼實現</h2>
+
+            <div class="code-block">
+                <div class="lang-tabs">
+                    <button class="lang-tab active" onclick="switchLang(event, 'python')">Python</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'cpp')">C++</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'java')">Java</button>
+                </div>
+
+                <div id="python" class="code-content active">
+                    <pre><code class="language-python">class Solution:
+    def diameterOfBinaryTree(self, root: Optional[TreeNode]) -&gt; int:
+        self.answer = 0
+
+        def depth(node):
+            if not node:
+                return 0
+
+            left = depth(node.left)      # 左子樹最大深度
+            right = depth(node.right)    # 右子樹最大深度
+
+            # 更新答案：經過 node 的最長路徑（可以用兩邊）
+            self.answer = max(self.answer, left + right)
+
+            # 往上回報：只能選一邊，再加上自己這條邊
+            return 1 + max(left, right)
+
+        depth(root)
+        return self.answer</code></pre>
+                </div>
+
+                <div id="cpp" class="code-content">
+                    <pre><code class="language-cpp">class Solution {
+    int answer = 0;
+
+    int depth(TreeNode* node) {
+        if (!node) return 0;
+
+        int left  = depth(node-&gt;left);
+        int right = depth(node-&gt;right);
+
+        // 更新答案：經過 node 的最長路徑（用兩邊）
+        answer = max(answer, left + right);
+
+        // 往上回報：只能選一邊
+        return 1 + max(left, right);
+    }
+
+public:
+    int diameterOfBinaryTree(TreeNode* root) {
+        depth(root);
+        return answer;
+    }
+};</code></pre>
+                </div>
+
+                <div id="java" class="code-content">
+                    <pre><code class="language-java">class Solution {
+    private int answer = 0;
+
+    public int diameterOfBinaryTree(TreeNode root) {
+        depth(root);
+        return answer;
+    }
+
+    private int depth(TreeNode node) {
+        if (node == null) return 0;
+
+        int left  = depth(node.left);
+        int right = depth(node.right);
+
+        // 更新答案：經過 node 的最長路徑（用兩邊）
+        answer = Math.max(answer, left + right);
+
+        // 往上回報：只能選一邊
+        return 1 + Math.max(left, right);
+    }
+}</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>複雜度分析</h2>
+            <div class="complexity">
+                <div class="complexity-item">
+                    <strong>時間複雜度：</strong>O(n)
+                    <ul>
+                        <li>每個節點只走訪一次</li>
+                        <li>若對每個節點都重新算一次深度，會退化成 O(n²)</li>
+                    </ul>
+                </div>
+                <div class="complexity-item">
+                    <strong>空間複雜度：</strong>O(h)，遞迴堆疊深度，最壞 O(n)
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>重點提示</h2>
+            <div class="key-point">
+                <strong>💡 關鍵技巧：「回傳值」與「答案」分離</strong>
+                <p>這是樹型 DP 最重要的心法。遞迴函數<strong>回傳給父節點的資訊</strong>，和<strong>全域答案</strong>往往是不同的東西。想清楚這兩者的差別，一大類 Hard 樹題就解開了。</p>
+            </div>
+
+            <div class="key-point">
+                <strong>💡 同款題型：#124 二元樹最大路徑和</strong>
+                <p>結構完全相同，只是把「深度」換成「路徑和」，並且要處理負數（子樹貢獻為負時就取 0，等於不選）。掌握本題後，#124 幾乎是照抄。</p>
+            </div>
+
+            <div class="note">
+                <strong>⚠️ 常見錯誤：</strong>
+                <ul>
+                    <li><strong>回傳 <code>left + right</code></strong>（最經典的錯誤）—— 路徑不能分岔後往上延伸</li>
+                    <li>把「邊數」誤算成「節點數」（差 1）</li>
+                    <li>只算經過 root 的路徑，忘記最長路徑可能完全在某棵子樹裡</li>
+                    <li>對每個節點都呼叫一次 <code>maxDepth()</code>，變成 O(n²)</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>相關題目</h2>
+            <ul>
+                <li><strong>#124 Binary Tree Maximum Path Sum</strong> - 同款結構，改成路徑和</li>
+                <li><strong>#104 Maximum Depth of Binary Tree</strong> - 本題的子程序</li>
+                <li><strong>#110 Balanced Binary Tree</strong> - 同樣是後序回報深度</li>
+                <li><strong>#687 Longest Univalue Path</strong> - 加上「值必須相同」的限制</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>補充說明</h2>
+            <h3>樹型 DP 的通用模板</h3>
+            <div class="visual-box">
+                <div class="visual-title">📝 一個框架解一整類題</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+Result dfs(node) {
+    if (!node) return 基準值;
+
+    Result left  = dfs(node-&gt;left);     // 1. 先蒐集子樹資訊
+    Result right = dfs(node-&gt;right);
+
+    更新全域答案(left, right, node);      // 2. 用「兩邊」算答案
+
+    return 往上回報的值(left, right, node);  // 3. 用「一邊」往上傳
+}
+
+套用實例：
+題目          回傳值              全域答案
+--------------------------------------------------------
+#543 直徑     1 + max(l, r)       l + r
+#124 路徑和   val + max(l,r,0)    val + max(l,0) + max(r,0)
+#110 平衡樹   1 + max(l, r)       發現 |l-r| &gt; 1 就標記 false
+#687 同值路徑 相同值時 1+max      l + r（值相同才累加）
+                </pre>
+            </div>
+
+            <h3>#124 最大路徑和的實作</h3>
+            <pre style="background: #f1f5f9; padding: 15px; border-radius: 8px; margin-top: 10px;">
+class Solution {
+    int answer = INT_MIN;
+    int gain(TreeNode* node) {
+        if (!node) return 0;
+        // 負貢獻就捨棄（取 0 代表不走這一邊）
+        int left  = max(gain(node-&gt;left),  0);
+        int right = max(gain(node-&gt;right), 0);
+
+        answer = max(answer, node-&gt;val + left + right);  // 用兩邊
+        return node-&gt;val + max(left, right);             // 只選一邊往上
+    }
+public:
+    int maxPathSum(TreeNode* root) { gain(root); return answer; }
+};
+
+與 #543 唯一的差別：多了 max(..., 0) 來處理負值。
+            </pre>
+
+            <h3>延伸：一般圖（非二元樹）的直徑</h3>
+            <p>對於一般的<strong>樹狀圖</strong>，求直徑有個經典的「兩次 BFS/DFS」技巧：從任意點出發找到最遠的點 u，再從 u 出發找到最遠的點 v，<code>dist(u, v)</code> 就是直徑。這個方法只對<strong>樹</strong>成立（有環的圖不適用），證明依賴樹上路徑唯一的性質。</p>
+        </div>
+    </div>
+
+    <script>
+        function switchLang(event, lang) {
+            const tabs = document.querySelectorAll('.lang-tab');
+            const contents = document.querySelectorAll('.code-content');
+
+            tabs.forEach(tab => tab.classList.remove('active'));
+            contents.forEach(content => content.classList.remove('active'));
+
+            event.target.classList.add('active');
+            document.getElementById(lang).classList.add('active');
+        }
+
+        hljs.highlightAll();
+    </script>
+</body>
+</html>

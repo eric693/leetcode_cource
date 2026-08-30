@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>#162 Find Peak Element | LeetCode 學習平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #333; background: #f8fafc; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .header { background: linear-gradient(135deg, #ea580c 0%, #c2410c 100%); color: white; padding: 30px; border-radius: 12px; margin-bottom: 30px; box-shadow: 0 4px 6px rgba(234, 88, 12, 0.2); }
+        .header h1 { font-size: 2em; margin-bottom: 10px; }
+        .difficulty { display: inline-block; padding: 6px 16px; background: rgba(255,255,255,0.2); border-radius: 20px; font-size: 0.9em; font-weight: 600; }
+        .tags { margin-top: 15px; }
+        .tag { display: inline-block; background: rgba(255,255,255,0.15); padding: 4px 12px; border-radius: 6px; margin-right: 8px; font-size: 0.85em; }
+        .back-btn { display: inline-block; margin-bottom: 20px; padding: 10px 20px; background: #3b82f6; color: white; text-decoration: none; border-radius: 8px; transition: background 0.3s; }
+        .back-btn:hover { background: #2563eb; }
+        .section { background: white; padding: 30px; border-radius: 12px; margin-bottom: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .section h2 { color: #1e293b; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 3px solid #ea580c; }
+        .section h3 { color: #475569; margin: 25px 0 15px 0; font-size: 1.3em; }
+        .code-block { background: #282c34; border-radius: 8px; overflow: hidden; margin: 15px 0; }
+        .lang-tabs { display: flex; background: #21252b; border-bottom: 1px solid #181a1f; }
+        .lang-tab { padding: 12px 24px; cursor: pointer; color: #abb2bf; border: none; background: none; transition: all 0.3s; font-weight: 500; }
+        .lang-tab.active { color: #61afef; background: #282c34; border-bottom: 2px solid #61afef; }
+        .lang-tab:hover { color: #61afef; background: #2c313a; }
+        .code-content { display: none; }
+        .code-content.active { display: block; }
+        pre { margin: 0; overflow-x: auto; }
+        code { font-family: 'Consolas', 'Monaco', 'Courier New', monospace; font-size: 0.9em; }
+        .example { background: #f0f9ff; border-left: 4px solid #3b82f6; padding: 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .example-title { font-weight: 700; color: #1e40af; margin-bottom: 12px; font-size: 1.05em; }
+        .visual-box { background: #fef3c7; border: 2px solid #f59e0b; padding: 20px; border-radius: 8px; margin: 15px 0; }
+        .visual-title { font-weight: 700; color: #92400e; margin-bottom: 12px; display: flex; align-items: center; font-size: 1.05em; }
+        .complexity { background: #f1f5f9; padding: 15px; border-radius: 8px; margin: 15px 0; }
+        .complexity-item { margin: 8px 0; color: #475569; }
+        .key-point { background: #dcfce7; border-left: 4px solid #16a34a; padding: 15px 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        ul, ol { margin-left: 25px; margin-top: 10px; }
+        li { margin: 8px 0; color: #475569; }
+        strong { color: #1e293b; }
+        .note { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 15px 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        @media (max-width: 768px) {
+            .container { padding: 10px; }
+            .header h1 { font-size: 1.5em; }
+            .section { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="../index.html" class="back-btn">← 返回題目列表</a>
+
+        <div class="header">
+            <h1>#162 Find Peak Element</h1>
+            <div class="difficulty">Medium</div>
+            <div class="tags">
+                <span class="tag">Array</span>
+                <span class="tag">Binary Search</span>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>題目描述</h2>
+            <p>峰值元素是指其值<strong>嚴格大於左右相鄰值</strong>的元素。</p>
+            <p style="margin-top: 15px;">給你一個整數陣列 nums，找到峰值元素並返回其索引。陣列可能包含多個峰值，在這種情況下，返回<strong>任何一個峰值</strong>所在位置即可。</p>
+            <p style="margin-top: 15px;">你可以假設 <code>nums[-1] = nums[n] = -∞</code>（陣列外側視為負無窮）。</p>
+            <p style="margin-top: 15px;">你必須實現時間複雜度為 <strong>O(log n)</strong> 的演算法來解決此問題。</p>
+        </div>
+
+        <div class="section">
+            <h2>範例</h2>
+            <div class="example">
+                <div class="example-title">範例 1：</div>
+                <strong>輸入：</strong>nums = [1,2,3,1]<br>
+                <strong>輸出：</strong>2<br>
+                <strong>解釋：</strong>3 是峰值元素，索引為 2。
+            </div>
+
+            <div class="example">
+                <div class="example-title">範例 2：</div>
+                <strong>輸入：</strong>nums = [1,2,1,3,5,6,4]<br>
+                <strong>輸出：</strong>1 或 5<br>
+                <strong>解釋：</strong>索引 1（值 2）和索引 5（值 6）都是峰值，返回任一即可。
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>解題思路</h2>
+            <div class="note">
+                <strong>🤔 陣列無序，為什麼還能二分？</strong>
+                <p>因為題目只要求找出<strong>任意一個</strong>峰值。這讓我們可以每次都往「一定存在峰值」的那半邊走，而不需要全域有序。</p>
+            </div>
+
+            <h3>核心：往上坡的方向走</h3>
+            <div class="visual-box">
+                <div class="visual-title">💡 只比較 nums[mid] 和 nums[mid+1]</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+情況 A：nums[mid] < nums[mid+1]（正在上坡）
+
+     mid mid+1
+      /
+     /
+    ●
+
+    右邊要嘛一直上升到最右端（因為外側是 -∞，
+    最右端就是峰值），要嘛中途開始下降（那個轉折點是峰值）。
+    → 右半邊【必定】存在峰值 → left = mid + 1
+
+
+情況 B：nums[mid] > nums[mid+1]（正在下坡）
+
+    ●
+     \
+      \
+     mid mid+1
+
+    同理，mid 自己或它左邊必定存在峰值
+    → right = mid（mid 可能就是答案，不能減 1）
+
+
+因為外側是 -∞，這個「往高處走一定能碰到頂」的
+論證永遠成立，所以演算法必定收斂到某個峰值。
+                </pre>
+            </div>
+
+            <h3>完整追蹤：nums = [1,2,1,3,5,6,4]</h3>
+            <div class="visual-box">
+                <div class="visual-title">🔄 逐步收斂</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+索引:  0  1  2  3  4  5  6
+值:    1  2  1  3  5  6  4
+
+left=0, right=6
+  mid=3, nums[3]=3 < nums[4]=5 → 上坡，left = 4
+
+left=4, right=6
+  mid=5, nums[5]=6 > nums[6]=4 → 下坡，right = 5
+
+left=4, right=5
+  mid=4, nums[4]=5 < nums[5]=6 → 上坡，left = 5
+
+left == right == 5，結束
+答案 5（nums[5] = 6 是峰值）✓
+                </pre>
+            </div>
+
+            <h3>為什麼不用擔心 mid+1 越界？</h3>
+            <p>迴圈條件是 <code>left &lt; right</code>，所以 <code>mid = (left+right)/2</code> 向下取整後必定滿足 <code>mid &lt; right</code>，也就是 <code>mid + 1 &lt;= right</code>，永遠在合法範圍內。</p>
+        </div>
+
+        <div class="section">
+            <h2>程式碼實現</h2>
+
+            <div class="code-block">
+                <div class="lang-tabs">
+                    <button class="lang-tab active" onclick="switchLang(event, 'python')">Python</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'cpp')">C++</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'java')">Java</button>
+                </div>
+
+                <div id="python" class="code-content active">
+                    <pre><code class="language-python"># 二分搜尋：往上坡方向走（推薦）
+class Solution:
+    def findPeakElement(self, nums: List[int]) -&gt; int:
+        left, right = 0, len(nums) - 1
+
+        while left &lt; right:
+            mid = left + (right - left) // 2
+            if nums[mid] &lt; nums[mid + 1]:
+                left = mid + 1          # 上坡，右半邊必有峰值
+            else:
+                right = mid             # 下坡，mid 可能就是峰值
+        return left
+
+
+# 線性掃描版本（O(n)，不符要求但可當作驗證）
+class Solution:
+    def findPeakElement(self, nums: List[int]) -&gt; int:
+        for i in range(len(nums) - 1):
+            if nums[i] &gt; nums[i + 1]:   # 第一個下降處就是峰值
+                return i
+        return len(nums) - 1            # 全程上升，最後一個是峰值</code></pre>
+                </div>
+
+                <div id="cpp" class="code-content">
+                    <pre><code class="language-cpp">// 二分搜尋：往上坡方向走（推薦）
+class Solution {
+public:
+    int findPeakElement(vector&lt;int&gt;&amp; nums) {
+        int left = 0, right = nums.size() - 1;
+
+        while (left &lt; right) {
+            int mid = left + (right - left) / 2;
+            if (nums[mid] &lt; nums[mid + 1]) {
+                left = mid + 1;      // 上坡，右半邊必有峰值
+            } else {
+                right = mid;         // 下坡，mid 可能就是峰值
+            }
+        }
+        return left;
+    }
+};
+
+// 遞迴版本
+class Solution {
+    int search(vector&lt;int&gt;&amp; nums, int left, int right) {
+        if (left == right) return left;
+        int mid = left + (right - left) / 2;
+        if (nums[mid] &lt; nums[mid + 1]) return search(nums, mid + 1, right);
+        return search(nums, left, mid);
+    }
+public:
+    int findPeakElement(vector&lt;int&gt;&amp; nums) {
+        return search(nums, 0, nums.size() - 1);
+    }
+};</code></pre>
+                </div>
+
+                <div id="java" class="code-content">
+                    <pre><code class="language-java">// 二分搜尋：往上坡方向走（推薦）
+class Solution {
+    public int findPeakElement(int[] nums) {
+        int left = 0, right = nums.length - 1;
+
+        while (left &lt; right) {
+            int mid = left + (right - left) / 2;
+            if (nums[mid] &lt; nums[mid + 1]) {
+                left = mid + 1;      // 上坡
+            } else {
+                right = mid;         // 下坡
+            }
+        }
+        return left;
+    }
+}</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>複雜度分析</h2>
+            <div class="complexity">
+                <div class="complexity-item">
+                    <strong>時間複雜度：</strong>O(log n)
+                    <ul>
+                        <li>每次比較後排除一半的搜尋空間</li>
+                    </ul>
+                </div>
+                <div class="complexity-item">
+                    <strong>空間複雜度：</strong>O(1)（遞迴版本為 O(log n)）
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>重點提示</h2>
+            <div class="key-point">
+                <strong>💡 關鍵技巧：二分不一定需要「全域有序」</strong>
+                <p>只要能證明「某一半邊<strong>必定</strong>存在答案」，就能二分。這題是理解二分本質最好的例子，面試很愛考這個觀念。</p>
+            </div>
+
+            <div class="key-point">
+                <strong>💡 題目條件的重要性</strong>
+                <p>「相鄰元素不相等」這個條件是二分成立的前提。如果允許相等（如 [1,1,1,1]），就無法判斷該往哪邊走，只能退化成 O(n) 線性掃描。面試時主動指出這點會加分。</p>
+            </div>
+
+            <div class="note">
+                <strong>⚠️ 常見錯誤：</strong>
+                <ul>
+                    <li>迴圈條件寫 <code>left &lt;= right</code>，配上 <code>right = mid</code> 會無限迴圈</li>
+                    <li>寫成 <code>right = mid - 1</code> 會漏掉答案</li>
+                    <li>試圖比較 <code>nums[mid-1]</code>，反而要處理越界；只比 <code>mid+1</code> 就夠了</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>相關題目</h2>
+            <ul>
+                <li><strong>#153 Find Minimum in Rotated Sorted Array</strong> - 同類型的「非有序二分」</li>
+                <li><strong>#33 Search in Rotated Sorted Array</strong> - 旋轉陣列搜尋</li>
+                <li><strong>#852 Peak Index in a Mountain Array</strong> - 保證只有一個峰值的簡化版</li>
+                <li><strong>#1901 Find a Peak Element II</strong> - 二維版本的峰值</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>補充說明</h2>
+            <h3>延伸：二維峰值（#1901）</h3>
+            <div class="visual-box">
+                <div class="visual-title">🔲 對「列」做二分</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+二維峰值定義：比上下左右四個鄰居都大
+
+做法：對「行」做二分
+1. 取中間那一行，找出該行的最大值所在的欄 c
+2. 比較 mat[mid][c] 與 mat[mid+1][c]
+   - 若下方較大 → 峰值在下半部
+   - 否則 → 峰值在上半部（含 mid）
+
+複雜度 O(m log n) 或 O(n log m)
+
+正確性：該行最大值保證左右鄰居都比它小，
+        所以只需要判斷上下方向。
+                </pre>
+            </div>
+
+            <h3>「找任意一個」vs「找全部」的複雜度差異</h3>
+            <ul>
+                <li><strong>找任意一個峰值</strong>：O(log n)，可以二分</li>
+                <li><strong>找所有峰值</strong>：O(n)，必須檢查每個位置</li>
+                <li><strong>找最大的峰值（全域最大值）</strong>：O(n)，二分無法保證找到全域最大</li>
+            </ul>
+            <p style="margin-top: 15px;">面試時如果題目改成「找全域最大值」，就必須指出<strong>二分不再適用</strong>——因為往上坡走只能保證找到某個局部最大，不保證是全域最大。這是常見的陷阱追問。</p>
+        </div>
+    </div>
+
+    <script>
+        function switchLang(event, lang) {
+            const tabs = document.querySelectorAll('.lang-tab');
+            const contents = document.querySelectorAll('.code-content');
+
+            tabs.forEach(tab => tab.classList.remove('active'));
+            contents.forEach(content => content.classList.remove('active'));
+
+            event.target.classList.add('active');
+            document.getElementById(lang).classList.add('active');
+        }
+
+        hljs.highlightAll();
+    </script>
+</body>
+</html>

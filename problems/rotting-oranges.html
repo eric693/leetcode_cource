@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>#994 Rotting Oranges | LeetCode 學習平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #333; background: #f8fafc; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .header { background: linear-gradient(135deg, #ea580c 0%, #c2410c 100%); color: white; padding: 30px; border-radius: 12px; margin-bottom: 30px; box-shadow: 0 4px 6px rgba(234, 88, 12, 0.2); }
+        .header h1 { font-size: 2em; margin-bottom: 10px; }
+        .difficulty { display: inline-block; padding: 6px 16px; background: rgba(255,255,255,0.2); border-radius: 20px; font-size: 0.9em; font-weight: 600; }
+        .tags { margin-top: 15px; }
+        .tag { display: inline-block; background: rgba(255,255,255,0.15); padding: 4px 12px; border-radius: 6px; margin-right: 8px; font-size: 0.85em; }
+        .back-btn { display: inline-block; margin-bottom: 20px; padding: 10px 20px; background: #3b82f6; color: white; text-decoration: none; border-radius: 8px; transition: background 0.3s; }
+        .back-btn:hover { background: #2563eb; }
+        .section { background: white; padding: 30px; border-radius: 12px; margin-bottom: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .section h2 { color: #1e293b; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 3px solid #ea580c; }
+        .section h3 { color: #475569; margin: 25px 0 15px 0; font-size: 1.3em; }
+        .code-block { background: #282c34; border-radius: 8px; overflow: hidden; margin: 15px 0; }
+        .lang-tabs { display: flex; background: #21252b; border-bottom: 1px solid #181a1f; }
+        .lang-tab { padding: 12px 24px; cursor: pointer; color: #abb2bf; border: none; background: none; transition: all 0.3s; font-weight: 500; }
+        .lang-tab.active { color: #61afef; background: #282c34; border-bottom: 2px solid #61afef; }
+        .lang-tab:hover { color: #61afef; background: #2c313a; }
+        .code-content { display: none; }
+        .code-content.active { display: block; }
+        pre { margin: 0; overflow-x: auto; }
+        code { font-family: 'Consolas', 'Monaco', 'Courier New', monospace; font-size: 0.9em; }
+        .example { background: #f0f9ff; border-left: 4px solid #3b82f6; padding: 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .example-title { font-weight: 700; color: #1e40af; margin-bottom: 12px; font-size: 1.05em; }
+        .visual-box { background: #fef3c7; border: 2px solid #f59e0b; padding: 20px; border-radius: 8px; margin: 15px 0; }
+        .visual-title { font-weight: 700; color: #92400e; margin-bottom: 12px; display: flex; align-items: center; font-size: 1.05em; }
+        .complexity { background: #f1f5f9; padding: 15px; border-radius: 8px; margin: 15px 0; }
+        .complexity-item { margin: 8px 0; color: #475569; }
+        .key-point { background: #dcfce7; border-left: 4px solid #16a34a; padding: 15px 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        ul, ol { margin-left: 25px; margin-top: 10px; }
+        li { margin: 8px 0; color: #475569; }
+        strong { color: #1e293b; }
+        .note { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 15px 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        @media (max-width: 768px) {
+            .container { padding: 10px; }
+            .header h1 { font-size: 1.5em; }
+            .section { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="../index.html" class="back-btn">← 返回題目列表</a>
+
+        <div class="header">
+            <h1>#994 Rotting Oranges</h1>
+            <div class="difficulty">Medium</div>
+            <div class="tags">
+                <span class="tag">BFS</span>
+                <span class="tag">Matrix</span>
+                <span class="tag">Array</span>
+                <span class="tag">Graph</span>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>題目描述</h2>
+            <p>在給定的 m × n 網格 grid 中，每個儲存格可以有以下三個值之一：</p>
+            <ul>
+                <li><code>0</code> 代表空儲存格</li>
+                <li><code>1</code> 代表新鮮橘子</li>
+                <li><code>2</code> 代表腐爛的橘子</li>
+            </ul>
+            <p style="margin-top: 15px;">每分鐘，腐爛的橘子<strong>周圍 4 個方向上相鄰</strong>的新鮮橘子都會腐爛。</p>
+            <p style="margin-top: 15px;">返回直到儲存格中沒有新鮮橘子為止所必須經過的<strong>最小分鐘數</strong>。如果不可能，返回 <strong>-1</strong>。</p>
+        </div>
+
+        <div class="section">
+            <h2>範例</h2>
+            <div class="example">
+                <div class="example-title">範例 1：</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+輸入：grid = [[2,1,1],[1,1,0],[0,1,1]]
+輸出：4
+
+第 0 分鐘        第 1 分鐘        第 2 分鐘
+2 1 1            2 2 1            2 2 2
+1 1 0     →      2 1 0     →      2 2 0
+0 1 1            0 1 1            0 1 1
+
+第 3 分鐘        第 4 分鐘
+2 2 2            2 2 2
+2 2 0     →      2 2 0
+0 2 1            0 2 2
+                </pre>
+            </div>
+
+            <div class="example">
+                <div class="example-title">範例 2：</div>
+                <strong>輸入：</strong>grid = [[2,1,1],[0,1,1],[1,0,1]]<br>
+                <strong>輸出：</strong>-1<br>
+                <strong>解釋：</strong>左下角的橘子被 0 隔開，永遠不會腐爛。
+            </div>
+
+            <div class="example">
+                <div class="example-title">範例 3：</div>
+                <strong>輸入：</strong>grid = [[0,2]]<br>
+                <strong>輸出：</strong>0<br>
+                <strong>解釋：</strong>一開始就沒有新鮮橘子，所以答案是 0。
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>解題思路</h2>
+            <div class="visual-box">
+                <div class="visual-title">💡 核心：多源 BFS（Multi-source BFS）</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+關鍵觀察：腐爛是【同時】從所有爛橘子向外擴散的，
+          這正是 BFS「逐層擴散」的模型。
+
+⭐ 多源 BFS 的做法：
+   把【所有】初始的爛橘子一次全部放進佇列，
+   然後正常做 BFS，每一「層」就是一分鐘。
+
+這等價於：想像有一個虛擬的超級源點，
+連向所有爛橘子（距離 0），再從它做單源 BFS。
+
+    2 1 1
+    1 1 0
+    0 1 1
+
+初始佇列 = [(0,0)]，只有一個爛橘子
+
+第 1 層（1 分鐘）：(0,1), (1,0) 腐爛
+第 2 層（2 分鐘）：(0,2), (1,1) 腐爛
+第 3 層（3 分鐘）：(2,1) 腐爛
+第 4 層（4 分鐘）：(2,2) 腐爛
+新鮮橘子歸零 → 答案 4 ✓
+                </pre>
+            </div>
+
+            <h3>實作要點：逐層處理</h3>
+            <div class="visual-box">
+                <div class="visual-title">🎯 用 queue.size() 分層</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+while (!queue.empty() && fresh > 0) {
+    int size = queue.size();       // ← 記錄「這一層」有幾個
+    for (int i = 0; i < size; i++) {
+        取出一個，向四方擴散
+    }
+    minutes++;                     // 處理完一整層 = 過了一分鐘
+}
+
+⚠️ 必須先把 size 存下來，
+   因為迴圈中會不斷往 queue 加新元素，
+   直接用 queue.size() 當條件會把新一層也算進來。
+                </pre>
+            </div>
+
+            <h3>兩個關鍵細節</h3>
+            <div class="visual-box">
+                <div class="visual-title">🔍 容易出錯的地方</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+【細節 1】要先統計新鮮橘子的數量 fresh
+  結束時若 fresh > 0，代表有橘子永遠爛不到 → 返回 -1
+
+【細節 2】迴圈條件要加上 fresh > 0
+  否則最後一層擴散完後，還會多算一分鐘。
+
+  範例：grid = [[2,1]]
+    初始 fresh = 1
+    第一層擴散後 fresh = 0，minutes = 1 ✓
+    若沒有 fresh > 0 的條件，
+    下一輪佇列還有元素（剛加入的 (0,1)），
+    處理完後 minutes 會變成 2 ✗
+
+【細節 3】一開始就沒有新鮮橘子
+  fresh == 0，迴圈直接不執行，返回 0 ✓
+                </pre>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>程式碼實現</h2>
+
+            <div class="code-block">
+                <div class="lang-tabs">
+                    <button class="lang-tab active" onclick="switchLang(event, 'python')">Python</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'cpp')">C++</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'java')">Java</button>
+                </div>
+
+                <div id="python" class="code-content active">
+                    <pre><code class="language-python">class Solution:
+    def orangesRotting(self, grid: List[List[int]]) -&gt; int:
+        from collections import deque
+
+        m, n = len(grid), len(grid[0])
+        queue = deque()
+        fresh = 0
+
+        # 1. 統計新鮮橘子，並把所有爛橘子一次放進佇列（多源）
+        for i in range(m):
+            for j in range(n):
+                if grid[i][j] == 2:
+                    queue.append((i, j))
+                elif grid[i][j] == 1:
+                    fresh += 1
+
+        # 一開始就沒有新鮮橘子
+        if fresh == 0:
+            return 0
+
+        directions = [(-1, 0), (1, 0), (0, -1), (0, 1)]
+        minutes = 0
+
+        # 2. 逐層 BFS，每一層代表一分鐘
+        while queue and fresh &gt; 0:
+            size = len(queue)              # 固定住「這一層」的數量
+            for _ in range(size):
+                x, y = queue.popleft()
+                for dx, dy in directions:
+                    nx, ny = x + dx, y + dy
+                    if 0 &lt;= nx &lt; m and 0 &lt;= ny &lt; n and grid[nx][ny] == 1:
+                        grid[nx][ny] = 2   # 腐爛（同時當作已訪問標記）
+                        fresh -= 1
+                        queue.append((nx, ny))
+            minutes += 1
+
+        # 3. 若還有新鮮橘子，代表永遠爛不到
+        return minutes if fresh == 0 else -1</code></pre>
+                </div>
+
+                <div id="cpp" class="code-content">
+                    <pre><code class="language-cpp">class Solution {
+public:
+    int orangesRotting(vector&lt;vector&lt;int&gt;&gt;&amp; grid) {
+        int m = grid.size(), n = grid[0].size();
+        queue&lt;pair&lt;int,int&gt;&gt; q;
+        int fresh = 0;
+
+        // 1. 統計新鮮橘子，所有爛橘子一次入隊（多源 BFS）
+        for (int i = 0; i &lt; m; i++) {
+            for (int j = 0; j &lt; n; j++) {
+                if (grid[i][j] == 2)      q.push({i, j});
+                else if (grid[i][j] == 1) fresh++;
+            }
+        }
+
+        if (fresh == 0) return 0;
+
+        int dirs[4][2] = {{-1,0},{1,0},{0,-1},{0,1}};
+        int minutes = 0;
+
+        // 2. 逐層 BFS
+        while (!q.empty() &amp;&amp; fresh &gt; 0) {
+            int size = q.size();          // 固定住這一層的數量
+            for (int i = 0; i &lt; size; i++) {
+                auto [x, y] = q.front(); q.pop();
+                for (auto&amp; d : dirs) {
+                    int nx = x + d[0], ny = y + d[1];
+                    if (nx &gt;= 0 &amp;&amp; nx &lt; m &amp;&amp; ny &gt;= 0 &amp;&amp; ny &lt; n
+                        &amp;&amp; grid[nx][ny] == 1) {
+                        grid[nx][ny] = 2;  // 腐爛 = 已訪問
+                        fresh--;
+                        q.push({nx, ny});
+                    }
+                }
+            }
+            minutes++;
+        }
+
+        return fresh == 0 ? minutes : -1;
+    }
+};</code></pre>
+                </div>
+
+                <div id="java" class="code-content">
+                    <pre><code class="language-java">class Solution {
+    public int orangesRotting(int[][] grid) {
+        int m = grid.length, n = grid[0].length;
+        Deque&lt;int[]&gt; queue = new ArrayDeque&lt;&gt;();
+        int fresh = 0;
+
+        // 1. 統計新鮮橘子，所有爛橘子一次入隊
+        for (int i = 0; i &lt; m; i++) {
+            for (int j = 0; j &lt; n; j++) {
+                if (grid[i][j] == 2)      queue.offer(new int[]{i, j});
+                else if (grid[i][j] == 1) fresh++;
+            }
+        }
+
+        if (fresh == 0) return 0;
+
+        int[][] dirs = {{-1,0},{1,0},{0,-1},{0,1}};
+        int minutes = 0;
+
+        // 2. 逐層 BFS
+        while (!queue.isEmpty() &amp;&amp; fresh &gt; 0) {
+            int size = queue.size();
+            for (int i = 0; i &lt; size; i++) {
+                int[] cur = queue.poll();
+                for (int[] d : dirs) {
+                    int nx = cur[0] + d[0], ny = cur[1] + d[1];
+                    if (nx &gt;= 0 &amp;&amp; nx &lt; m &amp;&amp; ny &gt;= 0 &amp;&amp; ny &lt; n
+                        &amp;&amp; grid[nx][ny] == 1) {
+                        grid[nx][ny] = 2;
+                        fresh--;
+                        queue.offer(new int[]{nx, ny});
+                    }
+                }
+            }
+            minutes++;
+        }
+
+        return fresh == 0 ? minutes : -1;
+    }
+}</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>複雜度分析</h2>
+            <div class="complexity">
+                <div class="complexity-item">
+                    <strong>時間複雜度：</strong>O(m × n)
+                    <ul>
+                        <li>初始掃描一次網格 O(mn)</li>
+                        <li>BFS 中每個儲存格最多入隊一次 O(mn)</li>
+                    </ul>
+                </div>
+                <div class="complexity-item">
+                    <strong>空間複雜度：</strong>O(m × n)
+                    <ul>
+                        <li>最壞情況（全部都是爛橘子）佇列會存下整個網格</li>
+                        <li>直接在原網格上標記，省下額外的 visited 陣列</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>重點提示</h2>
+            <div class="key-point">
+                <strong>💡 關鍵技巧 1：多源 BFS</strong>
+                <p>「多個起點同時擴散」就把所有起點一次放進初始佇列。這比對每個起點各跑一次 BFS 快非常多，是解一整類「擴散/傳染/最近距離」問題的標準手法。</p>
+            </div>
+
+            <div class="key-point">
+                <strong>💡 關鍵技巧 2：用原地修改取代 visited 陣列</strong>
+                <p>把 1 改成 2 既表示「腐爛了」也表示「已訪問」，一舉兩得，省下 O(mn) 空間。若題目不允許修改輸入，才需要額外的 visited。</p>
+            </div>
+
+            <div class="key-point">
+                <strong>💡 關鍵技巧 3：迴圈條件加 <code>fresh &gt; 0</code></strong>
+                <p>這是本題最容易踩的坑。少了它，最後一層擴散完後還會多算一分鐘，導致答案大 1。</p>
+            </div>
+
+            <div class="note">
+                <strong>⚠️ 常見錯誤：</strong>
+                <ul>
+                    <li>多算一分鐘（沒加 <code>fresh &gt; 0</code> 條件）</li>
+                    <li>沒處理「一開始就沒有新鮮橘子」→ 應返回 0 而非 -1</li>
+                    <li>直接用 <code>queue.size()</code> 當內層迴圈條件（會把新加入的一層也算進來）</li>
+                    <li>用 DFS 解 —— DFS 無法保證「最短時間」，這類題一定要用 BFS</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>相關題目</h2>
+            <ul>
+                <li><strong>#542 01 Matrix</strong> - 多源 BFS 求每格到最近 0 的距離</li>
+                <li><strong>#1091 Shortest Path in Binary Matrix</strong> - 網格最短路徑（8 方向）</li>
+                <li><strong>#200 Number of Islands</strong> - 網格連通分量（DFS/BFS 皆可）</li>
+                <li><strong>#286 Walls and Gates</strong> - 多源 BFS 求到最近門的距離</li>
+                <li><strong>#127 Word Ladder</strong> - 抽象圖上的 BFS 最短路徑</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>補充說明</h2>
+            <h3>網格 BFS/DFS 的通用模板</h3>
+            <div class="visual-box">
+                <div class="visual-title">📝 寫熟這個模板，一半的網格題都會了</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+int dirs[4][2] = {{-1,0},{1,0},{0,-1},{0,1}};   // 上下左右
+// 八方向：再加 {-1,-1},{-1,1},{1,-1},{1,1}
+
+for (auto&amp; d : dirs) {
+    int nx = x + d[0], ny = y + d[1];
+    if (nx &lt; 0 || nx &gt;= m || ny &lt; 0 || ny &gt;= n) continue;  // 邊界
+    if (visited[nx][ny] || grid[nx][ny] != 目標值) continue;
+    // 處理 (nx, ny)
+}
+
+⭐ 邊界檢查一定要寫在存取 grid[nx][ny] 【之前】，
+   否則會越界崩潰（短路求值 &amp;&amp; 的順序很重要）。
+                </pre>
+            </div>
+
+            <h3>什麼時候用 BFS？什麼時候用 DFS？</h3>
+            <pre style="background: #f1f5f9; padding: 15px; border-radius: 8px; margin-top: 10px;">
+問題類型                        用哪個
+------------------------------------------------------
+最短路徑 / 最少步數 / 最短時間   BFS ★（DFS 不保證最短）
+逐層 / 分層處理                  BFS
+連通分量計數（島嶼數量）         都可以
+找出所有路徑 / 組合              DFS + 回溯
+拓撲排序                         都可以（Kahn 是 BFS）
+偵測環                           DFS 較自然
+
+本題是「最小分鐘數」→ 必須用 BFS。
+        </pre>
+
+            <h3>#542 01 Matrix：多源 BFS 的另一個經典</h3>
+            <pre style="background: #f1f5f9; padding: 15px; border-radius: 8px; margin-top: 10px;">
+求每個格子到最近的 0 的距離。
+
+❌ 錯誤思路：對每個 1 做一次 BFS → O((mn)²) 超時
+✓ 正確思路：把【所有 0】一次放進佇列做多源 BFS，
+            向外擴散時記錄距離 → O(mn)
+
+vector&lt;vector&lt;int&gt;&gt; updateMatrix(vector&lt;vector&lt;int&gt;&gt;&amp; mat) {
+    int m = mat.size(), n = mat[0].size();
+    vector&lt;vector&lt;int&gt;&gt; dist(m, vector&lt;int&gt;(n, -1));
+    queue&lt;pair&lt;int,int&gt;&gt; q;
+    for (int i = 0; i &lt; m; i++)
+        for (int j = 0; j &lt; n; j++)
+            if (mat[i][j] == 0) { dist[i][j] = 0; q.push({i, j}); }
+    // 之後就是標準 BFS，dist[nx][ny] = dist[x][y] + 1
+    ...
+}
+
+「反過來從目標點出發」是多源 BFS 最核心的思維轉換。
+            </pre>
+        </div>
+    </div>
+
+    <script>
+        function switchLang(event, lang) {
+            const tabs = document.querySelectorAll('.lang-tab');
+            const contents = document.querySelectorAll('.code-content');
+
+            tabs.forEach(tab => tab.classList.remove('active'));
+            contents.forEach(content => content.classList.remove('active'));
+
+            event.target.classList.add('active');
+            document.getElementById(lang).classList.add('active');
+        }
+
+        hljs.highlightAll();
+    </script>
+</body>
+</html>

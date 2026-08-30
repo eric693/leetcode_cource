@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>326. Power of Three - LeetCode 學習平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f8fafc; line-height: 1.8; color: #334155; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .header { background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; padding: 40px; border-radius: 16px; margin-bottom: 30px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .back-btn { display: inline-block; color: white; text-decoration: none; background: rgba(255,255,255,0.2); padding: 10px 20px; border-radius: 8px; margin-bottom: 20px; transition: all 0.3s; }
+        .back-btn:hover { background: rgba(255,255,255,0.3); }
+        .problem-title { font-size: 2.5em; font-weight: 800; margin-bottom: 15px; }
+        .difficulty { display: inline-block; background: rgba(255,255,255,0.3); padding: 8px 20px; border-radius: 20px; font-weight: 600; font-size: 0.9em; }
+        .content-section { background: white; padding: 40px; border-radius: 16px; margin-bottom: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .section-title { font-size: 1.8em; color: #1e293b; margin-bottom: 25px; font-weight: 700; padding-bottom: 10px; border-bottom: 3px solid #10b981; }
+        .description { font-size: 1.1em; line-height: 1.9; color: #475569; margin-bottom: 20px; }
+        .example-box { background: #f0fdf4; border-left: 4px solid #10b981; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .example-title { font-weight: 700; color: #059669; margin-bottom: 10px; font-size: 1.1em; }
+        .approach-box { background: #eff6ff; border-left: 4px solid #3b82f6; padding: 25px; border-radius: 8px; margin: 25px 0; }
+        .approach-title { font-weight: 700; color: #1e40af; margin-bottom: 15px; font-size: 1.3em; }
+        .complexity-box { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .complexity-item { margin: 10px 0; font-weight: 600; color: #92400e; }
+        .language-tabs { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+        .tab-btn { padding: 12px 28px; border: 2px solid #10b981; background: white; color: #10b981; border-radius: 8px; cursor: pointer; font-weight: 600; transition: all 0.3s; font-size: 1em; }
+        .tab-btn:hover { background: #f0fdf4; }
+        .tab-btn.active { background: #10b981; color: white; }
+        .code-container { display: none; margin-top: 20px; }
+        .code-container.active { display: block; }
+        pre { background: #282c34 !important; padding: 25px !important; border-radius: 12px; overflow-x: auto; margin: 0; }
+        code { font-family: 'Fira Code', 'Consolas', monospace; font-size: 0.95em; line-height: 1.6; }
+        ol, ul { margin-left: 30px; margin-top: 15px; }
+        li { margin: 12px 0; line-height: 1.8; }
+        strong { color: #1e293b; font-weight: 700; }
+        .tips-box { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        
+        @media (max-width: 768px) {
+            .container { padding: 10px; }
+            .header { padding: 25px; }
+            .problem-title { font-size: 1.8em; }
+            .content-section { padding: 25px; }
+            .tab-btn { padding: 10px 20px; font-size: 0.9em; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="../index.html" class="back-btn">← 返回題目列表</a>
+            <div class="problem-title">326. Power of Three</div>
+            <span class="difficulty">Easy</span>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">題目描述</h2>
+            <div class="description">
+                <p>給定一個整數 <code>n</code>，判斷它是否是 <strong>3 的冪次方</strong>。如果是，返回 <code>true</code>；否則返回 <code>false</code>。</p>
+                <p>整數 n 是 3 的冪次方需滿足：存在整數 x 使得 <code>n == 3<sup>x</sup></code>。</p>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例 1:</div>
+                <pre><code>輸入: n = 27
+輸出: true
+解釋: 27 = 3³</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例 2:</div>
+                <pre><code>輸入: n = 0
+輸出: false
+解釋: 不存在 x 使得 3^x = 0</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例 3:</div>
+                <pre><code>輸入: n = -1
+輸出: false</code></pre>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">解題思路</h2>
+
+            <div class="approach-box">
+                <div class="approach-title">方法一：反覆整除（推薦）</div>
+                <p>先排除 n <= 0 的情況。接著只要 n 能被 3 整除就一直除以 3，最後檢查是否恰好剩下 1。</p><p>若中途出現無法整除的情形，代表 n 含有 3 以外的質因數，直接判定為 false。</p>
+            </div>
+
+            <div class="approach-box">
+                <div class="approach-title">方法二：利用最大 3 的冪（O(1) 無迴圈）</div>
+                <p>32 位元整數範圍內最大的 3 的冪是 3^19 = 1162261467。</p><p>因為 3 是質數，它的所有因數只有 3 的冪，所以只要 n > 0 且 1162261467 % n == 0，n 必為 3 的冪。</p>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">程式碼實現</h2>
+            <div class="language-tabs">
+                <button class="tab-btn active" onclick="showLanguage('python')">Python</button>
+                <button class="tab-btn" onclick="showLanguage('java')">Java</button>
+                <button class="tab-btn" onclick="showLanguage('cpp')">C++</button>
+            </div>
+
+            <div id="python" class="code-container active">
+                <pre><code class="language-python">class Solution:
+    def isPowerOfThree(self, n: int) -&gt; bool:
+        if n &lt;= 0:
+            return False
+        while n % 3 == 0:
+            n //= 3
+        return n == 1</code></pre>
+            </div>
+
+            <div id="java" class="code-container">
+                <pre><code class="language-java">class Solution {
+    public boolean isPowerOfThree(int n) {
+        if (n &lt;= 0) return false;
+        while (n % 3 == 0) n /= 3;
+        return n == 1;
+    }
+}
+
+// 進階：O(1) 無迴圈解法
+// return n &gt; 0 &amp;&amp; 1162261467 % n == 0;</code></pre>
+            </div>
+
+            <div id="cpp" class="code-container">
+                <pre><code class="language-cpp">class Solution {
+public:
+    bool isPowerOfThree(int n) {
+        if (n &lt;= 0) return false;
+        while (n % 3 == 0) n /= 3;
+        return n == 1;
+    }
+};
+
+// 進階：O(1) 無迴圈解法
+// return n &gt; 0 &amp;&amp; 1162261467 % n == 0;</code></pre>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">複雜度分析</h2>
+            <div class="complexity-box">
+                <div class="complexity-item">時間複雜度: O(log₃ n)</div>
+                <p style="color: #78716c; margin: 10px 0;">每次迴圈把 n 縮小為原本的三分之一，最多執行 log₃ n 次；常數解法為 O(1)。</p>
+
+                <div class="complexity-item" style="margin-top: 20px;">空間複雜度: O(1)</div>
+                <p style="color: #78716c; margin: 10px 0;">只使用固定數量的變數。</p>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">重點提示</h2>
+            <div class="tips-box">
+                <ul>
+                    <li><strong>先擋掉非正數：</strong>0 與負數都不是 3 的冪，漏判會讓 while 迴圈行為出錯</li>
+                    <li><strong>質數性質是關鍵：</strong>3 為質數才使得「最大 3 的冪能被 n 整除」等價於「n 是 3 的冪」，此技巧不能套用在 4 的冪上</li>
+                    <li><strong>與 2 的冪不同：</strong>2 的冪可用位元技巧 n & (n - 1) == 0，3 的冪沒有對應的位元捷徑</li>
+                    <li><strong>魔術數字要說明：</strong>面試寫 1162261467 時務必解釋它是 3^19，也就是 int 範圍內最大的 3 的冪</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        hljs.highlightAll();
+        
+        function showLanguage(lang) {
+            // 隱藏所有程式碼區塊
+            document.querySelectorAll('.code-container').forEach(container => {
+                container.classList.remove('active');
+            });
+            
+            // 移除所有按鈕的 active 狀態
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // 顯示選中的程式碼區塊
+            document.getElementById(lang).classList.add('active');
+            
+            // 設定選中按鈕的 active 狀態
+            event.target.classList.add('active');
+        }
+    </script>
+</body>
+</html>

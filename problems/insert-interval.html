@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>#57 Insert Interval | LeetCode 學習平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #333; background: #f8fafc; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .header { background: linear-gradient(135deg, #ea580c 0%, #c2410c 100%); color: white; padding: 30px; border-radius: 12px; margin-bottom: 30px; box-shadow: 0 4px 6px rgba(234, 88, 12, 0.2); }
+        .header h1 { font-size: 2em; margin-bottom: 10px; }
+        .difficulty { display: inline-block; padding: 6px 16px; background: rgba(255,255,255,0.2); border-radius: 20px; font-size: 0.9em; font-weight: 600; }
+        .tags { margin-top: 15px; }
+        .tag { display: inline-block; background: rgba(255,255,255,0.15); padding: 4px 12px; border-radius: 6px; margin-right: 8px; font-size: 0.85em; }
+        .back-btn { display: inline-block; margin-bottom: 20px; padding: 10px 20px; background: #3b82f6; color: white; text-decoration: none; border-radius: 8px; transition: background 0.3s; }
+        .back-btn:hover { background: #2563eb; }
+        .section { background: white; padding: 30px; border-radius: 12px; margin-bottom: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .section h2 { color: #1e293b; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 3px solid #ea580c; }
+        .section h3 { color: #475569; margin: 25px 0 15px 0; font-size: 1.3em; }
+        .code-block { background: #282c34; border-radius: 8px; overflow: hidden; margin: 15px 0; }
+        .lang-tabs { display: flex; background: #21252b; border-bottom: 1px solid #181a1f; }
+        .lang-tab { padding: 12px 24px; cursor: pointer; color: #abb2bf; border: none; background: none; transition: all 0.3s; font-weight: 500; }
+        .lang-tab.active { color: #61afef; background: #282c34; border-bottom: 2px solid #61afef; }
+        .lang-tab:hover { color: #61afef; background: #2c313a; }
+        .code-content { display: none; }
+        .code-content.active { display: block; }
+        pre { margin: 0; overflow-x: auto; }
+        code { font-family: 'Consolas', 'Monaco', 'Courier New', monospace; font-size: 0.9em; }
+        .example { background: #f0f9ff; border-left: 4px solid #3b82f6; padding: 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .example-title { font-weight: 700; color: #1e40af; margin-bottom: 12px; font-size: 1.05em; }
+        .visual-box { background: #fef3c7; border: 2px solid #f59e0b; padding: 20px; border-radius: 8px; margin: 15px 0; }
+        .visual-title { font-weight: 700; color: #92400e; margin-bottom: 12px; display: flex; align-items: center; font-size: 1.05em; }
+        .complexity { background: #f1f5f9; padding: 15px; border-radius: 8px; margin: 15px 0; }
+        .complexity-item { margin: 8px 0; color: #475569; }
+        .key-point { background: #dcfce7; border-left: 4px solid #16a34a; padding: 15px 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        ul, ol { margin-left: 25px; margin-top: 10px; }
+        li { margin: 8px 0; color: #475569; }
+        strong { color: #1e293b; }
+        .note { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 15px 20px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        @media (max-width: 768px) {
+            .container { padding: 10px; }
+            .header h1 { font-size: 1.5em; }
+            .section { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="../index.html" class="back-btn">← 返回題目列表</a>
+
+        <div class="header">
+            <h1>#57 Insert Interval</h1>
+            <div class="difficulty">Medium</div>
+            <div class="tags">
+                <span class="tag">Array</span>
+                <span class="tag">Interval</span>
+                <span class="tag">Greedy</span>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>題目描述</h2>
+            <p>給你一個<strong>無重疊、按起點升序排列</strong>的區間列表 intervals，以及一個新區間 newInterval。</p>
+            <p style="margin-top: 15px;">請你在 intervals 中插入 newInterval，使得插入後仍然<strong>有序且不重疊</strong>（如果有必要的話，可以合併區間）。返回插入後的區間列表。</p>
+            <p style="margin-top: 15px;">注意：你不需要原地修改 intervals，可以建立新陣列返回。</p>
+        </div>
+
+        <div class="section">
+            <h2>範例</h2>
+            <div class="example">
+                <div class="example-title">範例 1：</div>
+                <strong>輸入：</strong>intervals = [[1,3],[6,9]], newInterval = [2,5]<br>
+                <strong>輸出：</strong>[[1,5],[6,9]]
+            </div>
+
+            <div class="example">
+                <div class="example-title">範例 2：</div>
+                <strong>輸入：</strong>intervals = [[1,2],[3,5],[6,7],[8,10],[12,16]], newInterval = [4,8]<br>
+                <strong>輸出：</strong>[[1,2],[3,10],[12,16]]<br>
+                <strong>解釋：</strong>新區間 [4,8] 與 [3,5]、[6,7]、[8,10] 都重疊，合併成 [3,10]。
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>解題思路</h2>
+            <div class="visual-box">
+                <div class="visual-title">💡 核心：把區間分成三段處理</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+因為輸入已經有序且不重疊，可以一趟掃描分成三個階段：
+
+【階段 1】完全在 new 左邊的區間 → 直接加入
+          條件：interval.end < new.start
+
+【階段 2】與 new 重疊的區間 → 合併成一個大區間
+          條件：interval.start <= new.end
+          new.start = min(new.start, interval.start)
+          new.end   = max(new.end,   interval.end)
+          全部合併完後，把 new 加入結果
+
+【階段 3】完全在 new 右邊的區間 → 直接加入
+
+不需要排序！輸入已經有序，所以只要 O(n)。
+                </pre>
+            </div>
+
+            <h3>完整追蹤：[[1,2],[3,5],[6,7],[8,10],[12,16]], new = [4,8]</h3>
+            <div class="visual-box">
+                <div class="visual-title">🔄 三階段掃描</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+new = [4, 8]
+
+【階段 1】end < 4 的
+  [1,2]：2 < 4 ✓ → result = [[1,2]]
+  [3,5]：5 >= 4 ✗ → 進入階段 2
+
+【階段 2】start <= 8 的
+  [3,5]：3 <= 8 ✓ → new = [min(4,3), max(8,5)] = [3,8]
+  [6,7]：6 <= 8 ✓ → new = [min(3,6), max(8,7)] = [3,8]
+  [8,10]：8 <= 8 ✓ → new = [min(3,8), max(8,10)] = [3,10]
+  [12,16]：12 > 8 ✗ → 結束
+  把 new 加入 → result = [[1,2],[3,10]]
+
+【階段 3】剩下的
+  [12,16] → result = [[1,2],[3,10],[12,16]] ✓
+                </pre>
+            </div>
+
+            <h3>與 #56 Merge Intervals 的差別</h3>
+            <div class="visual-box">
+                <div class="visual-title">📊 為什麼這題能 O(n)？</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+#56：輸入無序、可能互相重疊 → 必須先排序 → O(n log n)
+#57：輸入已排序且無重疊     → 直接掃描   → O(n) ★
+
+如果偷懶把 newInterval 塞進陣列再套用 #56 的解法，
+會變成 O(n log n)，面試官通常不會滿意。
+                </pre>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>程式碼實現</h2>
+
+            <div class="code-block">
+                <div class="lang-tabs">
+                    <button class="lang-tab active" onclick="switchLang(event, 'python')">Python</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'cpp')">C++</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'java')">Java</button>
+                </div>
+
+                <div id="python" class="code-content active">
+                    <pre><code class="language-python"># 三階段掃描（推薦，O(n)）
+class Solution:
+    def insert(self, intervals: List[List[int]], newInterval: List[int]) -&gt; List[List[int]]:
+        result = []
+        i, n = 0, len(intervals)
+        start, end = newInterval
+
+        # 階段 1：完全在新區間左邊
+        while i &lt; n and intervals[i][1] &lt; start:
+            result.append(intervals[i])
+            i += 1
+
+        # 階段 2：與新區間重疊，全部合併
+        while i &lt; n and intervals[i][0] &lt;= end:
+            start = min(start, intervals[i][0])
+            end = max(end, intervals[i][1])
+            i += 1
+        result.append([start, end])
+
+        # 階段 3：完全在新區間右邊
+        while i &lt; n:
+            result.append(intervals[i])
+            i += 1
+
+        return result</code></pre>
+                </div>
+
+                <div id="cpp" class="code-content">
+                    <pre><code class="language-cpp">// 三階段掃描（推薦，O(n)）
+class Solution {
+public:
+    vector&lt;vector&lt;int&gt;&gt; insert(vector&lt;vector&lt;int&gt;&gt;&amp; intervals, vector&lt;int&gt;&amp; newInterval) {
+        vector&lt;vector&lt;int&gt;&gt; result;
+        int i = 0, n = intervals.size();
+        int start = newInterval[0], end = newInterval[1];
+
+        // 階段 1：完全在新區間左邊
+        while (i &lt; n &amp;&amp; intervals[i][1] &lt; start) {
+            result.push_back(intervals[i++]);
+        }
+
+        // 階段 2：重疊區間全部合併
+        while (i &lt; n &amp;&amp; intervals[i][0] &lt;= end) {
+            start = min(start, intervals[i][0]);
+            end   = max(end,   intervals[i][1]);
+            i++;
+        }
+        result.push_back({start, end});
+
+        // 階段 3：完全在新區間右邊
+        while (i &lt; n) {
+            result.push_back(intervals[i++]);
+        }
+        return result;
+    }
+};</code></pre>
+                </div>
+
+                <div id="java" class="code-content">
+                    <pre><code class="language-java">// 三階段掃描（推薦，O(n)）
+class Solution {
+    public int[][] insert(int[][] intervals, int[] newInterval) {
+        List&lt;int[]&gt; result = new ArrayList&lt;&gt;();
+        int i = 0, n = intervals.length;
+        int start = newInterval[0], end = newInterval[1];
+
+        // 階段 1：完全在新區間左邊
+        while (i &lt; n &amp;&amp; intervals[i][1] &lt; start) {
+            result.add(intervals[i++]);
+        }
+
+        // 階段 2：重疊區間全部合併
+        while (i &lt; n &amp;&amp; intervals[i][0] &lt;= end) {
+            start = Math.min(start, intervals[i][0]);
+            end   = Math.max(end,   intervals[i][1]);
+            i++;
+        }
+        result.add(new int[]{start, end});
+
+        // 階段 3：完全在新區間右邊
+        while (i &lt; n) {
+            result.add(intervals[i++]);
+        }
+        return result.toArray(new int[result.size()][]);
+    }
+}</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>複雜度分析</h2>
+            <div class="complexity">
+                <div class="complexity-item">
+                    <strong>時間複雜度：</strong>O(n)
+                    <ul>
+                        <li>三個階段合計只掃描陣列一次</li>
+                        <li>因為輸入已排序，完全不需要 O(n log n) 的排序</li>
+                    </ul>
+                </div>
+                <div class="complexity-item">
+                    <strong>空間複雜度：</strong>O(1)（不計輸出陣列）
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>重點提示</h2>
+            <div class="key-point">
+                <strong>💡 關鍵技巧 1：善用「輸入已排序」的條件</strong>
+                <p>題目給的條件都是有用的。看到「已排序、無重疊」就要意識到可以省掉排序，直接線性掃描。</p>
+            </div>
+
+            <div class="key-point">
+                <strong>💡 關鍵技巧 2：合併時 start 也要取 min</strong>
+                <p>雖然大多數情況下新區間的 start 較大，但像 <code>intervals=[[3,5]], new=[4,8]</code> 這種，合併後 start 應該是 3。習慣性寫 min/max 兩邊都取，不會出錯。</p>
+            </div>
+
+            <div class="note">
+                <strong>⚠️ 常見錯誤：</strong>
+                <ul>
+                    <li>階段 1 的條件寫成 <code>end &lt;= start</code>，會把「端點接觸」的區間錯誤地當成不重疊（本題端點接觸算重疊）</li>
+                    <li>忘記把合併後的新區間加入結果</li>
+                    <li>階段 2 只更新 end 沒更新 start</li>
+                    <li>沒有處理 intervals 為空的情況（本解法的迴圈自然跳過，會正確返回 [newInterval]）</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>相關題目</h2>
+            <ul>
+                <li><strong>#56 Merge Intervals</strong> - 合併無序的所有區間</li>
+                <li><strong>#252 Meeting Rooms</strong> - 判斷區間是否有重疊</li>
+                <li><strong>#253 Meeting Rooms II</strong> - 掃描線 / 最小堆積</li>
+                <li><strong>#435 Non-overlapping Intervals</strong> - 貪心刪除最少區間</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>補充說明</h2>
+            <h3>另一種寫法：直接複用 #56</h3>
+            <div class="visual-box">
+                <div class="visual-title">⚖️ 簡潔 vs 效率的取捨</div>
+                <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
+intervals.push_back(newInterval);
+sort(intervals.begin(), intervals.end());
+// 接著跑 #56 的合併邏輯
+
+優點：程式碼短，複用已知解法
+缺點：O(n log n)，浪費了「已排序」這個條件
+
+面試建議：可以先提這個做法說明思路正確，
+          然後主動說「但因為輸入已排序，我可以優化到 O(n)」，
+          再寫三階段版本。
+                </pre>
+            </div>
+
+            <h3>用二分搜尋進一步優化？</h3>
+            <p>可以用二分搜尋快速定位階段 1 和階段 2 的分界點，把「找起點」降到 O(log n)。但<strong>階段 2 的合併本身就可能掃過 O(n) 個區間</strong>（新區間可能跨越所有舊區間），所以最壞情況仍是 O(n)，實務上不划算。面試被問到時可以這樣分析，展現複雜度的敏感度。</p>
+
+            <h3>邊界情況檢查清單</h3>
+            <ul>
+                <li>intervals 為空 → 返回 [newInterval]</li>
+                <li>新區間在最左邊 → 階段 1 不執行</li>
+                <li>新區間在最右邊 → 階段 2、3 不執行</li>
+                <li>新區間吞掉所有舊區間 → 階段 1、3 不執行</li>
+                <li>新區間完全不重疊、夾在中間 → 階段 2 只加入自己</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        function switchLang(event, lang) {
+            const tabs = document.querySelectorAll('.lang-tab');
+            const contents = document.querySelectorAll('.code-content');
+
+            tabs.forEach(tab => tab.classList.remove('active'));
+            contents.forEach(content => content.classList.remove('active'));
+
+            event.target.classList.add('active');
+            document.getElementById(lang).classList.add('active');
+        }
+
+        hljs.highlightAll();
+    </script>
+</body>
+</html>

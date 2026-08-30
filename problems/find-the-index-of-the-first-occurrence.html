@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>28. Find the Index of the First Occurrence in a String - LeetCode 學習平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f8fafc; line-height: 1.8; color: #334155; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .header { background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; padding: 40px; border-radius: 16px; margin-bottom: 30px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .back-btn { display: inline-block; color: white; text-decoration: none; background: rgba(255,255,255,0.2); padding: 10px 20px; border-radius: 8px; margin-bottom: 20px; transition: all 0.3s; }
+        .back-btn:hover { background: rgba(255,255,255,0.3); }
+        .problem-title { font-size: 2.5em; font-weight: 800; margin-bottom: 15px; }
+        .difficulty { display: inline-block; background: rgba(255,255,255,0.3); padding: 8px 20px; border-radius: 20px; font-weight: 600; font-size: 0.9em; }
+        .content-section { background: white; padding: 40px; border-radius: 16px; margin-bottom: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .section-title { font-size: 1.8em; color: #1e293b; margin-bottom: 25px; font-weight: 700; padding-bottom: 10px; border-bottom: 3px solid #10b981; }
+        .description { font-size: 1.1em; line-height: 1.9; color: #475569; margin-bottom: 20px; }
+        .example-box { background: #f0fdf4; border-left: 4px solid #10b981; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .example-title { font-weight: 700; color: #059669; margin-bottom: 10px; font-size: 1.1em; }
+        .approach-box { background: #eff6ff; border-left: 4px solid #3b82f6; padding: 25px; border-radius: 8px; margin: 25px 0; }
+        .approach-title { font-weight: 700; color: #1e40af; margin-bottom: 15px; font-size: 1.3em; }
+        .complexity-box { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .complexity-item { margin: 10px 0; font-weight: 600; color: #92400e; }
+        .language-tabs { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+        .tab-btn { padding: 12px 28px; border: 2px solid #10b981; background: white; color: #10b981; border-radius: 8px; cursor: pointer; font-weight: 600; transition: all 0.3s; font-size: 1em; }
+        .tab-btn:hover { background: #f0fdf4; }
+        .tab-btn.active { background: #10b981; color: white; }
+        .code-container { display: none; margin-top: 20px; }
+        .code-container.active { display: block; }
+        pre { background: #282c34 !important; padding: 25px !important; border-radius: 12px; overflow-x: auto; margin: 0; }
+        code { font-family: 'Fira Code', 'Consolas', monospace; font-size: 0.95em; line-height: 1.6; }
+        ol, ul { margin-left: 30px; margin-top: 15px; }
+        li { margin: 12px 0; line-height: 1.8; }
+        strong { color: #1e293b; font-weight: 700; }
+        .tips-box { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        
+        @media (max-width: 768px) {
+            .container { padding: 10px; }
+            .header { padding: 25px; }
+            .problem-title { font-size: 1.8em; }
+            .content-section { padding: 25px; }
+            .tab-btn { padding: 10px 20px; font-size: 0.9em; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="../index.html" class="back-btn">← 返回題目列表</a>
+            <div class="problem-title">28. Find the Index of the First Occurrence in a String</div>
+            <span class="difficulty">Easy</span>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">題目描述</h2>
+            <div class="description">
+                <p>給定兩個字串 <code>haystack</code> 和 <code>needle</code>，請在 <code>haystack</code> 字串中找出 <code>needle</code> 字串第一次出現的下標（從 0 開始）。</p>
+                <p>如果 <code>needle</code> 不是 <code>haystack</code> 的一部分，則返回 <code>-1</code>。</p>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例 1:</div>
+                <pre><code>輸入: haystack = "sadbutsad", needle = "sad"
+輸出: 0
+解釋: "sad" 在下標 0 和 6 處出現，第一次出現在下標 0</code></pre>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">範例 2:</div>
+                <pre><code>輸入: haystack = "leetcode", needle = "leeto"
+輸出: -1
+解釋: "leeto" 沒有在 "leetcode" 中出現</code></pre>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">解題思路</h2>
+
+            <div class="approach-box">
+                <div class="approach-title">方法一：逐位比對（適合面試起手）</div>
+                <p>以 haystack 的每個可能起點 i（0 到 n - m）為開頭，逐字元比對長度為 m 的子字串是否等於 needle。</p><p>一旦有字元不同就換下一個起點，全部相同即回傳 i。實作簡單，最壞時間為 O(n × m)。</p>
+            </div>
+
+            <div class="approach-box">
+                <div class="approach-title">方法二：KMP 演算法（最佳解）</div>
+                <p>先對 needle 建立前綴函數 next 陣列，next[i] 代表 needle[0..i] 中最長的「相同前綴與後綴」長度。</p><p>比對主字串時，一旦失配就利用 next 陣列把模式往右滑動到已知匹配的位置，主字串指標永不回退，因此時間為 O(n + m)。</p>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">程式碼實現</h2>
+            <div class="language-tabs">
+                <button class="tab-btn active" onclick="showLanguage('python')">Python</button>
+                <button class="tab-btn" onclick="showLanguage('java')">Java</button>
+                <button class="tab-btn" onclick="showLanguage('cpp')">C++</button>
+            </div>
+
+            <div id="python" class="code-container active">
+                <pre><code class="language-python">class Solution:
+    def strStr(self, haystack: str, needle: str) -&gt; int:
+        n, m = len(haystack), len(needle)
+        if m == 0:
+            return 0
+        if m &gt; n:
+            return -1
+
+        # 建立 KMP 前綴函數
+        nxt = [0] * m
+        k = 0
+        for i in range(1, m):
+            while k &gt; 0 and needle[i] != needle[k]:
+                k = nxt[k - 1]
+            if needle[i] == needle[k]:
+                k += 1
+            nxt[i] = k
+
+        # 比對主字串，指標不回退
+        k = 0
+        for i in range(n):
+            while k &gt; 0 and haystack[i] != needle[k]:
+                k = nxt[k - 1]
+            if haystack[i] == needle[k]:
+                k += 1
+            if k == m:
+                return i - m + 1
+        return -1</code></pre>
+            </div>
+
+            <div id="java" class="code-container">
+                <pre><code class="language-java">class Solution {
+    public int strStr(String haystack, String needle) {
+        int n = haystack.length(), m = needle.length();
+        if (m == 0) return 0;
+        if (m &gt; n) return -1;
+
+        int[] next = new int[m];
+        for (int i = 1, k = 0; i &lt; m; i++) {
+            while (k &gt; 0 &amp;&amp; needle.charAt(i) != needle.charAt(k)) k = next[k - 1];
+            if (needle.charAt(i) == needle.charAt(k)) k++;
+            next[i] = k;
+        }
+
+        for (int i = 0, k = 0; i &lt; n; i++) {
+            while (k &gt; 0 &amp;&amp; haystack.charAt(i) != needle.charAt(k)) k = next[k - 1];
+            if (haystack.charAt(i) == needle.charAt(k)) k++;
+            if (k == m) return i - m + 1;
+        }
+        return -1;
+    }
+}</code></pre>
+            </div>
+
+            <div id="cpp" class="code-container">
+                <pre><code class="language-cpp">class Solution {
+public:
+    int strStr(string haystack, string needle) {
+        int n = haystack.size(), m = needle.size();
+        if (m == 0) return 0;
+        if (m &gt; n) return -1;
+
+        vector&lt;int&gt; nxt(m, 0);
+        for (int i = 1, k = 0; i &lt; m; i++) {
+            while (k &gt; 0 &amp;&amp; needle[i] != needle[k]) k = nxt[k - 1];
+            if (needle[i] == needle[k]) k++;
+            nxt[i] = k;
+        }
+
+        for (int i = 0, k = 0; i &lt; n; i++) {
+            while (k &gt; 0 &amp;&amp; haystack[i] != needle[k]) k = nxt[k - 1];
+            if (haystack[i] == needle[k]) k++;
+            if (k == m) return i - m + 1;
+        }
+        return -1;
+    }
+};</code></pre>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">複雜度分析</h2>
+            <div class="complexity-box">
+                <div class="complexity-item">時間複雜度: O(n + m)</div>
+                <p style="color: #78716c; margin: 10px 0;">KMP 建表為 O(m)，主迴圈中 i 只前進不回退、k 的總減少量不超過總增加量，因此比對為 O(n)。</p>
+
+                <div class="complexity-item" style="margin-top: 20px;">空間複雜度: O(m)</div>
+                <p style="color: #78716c; margin: 10px 0;">額外空間只有長度為 m 的前綴函數陣列。</p>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">重點提示</h2>
+            <div class="tips-box">
+                <ul>
+                    <li><strong>next 陣列的意義：</strong>next[i] 是 needle[0..i] 最長相同前後綴的長度，失配時直接跳到該長度繼續比</li>
+                    <li><strong>主指標不回退：</strong>KMP 相對暴力解的關鍵優勢：haystack 的每個字元最多被檢查常數次</li>
+                    <li><strong>while 而非 if：</strong>失配時可能需要連續回退多層，必須用 while 迴圈</li>
+                    <li><strong>先處理邊界：</strong>needle 為空回傳 0、needle 比 haystack 長回傳 -1，可省去後續判斷</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        hljs.highlightAll();
+        
+        function showLanguage(lang) {
+            // 隱藏所有程式碼區塊
+            document.querySelectorAll('.code-container').forEach(container => {
+                container.classList.remove('active');
+            });
+            
+            // 移除所有按鈕的 active 狀態
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // 顯示選中的程式碼區塊
+            document.getElementById(lang).classList.add('active');
+            
+            // 設定選中按鈕的 active 狀態
+            event.target.classList.add('active');
+        }
+    </script>
+</body>
+</html>
