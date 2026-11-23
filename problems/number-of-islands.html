@@ -186,6 +186,8 @@ DFS 標記:
                 <button class="tab-btn active" onclick="showLanguage('python')">Python</button>
                 <button class="tab-btn" onclick="showLanguage('cpp')">C++</button>
                 <button class="tab-btn" onclick="showLanguage('java')">Java</button>
+                <button class="tab-btn" onclick="showLanguage('typescript')">TypeScript</button>
+                <button class="tab-btn" onclick="showLanguage('c')">C</button>
             </div>
 
             <div id="python" class="code-container active">
@@ -476,6 +478,56 @@ class Solution {
             }
         }
     }
+}</code></pre>
+            </div>
+
+            <div id="typescript" class="code-container">
+                <pre><code class="language-typescript">// DFS 淹沒法：遇到陸地就計數，並把整座島改成 '0'
+// 時間複雜度: O(m·n)，空間複雜度: O(m·n)（最壞遞迴深度）
+function numIslands(grid: string[][]): number {
+    const m = grid.length, n = grid[0].length;
+    const sink = (i: number, j: number): void =&gt; {
+        if (i &lt; 0 || i &gt;= m || j &lt; 0 || j &gt;= n || grid[i][j] !== '1') return;
+        grid[i][j] = '0';
+        sink(i + 1, j); sink(i - 1, j); sink(i, j + 1); sink(i, j - 1);
+    };
+
+    let count = 0;
+    for (let i = 0; i &lt; m; i++) {
+        for (let j = 0; j &lt; n; j++) {
+            if (grid[i][j] === '1') {
+                count++;
+                sink(i, j);
+            }
+        }
+    }
+    return count;
+}</code></pre>
+            </div>
+
+            <div id="c" class="code-container">
+                <pre><code class="language-c">// DFS 淹沒法：遇到陸地就計數，並把整座島改成 '0'
+// 時間複雜度: O(m·n)，空間複雜度: O(m·n)（最壞遞迴深度）
+static void sink(char** grid, int m, int n, int i, int j) {
+    if (i &lt; 0 || i &gt;= m || j &lt; 0 || j &gt;= n || grid[i][j] != '1') return;
+    grid[i][j] = '0';
+    sink(grid, m, n, i + 1, j);
+    sink(grid, m, n, i - 1, j);
+    sink(grid, m, n, i, j + 1);
+    sink(grid, m, n, i, j - 1);
+}
+
+int numIslands(char** grid, int gridSize, int* gridColSize) {
+    int m = gridSize, n = gridColSize[0], count = 0;
+    for (int i = 0; i &lt; m; i++) {
+        for (int j = 0; j &lt; n; j++) {
+            if (grid[i][j] == '1') {
+                count++;
+                sink(grid, m, n, i, j);
+            }
+        }
+    }
+    return count;
 }</code></pre>
             </div>
         </div>

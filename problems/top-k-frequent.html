@@ -139,6 +139,8 @@
                 <button class="tab-btn active" onclick="showLanguage('python')">Python</button>
                 <button class="tab-btn" onclick="showLanguage('cpp')">C++</button>
                 <button class="tab-btn" onclick="showLanguage('java')">Java</button>
+                <button class="tab-btn" onclick="showLanguage('typescript')">TypeScript</button>
+                <button class="tab-btn" onclick="showLanguage('c')">C</button>
             </div>
 
             <div id="python" class="code-container active">
@@ -264,6 +266,59 @@ class Solution {
         
         return result;
     }
+}</code></pre>
+            </div>
+
+            <div id="typescript" class="code-container">
+                <pre><code class="language-typescript">// 桶排序：buckets[f] 放出現 f 次的數字，從高頻往低頻取
+// 時間複雜度: O(n)，空間複雜度: O(n)
+function topKFrequent(nums: number[], k: number): number[] {
+    const count = new Map&lt;number, number&gt;();
+    for (const x of nums) count.set(x, (count.get(x) ?? 0) + 1);
+
+    const buckets: number[][] = Array.from({ length: nums.length + 1 }, () =&gt; []);
+    for (const [x, f] of count) buckets[f].push(x);
+
+    const result: number[] = [];
+    for (let f = nums.length; f &gt; 0 &amp;&amp; result.length &lt; k; f--) {
+        result.push(...buckets[f]);
+    }
+    return result.slice(0, k);
+}</code></pre>
+            </div>
+
+            <div id="c" class="code-container">
+                <pre><code class="language-c">// 排序後統計每個數的次數，再依次數由大到小排序取前 k 個
+// 時間複雜度: O(n log n)，空間複雜度: O(n)
+typedef struct { int val, freq; } Pair;
+
+static int cmpInt(const void* a, const void* b) {
+    int x = *(const int*)a, y = *(const int*)b;
+    return (x &gt; y) - (x &lt; y);
+}
+
+static int cmpFreq(const void* a, const void* b) {
+    return ((const Pair*)b)-&gt;freq - ((const Pair*)a)-&gt;freq;   // 次數由大到小
+}
+
+int* topKFrequent(int* nums, int numsSize, int k, int* returnSize) {
+    qsort(nums, numsSize, sizeof(int), cmpInt);
+    Pair* pairs = malloc(sizeof(Pair) * numsSize);
+    int cnt = 0;
+    for (int i = 0; i &lt; numsSize; ) {
+        int j = i;
+        while (j &lt; numsSize &amp;&amp; nums[j] == nums[i]) j++;
+        pairs[cnt].val = nums[i];
+        pairs[cnt++].freq = j - i;
+        i = j;
+    }
+    qsort(pairs, cnt, sizeof(Pair), cmpFreq);
+
+    int* result = malloc(sizeof(int) * k);
+    for (int i = 0; i &lt; k; i++) result[i] = pairs[i].val;
+    free(pairs);
+    *returnSize = k;
+    return result;
 }</code></pre>
             </div>
         </div>

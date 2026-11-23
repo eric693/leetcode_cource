@@ -21,7 +21,7 @@
         .section h2 { color: #1e293b; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 3px solid #16a34a; }
         .section h3 { color: #475569; margin: 25px 0 15px 0; font-size: 1.3em; }
         .code-block { background: #282c34; border-radius: 8px; overflow: hidden; margin: 15px 0; }
-        .lang-tabs { display: flex; background: #21252b; border-bottom: 1px solid #181a1f; }
+        .lang-tabs { display: flex; flex-wrap: wrap; background: #21252b; border-bottom: 1px solid #181a1f; }
         .lang-tab { padding: 12px 24px; cursor: pointer; color: #abb2bf; border: none; background: none; transition: all 0.3s; font-weight: 500; }
         .lang-tab.active { color: #61afef; background: #282c34; border-bottom: 2px solid #61afef; }
         .lang-tab:hover { color: #61afef; background: #2c313a; }
@@ -135,6 +135,8 @@ pB: 5 6 1 8 4 5 | 4 1 [8] ...
                     <button class="lang-tab active" onclick="switchLang(event, 'python')">Python</button>
                     <button class="lang-tab" onclick="switchLang(event, 'cpp')">C++</button>
                     <button class="lang-tab" onclick="switchLang(event, 'java')">Java</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'typescript')">TypeScript</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'c')">C</button>
                 </div>
 
                 <div id="python" class="code-content active">
@@ -237,6 +239,46 @@ public class Solution {
         }
         return null;
     }
+}</code></pre>
+                </div>
+
+                <div id="typescript" class="code-content">
+                    <pre><code class="language-typescript">/**
+ * Definition for singly-linked list.
+ * class ListNode {
+ *     val: number
+ *     next: ListNode | null
+ * }
+ */
+// 雙指標走 A+B 與 B+A，兩者走的總長度相同，必定在交點（或 null）相遇
+// 時間複雜度: O(m + n)，空間複雜度: O(1)
+function getIntersectionNode(headA: ListNode | null, headB: ListNode | null): ListNode | null {
+    let a = headA, b = headB;
+    while (a !== b) {
+        a = a ? a.next : headB;
+        b = b ? b.next : headA;
+    }
+    return a;
+}</code></pre>
+                </div>
+
+                <div id="c" class="code-content">
+                    <pre><code class="language-c">/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     struct ListNode *next;
+ * };
+ */
+// 雙指標走 A+B 與 B+A，兩者走的總長度相同，必定在交點（或 NULL）相遇
+// 時間複雜度: O(m + n)，空間複雜度: O(1)
+struct ListNode* getIntersectionNode(struct ListNode* headA, struct ListNode* headB) {
+    struct ListNode *a = headA, *b = headB;
+    while (a != b) {
+        a = a ? a-&gt;next : headB;
+        b = b ? b-&gt;next : headA;
+    }
+    return a;
 }</code></pre>
                 </div>
             </div>

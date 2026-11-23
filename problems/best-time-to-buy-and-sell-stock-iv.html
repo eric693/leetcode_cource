@@ -21,7 +21,7 @@
         .section h2 { color: #1e293b; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 3px solid #dc2626; }
         .section h3 { color: #475569; margin: 25px 0 15px 0; font-size: 1.3em; }
         .code-block { background: #282c34; border-radius: 8px; overflow: hidden; margin: 15px 0; }
-        .lang-tabs { display: flex; background: #21252b; border-bottom: 1px solid #181a1f; }
+        .lang-tabs { display: flex; flex-wrap: wrap; background: #21252b; border-bottom: 1px solid #181a1f; }
         .lang-tab { padding: 12px 24px; cursor: pointer; color: #abb2bf; border: none; background: none; transition: all 0.3s; font-weight: 500; }
         .lang-tab.active { color: #61afef; background: #282c34; border-bottom: 2px solid #61afef; }
         .lang-tab:hover { color: #61afef; background: #2c313a; }
@@ -227,6 +227,8 @@ sell[5][1] = max(4, 4+3) = 7 ✓
                     <button class="lang-tab active" onclick="switchLang(event, 'python')">Python</button>
                     <button class="lang-tab" onclick="switchLang(event, 'cpp')">C++</button>
                     <button class="lang-tab" onclick="switchLang(event, 'java')">Java</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'typescript')">TypeScript</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'c')">C</button>
                 </div>
 
                 <div id="python" class="code-content active">
@@ -427,6 +429,64 @@ public:
     }
 }
 </code></pre>
+                </div>
+
+                <div id="typescript" class="code-content">
+                    <pre><code class="language-typescript">// 狀態機 DP：buy[j] / sell[j] 表示第 j 次交易買入後 / 賣出後的最大收益
+// 時間複雜度: O(n·k)，空間複雜度: O(k)
+function maxProfit(k: number, prices: number[]): number {
+    const n = prices.length;
+    if (n === 0 || k === 0) return 0;
+
+    // k 大到等同不限次數時，直接用貪心
+    if (k &gt;= n / 2) {
+        let profit = 0;
+        for (let i = 1; i &lt; n; i++) profit += Math.max(0, prices[i] - prices[i - 1]);
+        return profit;
+    }
+
+    const buy = new Array(k + 1).fill(-Infinity);
+    const sell = new Array(k + 1).fill(0);
+    for (const p of prices) {
+        for (let j = 1; j &lt;= k; j++) {
+            buy[j] = Math.max(buy[j], sell[j - 1] - p);  // 第 j 次買入
+            sell[j] = Math.max(sell[j], buy[j] + p);     // 第 j 次賣出
+        }
+    }
+    return sell[k];
+}</code></pre>
+                </div>
+
+                <div id="c" class="code-content">
+                    <pre><code class="language-c">// 狀態機 DP：buy[j] / sell[j] 表示第 j 次交易買入後 / 賣出後的最大收益
+// 時間複雜度: O(n·k)，空間複雜度: O(k)
+int maxProfit(int k, int* prices, int pricesSize) {
+    int n = pricesSize;
+    if (n == 0 || k == 0) return 0;
+
+    // k 大到等同不限次數時，直接用貪心
+    if (k &gt;= n / 2) {
+        int profit = 0;
+        for (int i = 1; i &lt; n; i++)
+            if (prices[i] &gt; prices[i - 1]) profit += prices[i] - prices[i - 1];
+        return profit;
+    }
+
+    int* buy = malloc(sizeof(int) * (k + 1));
+    int* sell = calloc(k + 1, sizeof(int));
+    for (int j = 0; j &lt;= k; j++) buy[j] = INT_MIN / 2;
+
+    for (int i = 0; i &lt; n; i++) {
+        for (int j = 1; j &lt;= k; j++) {
+            if (sell[j - 1] - prices[i] &gt; buy[j]) buy[j] = sell[j - 1] - prices[i];
+            if (buy[j] + prices[i] &gt; sell[j]) sell[j] = buy[j] + prices[i];
+        }
+    }
+    int ans = sell[k];
+    free(buy);
+    free(sell);
+    return ans;
+}</code></pre>
                 </div>
             </div>
         </div>

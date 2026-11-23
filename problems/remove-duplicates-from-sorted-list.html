@@ -156,6 +156,8 @@
                 <button class="tab-btn active" onclick="showLanguage('python')">Python</button>
                 <button class="tab-btn" onclick="showLanguage('cpp')">C++</button>
                 <button class="tab-btn" onclick="showLanguage('java')">Java</button>
+                <button class="tab-btn" onclick="showLanguage('typescript')">TypeScript</button>
+                <button class="tab-btn" onclick="showLanguage('c')">C</button>
             </div>
 
             <div id="python" class="code-container active">
@@ -265,6 +267,51 @@ class Solution {
         
         return head;
     }
+}</code></pre>
+            </div>
+
+            <div id="typescript" class="code-container">
+                <pre><code class="language-typescript">/**
+ * Definition for singly-linked list.
+ * class ListNode {
+ *     val: number
+ *     next: ListNode | null
+ * }
+ */
+// 一次遍歷：下一個節點值相同就跳過它
+// 時間複雜度: O(n)，空間複雜度: O(1)
+function deleteDuplicates(head: ListNode | null): ListNode | null {
+    let cur = head;
+    while (cur &amp;&amp; cur.next) {
+        if (cur.val === cur.next.val) cur.next = cur.next.next;
+        else cur = cur.next;
+    }
+    return head;
+}</code></pre>
+            </div>
+
+            <div id="c" class="code-container">
+                <pre><code class="language-c">/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     struct ListNode *next;
+ * };
+ */
+// 一次遍歷：下一個節點值相同就跳過它
+// 時間複雜度: O(n)，空間複雜度: O(1)
+struct ListNode* deleteDuplicates(struct ListNode* head) {
+    struct ListNode* cur = head;
+    while (cur &amp;&amp; cur-&gt;next) {
+        if (cur-&gt;val == cur-&gt;next-&gt;val) {
+            struct ListNode* dup = cur-&gt;next;
+            cur-&gt;next = dup-&gt;next;
+            free(dup);                        // C 要記得釋放被移除的節點
+        } else {
+            cur = cur-&gt;next;
+        }
+    }
+    return head;
 }</code></pre>
             </div>
         </div>

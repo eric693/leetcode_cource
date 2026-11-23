@@ -105,6 +105,8 @@
             <div class="language-tabs">
                 <button class="tab-btn active" onclick="showLanguage('python')">Python</button>
                 <button class="tab-btn" onclick="showLanguage('java')">Java</button>
+                <button class="tab-btn" onclick="showLanguage('typescript')">TypeScript</button>
+                <button class="tab-btn" onclick="showLanguage('c')">C</button>
                 <button class="tab-btn" onclick="showLanguage('cpp')">C++</button>
             </div>
 
@@ -148,6 +150,47 @@
         }
         return longest;
     }
+}</code></pre>
+            </div>
+
+            <div id="typescript" class="code-container">
+                <pre><code class="language-typescript">// 堆疊存索引，棧底永遠放「最後一個未匹配的右括號位置」
+// 時間複雜度: O(n)，空間複雜度: O(n)
+function longestValidParentheses(s: string): number {
+    const stack: number[] = [-1];
+    let best = 0;
+    for (let i = 0; i &lt; s.length; i++) {
+        if (s[i] === '(') {
+            stack.push(i);
+        } else {
+            stack.pop();
+            if (stack.length === 0) stack.push(i);       // 新的分界點
+            else best = Math.max(best, i - stack[stack.length - 1]);
+        }
+    }
+    return best;
+}</code></pre>
+            </div>
+
+            <div id="c" class="code-container">
+                <pre><code class="language-c">// 堆疊存索引，棧底永遠放「最後一個未匹配的右括號位置」
+// 時間複雜度: O(n)，空間複雜度: O(n)
+int longestValidParentheses(char* s) {
+    int n = strlen(s);
+    int* stack = malloc(sizeof(int) * (n + 1));
+    int top = 0, best = 0;
+    stack[top++] = -1;
+    for (int i = 0; i &lt; n; i++) {
+        if (s[i] == '(') {
+            stack[top++] = i;
+        } else {
+            top--;
+            if (top == 0) stack[top++] = i;              // 新的分界點
+            else if (i - stack[top - 1] &gt; best) best = i - stack[top - 1];
+        }
+    }
+    free(stack);
+    return best;
 }</code></pre>
             </div>
 

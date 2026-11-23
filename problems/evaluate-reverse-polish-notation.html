@@ -21,7 +21,7 @@
         .section h2 { color: #1e293b; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 3px solid #ea580c; }
         .section h3 { color: #475569; margin: 25px 0 15px 0; font-size: 1.3em; }
         .code-block { background: #282c34; border-radius: 8px; overflow: hidden; margin: 15px 0; }
-        .lang-tabs { display: flex; background: #21252b; border-bottom: 1px solid #181a1f; }
+        .lang-tabs { display: flex; flex-wrap: wrap; background: #21252b; border-bottom: 1px solid #181a1f; }
         .lang-tab { padding: 12px 24px; cursor: pointer; color: #abb2bf; border: none; background: none; transition: all 0.3s; font-weight: 500; }
         .lang-tab.active { color: #61afef; background: #282c34; border-bottom: 2px solid #61afef; }
         .lang-tab:hover { color: #61afef; background: #2c313a; }
@@ -189,6 +189,8 @@ Python 的正確寫法：
                     <button class="lang-tab active" onclick="switchLang(event, 'python')">Python</button>
                     <button class="lang-tab" onclick="switchLang(event, 'cpp')">C++</button>
                     <button class="lang-tab" onclick="switchLang(event, 'java')">Java</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'typescript')">TypeScript</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'c')">C</button>
                 </div>
 
                 <div id="python" class="code-content active">
@@ -287,6 +289,55 @@ public:
         }
         return stack.pop();
     }
+}</code></pre>
+                </div>
+
+                <div id="typescript" class="code-content">
+                    <pre><code class="language-typescript">// 堆疊：遇到數字入棧，遇到運算子彈出兩個運算
+// 時間複雜度: O(n)，空間複雜度: O(n)
+function evalRPN(tokens: string[]): number {
+    const stack: number[] = [];
+    for (const t of tokens) {
+        if (t === '+' || t === '-' || t === '*' || t === '/') {
+            const b = stack.pop()!;    // 注意順序：先彈出的是右運算元
+            const a = stack.pop()!;
+            if (t === '+') stack.push(a + b);
+            else if (t === '-') stack.push(a - b);
+            else if (t === '*') stack.push(a * b);
+            else stack.push(Math.trunc(a / b));  // 向零取整
+        } else {
+            stack.push(Number(t));
+        }
+    }
+    return stack[0];
+}</code></pre>
+                </div>
+
+                <div id="c" class="code-content">
+                    <pre><code class="language-c">// 堆疊：遇到數字入棧，遇到運算子彈出兩個運算
+// 時間複雜度: O(n)，空間複雜度: O(n)
+int evalRPN(char** tokens, int tokensSize) {
+    long* stack = malloc(sizeof(long) * tokensSize);
+    int top = 0;
+    for (int i = 0; i &lt; tokensSize; i++) {
+        char* t = tokens[i];
+        // 運算子是長度為 1 的非數字字元（"-3" 是負數不是運算子）
+        if (t[1] == '\0' &amp;&amp; (t[0] == '+' || t[0] == '-' || t[0] == '*' || t[0] == '/')) {
+            long b = stack[--top];
+            long a = stack[--top];
+            switch (t[0]) {
+                case '+': stack[top++] = a + b; break;
+                case '-': stack[top++] = a - b; break;
+                case '*': stack[top++] = a * b; break;
+                case '/': stack[top++] = a / b; break;   // C 的整數除法本來就向零取整
+            }
+        } else {
+            stack[top++] = atol(t);
+        }
+    }
+    int ans = (int)stack[0];
+    free(stack);
+    return ans;
 }</code></pre>
                 </div>
             </div>

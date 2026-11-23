@@ -21,7 +21,7 @@
         .section h2 { color: #1e293b; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 3px solid #ea580c; }
         .section h3 { color: #475569; margin: 25px 0 15px 0; font-size: 1.3em; }
         .code-block { background: #282c34; border-radius: 8px; overflow: hidden; margin: 15px 0; }
-        .lang-tabs { display: flex; background: #21252b; border-bottom: 1px solid #181a1f; }
+        .lang-tabs { display: flex; flex-wrap: wrap; background: #21252b; border-bottom: 1px solid #181a1f; }
         .lang-tab { padding: 12px 24px; cursor: pointer; color: #abb2bf; border: none; background: none; transition: all 0.3s; font-weight: 500; }
         .lang-tab.active { color: #61afef; background: #282c34; border-bottom: 2px solid #61afef; }
         .lang-tab:hover { color: #61afef; background: #2c313a; }
@@ -167,6 +167,8 @@ result = [[]]
                     <button class="lang-tab active" onclick="switchLang(event, 'python')">Python</button>
                     <button class="lang-tab" onclick="switchLang(event, 'cpp')">C++</button>
                     <button class="lang-tab" onclick="switchLang(event, 'java')">Java</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'typescript')">TypeScript</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'c')">C</button>
                 </div>
 
                 <div id="python" class="code-content active">
@@ -287,6 +289,47 @@ class Solution {
         }
         return result;
     }
+}</code></pre>
+                </div>
+
+                <div id="typescript" class="code-content">
+                    <pre><code class="language-typescript">// 回溯：每走到一個節點就記錄一次目前路徑
+// 時間複雜度: O(n · 2^n)，空間複雜度: O(n)
+function subsets(nums: number[]): number[][] {
+    const result: number[][] = [];
+    const path: number[] = [];
+    const backtrack = (start: number): void =&gt; {
+        result.push([...path]);
+        for (let i = start; i &lt; nums.length; i++) {
+            path.push(nums[i]);
+            backtrack(i + 1);
+            path.pop();
+        }
+    };
+    backtrack(0);
+    return result;
+}</code></pre>
+                </div>
+
+                <div id="c" class="code-content">
+                    <pre><code class="language-c">// 位元列舉：mask 的第 i 位為 1 代表選 nums[i]（n ≤ 10）
+// 時間複雜度: O(n · 2^n)，空間複雜度: O(1)（不含輸出）
+int** subsets(int* nums, int numsSize, int* returnSize, int** returnColumnSizes) {
+    int total = 1 &lt;&lt; numsSize;
+    int** result = malloc(sizeof(int*) * total);
+    *returnColumnSizes = malloc(sizeof(int) * total);
+
+    for (int mask = 0; mask &lt; total; mask++) {
+        int* subset = malloc(sizeof(int) * (numsSize ? numsSize : 1));
+        int len = 0;
+        for (int i = 0; i &lt; numsSize; i++) {
+            if (mask &amp; (1 &lt;&lt; i)) subset[len++] = nums[i];
+        }
+        result[mask] = subset;
+        (*returnColumnSizes)[mask] = len;
+    }
+    *returnSize = total;
+    return result;
 }</code></pre>
                 </div>
             </div>

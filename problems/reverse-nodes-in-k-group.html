@@ -21,7 +21,7 @@
         .section h2 { color: #1e293b; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 3px solid #dc2626; }
         .section h3 { color: #475569; margin: 25px 0 15px 0; font-size: 1.3em; }
         .code-block { background: #282c34; border-radius: 8px; overflow: hidden; margin: 15px 0; }
-        .lang-tabs { display: flex; background: #21252b; border-bottom: 1px solid #181a1f; }
+        .lang-tabs { display: flex; flex-wrap: wrap; background: #21252b; border-bottom: 1px solid #181a1f; }
         .lang-tab { padding: 12px 24px; cursor: pointer; color: #abb2bf; border: none; background: none; transition: all 0.3s; font-weight: 500; }
         .lang-tab.active { color: #61afef; background: #282c34; border-bottom: 2px solid #61afef; }
         .lang-tab:hover { color: #61afef; background: #2c313a; }
@@ -165,6 +165,8 @@
                     <button class="lang-tab active" onclick="switchLang(event, 'python')">Python</button>
                     <button class="lang-tab" onclick="switchLang(event, 'cpp')">C++</button>
                     <button class="lang-tab" onclick="switchLang(event, 'java')">Java</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'typescript')">TypeScript</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'c')">C</button>
                 </div>
 
                 <div id="python" class="code-content active">
@@ -413,6 +415,76 @@ class Solution {
     }
 }
 </code></pre>
+                </div>
+
+                <div id="typescript" class="code-content">
+                    <pre><code class="language-typescript">/**
+ * Definition for singly-linked list.
+ * class ListNode {
+ *     val: number
+ *     next: ListNode | null
+ * }
+ */
+// 每次確認後面還有 k 個節點，再把這一段原地反轉並接回去
+// 時間複雜度: O(n)，空間複雜度: O(1)
+function reverseKGroup(head: ListNode | null, k: number): ListNode | null {
+    const dummy = new ListNode(0, head);
+    let groupPrev = dummy;
+
+    while (true) {
+        let kth: ListNode | null = groupPrev;
+        for (let i = 0; i &lt; k &amp;&amp; kth; i++) kth = kth.next;
+        if (!kth) break;                              // 不足 k 個，保持原樣
+
+        const groupNext = kth.next;
+        let prev: ListNode | null = groupNext, cur = groupPrev.next;
+        while (cur !== groupNext) {                   // 反轉這 k 個節點
+            const next: ListNode | null = cur!.next;
+            cur!.next = prev;
+            prev = cur;
+            cur = next;
+        }
+        const first = groupPrev.next!;                // 反轉前的第一個，反轉後變最後一個
+        groupPrev.next = kth;
+        groupPrev = first;
+    }
+    return dummy.next;
+}</code></pre>
+                </div>
+
+                <div id="c" class="code-content">
+                    <pre><code class="language-c">/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     struct ListNode *next;
+ * };
+ */
+// 每次確認後面還有 k 個節點，再把這一段原地反轉並接回去
+// 時間複雜度: O(n)，空間複雜度: O(1)
+struct ListNode* reverseKGroup(struct ListNode* head, int k) {
+    struct ListNode dummy = {0, head};
+    struct ListNode* groupPrev = &amp;dummy;
+
+    while (1) {
+        struct ListNode* kth = groupPrev;
+        for (int i = 0; i &lt; k &amp;&amp; kth; i++) kth = kth-&gt;next;
+        if (!kth) break;                              // 不足 k 個，保持原樣
+
+        struct ListNode* groupNext = kth-&gt;next;
+        struct ListNode *prev = groupNext, *cur = groupPrev-&gt;next;
+        while (cur != groupNext) {                    // 反轉這 k 個節點
+            struct ListNode* next = cur-&gt;next;
+            cur-&gt;next = prev;
+            prev = cur;
+            cur = next;
+        }
+        struct ListNode* first = groupPrev-&gt;next;     // 反轉後變成這段的最後一個
+        groupPrev-&gt;next = kth;
+        groupPrev = first;
+    }
+    return dummy.next;
+}</code></pre>
                 </div>
             </div>
         </div>

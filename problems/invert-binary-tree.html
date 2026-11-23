@@ -166,6 +166,8 @@
                 <button class="tab-btn active" onclick="showLanguage('python')">Python</button>
                 <button class="tab-btn" onclick="showLanguage('cpp')">C++</button>
                 <button class="tab-btn" onclick="showLanguage('java')">Java</button>
+                <button class="tab-btn" onclick="showLanguage('typescript')">TypeScript</button>
+                <button class="tab-btn" onclick="showLanguage('c')">C</button>
             </div>
 
             <div id="python" class="code-container active">
@@ -374,6 +376,44 @@ class Solution {
         
         return root;
     }
+}</code></pre>
+            </div>
+
+            <div id="typescript" class="code-container">
+                <pre><code class="language-typescript">/**
+ * Definition for a binary tree node.
+ * class TreeNode {
+ *     val: number
+ *     left: TreeNode | null
+ *     right: TreeNode | null
+ * }
+ */
+// 遞迴：交換左右子樹，再分別翻轉
+// 時間複雜度: O(n)，空間複雜度: O(h)
+function invertTree(root: TreeNode | null): TreeNode | null {
+    if (!root) return null;
+    [root.left, root.right] = [invertTree(root.right), invertTree(root.left)];
+    return root;
+}</code></pre>
+            </div>
+
+            <div id="c" class="code-container">
+                <pre><code class="language-c">/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     struct TreeNode *left;
+ *     struct TreeNode *right;
+ * };
+ */
+// 遞迴：交換左右子樹，再分別翻轉
+// 時間複雜度: O(n)，空間複雜度: O(h)
+struct TreeNode* invertTree(struct TreeNode* root) {
+    if (!root) return NULL;
+    struct TreeNode* tmp = root-&gt;left;
+    root-&gt;left = invertTree(root-&gt;right);
+    root-&gt;right = invertTree(tmp);
+    return root;
 }</code></pre>
             </div>
         </div>

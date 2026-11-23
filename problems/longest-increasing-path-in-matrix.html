@@ -21,7 +21,7 @@
         .section h2 { color: #1e293b; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 3px solid #dc2626; }
         .section h3 { color: #475569; margin: 25px 0 15px 0; font-size: 1.3em; }
         .code-block { background: #282c34; border-radius: 8px; overflow: hidden; margin: 15px 0; }
-        .lang-tabs { display: flex; background: #21252b; border-bottom: 1px solid #181a1f; }
+        .lang-tabs { display: flex; flex-wrap: wrap; background: #21252b; border-bottom: 1px solid #181a1f; }
         .lang-tab { padding: 12px 24px; cursor: pointer; color: #abb2bf; border: none; background: none; transition: all 0.3s; font-weight: 500; }
         .lang-tab.active { color: #61afef; background: #282c34; border-bottom: 2px solid #61afef; }
         .lang-tab:hover { color: #61afef; background: #2c313a; }
@@ -236,6 +236,8 @@ memo[0][2] = 1 + memo[1][2] = 3
                     <button class="lang-tab active" onclick="switchLang(event, 'python')">Python</button>
                     <button class="lang-tab" onclick="switchLang(event, 'cpp')">C++</button>
                     <button class="lang-tab" onclick="switchLang(event, 'java')">Java</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'typescript')">TypeScript</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'c')">C</button>
                 </div>
 
                 <div id="python" class="code-content active">
@@ -488,6 +490,70 @@ private:
     }
 }
 </code></pre>
+                </div>
+
+                <div id="typescript" class="code-content">
+                    <pre><code class="language-typescript">// DFS + 記憶化：memo[i][j] = 從 (i, j) 出發的最長遞增路徑
+// 時間複雜度: O(m·n)，空間複雜度: O(m·n)
+function longestIncreasingPath(matrix: number[][]): number {
+    const m = matrix.length, n = matrix[0].length;
+    const memo: number[][] = Array.from({ length: m }, () =&gt; new Array(n).fill(0));
+    const dirs = [[1, 0], [-1, 0], [0, 1], [0, -1]];
+
+    const dfs = (i: number, j: number): number =&gt; {
+        if (memo[i][j]) return memo[i][j];
+        let best = 1;
+        for (const [di, dj] of dirs) {
+            const x = i + di, y = j + dj;
+            if (x &gt;= 0 &amp;&amp; x &lt; m &amp;&amp; y &gt;= 0 &amp;&amp; y &lt; n &amp;&amp; matrix[x][y] &gt; matrix[i][j]) {
+                best = Math.max(best, 1 + dfs(x, y));
+            }
+        }
+        return (memo[i][j] = best);
+    };
+
+    let ans = 0;
+    for (let i = 0; i &lt; m; i++) {
+        for (let j = 0; j &lt; n; j++) ans = Math.max(ans, dfs(i, j));
+    }
+    return ans;
+}</code></pre>
+                </div>
+
+                <div id="c" class="code-content">
+                    <pre><code class="language-c">// DFS + 記憶化：memo[i][j] = 從 (i, j) 出發的最長遞增路徑
+// 時間複雜度: O(m·n)，空間複雜度: O(m·n)
+static int m, n;
+static int* memo;
+static const int DIRS[4][2] = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
+
+static int dfs(int** matrix, int i, int j) {
+    if (memo[i * n + j]) return memo[i * n + j];
+    int best = 1;
+    for (int d = 0; d &lt; 4; d++) {
+        int x = i + DIRS[d][0], y = j + DIRS[d][1];
+        if (x &gt;= 0 &amp;&amp; x &lt; m &amp;&amp; y &gt;= 0 &amp;&amp; y &lt; n &amp;&amp; matrix[x][y] &gt; matrix[i][j]) {
+            int len = 1 + dfs(matrix, x, y);
+            if (len &gt; best) best = len;
+        }
+    }
+    return memo[i * n + j] = best;
+}
+
+int longestIncreasingPath(int** matrix, int matrixSize, int* matrixColSize) {
+    m = matrixSize;
+    n = matrixColSize[0];
+    memo = calloc(m * n, sizeof(int));
+    int ans = 0;
+    for (int i = 0; i &lt; m; i++) {
+        for (int j = 0; j &lt; n; j++) {
+            int len = dfs(matrix, i, j);
+            if (len &gt; ans) ans = len;
+        }
+    }
+    free(memo);
+    return ans;
+}</code></pre>
                 </div>
             </div>
         </div>

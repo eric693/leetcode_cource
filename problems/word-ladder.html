@@ -174,6 +174,8 @@ BFS 搜尋過程:
                 <button class="tab-btn active" onclick="showLanguage('python')">Python</button>
                 <button class="tab-btn" onclick="showLanguage('cpp')">C++</button>
                 <button class="tab-btn" onclick="showLanguage('java')">Java</button>
+                <button class="tab-btn" onclick="showLanguage('typescript')">TypeScript</button>
+                <button class="tab-btn" onclick="showLanguage('c')">C</button>
             </div>
 
             <div id="python" class="code-container active">
@@ -341,6 +343,81 @@ class Solution {
         // 無法到達
         return 0;
     }
+}</code></pre>
+            </div>
+
+            <div id="typescript" class="code-container">
+                <pre><code class="language-typescript">// BFS：每一層把單字的每個位置換成 a~z，找出字典中的下一個單字
+// 時間複雜度: O(N · L · 26)，空間複雜度: O(N · L)
+function ladderLength(beginWord: string, endWord: string, wordList: string[]): number {
+    const words = new Set(wordList);
+    if (!words.has(endWord)) return 0;
+    let queue = [beginWord];
+    words.delete(beginWord);
+
+    for (let steps = 1; queue.length; steps++) {
+        const next: string[] = [];
+        for (const word of queue) {
+            if (word === endWord) return steps;
+            for (let i = 0; i &lt; word.length; i++) {
+                for (let c = 97; c &lt;= 122; c++) {
+                    const cand = word.slice(0, i) + String.fromCharCode(c) + word.slice(i + 1);
+                    if (words.has(cand)) {
+                        words.delete(cand);          // 刪除即代表已訪問
+                        next.push(cand);
+                    }
+                }
+            }
+        }
+        queue = next;
+    }
+    return 0;
+}</code></pre>
+            </div>
+
+            <div id="c" class="code-container">
+                <pre><code class="language-c">// BFS：把字典索引放進佇列，相差恰好一個字元的單字互為鄰居
+// 時間複雜度: O(N² · L)，空間複雜度: O(N)
+static bool oneDiff(const char* a, const char* b) {
+    int diff = 0;
+    for (; *a; a++, b++) {
+        if (*a != *b &amp;&amp; ++diff &gt; 1) return false;
+    }
+    return diff == 1;
+}
+
+int ladderLength(char* beginWord, char* endWord, char** wordList, int wordListSize) {
+    int n = wordListSize, target = -1;
+    for (int i = 0; i &lt; n; i++) if (strcmp(wordList[i], endWord) == 0) target = i;
+    if (target == -1) return 0;
+
+    bool* visited = calloc(n, sizeof(bool));
+    int* queue = malloc(sizeof(int) * n);
+    int head = 0, tail = 0;
+    for (int i = 0; i &lt; n; i++) {                 // 第一層：與 beginWord 差一個字元的單字
+        if (oneDiff(beginWord, wordList[i])) {
+            visited[i] = true;
+            queue[tail++] = i;
+        }
+    }
+
+    int ans = 0;
+    for (int steps = 2; head &lt; tail &amp;&amp; !ans; steps++) {
+        int levelEnd = tail;
+        while (head &lt; levelEnd &amp;&amp; !ans) {
+            int cur = queue[head++];
+            if (cur == target) { ans = steps; break; }
+            for (int i = 0; i &lt; n; i++) {
+                if (!visited[i] &amp;&amp; oneDiff(wordList[cur], wordList[i])) {
+                    visited[i] = true;
+                    queue[tail++] = i;
+                }
+            }
+        }
+    }
+    free(visited);
+    free(queue);
+    return ans;
 }</code></pre>
             </div>
         </div>

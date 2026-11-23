@@ -21,7 +21,7 @@
         .section h2 { color: #1e293b; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 3px solid #dc2626; }
         .section h3 { color: #475569; margin: 25px 0 15px 0; font-size: 1.3em; }
         .code-block { background: #282c34; border-radius: 8px; overflow: hidden; margin: 15px 0; }
-        .lang-tabs { display: flex; background: #21252b; border-bottom: 1px solid #181a1f; }
+        .lang-tabs { display: flex; flex-wrap: wrap; background: #21252b; border-bottom: 1px solid #181a1f; }
         .lang-tab { padding: 12px 24px; cursor: pointer; color: #abb2bf; border: none; background: none; transition: all 0.3s; font-weight: 500; }
         .lang-tab.active { color: #61afef; background: #282c34; border-bottom: 2px solid #61afef; }
         .lang-tab:hover { color: #61afef; background: #2c313a; }
@@ -193,6 +193,8 @@ matrix = [
                     <button class="lang-tab active" onclick="switchLang(event, 'python')">Python</button>
                     <button class="lang-tab" onclick="switchLang(event, 'cpp')">C++</button>
                     <button class="lang-tab" onclick="switchLang(event, 'java')">Java</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'typescript')">TypeScript</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'c')">C</button>
                 </div>
 
                 <div id="python" class="code-content active">
@@ -456,6 +458,63 @@ class Solution {
     }
 }
 </code></pre>
+                </div>
+
+                <div id="typescript" class="code-content">
+                    <pre><code class="language-typescript">// 逐列累積高度，每一列都當作直方圖求最大矩形（單調堆疊）
+// 時間複雜度: O(m·n)，空間複雜度: O(n)
+function maximalRectangle(matrix: string[][]): number {
+    const n = matrix[0].length;
+    const heights = new Array(n).fill(0);
+    let best = 0;
+
+    for (const row of matrix) {
+        for (let j = 0; j &lt; n; j++) {
+            heights[j] = row[j] === '1' ? heights[j] + 1 : 0;
+        }
+        const stack: number[] = [];
+        for (let j = 0; j &lt;= n; j++) {
+            const h = j === n ? 0 : heights[j];
+            while (stack.length &amp;&amp; heights[stack[stack.length - 1]] &gt; h) {
+                const height = heights[stack.pop()!];
+                const left = stack.length ? stack[stack.length - 1] : -1;
+                best = Math.max(best, height * (j - left - 1));
+            }
+            stack.push(j);
+        }
+    }
+    return best;
+}</code></pre>
+                </div>
+
+                <div id="c" class="code-content">
+                    <pre><code class="language-c">// 逐列累積高度，每一列都當作直方圖求最大矩形（單調堆疊）
+// 時間複雜度: O(m·n)，空間複雜度: O(n)
+int maximalRectangle(char** matrix, int matrixSize, int* matrixColSize) {
+    int n = matrixColSize[0];
+    int* heights = calloc(n, sizeof(int));
+    int* stack = malloc(sizeof(int) * (n + 1));
+    int best = 0;
+
+    for (int i = 0; i &lt; matrixSize; i++) {
+        for (int j = 0; j &lt; n; j++) {
+            heights[j] = matrix[i][j] == '1' ? heights[j] + 1 : 0;
+        }
+        int top = 0;
+        for (int j = 0; j &lt;= n; j++) {
+            int h = (j == n) ? 0 : heights[j];
+            while (top &gt; 0 &amp;&amp; heights[stack[top - 1]] &gt; h) {
+                int height = heights[stack[--top]];
+                int left = top &gt; 0 ? stack[top - 1] : -1;
+                if (height * (j - left - 1) &gt; best) best = height * (j - left - 1);
+            }
+            stack[top++] = j;
+        }
+    }
+    free(heights);
+    free(stack);
+    return best;
+}</code></pre>
                 </div>
             </div>
         </div>

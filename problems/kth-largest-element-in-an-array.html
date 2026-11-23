@@ -21,7 +21,7 @@
         .section h2 { color: #1e293b; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 3px solid #ea580c; }
         .section h3 { color: #475569; margin: 25px 0 15px 0; font-size: 1.3em; }
         .code-block { background: #282c34; border-radius: 8px; overflow: hidden; margin: 15px 0; }
-        .lang-tabs { display: flex; background: #21252b; border-bottom: 1px solid #181a1f; }
+        .lang-tabs { display: flex; flex-wrap: wrap; background: #21252b; border-bottom: 1px solid #181a1f; }
         .lang-tab { padding: 12px 24px; cursor: pointer; color: #abb2bf; border: none; background: none; transition: all 0.3s; font-weight: 500; }
         .lang-tab.active { color: #61afef; background: #282c34; border-bottom: 2px solid #61afef; }
         .lang-tab:hover { color: #61afef; background: #2c313a; }
@@ -191,6 +191,8 @@ int partition(vector<int>& nums, int left, int right) {
                     <button class="lang-tab active" onclick="switchLang(event, 'python')">Python</button>
                     <button class="lang-tab" onclick="switchLang(event, 'cpp')">C++</button>
                     <button class="lang-tab" onclick="switchLang(event, 'java')">Java</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'typescript')">TypeScript</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'c')">C</button>
                 </div>
 
                 <div id="python" class="code-content active">
@@ -348,6 +350,57 @@ class Solution {
     private void swap(int[] a, int i, int j) {
         int t = a[i]; a[i] = a[j]; a[j] = t;
     }
+}</code></pre>
+                </div>
+
+                <div id="typescript" class="code-content">
+                    <pre><code class="language-typescript">// 快速選擇（三路切分，避免大量重複值退化）
+// 平均時間複雜度: O(n)，空間複雜度: O(log n)
+function findKthLargest(nums: number[], k: number): number {
+    const select = (arr: number[], k: number): number =&gt; {
+        const pivot = arr[Math.floor(Math.random() * arr.length)];
+        const larger: number[] = [], equal: number[] = [], smaller: number[] = [];
+        for (const x of arr) {
+            if (x &gt; pivot) larger.push(x);
+            else if (x &lt; pivot) smaller.push(x);
+            else equal.push(x);
+        }
+        if (k &lt;= larger.length) return select(larger, k);
+        if (k &lt;= larger.length + equal.length) return pivot;
+        return select(smaller, k - larger.length - equal.length);
+    };
+    return select(nums, k);
+}</code></pre>
+                </div>
+
+                <div id="c" class="code-content">
+                    <pre><code class="language-c">// 最小堆：維持大小為 k 的堆，堆頂就是第 k 大
+// 時間複雜度: O(n log k)，空間複雜度: O(k)
+static void siftDown(int* h, int size, int i) {
+    while (1) {
+        int smallest = i, l = 2 * i + 1, r = 2 * i + 2;
+        if (l &lt; size &amp;&amp; h[l] &lt; h[smallest]) smallest = l;
+        if (r &lt; size &amp;&amp; h[r] &lt; h[smallest]) smallest = r;
+        if (smallest == i) return;
+        int tmp = h[i]; h[i] = h[smallest]; h[smallest] = tmp;
+        i = smallest;
+    }
+}
+
+int findKthLargest(int* nums, int numsSize, int k) {
+    int* heap = malloc(sizeof(int) * k);
+    for (int i = 0; i &lt; k; i++) heap[i] = nums[i];
+    for (int i = k / 2 - 1; i &gt;= 0; i--) siftDown(heap, k, i);   // 建堆
+
+    for (int i = k; i &lt; numsSize; i++) {
+        if (nums[i] &gt; heap[0]) {         // 比堆頂大才換進來
+            heap[0] = nums[i];
+            siftDown(heap, k, 0);
+        }
+    }
+    int ans = heap[0];
+    free(heap);
+    return ans;
 }</code></pre>
                 </div>
             </div>

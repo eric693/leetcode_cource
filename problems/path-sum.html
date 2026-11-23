@@ -173,6 +173,8 @@
                 <button class="tab-btn active" onclick="showLanguage('python')">Python</button>
                 <button class="tab-btn" onclick="showLanguage('cpp')">C++</button>
                 <button class="tab-btn" onclick="showLanguage('java')">Java</button>
+                <button class="tab-btn" onclick="showLanguage('typescript')">TypeScript</button>
+                <button class="tab-btn" onclick="showLanguage('c')">C</button>
             </div>
 
             <div id="python" class="code-container active">
@@ -318,6 +320,44 @@ class Solution {
         return hasPathSum(root.left, targetSum - root.val) || 
                hasPathSum(root.right, targetSum - root.val);
     }
+}</code></pre>
+            </div>
+
+            <div id="typescript" class="code-container">
+                <pre><code class="language-typescript">/**
+ * Definition for a binary tree node.
+ * class TreeNode {
+ *     val: number
+ *     left: TreeNode | null
+ *     right: TreeNode | null
+ * }
+ */
+// 遞迴：每往下一層就把目標值扣掉節點值，到葉子時檢查是否剛好為 0
+// 時間複雜度: O(n)，空間複雜度: O(h)
+function hasPathSum(root: TreeNode | null, targetSum: number): boolean {
+    if (!root) return false;
+    const remain = targetSum - root.val;
+    if (!root.left &amp;&amp; !root.right) return remain === 0;
+    return hasPathSum(root.left, remain) || hasPathSum(root.right, remain);
+}</code></pre>
+            </div>
+
+            <div id="c" class="code-container">
+                <pre><code class="language-c">/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     struct TreeNode *left;
+ *     struct TreeNode *right;
+ * };
+ */
+// 遞迴：每往下一層就把目標值扣掉節點值，到葉子時檢查是否剛好為 0
+// 時間複雜度: O(n)，空間複雜度: O(h)
+bool hasPathSum(struct TreeNode* root, int targetSum) {
+    if (!root) return false;
+    int remain = targetSum - root-&gt;val;
+    if (!root-&gt;left &amp;&amp; !root-&gt;right) return remain == 0;
+    return hasPathSum(root-&gt;left, remain) || hasPathSum(root-&gt;right, remain);
 }</code></pre>
             </div>
         </div>

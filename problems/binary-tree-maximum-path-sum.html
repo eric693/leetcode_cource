@@ -260,6 +260,8 @@
                 <button class="tab-btn active" onclick="showLanguage('python')">Python</button>
                 <button class="tab-btn" onclick="showLanguage('cpp')">C++</button>
                 <button class="tab-btn" onclick="showLanguage('java')">Java</button>
+                <button class="tab-btn" onclick="showLanguage('typescript')">TypeScript</button>
+                <button class="tab-btn" onclick="showLanguage('c')">C</button>
             </div>
 
             <div id="python" class="code-container active">
@@ -425,6 +427,61 @@ class Solution {
         // 返回當前節點的最大貢獻值
         return node.val + Math.max(leftGain, rightGain);
     }
+}</code></pre>
+            </div>
+
+            <div id="typescript" class="code-container">
+                <pre><code class="language-typescript">/**
+ * Definition for a binary tree node.
+ * class TreeNode {
+ *     val: number
+ *     left: TreeNode | null
+ *     right: TreeNode | null
+ * }
+ */
+// 後序遍歷：回傳「往下延伸的單邊最大貢獻」，同時更新經過該節點的最大路徑
+// 時間複雜度: O(n)，空間複雜度: O(h)
+function maxPathSum(root: TreeNode | null): number {
+    let best = -Infinity;
+
+    const gain = (node: TreeNode | null): number =&gt; {
+        if (!node) return 0;
+        const left = Math.max(gain(node.left), 0);    // 負貢獻就不要
+        const right = Math.max(gain(node.right), 0);
+        best = Math.max(best, node.val + left + right);
+        return node.val + Math.max(left, right);
+    };
+
+    gain(root);
+    return best;
+}</code></pre>
+            </div>
+
+            <div id="c" class="code-container">
+                <pre><code class="language-c">/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     struct TreeNode *left;
+ *     struct TreeNode *right;
+ * };
+ */
+// 後序遍歷：回傳「往下延伸的單邊最大貢獻」，同時更新經過該節點的最大路徑
+// 時間複雜度: O(n)，空間複雜度: O(h)
+static int gain(struct TreeNode* node, int* best) {
+    if (!node) return 0;
+    int left = gain(node-&gt;left, best);
+    int right = gain(node-&gt;right, best);
+    if (left &lt; 0) left = 0;                       // 負貢獻就不要
+    if (right &lt; 0) right = 0;
+    if (node-&gt;val + left + right &gt; *best) *best = node-&gt;val + left + right;
+    return node-&gt;val + (left &gt; right ? left : right);
+}
+
+int maxPathSum(struct TreeNode* root) {
+    int best = INT_MIN;
+    gain(root, &amp;best);
+    return best;
 }</code></pre>
             </div>
         </div>

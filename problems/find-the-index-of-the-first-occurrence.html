@@ -95,6 +95,8 @@
             <div class="language-tabs">
                 <button class="tab-btn active" onclick="showLanguage('python')">Python</button>
                 <button class="tab-btn" onclick="showLanguage('java')">Java</button>
+                <button class="tab-btn" onclick="showLanguage('typescript')">TypeScript</button>
+                <button class="tab-btn" onclick="showLanguage('c')">C</button>
                 <button class="tab-btn" onclick="showLanguage('cpp')">C++</button>
             </div>
 
@@ -150,6 +152,55 @@
         }
         return -1;
     }
+}</code></pre>
+            </div>
+
+            <div id="typescript" class="code-container">
+                <pre><code class="language-typescript">// KMP：先建立 next（最長相等前後綴）表，再線性比對
+// 時間複雜度: O(m + n)，空間複雜度: O(n)
+function strStr(haystack: string, needle: string): number {
+    const n = needle.length;
+    if (n === 0) return 0;
+
+    const next = new Array(n).fill(0);
+    for (let i = 1, j = 0; i &lt; n; i++) {
+        while (j &gt; 0 &amp;&amp; needle[i] !== needle[j]) j = next[j - 1];
+        if (needle[i] === needle[j]) j++;
+        next[i] = j;
+    }
+
+    for (let i = 0, j = 0; i &lt; haystack.length; i++) {
+        while (j &gt; 0 &amp;&amp; haystack[i] !== needle[j]) j = next[j - 1];
+        if (haystack[i] === needle[j]) j++;
+        if (j === n) return i - n + 1;
+    }
+    return -1;
+}</code></pre>
+            </div>
+
+            <div id="c" class="code-container">
+                <pre><code class="language-c">// KMP：先建立 next（最長相等前後綴）表，再線性比對
+// 時間複雜度: O(m + n)，空間複雜度: O(n)
+int strStr(char* haystack, char* needle) {
+    int m = strlen(haystack), n = strlen(needle);
+    if (n == 0) return 0;
+
+    int* next = malloc(sizeof(int) * n);
+    next[0] = 0;
+    for (int i = 1, j = 0; i &lt; n; i++) {
+        while (j &gt; 0 &amp;&amp; needle[i] != needle[j]) j = next[j - 1];
+        if (needle[i] == needle[j]) j++;
+        next[i] = j;
+    }
+
+    int ans = -1;
+    for (int i = 0, j = 0; i &lt; m; i++) {
+        while (j &gt; 0 &amp;&amp; haystack[i] != needle[j]) j = next[j - 1];
+        if (haystack[i] == needle[j]) j++;
+        if (j == n) { ans = i - n + 1; break; }
+    }
+    free(next);
+    return ans;
 }</code></pre>
             </div>
 

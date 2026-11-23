@@ -21,7 +21,7 @@
         .section h2 { color: #1e293b; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 3px solid #ea580c; }
         .section h3 { color: #475569; margin: 25px 0 15px 0; font-size: 1.3em; }
         .code-block { background: #282c34; border-radius: 8px; overflow: hidden; margin: 15px 0; }
-        .lang-tabs { display: flex; background: #21252b; border-bottom: 1px solid #181a1f; }
+        .lang-tabs { display: flex; flex-wrap: wrap; background: #21252b; border-bottom: 1px solid #181a1f; }
         .lang-tab { padding: 12px 24px; cursor: pointer; color: #abb2bf; border: none; background: none; transition: all 0.3s; font-weight: 500; }
         .lang-tab.active { color: #61afef; background: #282c34; border-bottom: 2px solid #61afef; }
         .lang-tab:hover { color: #61afef; background: #2c313a; }
@@ -182,6 +182,8 @@ matrix:              dp:
                     <button class="lang-tab active" onclick="switchLang(event, 'python')">Python</button>
                     <button class="lang-tab" onclick="switchLang(event, 'cpp')">C++</button>
                     <button class="lang-tab" onclick="switchLang(event, 'java')">Java</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'typescript')">TypeScript</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'c')">C</button>
                 </div>
 
                 <div id="python" class="code-content active">
@@ -312,6 +314,57 @@ class Solution {
         }
         return maxSide * maxSide;
     }
+}</code></pre>
+                </div>
+
+                <div id="typescript" class="code-content">
+                    <pre><code class="language-typescript">// DP：dp[i][j] = 以 (i, j) 為右下角的最大正方形邊長
+// 時間複雜度: O(m·n)，空間複雜度: O(n)
+function maximalSquare(matrix: string[][]): number {
+    const m = matrix.length, n = matrix[0].length;
+    const dp = new Array(n + 1).fill(0);
+    let side = 0;
+    for (let i = 1; i &lt;= m; i++) {
+        let prev = 0;                                 // dp[i-1][j-1]
+        for (let j = 1; j &lt;= n; j++) {
+            const tmp = dp[j];
+            if (matrix[i - 1][j - 1] === '1') {
+                dp[j] = Math.min(dp[j], dp[j - 1], prev) + 1;
+                side = Math.max(side, dp[j]);
+            } else {
+                dp[j] = 0;
+            }
+            prev = tmp;
+        }
+    }
+    return side * side;
+}</code></pre>
+                </div>
+
+                <div id="c" class="code-content">
+                    <pre><code class="language-c">// DP：dp[i][j] = 以 (i, j) 為右下角的最大正方形邊長（滾動陣列）
+// 時間複雜度: O(m·n)，空間複雜度: O(n)
+int maximalSquare(char** matrix, int matrixSize, int* matrixColSize) {
+    int n = matrixColSize[0];
+    int* dp = calloc(n + 1, sizeof(int));
+    int side = 0;
+    for (int i = 1; i &lt;= matrixSize; i++) {
+        int prev = 0;                                 // dp[i-1][j-1]
+        for (int j = 1; j &lt;= n; j++) {
+            int tmp = dp[j];
+            if (matrix[i - 1][j - 1] == '1') {
+                int m = dp[j] &lt; dp[j - 1] ? dp[j] : dp[j - 1];
+                if (prev &lt; m) m = prev;
+                dp[j] = m + 1;
+                if (dp[j] &gt; side) side = dp[j];
+            } else {
+                dp[j] = 0;
+            }
+            prev = tmp;
+        }
+    }
+    free(dp);
+    return side * side;
 }</code></pre>
                 </div>
             </div>

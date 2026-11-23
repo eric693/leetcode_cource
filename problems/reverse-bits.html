@@ -21,7 +21,7 @@
         .section h2 { color: #1e293b; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 3px solid #16a34a; }
         .section h3 { color: #475569; margin: 25px 0 15px 0; font-size: 1.3em; }
         .code-block { background: #282c34; border-radius: 8px; overflow: hidden; margin: 15px 0; }
-        .lang-tabs { display: flex; background: #21252b; border-bottom: 1px solid #181a1f; }
+        .lang-tabs { display: flex; flex-wrap: wrap; background: #21252b; border-bottom: 1px solid #181a1f; }
         .lang-tab { padding: 12px 24px; cursor: pointer; color: #abb2bf; border: none; background: none; transition: all 0.3s; font-weight: 500; }
         .lang-tab.active { color: #61afef; background: #282c34; border-bottom: 2px solid #61afef; }
         .lang-tab:hover { color: #61afef; background: #2c313a; }
@@ -136,6 +136,8 @@ result = 0000
                     <button class="lang-tab active" onclick="switchLang(event, 'python')">Python</button>
                     <button class="lang-tab" onclick="switchLang(event, 'cpp')">C++</button>
                     <button class="lang-tab" onclick="switchLang(event, 'java')">Java</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'typescript')">TypeScript</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'c')">C</button>
                 </div>
 
                 <div id="python" class="code-content active">
@@ -256,6 +258,32 @@ public class Solution {
     public int reverseBits(int n) {
         return Integer.reverse(n);
     }
+}</code></pre>
+                </div>
+
+                <div id="typescript" class="code-content">
+                    <pre><code class="language-typescript">// 逐位搬移：取出 n 的最低位，放到結果的最低位後左移
+// 時間複雜度: O(32)，空間複雜度: O(1)
+function reverseBits(n: number): number {
+    let result = 0;
+    for (let i = 0; i &lt; 32; i++) {
+        result = (result &lt;&lt; 1) | (n &amp; 1);
+        n &gt;&gt;&gt;= 1;                           // 無號右移
+    }
+    return result &gt;&gt;&gt; 0;                    // 轉回無號 32 位元
+}</code></pre>
+                </div>
+
+                <div id="c" class="code-content">
+                    <pre><code class="language-c">// 分治交換：先交換高低 16 位，再 8 位、4 位、2 位、1 位（韌體常見寫法）
+// 時間複雜度: O(1)，空間複雜度: O(1)
+uint32_t reverseBits(uint32_t n) {
+    n = (n &gt;&gt; 16) | (n &lt;&lt; 16);
+    n = ((n &amp; 0xff00ff00u) &gt;&gt; 8) | ((n &amp; 0x00ff00ffu) &lt;&lt; 8);
+    n = ((n &amp; 0xf0f0f0f0u) &gt;&gt; 4) | ((n &amp; 0x0f0f0f0fu) &lt;&lt; 4);
+    n = ((n &amp; 0xccccccccu) &gt;&gt; 2) | ((n &amp; 0x33333333u) &lt;&lt; 2);
+    n = ((n &amp; 0xaaaaaaaau) &gt;&gt; 1) | ((n &amp; 0x55555555u) &lt;&lt; 1);
+    return n;
 }</code></pre>
                 </div>
             </div>

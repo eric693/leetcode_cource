@@ -21,7 +21,7 @@
         .section h2 { color: #1e293b; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 3px solid #ea580c; }
         .section h3 { color: #475569; margin: 25px 0 15px 0; font-size: 1.3em; }
         .code-block { background: #282c34; border-radius: 8px; overflow: hidden; margin: 15px 0; }
-        .lang-tabs { display: flex; background: #21252b; border-bottom: 1px solid #181a1f; }
+        .lang-tabs { display: flex; flex-wrap: wrap; background: #21252b; border-bottom: 1px solid #181a1f; }
         .lang-tab { padding: 12px 24px; cursor: pointer; color: #abb2bf; border: none; background: none; transition: all 0.3s; font-weight: 500; }
         .lang-tab.active { color: #61afef; background: #282c34; border-bottom: 2px solid #61afef; }
         .lang-tab:hover { color: #61afef; background: #2c313a; }
@@ -166,6 +166,8 @@ preorder = [3 | 9 | 20, 15, 7]
                     <button class="lang-tab active" onclick="switchLang(event, 'python')">Python</button>
                     <button class="lang-tab" onclick="switchLang(event, 'cpp')">C++</button>
                     <button class="lang-tab" onclick="switchLang(event, 'java')">Java</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'typescript')">TypeScript</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'c')">C</button>
                 </div>
 
                 <div id="python" class="code-content active">
@@ -259,6 +261,69 @@ public:
                            rootIdx + 1, inRight);
         return root;
     }
+}</code></pre>
+                </div>
+
+                <div id="typescript" class="code-content">
+                    <pre><code class="language-typescript">/**
+ * Definition for a binary tree node.
+ * class TreeNode {
+ *     val: number
+ *     left: TreeNode | null
+ *     right: TreeNode | null
+ * }
+ */
+// 前序第一個是根，在中序中找到根的位置即可切出左右子樹
+// 時間複雜度: O(n)，空間複雜度: O(n)
+function buildTree(preorder: number[], inorder: number[]): TreeNode | null {
+    const idx = new Map&lt;number, number&gt;();
+    inorder.forEach((v, i) =&gt; idx.set(v, i));
+    let pre = 0;                                  // 目前要用的前序位置
+
+    const build = (inLeft: number, inRight: number): TreeNode | null =&gt; {
+        if (inLeft &gt; inRight) return null;
+        const rootVal = preorder[pre++];
+        const root = new TreeNode(rootVal);
+        const mid = idx.get(rootVal)!;
+        root.left = build(inLeft, mid - 1);       // 先建左子樹（前序順序）
+        root.right = build(mid + 1, inRight);
+        return root;
+    };
+
+    return build(0, inorder.length - 1);
+}</code></pre>
+                </div>
+
+                <div id="c" class="code-content">
+                    <pre><code class="language-c">/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     struct TreeNode *left;
+ *     struct TreeNode *right;
+ * };
+ */
+// 前序第一個是根，在中序中找到根的位置即可切出左右子樹
+// 值域 -3000 ~ 3000，用位移陣列當雜湊表
+// 時間複雜度: O(n)，空間複雜度: O(n)
+static int idx[6001];
+static int pre;
+
+static struct TreeNode* build(int* preorder, int inLeft, int inRight) {
+    if (inLeft &gt; inRight) return NULL;
+    int rootVal = preorder[pre++];
+    struct TreeNode* root = malloc(sizeof(struct TreeNode));
+    root-&gt;val = rootVal;
+    int mid = idx[rootVal + 3000];
+    root-&gt;left = build(preorder, inLeft, mid - 1);
+    root-&gt;right = build(preorder, mid + 1, inRight);
+    return root;
+}
+
+struct TreeNode* buildTree(int* preorder, int preorderSize, int* inorder, int inorderSize) {
+    for (int i = 0; i &lt; inorderSize; i++) idx[inorder[i] + 3000] = i;
+    pre = 0;
+    return build(preorder, 0, inorderSize - 1);
 }</code></pre>
                 </div>
             </div>

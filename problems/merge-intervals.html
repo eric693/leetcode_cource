@@ -21,7 +21,7 @@
         .section h2 { color: #1e293b; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 3px solid #ea580c; }
         .section h3 { color: #475569; margin: 25px 0 15px 0; font-size: 1.3em; }
         .code-block { background: #282c34; border-radius: 8px; overflow: hidden; margin: 15px 0; }
-        .lang-tabs { display: flex; background: #21252b; border-bottom: 1px solid #181a1f; }
+        .lang-tabs { display: flex; flex-wrap: wrap; background: #21252b; border-bottom: 1px solid #181a1f; }
         .lang-tab { padding: 12px 24px; cursor: pointer; color: #abb2bf; border: none; background: none; transition: all 0.3s; font-weight: 500; }
         .lang-tab.active { color: #61afef; background: #282c34; border-bottom: 2px solid #61afef; }
         .lang-tab:hover { color: #61afef; background: #2c313a; }
@@ -142,6 +142,8 @@ result = [[1,6],[8,10],[15,18]] ✓
                     <button class="lang-tab active" onclick="switchLang(event, 'python')">Python</button>
                     <button class="lang-tab" onclick="switchLang(event, 'cpp')">C++</button>
                     <button class="lang-tab" onclick="switchLang(event, 'java')">Java</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'typescript')">TypeScript</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'c')">C</button>
                 </div>
 
                 <div id="python" class="code-content active">
@@ -202,6 +204,52 @@ public:
         }
         return result.toArray(new int[result.size()][]);
     }
+}</code></pre>
+                </div>
+
+                <div id="typescript" class="code-content">
+                    <pre><code class="language-typescript">// 依起點排序，與結果中最後一個區間比較是否重疊
+// 時間複雜度: O(n log n)，空間複雜度: O(n)
+function merge(intervals: number[][]): number[][] {
+    intervals.sort((a, b) =&gt; a[0] - b[0]);
+    const result: number[][] = [];
+    for (const [start, end] of intervals) {
+        const last = result[result.length - 1];
+        if (last &amp;&amp; start &lt;= last[1]) last[1] = Math.max(last[1], end);
+        else result.push([start, end]);
+    }
+    return result;
+}</code></pre>
+                </div>
+
+                <div id="c" class="code-content">
+                    <pre><code class="language-c">// 依起點排序，與結果中最後一個區間比較是否重疊
+// 時間複雜度: O(n log n)，空間複雜度: O(n)
+static int cmp(const void* a, const void* b) {
+    int x = (*(int* const*)a)[0], y = (*(int* const*)b)[0];
+    return (x &gt; y) - (x &lt; y);
+}
+
+int** merge(int** intervals, int intervalsSize, int* intervalsColSize,
+            int* returnSize, int** returnColumnSizes) {
+    qsort(intervals, intervalsSize, sizeof(int*), cmp);
+    int** result = malloc(sizeof(int*) * intervalsSize);
+    *returnColumnSizes = malloc(sizeof(int) * intervalsSize);
+    int cnt = 0;
+
+    for (int i = 0; i &lt; intervalsSize; i++) {
+        int start = intervals[i][0], end = intervals[i][1];
+        if (cnt &gt; 0 &amp;&amp; start &lt;= result[cnt - 1][1]) {
+            if (end &gt; result[cnt - 1][1]) result[cnt - 1][1] = end;
+        } else {
+            result[cnt] = malloc(sizeof(int) * 2);
+            result[cnt][0] = start;
+            result[cnt][1] = end;
+            (*returnColumnSizes)[cnt++] = 2;
+        }
+    }
+    *returnSize = cnt;
+    return result;
 }</code></pre>
                 </div>
             </div>

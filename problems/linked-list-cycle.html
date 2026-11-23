@@ -180,6 +180,8 @@ pos 為 -1 或者鏈表中的一個有效索引</code></pre>
                 <button class="tab-btn active" onclick="showLanguage('python')">Python</button>
                 <button class="tab-btn" onclick="showLanguage('cpp')">C++</button>
                 <button class="tab-btn" onclick="showLanguage('java')">Java</button>
+                <button class="tab-btn" onclick="showLanguage('typescript')">TypeScript</button>
+                <button class="tab-btn" onclick="showLanguage('c')">C</button>
             </div>
 
             <div id="python" class="code-container active">
@@ -378,6 +380,48 @@ public class Solution {
         // 遍歷完成，沒有環
         return false;
     }
+}</code></pre>
+            </div>
+
+            <div id="typescript" class="code-container">
+                <pre><code class="language-typescript">/**
+ * Definition for singly-linked list.
+ * class ListNode {
+ *     val: number
+ *     next: ListNode | null
+ * }
+ */
+// 快慢指針：有環的話快指針一定會追上慢指針
+// 時間複雜度: O(n)，空間複雜度: O(1)
+function hasCycle(head: ListNode | null): boolean {
+    let slow = head, fast = head;
+    while (fast &amp;&amp; fast.next) {
+        slow = slow!.next;
+        fast = fast.next.next;
+        if (slow === fast) return true;
+    }
+    return false;
+}</code></pre>
+            </div>
+
+            <div id="c" class="code-container">
+                <pre><code class="language-c">/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     struct ListNode *next;
+ * };
+ */
+// 快慢指針：有環的話快指針一定會追上慢指針
+// 時間複雜度: O(n)，空間複雜度: O(1)
+bool hasCycle(struct ListNode* head) {
+    struct ListNode *slow = head, *fast = head;
+    while (fast &amp;&amp; fast-&gt;next) {
+        slow = slow-&gt;next;
+        fast = fast-&gt;next-&gt;next;
+        if (slow == fast) return true;
+    }
+    return false;
 }</code></pre>
             </div>
         </div>

@@ -21,7 +21,7 @@
         .section h2 { color: #1e293b; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 3px solid #ea580c; }
         .section h3 { color: #475569; margin: 25px 0 15px 0; font-size: 1.3em; }
         .code-block { background: #282c34; border-radius: 8px; overflow: hidden; margin: 15px 0; }
-        .lang-tabs { display: flex; background: #21252b; border-bottom: 1px solid #181a1f; }
+        .lang-tabs { display: flex; flex-wrap: wrap; background: #21252b; border-bottom: 1px solid #181a1f; }
         .lang-tab { padding: 12px 24px; cursor: pointer; color: #abb2bf; border: none; background: none; transition: all 0.3s; font-weight: 500; }
         .lang-tab.active { color: #61afef; background: #282c34; border-bottom: 2px solid #61afef; }
         .lang-tab:hover { color: #61afef; background: #2c313a; }
@@ -160,6 +160,8 @@ result = [5, 6, 0, 8, 8] → "56088" ✓
                     <button class="lang-tab active" onclick="switchLang(event, 'python')">Python</button>
                     <button class="lang-tab" onclick="switchLang(event, 'cpp')">C++</button>
                     <button class="lang-tab" onclick="switchLang(event, 'java')">Java</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'typescript')">TypeScript</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'c')">C</button>
                 </div>
 
                 <div id="python" class="code-content active">
@@ -257,6 +259,52 @@ public:
         }
         return sb.toString();
     }
+}</code></pre>
+                </div>
+
+                <div id="typescript" class="code-content">
+                    <pre><code class="language-typescript">// 直式乘法：num1[i] × num2[j] 的結果落在 pos[i+j] 與 pos[i+j+1]
+// 時間複雜度: O(m·n)，空間複雜度: O(m + n)
+function multiply(num1: string, num2: string): string {
+    if (num1 === '0' || num2 === '0') return '0';
+    const m = num1.length, n = num2.length;
+    const pos = new Array(m + n).fill(0);
+
+    for (let i = m - 1; i &gt;= 0; i--) {
+        for (let j = n - 1; j &gt;= 0; j--) {
+            const sum = (num1.charCodeAt(i) - 48) * (num2.charCodeAt(j) - 48) + pos[i + j + 1];
+            pos[i + j + 1] = sum % 10;
+            pos[i + j] += Math.floor(sum / 10);
+        }
+    }
+    const result = pos.join('');
+    return result[0] === '0' ? result.slice(1) : result;   // 最多只會有一個前導 0
+}</code></pre>
+                </div>
+
+                <div id="c" class="code-content">
+                    <pre><code class="language-c">// 直式乘法：num1[i] × num2[j] 的結果落在 pos[i+j] 與 pos[i+j+1]
+// 時間複雜度: O(m·n)，空間複雜度: O(m + n)
+char* multiply(char* num1, char* num2) {
+    int m = strlen(num1), n = strlen(num2);
+    if ((m == 1 &amp;&amp; num1[0] == '0') || (n == 1 &amp;&amp; num2[0] == '0')) return strdup("0");
+
+    int* pos = calloc(m + n, sizeof(int));
+    for (int i = m - 1; i &gt;= 0; i--) {
+        for (int j = n - 1; j &gt;= 0; j--) {
+            int sum = (num1[i] - '0') * (num2[j] - '0') + pos[i + j + 1];
+            pos[i + j + 1] = sum % 10;
+            pos[i + j] += sum / 10;
+        }
+    }
+
+    int start = pos[0] == 0 ? 1 : 0;           // 最多只會有一個前導 0
+    char* res = malloc(m + n - start + 1);
+    int k = 0;
+    for (int i = start; i &lt; m + n; i++) res[k++] = '0' + pos[i];
+    res[k] = '\0';
+    free(pos);
+    return res;
 }</code></pre>
                 </div>
             </div>

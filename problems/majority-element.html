@@ -236,6 +236,8 @@ i=6, num=2:
                 <button class="tab-btn active" onclick="showLanguage('python')">Python</button>
                 <button class="tab-btn" onclick="showLanguage('cpp')">C++</button>
                 <button class="tab-btn" onclick="showLanguage('java')">Java</button>
+                <button class="tab-btn" onclick="showLanguage('typescript')">TypeScript</button>
+                <button class="tab-btn" onclick="showLanguage('c')">C</button>
             </div>
 
             <div id="python" class="code-container active">
@@ -405,6 +407,32 @@ class Solution {
         Arrays.sort(nums);
         return nums[nums.length / 2];
     }
+}</code></pre>
+            </div>
+
+            <div id="typescript" class="code-container">
+                <pre><code class="language-typescript">// Boyer-Moore 投票法：不同的數兩兩抵銷，最後剩下的就是眾數
+// 時間複雜度: O(n)，空間複雜度: O(1)
+function majorityElement(nums: number[]): number {
+    let candidate = 0, count = 0;
+    for (const x of nums) {
+        if (count === 0) candidate = x;
+        count += x === candidate ? 1 : -1;
+    }
+    return candidate;
+}</code></pre>
+            </div>
+
+            <div id="c" class="code-container">
+                <pre><code class="language-c">// Boyer-Moore 投票法：不同的數兩兩抵銷，最後剩下的就是眾數
+// 時間複雜度: O(n)，空間複雜度: O(1)
+int majorityElement(int* nums, int numsSize) {
+    int candidate = 0, count = 0;
+    for (int i = 0; i &lt; numsSize; i++) {
+        if (count == 0) candidate = nums[i];
+        count += (nums[i] == candidate) ? 1 : -1;
+    }
+    return candidate;
 }</code></pre>
             </div>
         </div>

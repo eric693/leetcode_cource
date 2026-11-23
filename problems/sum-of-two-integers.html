@@ -21,7 +21,7 @@
         .section h2 { color: #1e293b; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 3px solid #ea580c; }
         .section h3 { color: #475569; margin: 25px 0 15px 0; font-size: 1.3em; }
         .code-block { background: #282c34; border-radius: 8px; overflow: hidden; margin: 15px 0; }
-        .lang-tabs { display: flex; background: #21252b; border-bottom: 1px solid #181a1f; }
+        .lang-tabs { display: flex; flex-wrap: wrap; background: #21252b; border-bottom: 1px solid #181a1f; }
         .lang-tab { padding: 12px 24px; cursor: pointer; color: #abb2bf; border: none; background: none; transition: all 0.3s; font-weight: 500; }
         .lang-tab.active { color: #61afef; background: #282c34; border-bottom: 2px solid #61afef; }
         .lang-tab:hover { color: #61afef; background: #2c313a; }
@@ -153,6 +153,8 @@ a = 0101 (5), b = 0011 (3)
                     <button class="lang-tab active" onclick="switchLang(event, 'python')">Python</button>
                     <button class="lang-tab" onclick="switchLang(event, 'cpp')">C++</button>
                     <button class="lang-tab" onclick="switchLang(event, 'java')">Java</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'typescript')">TypeScript</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'c')">C</button>
                 </div>
 
                 <div id="python" class="code-content active">
@@ -231,6 +233,33 @@ class Solution {
     public int getSum(int a, int b) {
         return b == 0 ? a : getSum(a ^ b, (a &amp; b) &lt;&lt; 1);
     }
+}</code></pre>
+                </div>
+
+                <div id="typescript" class="code-content">
+                    <pre><code class="language-typescript">// XOR 是不進位加法，(a &amp; b) &lt;&lt; 1 是進位，重複到沒有進位為止
+// 時間複雜度: O(32)，空間複雜度: O(1)
+function getSum(a: number, b: number): number {
+    while (b !== 0) {
+        const carry = (a &amp; b) &lt;&lt; 1;
+        a = a ^ b;
+        b = carry;
+    }
+    return a;
+}</code></pre>
+                </div>
+
+                <div id="c" class="code-content">
+                    <pre><code class="language-c">// XOR 是不進位加法，(a &amp; b) &lt;&lt; 1 是進位，重複到沒有進位為止
+// 進位用 unsigned 計算，避免有號數左移溢位的未定義行為
+// 時間複雜度: O(32)，空間複雜度: O(1)
+int getSum(int a, int b) {
+    while (b != 0) {
+        unsigned int carry = ((unsigned int)(a &amp; b)) &lt;&lt; 1;
+        a = a ^ b;
+        b = (int)carry;
+    }
+    return a;
 }</code></pre>
                 </div>
             </div>

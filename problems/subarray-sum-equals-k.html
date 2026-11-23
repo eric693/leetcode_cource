@@ -21,7 +21,7 @@
         .section h2 { color: #1e293b; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 3px solid #ea580c; }
         .section h3 { color: #475569; margin: 25px 0 15px 0; font-size: 1.3em; }
         .code-block { background: #282c34; border-radius: 8px; overflow: hidden; margin: 15px 0; }
-        .lang-tabs { display: flex; background: #21252b; border-bottom: 1px solid #181a1f; }
+        .lang-tabs { display: flex; flex-wrap: wrap; background: #21252b; border-bottom: 1px solid #181a1f; }
         .lang-tab { padding: 12px 24px; cursor: pointer; color: #abb2bf; border: none; background: none; transition: all 0.3s; font-weight: 500; }
         .lang-tab.active { color: #61afef; background: #282c34; border-bottom: 2px solid #61afef; }
         .lang-tab:hover { color: #61afef; background: #2c313a; }
@@ -175,6 +175,8 @@ nums = [3], k = 3
                     <button class="lang-tab active" onclick="switchLang(event, 'python')">Python</button>
                     <button class="lang-tab" onclick="switchLang(event, 'cpp')">C++</button>
                     <button class="lang-tab" onclick="switchLang(event, 'java')">Java</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'typescript')">TypeScript</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'c')">C</button>
                 </div>
 
                 <div id="python" class="code-content active">
@@ -247,6 +249,54 @@ class Solution {
         }
         return result;
     }
+}</code></pre>
+                </div>
+
+                <div id="typescript" class="code-content">
+                    <pre><code class="language-typescript">// 前綴和 + 雜湊表：統計有多少個之前的前綴和等於 prefix - k
+// 時間複雜度: O(n)，空間複雜度: O(n)
+function subarraySum(nums: number[], k: number): number {
+    const count = new Map&lt;number, number&gt;([[0, 1]]);
+    let prefix = 0, ans = 0;
+    for (const x of nums) {
+        prefix += x;
+        ans += count.get(prefix - k) ?? 0;
+        count.set(prefix, (count.get(prefix) ?? 0) + 1);
+    }
+    return ans;
+}</code></pre>
+                </div>
+
+                <div id="c" class="code-content">
+                    <pre><code class="language-c">// 前綴和 + 開放定址雜湊表：統計有多少個之前的前綴和等於 prefix - k
+// 時間複雜度: O(n)（平均），空間複雜度: O(n)
+#define HSIZE 65536                       // 2 的冪，大於 2 × 最大元素數
+
+static int keys[HSIZE], vals[HSIZE];
+static bool used[HSIZE];
+
+static unsigned slot(int key) {
+    unsigned h = (unsigned)key * 2654435761u;   // Knuth 乘法雜湊
+    unsigned i = h &amp; (HSIZE - 1);
+    while (used[i] &amp;&amp; keys[i] != key) i = (i + 1) &amp; (HSIZE - 1);   // 線性探測
+    return i;
+}
+
+int subarraySum(int* nums, int numsSize, int k) {
+    memset(used, 0, sizeof(used));
+    unsigned s = slot(0);
+    used[s] = true; keys[s] = 0; vals[s] = 1;   // 前綴和 0 出現 1 次
+
+    int prefix = 0, ans = 0;
+    for (int i = 0; i &lt; numsSize; i++) {
+        prefix += nums[i];
+        unsigned q = slot(prefix - k);
+        if (used[q]) ans += vals[q];
+        unsigned p = slot(prefix);
+        if (!used[p]) { used[p] = true; keys[p] = prefix; vals[p] = 0; }
+        vals[p]++;
+    }
+    return ans;
 }</code></pre>
                 </div>
             </div>

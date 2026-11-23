@@ -99,6 +99,8 @@
             <div class="language-tabs">
                 <button class="tab-btn active" onclick="showLanguage('python')">Python</button>
                 <button class="tab-btn" onclick="showLanguage('java')">Java</button>
+                <button class="tab-btn" onclick="showLanguage('typescript')">TypeScript</button>
+                <button class="tab-btn" onclick="showLanguage('c')">C</button>
                 <button class="tab-btn" onclick="showLanguage('cpp')">C++</button>
             </div>
 
@@ -128,6 +130,39 @@
         }
         return answer;
     }
+}</code></pre>
+            </div>
+
+            <div id="typescript" class="code-container">
+                <pre><code class="language-typescript">// 直接模擬
+// 時間複雜度: O(n)，空間複雜度: O(1)（不含輸出）
+function fizzBuzz(n: number): string[] {
+    const ans: string[] = [];
+    for (let i = 1; i &lt;= n; i++) {
+        if (i % 15 === 0) ans.push('FizzBuzz');
+        else if (i % 3 === 0) ans.push('Fizz');
+        else if (i % 5 === 0) ans.push('Buzz');
+        else ans.push(String(i));
+    }
+    return ans;
+}</code></pre>
+            </div>
+
+            <div id="c" class="code-container">
+                <pre><code class="language-c">// 直接模擬（每個字串都要自己配置記憶體）
+// 時間複雜度: O(n)，空間複雜度: O(1)（不含輸出）
+char** fizzBuzz(int n, int* returnSize) {
+    char** ans = malloc(sizeof(char*) * n);
+    for (int i = 1; i &lt;= n; i++) {
+        char* s = malloc(9);                 // "FizzBuzz" + '\0'
+        if (i % 15 == 0) strcpy(s, "FizzBuzz");
+        else if (i % 3 == 0) strcpy(s, "Fizz");
+        else if (i % 5 == 0) strcpy(s, "Buzz");
+        else sprintf(s, "%d", i);
+        ans[i - 1] = s;
+    }
+    *returnSize = n;
+    return ans;
 }</code></pre>
             </div>
 

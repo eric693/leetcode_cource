@@ -163,6 +163,8 @@
                 <button class="tab-btn active" onclick="showLanguage('python')">Python</button>
                 <button class="tab-btn" onclick="showLanguage('cpp')">C++</button>
                 <button class="tab-btn" onclick="showLanguage('java')">Java</button>
+                <button class="tab-btn" onclick="showLanguage('typescript')">TypeScript</button>
+                <button class="tab-btn" onclick="showLanguage('c')">C</button>
             </div>
 
             <div id="python" class="code-container active">
@@ -295,6 +297,63 @@ class Solution {
         
         return dummy.next;
     }
+}</code></pre>
+            </div>
+
+            <div id="typescript" class="code-container">
+                <pre><code class="language-typescript">/**
+ * Definition for singly-linked list.
+ * class ListNode {
+ *     val: number
+ *     next: ListNode | null
+ * }
+ */
+// 模擬直式加法，使用虛擬頭節點
+// 時間複雜度: O(max(m, n))，空間複雜度: O(1)（不含輸出）
+function addTwoNumbers(l1: ListNode | null, l2: ListNode | null): ListNode | null {
+    const dummy = new ListNode(0);
+    let cur = dummy, carry = 0;
+
+    while (l1 || l2 || carry) {
+        const sum = (l1?.val ?? 0) + (l2?.val ?? 0) + carry;
+        carry = Math.floor(sum / 10);
+        cur.next = new ListNode(sum % 10);
+        cur = cur.next;
+        l1 = l1?.next ?? null;
+        l2 = l2?.next ?? null;
+    }
+    return dummy.next;
+}</code></pre>
+            </div>
+
+            <div id="c" class="code-container">
+                <pre><code class="language-c">/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     struct ListNode *next;
+ * };
+ */
+// 模擬直式加法，使用虛擬頭節點
+// 時間複雜度: O(max(m, n))，空間複雜度: O(1)（不含輸出）
+struct ListNode* addTwoNumbers(struct ListNode* l1, struct ListNode* l2) {
+    struct ListNode dummy = {0, NULL};
+    struct ListNode* cur = &amp;dummy;
+    int carry = 0;
+
+    while (l1 || l2 || carry) {
+        int sum = carry;
+        if (l1) { sum += l1-&gt;val; l1 = l1-&gt;next; }
+        if (l2) { sum += l2-&gt;val; l2 = l2-&gt;next; }
+        carry = sum / 10;
+
+        struct ListNode* node = malloc(sizeof(struct ListNode));
+        node-&gt;val = sum % 10;
+        node-&gt;next = NULL;
+        cur-&gt;next = node;
+        cur = node;
+    }
+    return dummy.next;
 }</code></pre>
             </div>
         </div>

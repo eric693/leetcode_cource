@@ -200,6 +200,8 @@ s 僅由數字和英文字母組成</code></pre>
                 <button class="tab-btn active" onclick="showLanguage('python')">Python</button>
                 <button class="tab-btn" onclick="showLanguage('cpp')">C++</button>
                 <button class="tab-btn" onclick="showLanguage('java')">Java</button>
+                <button class="tab-btn" onclick="showLanguage('typescript')">TypeScript</button>
+                <button class="tab-btn" onclick="showLanguage('c')">C</button>
             </div>
 
             <div id="python" class="code-container active">
@@ -456,6 +458,57 @@ public:
         
         return s.substring(start, start + maxLen);
     }
+}</code></pre>
+            </div>
+
+            <div id="typescript" class="code-container">
+                <pre><code class="language-typescript">// 中心擴展：每個字元（奇數長度）與每個間隙（偶數長度）都當作中心
+// 時間複雜度: O(n²)，空間複雜度: O(1)
+function longestPalindrome(s: string): string {
+    let start = 0, maxLen = 0;
+    const expand = (l: number, r: number): void =&gt; {
+        while (l &gt;= 0 &amp;&amp; r &lt; s.length &amp;&amp; s[l] === s[r]) {
+            l--;
+            r++;
+        }
+        if (r - l - 1 &gt; maxLen) {
+            start = l + 1;
+            maxLen = r - l - 1;
+        }
+    };
+    for (let i = 0; i &lt; s.length; i++) {
+        expand(i, i);
+        expand(i, i + 1);
+    }
+    return s.slice(start, start + maxLen);
+}</code></pre>
+            </div>
+
+            <div id="c" class="code-container">
+                <pre><code class="language-c">// 中心擴展：每個字元（奇數長度）與每個間隙（偶數長度）都當作中心
+// 時間複雜度: O(n²)，空間複雜度: O(1)（不含輸出）
+static int expand(char* s, int n, int l, int r) {
+    while (l &gt;= 0 &amp;&amp; r &lt; n &amp;&amp; s[l] == s[r]) {
+        l--;
+        r++;
+    }
+    return r - l - 1;                        // 回文長度
+}
+
+char* longestPalindrome(char* s) {
+    int n = strlen(s), start = 0, maxLen = 0;
+    for (int i = 0; i &lt; n; i++) {
+        int a = expand(s, n, i, i), b = expand(s, n, i, i + 1);
+        int len = a &gt; b ? a : b;
+        if (len &gt; maxLen) {
+            maxLen = len;
+            start = i - (len - 1) / 2;
+        }
+    }
+    char* ans = malloc(maxLen + 1);
+    memcpy(ans, s + start, maxLen);
+    ans[maxLen] = '\0';
+    return ans;
 }</code></pre>
             </div>
         </div>

@@ -202,6 +202,8 @@ ABC = 731</code></pre>
                 <button class="tab-btn active" onclick="showLanguage('python')">Python</button>
                 <button class="tab-btn" onclick="showLanguage('cpp')">C++</button>
                 <button class="tab-btn" onclick="showLanguage('java')">Java</button>
+                <button class="tab-btn" onclick="showLanguage('typescript')">TypeScript</button>
+                <button class="tab-btn" onclick="showLanguage('c')">C</button>
             </div>
 
             <div id="python" class="code-container active">
@@ -286,6 +288,30 @@ public:
         
         return result;
     }
+}</code></pre>
+            </div>
+
+            <div id="typescript" class="code-container">
+                <pre><code class="language-typescript">// 26 進位轉換（A=1 ... Z=26）
+// 時間複雜度: O(n)，空間複雜度: O(1)
+function titleToNumber(columnTitle: string): number {
+    let result = 0;
+    for (const ch of columnTitle) {
+        result = result * 26 + (ch.charCodeAt(0) - 64);   // 'A' 的字元碼是 65
+    }
+    return result;
+}</code></pre>
+            </div>
+
+            <div id="c" class="code-container">
+                <pre><code class="language-c">// 26 進位轉換（A=1 ... Z=26）
+// 時間複雜度: O(n)，空間複雜度: O(1)
+int titleToNumber(char* columnTitle) {
+    long result = 0;
+    for (char* p = columnTitle; *p; p++) {
+        result = result * 26 + (*p - 'A' + 1);
+    }
+    return (int)result;
 }</code></pre>
             </div>
         </div>

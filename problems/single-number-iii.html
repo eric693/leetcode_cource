@@ -21,7 +21,7 @@
         .section h2 { color: #1e293b; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 3px solid #ea580c; }
         .section h3 { color: #475569; margin: 25px 0 15px 0; font-size: 1.3em; }
         .code-block { background: #282c34; border-radius: 8px; overflow: hidden; margin: 15px 0; }
-        .lang-tabs { display: flex; background: #21252b; border-bottom: 1px solid #181a1f; }
+        .lang-tabs { display: flex; flex-wrap: wrap; background: #21252b; border-bottom: 1px solid #181a1f; }
         .lang-tab { padding: 12px 24px; cursor: pointer; color: #abb2bf; border: none; background: none; transition: all 0.3s; font-weight: 500; }
         .lang-tab.active { color: #61afef; background: #282c34; border-bottom: 2px solid #61afef; }
         .lang-tab:hover { color: #61afef; background: #2c313a; }
@@ -151,6 +151,8 @@ x & -x = 0000 1000  ← 剛好只留下最低位的 1
                     <button class="lang-tab active" onclick="switchLang(event, 'python')">Python</button>
                     <button class="lang-tab" onclick="switchLang(event, 'cpp')">C++</button>
                     <button class="lang-tab" onclick="switchLang(event, 'java')">Java</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'typescript')">TypeScript</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'c')">C</button>
                 </div>
 
                 <div id="python" class="code-content active">
@@ -225,6 +227,42 @@ class Solution {
         }
         return new int[]{a, b};
     }
+}</code></pre>
+                </div>
+
+                <div id="typescript" class="code-content">
+                    <pre><code class="language-typescript">// 全部 XOR 得到 a ^ b，用最低位的 1 把數字分成兩組，各組再 XOR
+// 時間複雜度: O(n)，空間複雜度: O(1)
+function singleNumber(nums: number[]): number[] {
+    let xor = 0;
+    for (const x of nums) xor ^= x;
+    const lowbit = xor &amp; -xor;              // a 與 b 在這一位不同
+    let a = 0, b = 0;
+    for (const x of nums) {
+        if (x &amp; lowbit) a ^= x;
+        else b ^= x;
+    }
+    return [a, b];
+}</code></pre>
+                </div>
+
+                <div id="c" class="code-content">
+                    <pre><code class="language-c">// 全部 XOR 得到 a ^ b，用最低位的 1 把數字分成兩組，各組再 XOR
+// 時間複雜度: O(n)，空間複雜度: O(1)
+int* singleNumber(int* nums, int numsSize, int* returnSize) {
+    unsigned int xor = 0;
+    for (int i = 0; i &lt; numsSize; i++) xor ^= (unsigned int)nums[i];
+    unsigned int lowbit = xor &amp; (~xor + 1);  // 用無號數避免 INT_MIN 取負溢位
+    int a = 0, b = 0;
+    for (int i = 0; i &lt; numsSize; i++) {
+        if ((unsigned int)nums[i] &amp; lowbit) a ^= nums[i];
+        else b ^= nums[i];
+    }
+    int* ans = malloc(sizeof(int) * 2);
+    ans[0] = a;
+    ans[1] = b;
+    *returnSize = 2;
+    return ans;
 }</code></pre>
                 </div>
             </div>

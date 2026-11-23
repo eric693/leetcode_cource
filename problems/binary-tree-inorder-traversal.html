@@ -21,7 +21,7 @@
         .section h2 { color: #1e293b; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 3px solid #16a34a; }
         .section h3 { color: #475569; margin: 25px 0 15px 0; font-size: 1.3em; }
         .code-block { background: #282c34; border-radius: 8px; overflow: hidden; margin: 15px 0; }
-        .lang-tabs { display: flex; background: #21252b; border-bottom: 1px solid #181a1f; }
+        .lang-tabs { display: flex; flex-wrap: wrap; background: #21252b; border-bottom: 1px solid #181a1f; }
         .lang-tab { padding: 12px 24px; cursor: pointer; color: #abb2bf; border: none; background: none; transition: all 0.3s; font-weight: 500; }
         .lang-tab.active { color: #61afef; background: #282c34; border-bottom: 2px solid #61afef; }
         .lang-tab:hover { color: #61afef; background: #2c313a; }
@@ -198,6 +198,8 @@ cur=1，...輸出 1
                     <button class="lang-tab active" onclick="switchLang(event, 'python')">Python</button>
                     <button class="lang-tab" onclick="switchLang(event, 'cpp')">C++</button>
                     <button class="lang-tab" onclick="switchLang(event, 'java')">Java</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'typescript')">TypeScript</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'c')">C</button>
                 </div>
 
                 <div id="python" class="code-content active">
@@ -364,6 +366,66 @@ class Solution {
         }
         return result;
     }
+}</code></pre>
+                </div>
+
+                <div id="typescript" class="code-content">
+                    <pre><code class="language-typescript">/**
+ * Definition for a binary tree node.
+ * class TreeNode {
+ *     val: number
+ *     left: TreeNode | null
+ *     right: TreeNode | null
+ * }
+ */
+// 迭代：用堆疊模擬遞迴（左 → 根 → 右）
+// 時間複雜度: O(n)，空間複雜度: O(h)
+function inorderTraversal(root: TreeNode | null): number[] {
+    const result: number[] = [];
+    const stack: TreeNode[] = [];
+    let cur = root;
+
+    while (cur || stack.length) {
+        while (cur) {            // 一路往左走到底
+            stack.push(cur);
+            cur = cur.left;
+        }
+        const node = stack.pop()!;
+        result.push(node.val);   // 訪問根
+        cur = node.right;        // 轉向右子樹
+    }
+    return result;
+}</code></pre>
+                </div>
+
+                <div id="c" class="code-content">
+                    <pre><code class="language-c">/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     struct TreeNode *left;
+ *     struct TreeNode *right;
+ * };
+ */
+// 迭代：用堆疊模擬遞迴（左 → 根 → 右）
+// 時間複雜度: O(n)，空間複雜度: O(h)
+int* inorderTraversal(struct TreeNode* root, int* returnSize) {
+    int* result = malloc(sizeof(int) * 100);       // 題目限制節點數 ≤ 100
+    struct TreeNode* stack[100];
+    int top = 0;
+    *returnSize = 0;
+    struct TreeNode* cur = root;
+
+    while (cur || top &gt; 0) {
+        while (cur) {                              // 一路往左走到底
+            stack[top++] = cur;
+            cur = cur-&gt;left;
+        }
+        struct TreeNode* node = stack[--top];
+        result[(*returnSize)++] = node-&gt;val;       // 訪問根
+        cur = node-&gt;right;                         // 轉向右子樹
+    }
+    return result;
 }</code></pre>
                 </div>
             </div>

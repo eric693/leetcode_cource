@@ -101,6 +101,8 @@
             <div class="language-tabs">
                 <button class="tab-btn active" onclick="showLanguage('python')">Python</button>
                 <button class="tab-btn" onclick="showLanguage('java')">Java</button>
+                <button class="tab-btn" onclick="showLanguage('typescript')">TypeScript</button>
+                <button class="tab-btn" onclick="showLanguage('c')">C</button>
                 <button class="tab-btn" onclick="showLanguage('cpp')">C++</button>
             </div>
 
@@ -135,6 +137,35 @@
         }
         return true;
     }
+}</code></pre>
+            </div>
+
+            <div id="typescript" class="code-container">
+                <pre><code class="language-typescript">// 雙向映射：記錄每個字元「上一次出現的位置」，兩邊必須一致
+// 時間複雜度: O(n)，空間複雜度: O(1)（字元集固定）
+function isIsomorphic(s: string, t: string): boolean {
+    const lastS = new Map&lt;string, number&gt;();
+    const lastT = new Map&lt;string, number&gt;();
+    for (let i = 0; i &lt; s.length; i++) {
+        if ((lastS.get(s[i]) ?? -1) !== (lastT.get(t[i]) ?? -1)) return false;
+        lastS.set(s[i], i);
+        lastT.set(t[i], i);
+    }
+    return true;
+}</code></pre>
+            </div>
+
+            <div id="c" class="code-container">
+                <pre><code class="language-c">// 雙向映射：記錄每個字元「上一次出現的位置 + 1」，兩邊必須一致
+// 時間複雜度: O(n)，空間複雜度: O(1)（固定 256 格）
+bool isIsomorphic(char* s, char* t) {
+    int lastS[256] = {0}, lastT[256] = {0};
+    for (int i = 0; s[i]; i++) {
+        unsigned char a = s[i], b = t[i];
+        if (lastS[a] != lastT[b]) return false;
+        lastS[a] = lastT[b] = i + 1;          // +1 讓 0 代表「沒出現過」
+    }
+    return true;
 }</code></pre>
             </div>
 

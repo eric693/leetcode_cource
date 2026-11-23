@@ -236,6 +236,8 @@ DP 表格:
                 <button class="tab-btn active" onclick="showLanguage('python')">Python</button>
                 <button class="tab-btn" onclick="showLanguage('cpp')">C++</button>
                 <button class="tab-btn" onclick="showLanguage('java')">Java</button>
+                <button class="tab-btn" onclick="showLanguage('typescript')">TypeScript</button>
+                <button class="tab-btn" onclick="showLanguage('c')">C</button>
             </div>
 
             <div id="python" class="code-container active">
@@ -493,6 +495,44 @@ public:
         
         return dp[n-1];
     }
+}</code></pre>
+            </div>
+
+            <div id="typescript" class="code-container">
+                <pre><code class="language-typescript">// 1D DP：dp[j] = 走到當前列第 j 格的最小路徑和
+// 時間複雜度: O(m·n)，空間複雜度: O(n)
+function minPathSum(grid: number[][]): number {
+    const n = grid[0].length;
+    const dp = new Array(n).fill(Infinity);
+    dp[0] = 0;
+    for (const row of grid) {
+        dp[0] += row[0];
+        for (let j = 1; j &lt; n; j++) {
+            dp[j] = Math.min(dp[j], dp[j - 1]) + row[j];   // 從上方或左方來
+        }
+    }
+    return dp[n - 1];
+}</code></pre>
+            </div>
+
+            <div id="c" class="code-container">
+                <pre><code class="language-c">// 1D DP：dp[j] = 走到當前列第 j 格的最小路徑和
+// 時間複雜度: O(m·n)，空間複雜度: O(n)
+int minPathSum(int** grid, int gridSize, int* gridColSize) {
+    int n = gridColSize[0];
+    int* dp = malloc(sizeof(int) * n);
+    dp[0] = grid[0][0];
+    for (int j = 1; j &lt; n; j++) dp[j] = dp[j - 1] + grid[0][j];   // 第一列只能從左來
+
+    for (int i = 1; i &lt; gridSize; i++) {
+        dp[0] += grid[i][0];
+        for (int j = 1; j &lt; n; j++) {
+            dp[j] = (dp[j] &lt; dp[j - 1] ? dp[j] : dp[j - 1]) + grid[i][j];
+        }
+    }
+    int ans = dp[n - 1];
+    free(dp);
+    return ans;
 }</code></pre>
             </div>
         </div>

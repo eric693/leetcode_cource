@@ -193,6 +193,8 @@ i=8: dp[4]=T && "code" in dict ✓
                 <button class="tab-btn active" onclick="showLanguage('python')">Python</button>
                 <button class="tab-btn" onclick="showLanguage('cpp')">C++</button>
                 <button class="tab-btn" onclick="showLanguage('java')">Java</button>
+                <button class="tab-btn" onclick="showLanguage('typescript')">TypeScript</button>
+                <button class="tab-btn" onclick="showLanguage('c')">C</button>
             </div>
 
             <div id="python" class="code-container active">
@@ -423,6 +425,51 @@ class Solution {
         
         return dp[n];
     }
+}</code></pre>
+            </div>
+
+            <div id="typescript" class="code-container">
+                <pre><code class="language-typescript">// DP：dp[i] = s 的前 i 個字元能否被字典切分
+// 時間複雜度: O(n² · L)，空間複雜度: O(n)
+function wordBreak(s: string, wordDict: string[]): boolean {
+    const words = new Set(wordDict);
+    const maxLen = Math.max(...wordDict.map(w =&gt; w.length));
+    const dp = new Array(s.length + 1).fill(false);
+    dp[0] = true;
+    for (let i = 1; i &lt;= s.length; i++) {
+        for (let j = Math.max(0, i - maxLen); j &lt; i; j++) {   // 只需往回看最長單字長度
+            if (dp[j] &amp;&amp; words.has(s.slice(j, i))) {
+                dp[i] = true;
+                break;
+            }
+        }
+    }
+    return dp[s.length];
+}</code></pre>
+            </div>
+
+            <div id="c" class="code-container">
+                <pre><code class="language-c">// DP：dp[i] = s 的前 i 個字元能否被字典切分（直接比對每個單字）
+// 時間複雜度: O(n · W · L)，空間複雜度: O(n)
+bool wordBreak(char* s, char** wordDict, int wordDictSize) {
+    int n = strlen(s);
+    bool* dp = calloc(n + 1, sizeof(bool));
+    int* lens = malloc(sizeof(int) * wordDictSize);
+    for (int k = 0; k &lt; wordDictSize; k++) lens[k] = strlen(wordDict[k]);
+    dp[0] = true;
+
+    for (int i = 1; i &lt;= n; i++) {
+        for (int k = 0; k &lt; wordDictSize &amp;&amp; !dp[i]; k++) {
+            int len = lens[k];
+            if (len &lt;= i &amp;&amp; dp[i - len] &amp;&amp; strncmp(s + i - len, wordDict[k], len) == 0) {
+                dp[i] = true;
+            }
+        }
+    }
+    bool ans = dp[n];
+    free(dp);
+    free(lens);
+    return ans;
 }</code></pre>
             </div>
         </div>

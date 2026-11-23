@@ -154,6 +154,8 @@
                 <button class="tab-btn active" onclick="showLanguage('python')">Python</button>
                 <button class="tab-btn" onclick="showLanguage('cpp')">C++</button>
                 <button class="tab-btn" onclick="showLanguage('java')">Java</button>
+                <button class="tab-btn" onclick="showLanguage('typescript')">TypeScript</button>
+                <button class="tab-btn" onclick="showLanguage('c')">C</button>
             </div>
 
             <div id="python" class="code-container active">
@@ -277,6 +279,31 @@ class Solution {
         
         return false;
     }
+}</code></pre>
+            </div>
+
+            <div id="typescript" class="code-container">
+                <pre><code class="language-typescript">// 雜湊集合：Set 大小小於陣列長度代表有重複
+// 時間複雜度: O(n)，空間複雜度: O(n)
+function containsDuplicate(nums: number[]): boolean {
+    return new Set(nums).size !== nums.length;
+}</code></pre>
+            </div>
+
+            <div id="c" class="code-container">
+                <pre><code class="language-c">// 排序後檢查相鄰元素（C 沒有內建雜湊表，排序最簡潔）
+// 時間複雜度: O(n log n)，空間複雜度: O(log n)
+static int cmp(const void* a, const void* b) {
+    int x = *(const int*)a, y = *(const int*)b;
+    return (x &gt; y) - (x &lt; y);                  // 避免 x - y 溢位
+}
+
+bool containsDuplicate(int* nums, int numsSize) {
+    qsort(nums, numsSize, sizeof(int), cmp);
+    for (int i = 1; i &lt; numsSize; i++) {
+        if (nums[i] == nums[i - 1]) return true;
+    }
+    return false;
 }</code></pre>
             </div>
         </div>

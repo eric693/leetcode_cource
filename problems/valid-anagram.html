@@ -166,6 +166,8 @@ t = "nagaram"  → 排序後 → "aaagmnr"
                 <button class="tab-btn active" onclick="showLanguage('python')">Python</button>
                 <button class="tab-btn" onclick="showLanguage('cpp')">C++</button>
                 <button class="tab-btn" onclick="showLanguage('java')">Java</button>
+                <button class="tab-btn" onclick="showLanguage('typescript')">TypeScript</button>
+                <button class="tab-btn" onclick="showLanguage('c')">C</button>
             </div>
 
             <div id="python" class="code-container active">
@@ -379,6 +381,37 @@ class Solution {
         
         return true;
     }
+}</code></pre>
+            </div>
+
+            <div id="typescript" class="code-container">
+                <pre><code class="language-typescript">// 計數陣列：s 的字元 +1、t 的字元 -1，最後全部要是 0
+// 時間複雜度: O(n)，空間複雜度: O(1)（固定 26 格）
+function isAnagram(s: string, t: string): boolean {
+    if (s.length !== t.length) return false;
+    const count = new Array(26).fill(0);
+    for (let i = 0; i &lt; s.length; i++) {
+        count[s.charCodeAt(i) - 97]++;
+        count[t.charCodeAt(i) - 97]--;
+    }
+    return count.every(c =&gt; c === 0);
+}</code></pre>
+            </div>
+
+            <div id="c" class="code-container">
+                <pre><code class="language-c">// 計數陣列：s 的字元 +1、t 的字元 -1，最後全部要是 0
+// 時間複雜度: O(n)，空間複雜度: O(1)（固定 26 格）
+bool isAnagram(char* s, char* t) {
+    if (strlen(s) != strlen(t)) return false;
+    int count[26] = {0};
+    for (int i = 0; s[i]; i++) {
+        count[s[i] - 'a']++;
+        count[t[i] - 'a']--;
+    }
+    for (int i = 0; i &lt; 26; i++) {
+        if (count[i] != 0) return false;
+    }
+    return true;
 }</code></pre>
             </div>
         </div>

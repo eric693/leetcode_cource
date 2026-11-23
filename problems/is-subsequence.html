@@ -21,7 +21,7 @@
         .section h2 { color: #1e293b; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 3px solid #16a34a; }
         .section h3 { color: #475569; margin: 25px 0 15px 0; font-size: 1.3em; }
         .code-block { background: #282c34; border-radius: 8px; overflow: hidden; margin: 15px 0; }
-        .lang-tabs { display: flex; background: #21252b; border-bottom: 1px solid #181a1f; }
+        .lang-tabs { display: flex; flex-wrap: wrap; background: #21252b; border-bottom: 1px solid #181a1f; }
         .lang-tab { padding: 12px 24px; cursor: pointer; color: #abb2bf; border: none; background: none; transition: all 0.3s; font-weight: 500; }
         .lang-tab.active { color: #61afef; background: #282c34; border-bottom: 2px solid #61afef; }
         .lang-tab:hover { color: #61afef; background: #2c313a; }
@@ -168,6 +168,8 @@ t = "ahbgdc"
                     <button class="lang-tab active" onclick="switchLang(event, 'python')">Python</button>
                     <button class="lang-tab" onclick="switchLang(event, 'cpp')">C++</button>
                     <button class="lang-tab" onclick="switchLang(event, 'java')">Java</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'typescript')">TypeScript</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'c')">C</button>
                 </div>
 
                 <div id="python" class="code-content active">
@@ -276,6 +278,30 @@ class Solution {
         }
         return true;
     }
+}</code></pre>
+                </div>
+
+                <div id="typescript" class="code-content">
+                    <pre><code class="language-typescript">// 雙指標：t 一路往前走，遇到相同字元時 s 的指標前進
+// 時間複雜度: O(|t|)，空間複雜度: O(1)
+function isSubsequence(s: string, t: string): boolean {
+    let i = 0;
+    for (let j = 0; j &lt; t.length &amp;&amp; i &lt; s.length; j++) {
+        if (s[i] === t[j]) i++;
+    }
+    return i === s.length;
+}</code></pre>
+                </div>
+
+                <div id="c" class="code-content">
+                    <pre><code class="language-c">// 雙指標：t 一路往前走，遇到相同字元時 s 的指標前進
+// 時間複雜度: O(|t|)，空間複雜度: O(1)
+bool isSubsequence(char* s, char* t) {
+    while (*s &amp;&amp; *t) {
+        if (*s == *t) s++;
+        t++;
+    }
+    return *s == '\0';
 }</code></pre>
                 </div>
             </div>

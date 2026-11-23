@@ -205,6 +205,8 @@ nums1: [1, 2, 2, 3, 5, 6] ✓
                 <button class="tab-btn active" onclick="showLanguage('python')">Python</button>
                 <button class="tab-btn" onclick="showLanguage('cpp')">C++</button>
                 <button class="tab-btn" onclick="showLanguage('java')">Java</button>
+                <button class="tab-btn" onclick="showLanguage('typescript')">TypeScript</button>
+                <button class="tab-btn" onclick="showLanguage('c')">C</button>
             </div>
 
             <div id="python" class="code-container active">
@@ -307,6 +309,30 @@ public:
             j--;
             k--;
         }
+    }
+}</code></pre>
+            </div>
+
+            <div id="typescript" class="code-container">
+                <pre><code class="language-typescript">// 從尾端開始填：比較兩個陣列的最大值，放到 nums1 最後面
+// 時間複雜度: O(m + n)，空間複雜度: O(1)
+function merge(nums1: number[], m: number, nums2: number[], n: number): void {
+    let i = m - 1, j = n - 1, k = m + n - 1;
+    while (j &gt;= 0) {
+        if (i &gt;= 0 &amp;&amp; nums1[i] &gt; nums2[j]) nums1[k--] = nums1[i--];
+        else nums1[k--] = nums2[j--];
+    }
+}</code></pre>
+            </div>
+
+            <div id="c" class="code-container">
+                <pre><code class="language-c">// 從尾端開始填：比較兩個陣列的最大值，放到 nums1 最後面
+// 時間複雜度: O(m + n)，空間複雜度: O(1)
+void merge(int* nums1, int nums1Size, int m, int* nums2, int nums2Size, int n) {
+    int i = m - 1, j = n - 1, k = m + n - 1;
+    while (j &gt;= 0) {
+        if (i &gt;= 0 &amp;&amp; nums1[i] &gt; nums2[j]) nums1[k--] = nums1[i--];
+        else nums1[k--] = nums2[j--];
     }
 }</code></pre>
             </div>

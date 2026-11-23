@@ -148,6 +148,8 @@ top()         [-2, 0]      [-2]         0</code></pre>
                 <button class="tab-btn active" onclick="showLanguage('python')">Python</button>
                 <button class="tab-btn" onclick="showLanguage('cpp')">C++</button>
                 <button class="tab-btn" onclick="showLanguage('java')">Java</button>
+                <button class="tab-btn" onclick="showLanguage('typescript')">TypeScript</button>
+                <button class="tab-btn" onclick="showLanguage('c')">C</button>
             </div>
 
             <div id="python" class="code-container active">
@@ -286,6 +288,72 @@ class MinStack {
     public int getMin() {
         return minStack.peek();
     }
+}</code></pre>
+            </div>
+
+            <div id="typescript" class="code-container">
+                <pre><code class="language-typescript">// 每個元素同時記錄「到目前為止的最小值」
+// 所有操作 O(1)，空間複雜度: O(n)
+class MinStack {
+    private stack: [number, number][] = [];   // [值, 當前最小值]
+
+    push(val: number): void {
+        const min = this.stack.length ? Math.min(val, this.getMin()) : val;
+        this.stack.push([val, min]);
+    }
+
+    pop(): void {
+        this.stack.pop();
+    }
+
+    top(): number {
+        return this.stack[this.stack.length - 1][0];
+    }
+
+    getMin(): number {
+        return this.stack[this.stack.length - 1][1];
+    }
+}</code></pre>
+            </div>
+
+            <div id="c" class="code-container">
+                <pre><code class="language-c">// 每個元素同時記錄「到目前為止的最小值」（最多 3 × 10^4 次操作）
+// 所有操作 O(1)，空間複雜度: O(n)
+#define CAP 30000
+
+typedef struct {
+    int val[CAP];
+    int min[CAP];
+    int top;
+} MinStack;
+
+MinStack* minStackCreate() {
+    MinStack* s = malloc(sizeof(MinStack));
+    s-&gt;top = 0;
+    return s;
+}
+
+void minStackPush(MinStack* obj, int val) {
+    int m = (obj-&gt;top &gt; 0 &amp;&amp; obj-&gt;min[obj-&gt;top - 1] &lt; val) ? obj-&gt;min[obj-&gt;top - 1] : val;
+    obj-&gt;val[obj-&gt;top] = val;
+    obj-&gt;min[obj-&gt;top] = m;
+    obj-&gt;top++;
+}
+
+void minStackPop(MinStack* obj) {
+    obj-&gt;top--;
+}
+
+int minStackTop(MinStack* obj) {
+    return obj-&gt;val[obj-&gt;top - 1];
+}
+
+int minStackGetMin(MinStack* obj) {
+    return obj-&gt;min[obj-&gt;top - 1];
+}
+
+void minStackFree(MinStack* obj) {
+    free(obj);
 }</code></pre>
             </div>
         </div>

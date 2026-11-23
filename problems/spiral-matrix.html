@@ -220,6 +220,8 @@ top=1, bottom=1, left=1, right=1
                 <button class="tab-btn active" onclick="showLanguage('python')">Python</button>
                 <button class="tab-btn" onclick="showLanguage('cpp')">C++</button>
                 <button class="tab-btn" onclick="showLanguage('java')">Java</button>
+                <button class="tab-btn" onclick="showLanguage('typescript')">TypeScript</button>
+                <button class="tab-btn" onclick="showLanguage('c')">C</button>
             </div>
 
             <div id="python" class="code-container active">
@@ -367,6 +369,60 @@ class Solution {
         
         return result;
     }
+}</code></pre>
+            </div>
+
+            <div id="typescript" class="code-container">
+                <pre><code class="language-typescript">// 維護上下左右四個邊界，一圈一圈往內收縮
+// 時間複雜度: O(m·n)，空間複雜度: O(1)（不含輸出）
+function spiralOrder(matrix: number[][]): number[] {
+    const result: number[] = [];
+    let top = 0, bottom = matrix.length - 1;
+    let left = 0, right = matrix[0].length - 1;
+
+    while (top &lt;= bottom &amp;&amp; left &lt;= right) {
+        for (let j = left; j &lt;= right; j++) result.push(matrix[top][j]);
+        top++;
+        for (let i = top; i &lt;= bottom; i++) result.push(matrix[i][right]);
+        right--;
+        if (top &lt;= bottom) {
+            for (let j = right; j &gt;= left; j--) result.push(matrix[bottom][j]);
+            bottom--;
+        }
+        if (left &lt;= right) {
+            for (let i = bottom; i &gt;= top; i--) result.push(matrix[i][left]);
+            left++;
+        }
+    }
+    return result;
+}</code></pre>
+            </div>
+
+            <div id="c" class="code-container">
+                <pre><code class="language-c">// 維護上下左右四個邊界，一圈一圈往內收縮
+// 時間複雜度: O(m·n)，空間複雜度: O(1)（不含輸出）
+int* spiralOrder(int** matrix, int matrixSize, int* matrixColSize, int* returnSize) {
+    int m = matrixSize, n = matrixColSize[0];
+    int* result = malloc(sizeof(int) * m * n);
+    int k = 0;
+    int top = 0, bottom = m - 1, left = 0, right = n - 1;
+
+    while (top &lt;= bottom &amp;&amp; left &lt;= right) {
+        for (int j = left; j &lt;= right; j++) result[k++] = matrix[top][j];
+        top++;
+        for (int i = top; i &lt;= bottom; i++) result[k++] = matrix[i][right];
+        right--;
+        if (top &lt;= bottom) {
+            for (int j = right; j &gt;= left; j--) result[k++] = matrix[bottom][j];
+            bottom--;
+        }
+        if (left &lt;= right) {
+            for (int i = bottom; i &gt;= top; i--) result[k++] = matrix[i][left];
+            left++;
+        }
+    }
+    *returnSize = k;
+    return result;
 }</code></pre>
             </div>
         </div>

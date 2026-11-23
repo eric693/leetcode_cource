@@ -187,6 +187,8 @@
                 <button class="tab-btn active" onclick="showLanguage('python')">Python</button>
                 <button class="tab-btn" onclick="showLanguage('cpp')">C++</button>
                 <button class="tab-btn" onclick="showLanguage('java')">Java</button>
+                <button class="tab-btn" onclick="showLanguage('typescript')">TypeScript</button>
+                <button class="tab-btn" onclick="showLanguage('c')">C</button>
             </div>
 
             <div id="python" class="code-container active">
@@ -494,6 +496,42 @@ class Solution {
             this.depth = depth;
         }
     }
+}</code></pre>
+            </div>
+
+            <div id="typescript" class="code-container">
+                <pre><code class="language-typescript">/**
+ * Definition for a binary tree node.
+ * class TreeNode {
+ *     val: number
+ *     left: TreeNode | null
+ *     right: TreeNode | null
+ * }
+ */
+// 遞迴：深度 = 1 + 左右子樹深度的最大值
+// 時間複雜度: O(n)，空間複雜度: O(h)
+function maxDepth(root: TreeNode | null): number {
+    if (!root) return 0;
+    return 1 + Math.max(maxDepth(root.left), maxDepth(root.right));
+}</code></pre>
+            </div>
+
+            <div id="c" class="code-container">
+                <pre><code class="language-c">/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     struct TreeNode *left;
+ *     struct TreeNode *right;
+ * };
+ */
+// 遞迴：深度 = 1 + 左右子樹深度的最大值
+// 時間複雜度: O(n)，空間複雜度: O(h)
+int maxDepth(struct TreeNode* root) {
+    if (!root) return 0;
+    int left = maxDepth(root-&gt;left);
+    int right = maxDepth(root-&gt;right);
+    return 1 + (left &gt; right ? left : right);
 }</code></pre>
             </div>
         </div>

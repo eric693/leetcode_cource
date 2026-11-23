@@ -123,6 +123,8 @@
                 <button class="tab-btn active" onclick="showLanguage('python')">Python</button>
                 <button class="tab-btn" onclick="showLanguage('cpp')">C++</button>
                 <button class="tab-btn" onclick="showLanguage('java')">Java</button>
+                <button class="tab-btn" onclick="showLanguage('typescript')">TypeScript</button>
+                <button class="tab-btn" onclick="showLanguage('c')">C</button>
             </div>
 
             <div id="python" class="code-container active">
@@ -221,6 +223,37 @@ public:
         
         return maxArea;
     }
+}</code></pre>
+            </div>
+
+            <div id="typescript" class="code-container">
+                <pre><code class="language-typescript">// 雙指標：每次移動較矮的那一邊
+// 時間複雜度: O(n)，空間複雜度: O(1)
+function maxArea(height: number[]): number {
+    let left = 0, right = height.length - 1, best = 0;
+    while (left &lt; right) {
+        const h = Math.min(height[left], height[right]);
+        best = Math.max(best, h * (right - left));
+        if (height[left] &lt; height[right]) left++;
+        else right--;
+    }
+    return best;
+}</code></pre>
+            </div>
+
+            <div id="c" class="code-container">
+                <pre><code class="language-c">// 雙指標：每次移動較矮的那一邊
+// 時間複雜度: O(n)，空間複雜度: O(1)
+int maxArea(int* height, int heightSize) {
+    int left = 0, right = heightSize - 1, best = 0;
+    while (left &lt; right) {
+        int h = height[left] &lt; height[right] ? height[left] : height[right];
+        int area = h * (right - left);
+        if (area &gt; best) best = area;
+        if (height[left] &lt; height[right]) left++;
+        else right--;
+    }
+    return best;
 }</code></pre>
             </div>
         </div>

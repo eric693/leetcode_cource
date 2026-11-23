@@ -21,7 +21,7 @@
         .section h2 { color: #1e293b; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 3px solid #ea580c; }
         .section h3 { color: #475569; margin: 25px 0 15px 0; font-size: 1.3em; }
         .code-block { background: #282c34; border-radius: 8px; overflow: hidden; margin: 15px 0; }
-        .lang-tabs { display: flex; background: #21252b; border-bottom: 1px solid #181a1f; }
+        .lang-tabs { display: flex; flex-wrap: wrap; background: #21252b; border-bottom: 1px solid #181a1f; }
         .lang-tab { padding: 12px 24px; cursor: pointer; color: #abb2bf; border: none; background: none; transition: all 0.3s; font-weight: 500; }
         .lang-tab.active { color: #61afef; background: #282c34; border-bottom: 2px solid #61afef; }
         .lang-tab:hover { color: #61afef; background: #2c313a; }
@@ -148,6 +148,8 @@
                     <button class="lang-tab active" onclick="switchLang(event, 'python')">Python</button>
                     <button class="lang-tab" onclick="switchLang(event, 'cpp')">C++</button>
                     <button class="lang-tab" onclick="switchLang(event, 'java')">Java</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'typescript')">TypeScript</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'c')">C</button>
                 </div>
 
                 <div id="python" class="code-content active">
@@ -315,6 +317,68 @@ class Solution {
         }
         return newHead;
     }
+}</code></pre>
+                </div>
+
+                <div id="typescript" class="code-content">
+                    <pre><code class="language-typescript">/**
+ * Definition for _Node.
+ * class _Node {
+ *     val: number
+ *     next: _Node | null
+ *     random: _Node | null
+ * }
+ */
+// 雜湊表：第一輪建立所有複製節點，第二輪接上 next 與 random
+// 時間複雜度: O(n)，空間複雜度: O(n)
+function copyRandomList(head: _Node | null): _Node | null {
+    const map = new Map&lt;_Node, _Node&gt;();
+    for (let cur = head; cur; cur = cur.next) {
+        map.set(cur, new _Node(cur.val));
+    }
+    for (let cur = head; cur; cur = cur.next) {
+        const copy = map.get(cur)!;
+        copy.next = cur.next ? map.get(cur.next)! : null;
+        copy.random = cur.random ? map.get(cur.random)! : null;
+    }
+    return head ? map.get(head)! : null;
+}</code></pre>
+                </div>
+
+                <div id="c" class="code-content">
+                    <pre><code class="language-c">/**
+ * Definition for a Node.
+ * struct Node {
+ *     int val;
+ *     struct Node *next;
+ *     struct Node *random;
+ * };
+ */
+// 交錯節點法：A → A' → B → B'，不需要雜湊表
+// 時間複雜度: O(n)，空間複雜度: O(1)（不含輸出）
+struct Node* copyRandomList(struct Node* head) {
+    if (!head) return NULL;
+
+    // 1. 在每個節點後面插入它的複製節點
+    for (struct Node* cur = head; cur; cur = cur-&gt;next-&gt;next) {
+        struct Node* copy = malloc(sizeof(struct Node));
+        copy-&gt;val = cur-&gt;val;
+        copy-&gt;next = cur-&gt;next;
+        copy-&gt;random = NULL;
+        cur-&gt;next = copy;
+    }
+    // 2. 複製節點的 random = 原節點 random 的下一個
+    for (struct Node* cur = head; cur; cur = cur-&gt;next-&gt;next) {
+        if (cur-&gt;random) cur-&gt;next-&gt;random = cur-&gt;random-&gt;next;
+    }
+    // 3. 拆開兩條鏈結串列，還原原串列
+    struct Node* newHead = head-&gt;next;
+    for (struct Node* cur = head; cur; cur = cur-&gt;next) {
+        struct Node* copy = cur-&gt;next;
+        cur-&gt;next = copy-&gt;next;
+        copy-&gt;next = copy-&gt;next ? copy-&gt;next-&gt;next : NULL;
+    }
+    return newHead;
 }</code></pre>
                 </div>
             </div>

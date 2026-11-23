@@ -21,7 +21,7 @@
         .section h2 { color: #1e293b; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 3px solid #ea580c; }
         .section h3 { color: #475569; margin: 25px 0 15px 0; font-size: 1.3em; }
         .code-block { background: #282c34; border-radius: 8px; overflow: hidden; margin: 15px 0; }
-        .lang-tabs { display: flex; background: #21252b; border-bottom: 1px solid #181a1f; }
+        .lang-tabs { display: flex; flex-wrap: wrap; background: #21252b; border-bottom: 1px solid #181a1f; }
         .lang-tab { padding: 12px 24px; cursor: pointer; color: #abb2bf; border: none; background: none; transition: all 0.3s; font-weight: 500; }
         .lang-tab.active { color: #61afef; background: #282c34; border-bottom: 2px solid #61afef; }
         .lang-tab:hover { color: #61afef; background: #2c313a; }
@@ -183,6 +183,8 @@ path=[]        選 2 → ...（同理繼續）
                     <button class="lang-tab active" onclick="switchLang(event, 'python')">Python</button>
                     <button class="lang-tab" onclick="switchLang(event, 'cpp')">C++</button>
                     <button class="lang-tab" onclick="switchLang(event, 'java')">Java</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'typescript')">TypeScript</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'c')">C</button>
                 </div>
 
                 <div id="python" class="code-content active">
@@ -317,6 +319,68 @@ class Solution {
             used[i] = false;
         }
     }
+}</code></pre>
+                </div>
+
+                <div id="typescript" class="code-content">
+                    <pre><code class="language-typescript">// 回溯 + used 陣列標記已選過的元素
+// 時間複雜度: O(n · n!)，空間複雜度: O(n)
+function permute(nums: number[]): number[][] {
+    const result: number[][] = [];
+    const path: number[] = [];
+    const used = new Array(nums.length).fill(false);
+
+    const backtrack = (): void =&gt; {
+        if (path.length === nums.length) {
+            result.push([...path]);
+            return;
+        }
+        for (let i = 0; i &lt; nums.length; i++) {
+            if (used[i]) continue;
+            used[i] = true;
+            path.push(nums[i]);
+            backtrack();
+            path.pop();
+            used[i] = false;
+        }
+    };
+
+    backtrack();
+    return result;
+}</code></pre>
+                </div>
+
+                <div id="c" class="code-content">
+                    <pre><code class="language-c">// 原地交換回溯：把第 k 個位置依序換成後面每一個元素（n ≤ 6，最多 720 種）
+// 時間複雜度: O(n · n!)，空間複雜度: O(n)
+static int** result;
+static int count;
+
+static void swap(int* a, int* b) { int t = *a; *a = *b; *b = t; }
+
+static void backtrack(int* nums, int n, int k) {
+    if (k == n) {
+        result[count] = malloc(sizeof(int) * n);
+        memcpy(result[count++], nums, sizeof(int) * n);
+        return;
+    }
+    for (int i = k; i &lt; n; i++) {
+        swap(&amp;nums[k], &amp;nums[i]);
+        backtrack(nums, n, k + 1);
+        swap(&amp;nums[k], &amp;nums[i]);                 // 還原
+    }
+}
+
+int** permute(int* nums, int numsSize, int* returnSize, int** returnColumnSizes) {
+    int total = 1;
+    for (int i = 2; i &lt;= numsSize; i++) total *= i;
+    result = malloc(sizeof(int*) * total);
+    count = 0;
+    backtrack(nums, numsSize, 0);
+    *returnSize = count;
+    *returnColumnSizes = malloc(sizeof(int) * total);
+    for (int i = 0; i &lt; total; i++) (*returnColumnSizes)[i] = numsSize;
+    return result;
 }</code></pre>
                 </div>
             </div>

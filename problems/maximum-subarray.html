@@ -168,6 +168,8 @@ i=8: num=4,  current=5,  max=6
                 <button class="tab-btn active" onclick="showLanguage('python')">Python</button>
                 <button class="tab-btn" onclick="showLanguage('cpp')">C++</button>
                 <button class="tab-btn" onclick="showLanguage('java')">Java</button>
+                <button class="tab-btn" onclick="showLanguage('typescript')">TypeScript</button>
+                <button class="tab-btn" onclick="showLanguage('c')">C</button>
             </div>
 
             <div id="python" class="code-container active">
@@ -343,6 +345,32 @@ public:
         
         return maxSum;
     }
+}</code></pre>
+            </div>
+
+            <div id="typescript" class="code-container">
+                <pre><code class="language-typescript">// Kadane：以當前元素結尾的最大和 = max(自己, 前面最大和 + 自己)
+// 時間複雜度: O(n)，空間複雜度: O(1)
+function maxSubArray(nums: number[]): number {
+    let cur = nums[0], best = nums[0];
+    for (let i = 1; i &lt; nums.length; i++) {
+        cur = Math.max(nums[i], cur + nums[i]);
+        best = Math.max(best, cur);
+    }
+    return best;
+}</code></pre>
+            </div>
+
+            <div id="c" class="code-container">
+                <pre><code class="language-c">// Kadane：以當前元素結尾的最大和 = max(自己, 前面最大和 + 自己)
+// 時間複雜度: O(n)，空間複雜度: O(1)
+int maxSubArray(int* nums, int numsSize) {
+    int cur = nums[0], best = nums[0];
+    for (int i = 1; i &lt; numsSize; i++) {
+        cur = (cur &gt; 0) ? cur + nums[i] : nums[i];
+        if (cur &gt; best) best = cur;
+    }
+    return best;
 }</code></pre>
             </div>
         </div>

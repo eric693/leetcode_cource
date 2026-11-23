@@ -21,7 +21,7 @@
         .section h2 { color: #1e293b; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 3px solid #dc2626; }
         .section h3 { color: #475569; margin: 25px 0 15px 0; font-size: 1.3em; }
         .code-block { background: #282c34; border-radius: 8px; overflow: hidden; margin: 15px 0; }
-        .lang-tabs { display: flex; background: #21252b; border-bottom: 1px solid #181a1f; }
+        .lang-tabs { display: flex; flex-wrap: wrap; background: #21252b; border-bottom: 1px solid #181a1f; }
         .lang-tab { padding: 12px 24px; cursor: pointer; color: #abb2bf; border: none; background: none; transition: all 0.3s; font-weight: 500; }
         .lang-tab.active { color: #61afef; background: #282c34; border-bottom: 2px solid #61afef; }
         .lang-tab:hover { color: #61afef; background: #2c313a; }
@@ -185,6 +185,8 @@
                     <button class="lang-tab active" onclick="switchLang(event, 'python')">Python</button>
                     <button class="lang-tab" onclick="switchLang(event, 'cpp')">C++</button>
                     <button class="lang-tab" onclick="switchLang(event, 'java')">Java</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'typescript')">TypeScript</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'c')">C</button>
                 </div>
 
                 <div id="python" class="code-content active">
@@ -434,6 +436,78 @@ private:
     }
 }
 </code></pre>
+                </div>
+
+                <div id="typescript" class="code-content">
+                    <pre><code class="language-typescript">// 回溯：逐列放皇后，用三個集合記錄被佔用的欄與兩條對角線
+// 時間複雜度: O(n!)，空間複雜度: O(n)
+function solveNQueens(n: number): string[][] {
+    const result: string[][] = [];
+    const queens: number[] = [];                       // queens[row] = 該列皇后所在欄
+    const cols = new Set&lt;number&gt;(), diag1 = new Set&lt;number&gt;(), diag2 = new Set&lt;number&gt;();
+
+    const backtrack = (row: number): void =&gt; {
+        if (row === n) {
+            result.push(queens.map(c =&gt; '.'.repeat(c) + 'Q' + '.'.repeat(n - c - 1)));
+            return;
+        }
+        for (let c = 0; c &lt; n; c++) {
+            if (cols.has(c) || diag1.has(row - c) || diag2.has(row + c)) continue;
+            queens.push(c); cols.add(c); diag1.add(row - c); diag2.add(row + c);
+            backtrack(row + 1);
+            queens.pop(); cols.delete(c); diag1.delete(row - c); diag2.delete(row + c);
+        }
+    };
+
+    backtrack(0);
+    return result;
+}</code></pre>
+                </div>
+
+                <div id="c" class="code-content">
+                    <pre><code class="language-c">// 回溯：逐列放皇后，用三個布林陣列記錄被佔用的欄與兩條對角線（n ≤ 9）
+// 時間複雜度: O(n!)，空間複雜度: O(n)
+static char*** result;
+static int count, cap, N;
+static int queens[9];
+static bool cols[9], diag1[17], diag2[17];
+
+static void backtrack(int row) {
+    if (row == N) {
+        if (count == cap) {
+            cap *= 2;
+            result = realloc(result, sizeof(char**) * cap);
+        }
+        char** board = malloc(sizeof(char*) * N);
+        for (int r = 0; r &lt; N; r++) {
+            board[r] = malloc(N + 1);
+            memset(board[r], '.', N);
+            board[r][queens[r]] = 'Q';
+            board[r][N] = '\0';
+        }
+        result[count++] = board;
+        return;
+    }
+    for (int c = 0; c &lt; N; c++) {
+        if (cols[c] || diag1[row - c + N - 1] || diag2[row + c]) continue;
+        queens[row] = c;
+        cols[c] = diag1[row - c + N - 1] = diag2[row + c] = true;
+        backtrack(row + 1);
+        cols[c] = diag1[row - c + N - 1] = diag2[row + c] = false;
+    }
+}
+
+char*** solveNQueens(int n, int* returnSize, int** returnColumnSizes) {
+    N = n;
+    count = 0;
+    cap = 16;
+    result = malloc(sizeof(char**) * cap);
+    backtrack(0);
+    *returnSize = count;
+    *returnColumnSizes = malloc(sizeof(int) * (count ? count : 1));
+    for (int i = 0; i &lt; count; i++) (*returnColumnSizes)[i] = n;
+    return result;
+}</code></pre>
                 </div>
             </div>
         </div>

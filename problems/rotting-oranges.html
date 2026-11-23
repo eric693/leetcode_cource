@@ -21,7 +21,7 @@
         .section h2 { color: #1e293b; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 3px solid #ea580c; }
         .section h3 { color: #475569; margin: 25px 0 15px 0; font-size: 1.3em; }
         .code-block { background: #282c34; border-radius: 8px; overflow: hidden; margin: 15px 0; }
-        .lang-tabs { display: flex; background: #21252b; border-bottom: 1px solid #181a1f; }
+        .lang-tabs { display: flex; flex-wrap: wrap; background: #21252b; border-bottom: 1px solid #181a1f; }
         .lang-tab { padding: 12px 24px; cursor: pointer; color: #abb2bf; border: none; background: none; transition: all 0.3s; font-weight: 500; }
         .lang-tab.active { color: #61afef; background: #282c34; border-bottom: 2px solid #61afef; }
         .lang-tab:hover { color: #61afef; background: #2c313a; }
@@ -187,6 +187,8 @@ while (!queue.empty() && fresh > 0) {
                     <button class="lang-tab active" onclick="switchLang(event, 'python')">Python</button>
                     <button class="lang-tab" onclick="switchLang(event, 'cpp')">C++</button>
                     <button class="lang-tab" onclick="switchLang(event, 'java')">Java</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'typescript')">TypeScript</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'c')">C</button>
                 </div>
 
                 <div id="python" class="code-content active">
@@ -314,6 +316,78 @@ public:
 
         return fresh == 0 ? minutes : -1;
     }
+}</code></pre>
+                </div>
+
+                <div id="typescript" class="code-content">
+                    <pre><code class="language-typescript">// 多源 BFS：所有腐爛的橘子同時當作起點，一層就是一分鐘
+// 時間複雜度: O(m·n)，空間複雜度: O(m·n)
+function orangesRotting(grid: number[][]): number {
+    const m = grid.length, n = grid[0].length;
+    let queue: [number, number][] = [];
+    let fresh = 0;
+    for (let i = 0; i &lt; m; i++) {
+        for (let j = 0; j &lt; n; j++) {
+            if (grid[i][j] === 2) queue.push([i, j]);
+            else if (grid[i][j] === 1) fresh++;
+        }
+    }
+
+    const dirs = [[1, 0], [-1, 0], [0, 1], [0, -1]];
+    let minutes = 0;
+    while (queue.length &amp;&amp; fresh &gt; 0) {
+        const next: [number, number][] = [];
+        for (const [i, j] of queue) {
+            for (const [di, dj] of dirs) {
+                const x = i + di, y = j + dj;
+                if (x &gt;= 0 &amp;&amp; x &lt; m &amp;&amp; y &gt;= 0 &amp;&amp; y &lt; n &amp;&amp; grid[x][y] === 1) {
+                    grid[x][y] = 2;
+                    fresh--;
+                    next.push([x, y]);
+                }
+            }
+        }
+        queue = next;
+        minutes++;
+    }
+    return fresh === 0 ? minutes : -1;
+}</code></pre>
+                </div>
+
+                <div id="c" class="code-content">
+                    <pre><code class="language-c">// 多源 BFS：所有腐爛的橘子同時當作起點，一層就是一分鐘
+// 時間複雜度: O(m·n)，空間複雜度: O(m·n)
+int orangesRotting(int** grid, int gridSize, int* gridColSize) {
+    int m = gridSize, n = gridColSize[0];
+    int* queue = malloc(sizeof(int) * m * n);      // 存 i * n + j
+    int head = 0, tail = 0, fresh = 0;
+    for (int i = 0; i &lt; m; i++) {
+        for (int j = 0; j &lt; n; j++) {
+            if (grid[i][j] == 2) queue[tail++] = i * n + j;
+            else if (grid[i][j] == 1) fresh++;
+        }
+    }
+
+    const int dirs[4][2] = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
+    int minutes = 0;
+    while (head &lt; tail &amp;&amp; fresh &gt; 0) {
+        int levelEnd = tail;
+        while (head &lt; levelEnd) {
+            int i = queue[head] / n, j = queue[head] % n;
+            head++;
+            for (int d = 0; d &lt; 4; d++) {
+                int x = i + dirs[d][0], y = j + dirs[d][1];
+                if (x &gt;= 0 &amp;&amp; x &lt; m &amp;&amp; y &gt;= 0 &amp;&amp; y &lt; n &amp;&amp; grid[x][y] == 1) {
+                    grid[x][y] = 2;
+                    fresh--;
+                    queue[tail++] = x * n + y;
+                }
+            }
+        }
+        minutes++;
+    }
+    free(queue);
+    return fresh == 0 ? minutes : -1;
 }</code></pre>
                 </div>
             </div>

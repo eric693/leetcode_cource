@@ -21,7 +21,7 @@
         .section h2 { color: #1e293b; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 3px solid #ea580c; }
         .section h3 { color: #475569; margin: 25px 0 15px 0; font-size: 1.3em; }
         .code-block { background: #282c34; border-radius: 8px; overflow: hidden; margin: 15px 0; }
-        .lang-tabs { display: flex; background: #21252b; border-bottom: 1px solid #181a1f; }
+        .lang-tabs { display: flex; flex-wrap: wrap; background: #21252b; border-bottom: 1px solid #181a1f; }
         .lang-tab { padding: 12px 24px; cursor: pointer; color: #abb2bf; border: none; background: none; transition: all 0.3s; font-weight: 500; }
         .lang-tab.active { color: #61afef; background: #282c34; border-bottom: 2px solid #61afef; }
         .lang-tab:hover { color: #61afef; background: #2c313a; }
@@ -162,6 +162,8 @@ BST 版本只需要走「一條路徑」，
                     <button class="lang-tab active" onclick="switchLang(event, 'python')">Python</button>
                     <button class="lang-tab" onclick="switchLang(event, 'cpp')">C++</button>
                     <button class="lang-tab" onclick="switchLang(event, 'java')">Java</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'typescript')">TypeScript</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'c')">C</button>
                 </div>
 
                 <div id="python" class="code-content active">
@@ -237,6 +239,50 @@ class Solution {
         }
         return null;
     }
+}</code></pre>
+                </div>
+
+                <div id="typescript" class="code-content">
+                    <pre><code class="language-typescript">/**
+ * Definition for a binary tree node.
+ * class TreeNode {
+ *     val: number
+ *     left: TreeNode | null
+ *     right: TreeNode | null
+ * }
+ */
+// 利用 BST 性質：兩者都小往左、都大往右，否則分岔點就是答案
+// 時間複雜度: O(h)，空間複雜度: O(1)
+function lowestCommonAncestor(root: TreeNode | null, p: TreeNode | null, q: TreeNode | null): TreeNode | null {
+    let node = root;
+    while (node) {
+        if (p!.val &lt; node.val &amp;&amp; q!.val &lt; node.val) node = node.left;
+        else if (p!.val &gt; node.val &amp;&amp; q!.val &gt; node.val) node = node.right;
+        else return node;
+    }
+    return null;
+}</code></pre>
+                </div>
+
+                <div id="c" class="code-content">
+                    <pre><code class="language-c">/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     struct TreeNode *left;
+ *     struct TreeNode *right;
+ * };
+ */
+// 利用 BST 性質：兩者都小往左、都大往右，否則分岔點就是答案
+// 時間複雜度: O(h)，空間複雜度: O(1)
+struct TreeNode* lowestCommonAncestor(struct TreeNode* root, struct TreeNode* p, struct TreeNode* q) {
+    struct TreeNode* node = root;
+    while (node) {
+        if (p-&gt;val &lt; node-&gt;val &amp;&amp; q-&gt;val &lt; node-&gt;val) node = node-&gt;left;
+        else if (p-&gt;val &gt; node-&gt;val &amp;&amp; q-&gt;val &gt; node-&gt;val) node = node-&gt;right;
+        else return node;
+    }
+    return NULL;
 }</code></pre>
                 </div>
             </div>

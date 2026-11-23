@@ -182,6 +182,8 @@
                 <button class="tab-btn active" onclick="showLanguage('python')">Python</button>
                 <button class="tab-btn" onclick="showLanguage('cpp')">C++</button>
                 <button class="tab-btn" onclick="showLanguage('java')">Java</button>
+                <button class="tab-btn" onclick="showLanguage('typescript')">TypeScript</button>
+                <button class="tab-btn" onclick="showLanguage('c')">C</button>
             </div>
 
             <div id="python" class="code-container active">
@@ -281,6 +283,44 @@ public:
         // 所有位置都匹配，答案是 n+1
         return n + 1;
     }
+}</code></pre>
+            </div>
+
+            <div id="typescript" class="code-container">
+                <pre><code class="language-typescript">// 原地雜湊：把數字 x 放到索引 x-1 的位置
+// 時間複雜度: O(n)，空間複雜度: O(1)
+function firstMissingPositive(nums: number[]): number {
+    const n = nums.length;
+    for (let i = 0; i &lt; n; i++) {
+        // 只要 nums[i] 在 1..n 且還沒歸位，就交換到正確位置
+        while (nums[i] &gt;= 1 &amp;&amp; nums[i] &lt;= n &amp;&amp; nums[nums[i] - 1] !== nums[i]) {
+            const j = nums[i] - 1;
+            [nums[i], nums[j]] = [nums[j], nums[i]];
+        }
+    }
+    for (let i = 0; i &lt; n; i++) {
+        if (nums[i] !== i + 1) return i + 1;
+    }
+    return n + 1;
+}</code></pre>
+            </div>
+
+            <div id="c" class="code-container">
+                <pre><code class="language-c">// 原地雜湊：把數字 x 放到索引 x-1 的位置
+// 時間複雜度: O(n)，空間複雜度: O(1)
+int firstMissingPositive(int* nums, int numsSize) {
+    int n = numsSize;
+    for (int i = 0; i &lt; n; i++) {
+        // 只要 nums[i] 在 1..n 且還沒歸位，就交換到正確位置
+        while (nums[i] &gt;= 1 &amp;&amp; nums[i] &lt;= n &amp;&amp; nums[nums[i] - 1] != nums[i]) {
+            int j = nums[i] - 1;
+            int tmp = nums[i]; nums[i] = nums[j]; nums[j] = tmp;
+        }
+    }
+    for (int i = 0; i &lt; n; i++) {
+        if (nums[i] != i + 1) return i + 1;
+    }
+    return n + 1;
 }</code></pre>
             </div>
         </div>

@@ -187,6 +187,8 @@ get(2):  // 2 已被刪除
                 <button class="tab-btn active" onclick="showLanguage('python')">Python</button>
                 <button class="tab-btn" onclick="showLanguage('cpp')">C++</button>
                 <button class="tab-btn" onclick="showLanguage('java')">Java</button>
+                <button class="tab-btn" onclick="showLanguage('typescript')">TypeScript</button>
+                <button class="tab-btn" onclick="showLanguage('c')">C</button>
             </div>
 
             <div id="python" class="code-container active">
@@ -435,6 +437,111 @@ class LRUCache {
         removeNode(node);
         return node;
     }
+}</code></pre>
+            </div>
+
+            <div id="typescript" class="code-container">
+                <pre><code class="language-typescript">// Map 會保持插入順序：每次存取就刪掉再插入，最舊的就在最前面
+// get / put 皆為 O(1)，空間複雜度: O(capacity)
+class LRUCache {
+    private cache = new Map&lt;number, number&gt;();
+
+    constructor(private capacity: number) {}
+
+    get(key: number): number {
+        if (!this.cache.has(key)) return -1;
+        const value = this.cache.get(key)!;
+        this.cache.delete(key);              // 移到最新
+        this.cache.set(key, value);
+        return value;
+    }
+
+    put(key: number, value: number): void {
+        this.cache.delete(key);
+        this.cache.set(key, value);
+        if (this.cache.size &gt; this.capacity) {
+            const oldest = this.cache.keys().next().value!;
+            this.cache.delete(oldest);       // 淘汰最久沒用的
+        }
+    }
+}</code></pre>
+            </div>
+
+            <div id="c" class="code-container">
+                <pre><code class="language-c">// 雙向鏈結串列 + 直接定址表（key 範圍 0 ~ 10^4）
+// 串列頭是最新、尾是最舊；get / put 皆為 O(1)
+#define MAX_KEY 10001
+
+typedef struct Node {
+    int key, value;
+    struct Node *prev, *next;
+} Node;
+
+typedef struct {
+    int capacity, size;
+    Node head, tail;                 // 哨兵節點
+    Node* map[MAX_KEY];
+} LRUCache;
+
+static void detach(Node* n) {
+    n-&gt;prev-&gt;next = n-&gt;next;
+    n-&gt;next-&gt;prev = n-&gt;prev;
+}
+
+static void pushFront(LRUCache* c, Node* n) {
+    n-&gt;next = c-&gt;head.next;
+    n-&gt;prev = &amp;c-&gt;head;
+    c-&gt;head.next-&gt;prev = n;
+    c-&gt;head.next = n;
+}
+
+LRUCache* lRUCacheCreate(int capacity) {
+    LRUCache* c = calloc(1, sizeof(LRUCache));
+    c-&gt;capacity = capacity;
+    c-&gt;head.next = &amp;c-&gt;tail;
+    c-&gt;tail.prev = &amp;c-&gt;head;
+    return c;
+}
+
+int lRUCacheGet(LRUCache* obj, int key) {
+    Node* n = obj-&gt;map[key];
+    if (!n) return -1;
+    detach(n);
+    pushFront(obj, n);               // 移到最新
+    return n-&gt;value;
+}
+
+void lRUCachePut(LRUCache* obj, int key, int value) {
+    Node* n = obj-&gt;map[key];
+    if (n) {
+        n-&gt;value = value;
+        detach(n);
+        pushFront(obj, n);
+        return;
+    }
+    if (obj-&gt;size == obj-&gt;capacity) {          // 淘汰最久沒用的
+        Node* old = obj-&gt;tail.prev;
+        detach(old);
+        obj-&gt;map[old-&gt;key] = NULL;
+        free(old);
+        obj-&gt;size--;
+    }
+    n = malloc(sizeof(Node));
+    n-&gt;key = key;
+    n-&gt;value = value;
+    pushFront(obj, n);
+    obj-&gt;map[key] = n;
+    obj-&gt;size++;
+}
+
+void lRUCacheFree(LRUCache* obj) {
+    Node* n = obj-&gt;head.next;
+    while (n != &amp;obj-&gt;tail) {
+        Node* next = n-&gt;next;
+        free(n);
+        n = next;
+    }
+    free(obj);
 }</code></pre>
             </div>
         </div>

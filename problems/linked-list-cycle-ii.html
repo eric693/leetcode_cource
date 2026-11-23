@@ -21,7 +21,7 @@
         .section h2 { color: #1e293b; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 3px solid #ea580c; }
         .section h3 { color: #475569; margin: 25px 0 15px 0; font-size: 1.3em; }
         .code-block { background: #282c34; border-radius: 8px; overflow: hidden; margin: 15px 0; }
-        .lang-tabs { display: flex; background: #21252b; border-bottom: 1px solid #181a1f; }
+        .lang-tabs { display: flex; flex-wrap: wrap; background: #21252b; border-bottom: 1px solid #181a1f; }
         .lang-tab { padding: 12px 24px; cursor: pointer; color: #abb2bf; border: none; background: none; transition: all 0.3s; font-weight: 500; }
         .lang-tab.active { color: #61afef; background: #282c34; border-bottom: 2px solid #61afef; }
         .lang-tab:hover { color: #61afef; background: #2c313a; }
@@ -147,6 +147,8 @@
                     <button class="lang-tab active" onclick="switchLang(event, 'python')">Python</button>
                     <button class="lang-tab" onclick="switchLang(event, 'cpp')">C++</button>
                     <button class="lang-tab" onclick="switchLang(event, 'java')">Java</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'typescript')">TypeScript</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'c')">C</button>
                 </div>
 
                 <div id="python" class="code-content active">
@@ -256,6 +258,62 @@ public class Solution {
         }
         return null;
     }
+}</code></pre>
+                </div>
+
+                <div id="typescript" class="code-content">
+                    <pre><code class="language-typescript">/**
+ * Definition for singly-linked list.
+ * class ListNode {
+ *     val: number
+ *     next: ListNode | null
+ * }
+ */
+// Floyd 判圈：相遇後，一個指標回到起點，兩者同速前進的交會點就是入環點
+// 時間複雜度: O(n)，空間複雜度: O(1)
+function detectCycle(head: ListNode | null): ListNode | null {
+    let slow = head, fast = head;
+    while (fast &amp;&amp; fast.next) {
+        slow = slow!.next;
+        fast = fast.next.next;
+        if (slow === fast) {
+            let p = head;
+            while (p !== slow) {
+                p = p!.next;
+                slow = slow!.next;
+            }
+            return p;
+        }
+    }
+    return null;
+}</code></pre>
+                </div>
+
+                <div id="c" class="code-content">
+                    <pre><code class="language-c">/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     struct ListNode *next;
+ * };
+ */
+// Floyd 判圈：相遇後，一個指標回到起點，兩者同速前進的交會點就是入環點
+// 時間複雜度: O(n)，空間複雜度: O(1)
+struct ListNode* detectCycle(struct ListNode* head) {
+    struct ListNode *slow = head, *fast = head;
+    while (fast &amp;&amp; fast-&gt;next) {
+        slow = slow-&gt;next;
+        fast = fast-&gt;next-&gt;next;
+        if (slow == fast) {
+            struct ListNode* p = head;
+            while (p != slow) {
+                p = p-&gt;next;
+                slow = slow-&gt;next;
+            }
+            return p;
+        }
+    }
+    return NULL;
 }</code></pre>
                 </div>
             </div>

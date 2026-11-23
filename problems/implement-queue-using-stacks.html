@@ -21,7 +21,7 @@
         .section h2 { color: #1e293b; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 3px solid #16a34a; }
         .section h3 { color: #475569; margin: 25px 0 15px 0; font-size: 1.3em; }
         .code-block { background: #282c34; border-radius: 8px; overflow: hidden; margin: 15px 0; }
-        .lang-tabs { display: flex; background: #21252b; border-bottom: 1px solid #181a1f; }
+        .lang-tabs { display: flex; flex-wrap: wrap; background: #21252b; border-bottom: 1px solid #181a1f; }
         .lang-tab { padding: 12px 24px; cursor: pointer; color: #abb2bf; border: none; background: none; transition: all 0.3s; font-weight: 500; }
         .lang-tab.active { color: #61afef; background: #282c34; border-bottom: 2px solid #61afef; }
         .lang-tab:hover { color: #61afef; background: #2c313a; }
@@ -142,6 +142,8 @@ pop() → out 不空，直接彈出 2 ✓
                     <button class="lang-tab active" onclick="switchLang(event, 'python')">Python</button>
                     <button class="lang-tab" onclick="switchLang(event, 'cpp')">C++</button>
                     <button class="lang-tab" onclick="switchLang(event, 'java')">Java</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'typescript')">TypeScript</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'c')">C</button>
                 </div>
 
                 <div id="python" class="code-content active">
@@ -246,6 +248,84 @@ public:
             }
         }
     }
+}</code></pre>
+                </div>
+
+                <div id="typescript" class="code-content">
+                    <pre><code class="language-typescript">// 兩個堆疊：inStk 負責 push，outStk 負責 pop / peek（空了才從 inStk 倒過來）
+// 均攤時間複雜度: O(1)，空間複雜度: O(n)
+class MyQueue {
+    private inStk: number[] = [];
+    private outStk: number[] = [];
+
+    push(x: number): void {
+        this.inStk.push(x);
+    }
+
+    pop(): number {
+        this.move();
+        return this.outStk.pop()!;
+    }
+
+    peek(): number {
+        this.move();
+        return this.outStk[this.outStk.length - 1];
+    }
+
+    empty(): boolean {
+        return this.inStk.length === 0 &amp;&amp; this.outStk.length === 0;
+    }
+
+    private move(): void {
+        if (this.outStk.length === 0) {
+            while (this.inStk.length) this.outStk.push(this.inStk.pop()!);
+        }
+    }
+}</code></pre>
+                </div>
+
+                <div id="c" class="code-content">
+                    <pre><code class="language-c">// 兩個堆疊：inStk 負責 push，outStk 負責 pop / peek（空了才從 inStk 倒過來）
+// 均攤時間複雜度: O(1)，空間複雜度: O(n)；題目最多呼叫 100 次
+#define CAP 100
+
+typedef struct {
+    int inStk[CAP], inTop;
+    int outStk[CAP], outTop;
+} MyQueue;
+
+MyQueue* myQueueCreate() {
+    MyQueue* q = malloc(sizeof(MyQueue));
+    q-&gt;inTop = q-&gt;outTop = 0;
+    return q;
+}
+
+static void move(MyQueue* q) {
+    if (q-&gt;outTop == 0) {
+        while (q-&gt;inTop &gt; 0) q-&gt;outStk[q-&gt;outTop++] = q-&gt;inStk[--q-&gt;inTop];
+    }
+}
+
+void myQueuePush(MyQueue* obj, int x) {
+    obj-&gt;inStk[obj-&gt;inTop++] = x;
+}
+
+int myQueuePop(MyQueue* obj) {
+    move(obj);
+    return obj-&gt;outStk[--obj-&gt;outTop];
+}
+
+int myQueuePeek(MyQueue* obj) {
+    move(obj);
+    return obj-&gt;outStk[obj-&gt;outTop - 1];
+}
+
+bool myQueueEmpty(MyQueue* obj) {
+    return obj-&gt;inTop == 0 &amp;&amp; obj-&gt;outTop == 0;
+}
+
+void myQueueFree(MyQueue* obj) {
+    free(obj);
 }</code></pre>
                 </div>
             </div>

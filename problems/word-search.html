@@ -239,6 +239,8 @@ A → B → C
                 <button class="tab-btn active" onclick="showLanguage('python')">Python</button>
                 <button class="tab-btn" onclick="showLanguage('cpp')">C++</button>
                 <button class="tab-btn" onclick="showLanguage('java')">Java</button>
+                <button class="tab-btn" onclick="showLanguage('typescript')">TypeScript</button>
+                <button class="tab-btn" onclick="showLanguage('c')">C</button>
             </div>
 
             <div id="python" class="code-container active">
@@ -431,6 +433,56 @@ private:
         
         return found;
     }
+}</code></pre>
+            </div>
+
+            <div id="typescript" class="code-container">
+                <pre><code class="language-typescript">// DFS 回溯：走過的格子暫時改成 '#'，回溯時還原
+// 時間複雜度: O(m·n·3^L)，空間複雜度: O(L)
+function exist(board: string[][], word: string): boolean {
+    const m = board.length, n = board[0].length;
+    const dfs = (i: number, j: number, k: number): boolean =&gt; {
+        if (k === word.length) return true;
+        if (i &lt; 0 || i &gt;= m || j &lt; 0 || j &gt;= n || board[i][j] !== word[k]) return false;
+        const ch = board[i][j];
+        board[i][j] = '#';
+        const found = dfs(i + 1, j, k + 1) || dfs(i - 1, j, k + 1)
+            || dfs(i, j + 1, k + 1) || dfs(i, j - 1, k + 1);
+        board[i][j] = ch;
+        return found;
+    };
+
+    for (let i = 0; i &lt; m; i++) {
+        for (let j = 0; j &lt; n; j++) {
+            if (dfs(i, j, 0)) return true;
+        }
+    }
+    return false;
+}</code></pre>
+            </div>
+
+            <div id="c" class="code-container">
+                <pre><code class="language-c">// DFS 回溯：走過的格子暫時改成 '#'，回溯時還原
+// 時間複雜度: O(m·n·3^L)，空間複雜度: O(L)
+static bool dfs(char** board, int m, int n, int i, int j, const char* word) {
+    if (*word == '\0') return true;
+    if (i &lt; 0 || i &gt;= m || j &lt; 0 || j &gt;= n || board[i][j] != *word) return false;
+    char ch = board[i][j];
+    board[i][j] = '#';
+    bool found = dfs(board, m, n, i + 1, j, word + 1) || dfs(board, m, n, i - 1, j, word + 1)
+              || dfs(board, m, n, i, j + 1, word + 1) || dfs(board, m, n, i, j - 1, word + 1);
+    board[i][j] = ch;
+    return found;
+}
+
+bool exist(char** board, int boardSize, int* boardColSize, char* word) {
+    int m = boardSize, n = boardColSize[0];
+    for (int i = 0; i &lt; m; i++) {
+        for (int j = 0; j &lt; n; j++) {
+            if (dfs(board, m, n, i, j, word)) return true;
+        }
+    }
+    return false;
 }</code></pre>
             </div>
         </div>

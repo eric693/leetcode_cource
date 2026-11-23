@@ -93,6 +93,8 @@
             <div class="language-tabs">
                 <button class="tab-btn active" onclick="showLanguage('python')">Python</button>
                 <button class="tab-btn" onclick="showLanguage('java')">Java</button>
+                <button class="tab-btn" onclick="showLanguage('typescript')">TypeScript</button>
+                <button class="tab-btn" onclick="showLanguage('c')">C</button>
                 <button class="tab-btn" onclick="showLanguage('cpp')">C++</button>
             </div>
 
@@ -129,6 +131,47 @@
         }
         return sb.reverse().toString();
     }
+}</code></pre>
+            </div>
+
+            <div id="typescript" class="code-container">
+                <pre><code class="language-typescript">// 從尾端逐位相加，維護進位
+// 時間複雜度: O(max(m, n))，空間複雜度: O(max(m, n))
+function addBinary(a: string, b: string): string {
+    let i = a.length - 1, j = b.length - 1, carry = 0;
+    const digits: number[] = [];
+
+    while (i &gt;= 0 || j &gt;= 0 || carry) {
+        let sum = carry;
+        if (i &gt;= 0) sum += a.charCodeAt(i--) - 48;  // '0' 的字元碼是 48
+        if (j &gt;= 0) sum += b.charCodeAt(j--) - 48;
+        digits.push(sum % 2);
+        carry = sum &gt;&gt; 1;
+    }
+    return digits.reverse().join('');
+}</code></pre>
+            </div>
+
+            <div id="c" class="code-container">
+                <pre><code class="language-c">// 從尾端逐位相加，結果從字串尾端往前填
+// 時間複雜度: O(max(m, n))，空間複雜度: O(max(m, n))
+char* addBinary(char* a, char* b) {
+    int i = strlen(a) - 1, j = strlen(b) - 1;
+    int len = (i &gt; j ? i : j) + 2;           // 最多比較長的字串多一位
+    char* res = malloc(len + 1);
+    res[len] = '\0';
+    int k = len - 1, carry = 0;
+
+    while (i &gt;= 0 || j &gt;= 0 || carry) {
+        int sum = carry;
+        if (i &gt;= 0) sum += a[i--] - '0';
+        if (j &gt;= 0) sum += b[j--] - '0';
+        res[k--] = '0' + sum % 2;
+        carry = sum / 2;
+    }
+    // 若最高位沒有進位，k 會停在 0，回傳從 k+1 開始的部分
+    if (k == 0) memmove(res, res + 1, len);
+    return res;
 }</code></pre>
             </div>
 

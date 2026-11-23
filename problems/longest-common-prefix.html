@@ -21,7 +21,7 @@
         .section h2 { color: #1e293b; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 3px solid #16a34a; }
         .section h3 { color: #475569; margin: 25px 0 15px 0; font-size: 1.3em; }
         .code-block { background: #282c34; border-radius: 8px; overflow: hidden; margin: 15px 0; }
-        .lang-tabs { display: flex; background: #21252b; border-bottom: 1px solid #181a1f; }
+        .lang-tabs { display: flex; flex-wrap: wrap; background: #21252b; border-bottom: 1px solid #181a1f; }
         .lang-tab { padding: 12px 24px; cursor: pointer; color: #abb2bf; border: none; background: none; transition: all 0.3s; font-weight: 500; }
         .lang-tab.active { color: #61afef; background: #282c34; border-bottom: 2px solid #61afef; }
         .lang-tab:hover { color: #61afef; background: #2c313a; }
@@ -151,6 +151,8 @@ prefix = LCP("flow", "flight")   = "fl"
                     <button class="lang-tab active" onclick="switchLang(event, 'python')">Python</button>
                     <button class="lang-tab" onclick="switchLang(event, 'cpp')">C++</button>
                     <button class="lang-tab" onclick="switchLang(event, 'java')">Java</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'typescript')">TypeScript</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'c')">C</button>
                 </div>
 
                 <div id="python" class="code-content active">
@@ -262,6 +264,42 @@ class Solution {
         }
         return prefix;
     }
+}</code></pre>
+                </div>
+
+                <div id="typescript" class="code-content">
+                    <pre><code class="language-typescript">// 縱向比較：以第一個字串為基準，逐字元檢查所有字串
+// 時間複雜度: O(S)，S 為所有字元總數；空間複雜度: O(1)
+function longestCommonPrefix(strs: string[]): string {
+    const first = strs[0];
+    for (let i = 0; i &lt; first.length; i++) {
+        for (let j = 1; j &lt; strs.length; j++) {
+            if (i === strs[j].length || strs[j][i] !== first[i]) {
+                return first.slice(0, i);
+            }
+        }
+    }
+    return first;
+}</code></pre>
+                </div>
+
+                <div id="c" class="code-content">
+                    <pre><code class="language-c">// 縱向比較：以第一個字串為基準，逐字元檢查所有字串
+// 時間複雜度: O(S)，S 為所有字元總數；空間複雜度: O(1)
+char* longestCommonPrefix(char** strs, int strsSize) {
+    char* first = strs[0];
+    int i = 0;
+    for (; first[i]; i++) {
+        int j = 1;
+        for (; j &lt; strsSize; j++) {
+            if (strs[j][i] != first[i]) break;   // 包含 strs[j] 已經結束（'\0'）的情況
+        }
+        if (j &lt; strsSize) break;
+    }
+    char* ans = malloc(i + 1);
+    memcpy(ans, first, i);
+    ans[i] = '\0';
+    return ans;
 }</code></pre>
                 </div>
             </div>

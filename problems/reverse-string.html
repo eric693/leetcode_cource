@@ -135,6 +135,8 @@ s[i] 是 ASCII 碼表中的可打印字符</code></pre>
                 <button class="tab-btn active" onclick="showLanguage('python')">Python</button>
                 <button class="tab-btn" onclick="showLanguage('cpp')">C++</button>
                 <button class="tab-btn" onclick="showLanguage('java')">Java</button>
+                <button class="tab-btn" onclick="showLanguage('typescript')">TypeScript</button>
+                <button class="tab-btn" onclick="showLanguage('c')">C</button>
             </div>
 
             <div id="python" class="code-container active">
@@ -224,6 +226,32 @@ public:
             left++;
             right--;
         }
+    }
+}</code></pre>
+            </div>
+
+            <div id="typescript" class="code-container">
+                <pre><code class="language-typescript">// 雙指標：頭尾交換，往中間靠攏
+// 時間複雜度: O(n)，空間複雜度: O(1)
+function reverseString(s: string[]): void {
+    let left = 0, right = s.length - 1;
+    while (left &lt; right) {
+        [s[left], s[right]] = [s[right], s[left]];
+        left++;
+        right--;
+    }
+}</code></pre>
+            </div>
+
+            <div id="c" class="code-container">
+                <pre><code class="language-c">// 雙指標：頭尾交換，往中間靠攏
+// 時間複雜度: O(n)，空間複雜度: O(1)
+void reverseString(char* s, int sSize) {
+    int left = 0, right = sSize - 1;
+    while (left &lt; right) {
+        char tmp = s[left];
+        s[left++] = s[right];
+        s[right--] = tmp;
     }
 }</code></pre>
             </div>

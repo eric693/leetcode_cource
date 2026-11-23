@@ -240,6 +240,8 @@ left > right，結束
                 <button class="tab-btn active" onclick="showLanguage('python')">Python</button>
                 <button class="tab-btn" onclick="showLanguage('cpp')">C++</button>
                 <button class="tab-btn" onclick="showLanguage('java')">Java</button>
+                <button class="tab-btn" onclick="showLanguage('typescript')">TypeScript</button>
+                <button class="tab-btn" onclick="showLanguage('c')">C</button>
             </div>
 
             <div id="python" class="code-container active">
@@ -369,6 +371,30 @@ public:
         
         return left;
     }
+}</code></pre>
+            </div>
+
+            <div id="typescript" class="code-container">
+                <pre><code class="language-typescript">// 快慢指針：把不等於 val 的元素依序往前搬
+// 時間複雜度: O(n)，空間複雜度: O(1)
+function removeElement(nums: number[], val: number): number {
+    let k = 0;
+    for (const x of nums) {
+        if (x !== val) nums[k++] = x;
+    }
+    return k;
+}</code></pre>
+            </div>
+
+            <div id="c" class="code-container">
+                <pre><code class="language-c">// 快慢指針：把不等於 val 的元素依序往前搬
+// 時間複雜度: O(n)，空間複雜度: O(1)
+int removeElement(int* nums, int numsSize, int val) {
+    int k = 0;
+    for (int i = 0; i &lt; numsSize; i++) {
+        if (nums[i] != val) nums[k++] = nums[i];
+    }
+    return k;
 }</code></pre>
             </div>
         </div>

@@ -21,7 +21,7 @@
         .section h2 { color: #1e293b; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 3px solid #ea580c; }
         .section h3 { color: #475569; margin: 25px 0 15px 0; font-size: 1.3em; }
         .code-block { background: #282c34; border-radius: 8px; overflow: hidden; margin: 15px 0; }
-        .lang-tabs { display: flex; background: #21252b; border-bottom: 1px solid #181a1f; }
+        .lang-tabs { display: flex; flex-wrap: wrap; background: #21252b; border-bottom: 1px solid #181a1f; }
         .lang-tab { padding: 12px 24px; cursor: pointer; color: #abb2bf; border: none; background: none; transition: all 0.3s; font-weight: 500; }
         .lang-tab.active { color: #61afef; background: #282c34; border-bottom: 2px solid #61afef; }
         .lang-tab:hover { color: #61afef; background: #2c313a; }
@@ -167,6 +167,8 @@ for (int i = start; i < n; i++) {
                     <button class="lang-tab active" onclick="switchLang(event, 'python')">Python</button>
                     <button class="lang-tab" onclick="switchLang(event, 'cpp')">C++</button>
                     <button class="lang-tab" onclick="switchLang(event, 'java')">Java</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'typescript')">TypeScript</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'c')">C</button>
                 </div>
 
                 <div id="python" class="code-content active">
@@ -247,6 +249,74 @@ public:
             path.remove(path.size() - 1);                   // 撤銷選擇
         }
     }
+}</code></pre>
+                </div>
+
+                <div id="typescript" class="code-content">
+                    <pre><code class="language-typescript">// 回溯：從 start 開始選，同一個數可重複選（遞迴時仍傳 i）
+// 時間複雜度: O(2^target) 量級，空間複雜度: O(target)
+function combinationSum(candidates: number[], target: number): number[][] {
+    candidates.sort((a, b) =&gt; a - b);
+    const result: number[][] = [];
+    const path: number[] = [];
+
+    const backtrack = (start: number, remain: number): void =&gt; {
+        if (remain === 0) {
+            result.push([...path]);
+            return;
+        }
+        for (let i = start; i &lt; candidates.length; i++) {
+            if (candidates[i] &gt; remain) break;   // 已排序，後面更大，直接剪枝
+            path.push(candidates[i]);
+            backtrack(i, remain - candidates[i]);
+            path.pop();
+        }
+    };
+
+    backtrack(0, target);
+    return result;
+}</code></pre>
+                </div>
+
+                <div id="c" class="code-content">
+                    <pre><code class="language-c">// 回溯：從 start 開始選，同一個數可重複選（遞迴時仍傳 i）
+// 時間複雜度: O(2^target) 量級，空間複雜度: O(target)
+static int cmp(const void* a, const void* b) { return *(const int*)a - *(const int*)b; }
+
+static int** result;
+static int* colSizes;
+static int count, cap;
+static int path[64], pathLen;
+
+static void backtrack(int* cand, int n, int start, int remain) {
+    if (remain == 0) {
+        if (count == cap) {
+            cap *= 2;
+            result = realloc(result, sizeof(int*) * cap);
+            colSizes = realloc(colSizes, sizeof(int) * cap);
+        }
+        result[count] = malloc(sizeof(int) * pathLen);
+        memcpy(result[count], path, sizeof(int) * pathLen);
+        colSizes[count++] = pathLen;
+        return;
+    }
+    for (int i = start; i &lt; n &amp;&amp; cand[i] &lt;= remain; i++) {   // 已排序可剪枝
+        path[pathLen++] = cand[i];
+        backtrack(cand, n, i, remain - cand[i]);
+        pathLen--;
+    }
+}
+
+int** combinationSum(int* candidates, int candidatesSize, int target,
+                     int* returnSize, int** returnColumnSizes) {
+    qsort(candidates, candidatesSize, sizeof(int), cmp);
+    cap = 16; count = 0; pathLen = 0;
+    result = malloc(sizeof(int*) * cap);
+    colSizes = malloc(sizeof(int) * cap);
+    backtrack(candidates, candidatesSize, 0, target);
+    *returnSize = count;
+    *returnColumnSizes = colSizes;
+    return result;
 }</code></pre>
                 </div>
             </div>

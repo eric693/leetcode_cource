@@ -100,6 +100,8 @@
             <div class="language-tabs">
                 <button class="tab-btn active" onclick="showLanguage('python')">Python</button>
                 <button class="tab-btn" onclick="showLanguage('java')">Java</button>
+                <button class="tab-btn" onclick="showLanguage('typescript')">TypeScript</button>
+                <button class="tab-btn" onclick="showLanguage('c')">C</button>
                 <button class="tab-btn" onclick="showLanguage('cpp')">C++</button>
             </div>
 
@@ -138,6 +140,42 @@
         }
         return slow;
     }
+}</code></pre>
+            </div>
+
+            <div id="typescript" class="code-container">
+                <pre><code class="language-typescript">// Floyd 判圈：把 i → nums[i] 看成鏈結串列，重複數就是環的入口
+// 時間複雜度: O(n)，空間複雜度: O(1)
+function findDuplicate(nums: number[]): number {
+    let slow = nums[0], fast = nums[nums[0]];
+    while (slow !== fast) {
+        slow = nums[slow];
+        fast = nums[nums[fast]];
+    }
+    slow = 0;                     // 一個從起點出發，一個從相遇點出發
+    while (slow !== fast) {
+        slow = nums[slow];
+        fast = nums[fast];
+    }
+    return slow;
+}</code></pre>
+            </div>
+
+            <div id="c" class="code-container">
+                <pre><code class="language-c">// Floyd 判圈：把 i → nums[i] 看成鏈結串列，重複數就是環的入口
+// 時間複雜度: O(n)，空間複雜度: O(1)
+int findDuplicate(int* nums, int numsSize) {
+    int slow = nums[0], fast = nums[nums[0]];
+    while (slow != fast) {
+        slow = nums[slow];
+        fast = nums[nums[fast]];
+    }
+    slow = 0;                     // 一個從起點出發，一個從相遇點出發
+    while (slow != fast) {
+        slow = nums[slow];
+        fast = nums[fast];
+    }
+    return slow;
 }</code></pre>
             </div>
 

@@ -183,6 +183,8 @@ digits 不包含任何前導 0</code></pre>
                 <button class="tab-btn active" onclick="showLanguage('python')">Python</button>
                 <button class="tab-btn" onclick="showLanguage('cpp')">C++</button>
                 <button class="tab-btn" onclick="showLanguage('java')">Java</button>
+                <button class="tab-btn" onclick="showLanguage('typescript')">TypeScript</button>
+                <button class="tab-btn" onclick="showLanguage('c')">C</button>
             </div>
 
             <div id="python" class="code-container active">
@@ -288,6 +290,44 @@ public:
         
         return result;
     }
+}</code></pre>
+            </div>
+
+            <div id="typescript" class="code-container">
+                <pre><code class="language-typescript">// 從最低位往前加：不是 9 就直接 +1 回傳，是 9 就變 0 繼續進位
+// 時間複雜度: O(n)，空間複雜度: O(1)（全部是 9 時為 O(n)）
+function plusOne(digits: number[]): number[] {
+    for (let i = digits.length - 1; i &gt;= 0; i--) {
+        if (digits[i] &lt; 9) {
+            digits[i]++;
+            return digits;
+        }
+        digits[i] = 0;
+    }
+    return [1, ...digits];                        // 例如 999 → 1000
+}</code></pre>
+            </div>
+
+            <div id="c" class="code-container">
+                <pre><code class="language-c">// 從最低位往前加：不是 9 就直接 +1 回傳，是 9 就變 0 繼續進位
+// 時間複雜度: O(n)，空間複雜度: O(n)
+int* plusOne(int* digits, int digitsSize, int* returnSize) {
+    int* res = malloc(sizeof(int) * (digitsSize + 1));
+    memcpy(res + 1, digits, sizeof(int) * digitsSize);
+    res[0] = 0;                                   // 預留一位給最高位進位
+
+    for (int i = digitsSize; i &gt;= 1; i--) {
+        if (res[i] &lt; 9) {
+            res[i]++;
+            *returnSize = digitsSize;
+            memmove(res, res + 1, sizeof(int) * digitsSize);   // 沒有新增位數
+            return res;
+        }
+        res[i] = 0;
+    }
+    res[0] = 1;                                   // 例如 999 → 1000
+    *returnSize = digitsSize + 1;
+    return res;
 }</code></pre>
             </div>
         </div>

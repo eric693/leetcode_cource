@@ -182,6 +182,8 @@
                 <button class="tab-btn active" onclick="showLanguage('python')">Python</button>
                 <button class="tab-btn" onclick="showLanguage('cpp')">C++</button>
                 <button class="tab-btn" onclick="showLanguage('java')">Java</button>
+                <button class="tab-btn" onclick="showLanguage('typescript')">TypeScript</button>
+                <button class="tab-btn" onclick="showLanguage('c')">C</button>
             </div>
 
             <div id="python" class="code-container active">
@@ -256,6 +258,34 @@ public:
         
         return profit;
     }
+}</code></pre>
+            </div>
+
+            <div id="typescript" class="code-container">
+                <pre><code class="language-typescript">// 貪心：把所有上漲的差價都賺進來
+// 時間複雜度: O(n)，空間複雜度: O(1)
+function maxProfit(prices: number[]): number {
+    let profit = 0;
+    for (let i = 1; i &lt; prices.length; i++) {
+        if (prices[i] &gt; prices[i - 1]) {
+            profit += prices[i] - prices[i - 1];
+        }
+    }
+    return profit;
+}</code></pre>
+            </div>
+
+            <div id="c" class="code-container">
+                <pre><code class="language-c">// 貪心：把所有上漲的差價都賺進來
+// 時間複雜度: O(n)，空間複雜度: O(1)
+int maxProfit(int* prices, int pricesSize) {
+    int profit = 0;
+    for (int i = 1; i &lt; pricesSize; i++) {
+        if (prices[i] &gt; prices[i - 1]) {
+            profit += prices[i] - prices[i - 1];
+        }
+    }
+    return profit;
 }</code></pre>
             </div>
         </div>

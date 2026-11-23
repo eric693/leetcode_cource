@@ -192,6 +192,8 @@
                 <button class="tab-btn active" onclick="showLanguage('python')">Python</button>
                 <button class="tab-btn" onclick="showLanguage('cpp')">C++</button>
                 <button class="tab-btn" onclick="showLanguage('java')">Java</button>
+                <button class="tab-btn" onclick="showLanguage('typescript')">TypeScript</button>
+                <button class="tab-btn" onclick="showLanguage('c')">C</button>
             </div>
 
             <div id="python" class="code-container active">
@@ -269,6 +271,32 @@ class Solution {
         
         return row;
     }
+}</code></pre>
+            </div>
+
+            <div id="typescript" class="code-container">
+                <pre><code class="language-typescript">// 原地從右往左更新：row[j] += row[j-1]
+// 時間複雜度: O(k²)，空間複雜度: O(k)
+function getRow(rowIndex: number): number[] {
+    const row = new Array(rowIndex + 1).fill(1);
+    for (let i = 2; i &lt;= rowIndex; i++) {
+        for (let j = i - 1; j &gt; 0; j--) row[j] += row[j - 1];
+    }
+    return row;
+}</code></pre>
+            </div>
+
+            <div id="c" class="code-container">
+                <pre><code class="language-c">// 原地從右往左更新：row[j] += row[j-1]
+// 時間複雜度: O(k²)，空間複雜度: O(k)
+int* getRow(int rowIndex, int* returnSize) {
+    int* row = malloc(sizeof(int) * (rowIndex + 1));
+    for (int i = 0; i &lt;= rowIndex; i++) row[i] = 1;
+    for (int i = 2; i &lt;= rowIndex; i++) {
+        for (int j = i - 1; j &gt; 0; j--) row[j] += row[j - 1];
+    }
+    *returnSize = rowIndex + 1;
+    return row;
 }</code></pre>
             </div>
         </div>

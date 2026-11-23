@@ -203,6 +203,8 @@ i=5 (房屋4，金額1):
                 <button class="tab-btn active" onclick="showLanguage('python')">Python</button>
                 <button class="tab-btn" onclick="showLanguage('cpp')">C++</button>
                 <button class="tab-btn" onclick="showLanguage('java')">Java</button>
+                <button class="tab-btn" onclick="showLanguage('typescript')">TypeScript</button>
+                <button class="tab-btn" onclick="showLanguage('c')">C</button>
             </div>
 
             <div id="python" class="code-container active">
@@ -404,6 +406,35 @@ public:
         
         return curr;
     }
+}</code></pre>
+            </div>
+
+            <div id="typescript" class="code-container">
+                <pre><code class="language-typescript">// DP 滾動變數：偷第 i 間（prev2 + nums[i]）或不偷（prev1）
+// 時間複雜度: O(n)，空間複雜度: O(1)
+function rob(nums: number[]): number {
+    let prev2 = 0, prev1 = 0;
+    for (const x of nums) {
+        const cur = Math.max(prev1, prev2 + x);
+        prev2 = prev1;
+        prev1 = cur;
+    }
+    return prev1;
+}</code></pre>
+            </div>
+
+            <div id="c" class="code-container">
+                <pre><code class="language-c">// DP 滾動變數：偷第 i 間（prev2 + nums[i]）或不偷（prev1）
+// 時間複雜度: O(n)，空間複雜度: O(1)
+int rob(int* nums, int numsSize) {
+    int prev2 = 0, prev1 = 0;
+    for (int i = 0; i &lt; numsSize; i++) {
+        int take = prev2 + nums[i];
+        int cur = take &gt; prev1 ? take : prev1;
+        prev2 = prev1;
+        prev1 = cur;
+    }
+    return prev1;
 }</code></pre>
             </div>
         </div>

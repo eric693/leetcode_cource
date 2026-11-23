@@ -21,7 +21,7 @@
         .section h2 { color: #1e293b; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 3px solid #ea580c; }
         .section h3 { color: #475569; margin: 25px 0 15px 0; font-size: 1.3em; }
         .code-block { background: #282c34; border-radius: 8px; overflow: hidden; margin: 15px 0; }
-        .lang-tabs { display: flex; background: #21252b; border-bottom: 1px solid #181a1f; }
+        .lang-tabs { display: flex; flex-wrap: wrap; background: #21252b; border-bottom: 1px solid #181a1f; }
         .lang-tab { padding: 12px 24px; cursor: pointer; color: #abb2bf; border: none; background: none; transition: all 0.3s; font-weight: 500; }
         .lang-tab.active { color: #61afef; background: #282c34; border-bottom: 2px solid #61afef; }
         .lang-tab:hover { color: #61afef; background: #2c313a; }
@@ -164,6 +164,8 @@ left == right == 4，結束
                     <button class="lang-tab active" onclick="switchLang(event, 'python')">Python</button>
                     <button class="lang-tab" onclick="switchLang(event, 'cpp')">C++</button>
                     <button class="lang-tab" onclick="switchLang(event, 'java')">Java</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'typescript')">TypeScript</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'c')">C</button>
                 </div>
 
                 <div id="python" class="code-content active">
@@ -247,6 +249,34 @@ class Solution {
         }
         return nums[left];
     }
+}</code></pre>
+                </div>
+
+                <div id="typescript" class="code-content">
+                    <pre><code class="language-typescript">// 二分：與右端比較，判斷最小值在左半還是右半
+// 時間複雜度: O(log n)，空間複雜度: O(1)
+function findMin(nums: number[]): number {
+    let left = 0, right = nums.length - 1;
+    while (left &lt; right) {
+        const mid = (left + right) &gt;&gt; 1;
+        if (nums[mid] &gt; nums[right]) left = mid + 1;   // 最小值在右半
+        else right = mid;                               // mid 可能就是最小值
+    }
+    return nums[left];
+}</code></pre>
+                </div>
+
+                <div id="c" class="code-content">
+                    <pre><code class="language-c">// 二分：與右端比較，判斷最小值在左半還是右半
+// 時間複雜度: O(log n)，空間複雜度: O(1)
+int findMin(int* nums, int numsSize) {
+    int left = 0, right = numsSize - 1;
+    while (left &lt; right) {
+        int mid = left + (right - left) / 2;
+        if (nums[mid] &gt; nums[right]) left = mid + 1;   // 最小值在右半
+        else right = mid;                               // mid 可能就是最小值
+    }
+    return nums[left];
 }</code></pre>
                 </div>
             </div>

@@ -208,6 +208,8 @@ A D O B E C O D E B A N C
                 <button class="tab-btn active" onclick="showLanguage('python')">Python</button>
                 <button class="tab-btn" onclick="showLanguage('cpp')">C++</button>
                 <button class="tab-btn" onclick="showLanguage('java')">Java</button>
+                <button class="tab-btn" onclick="showLanguage('typescript')">TypeScript</button>
+                <button class="tab-btn" onclick="showLanguage('c')">C</button>
             </div>
 
             <div id="python" class="code-container active">
@@ -453,6 +455,55 @@ class Solution {
         
         return minLen == Integer.MAX_VALUE ? "" : s.substring(minLeft, minLeft + minLen);
     }
+}</code></pre>
+            </div>
+
+            <div id="typescript" class="code-container">
+                <pre><code class="language-typescript">// 滑動視窗：need 記錄還缺多少，missing 記錄總共還缺幾個字元
+// 時間複雜度: O(m + n)，空間複雜度: O(字元集大小)
+function minWindow(s: string, t: string): string {
+    const need = new Array(128).fill(0);
+    for (const ch of t) need[ch.charCodeAt(0)]++;
+    let missing = t.length, left = 0, bestStart = 0, bestLen = Infinity;
+
+    for (let right = 0; right &lt; s.length; right++) {
+        if (need[s.charCodeAt(right)]-- &gt; 0) missing--;
+        while (missing === 0) {                       // 視窗已涵蓋 t，嘗試縮小
+            if (right - left + 1 &lt; bestLen) {
+                bestStart = left;
+                bestLen = right - left + 1;
+            }
+            if (++need[s.charCodeAt(left++)] &gt; 0) missing++;
+        }
+    }
+    return bestLen === Infinity ? '' : s.slice(bestStart, bestStart + bestLen);
+}</code></pre>
+            </div>
+
+            <div id="c" class="code-container">
+                <pre><code class="language-c">// 滑動視窗：need 記錄還缺多少，missing 記錄總共還缺幾個字元
+// 時間複雜度: O(m + n)，空間複雜度: O(1)（固定 128 格）
+char* minWindow(char* s, char* t) {
+    int need[128] = {0};
+    int missing = 0;
+    for (char* p = t; *p; p++) { need[(int)*p]++; missing++; }
+
+    int left = 0, bestStart = 0, bestLen = INT_MAX;
+    for (int right = 0; s[right]; right++) {
+        if (need[(int)s[right]]-- &gt; 0) missing--;
+        while (missing == 0) {                        // 視窗已涵蓋 t，嘗試縮小
+            if (right - left + 1 &lt; bestLen) {
+                bestStart = left;
+                bestLen = right - left + 1;
+            }
+            if (++need[(int)s[left++]] &gt; 0) missing++;
+        }
+    }
+    if (bestLen == INT_MAX) bestLen = 0;
+    char* ans = malloc(bestLen + 1);
+    memcpy(ans, s + bestStart, bestLen);
+    ans[bestLen] = '\0';
+    return ans;
 }</code></pre>
             </div>
         </div>

@@ -182,6 +182,8 @@
                 <button class="tab-btn active" onclick="showLanguage('python')">Python</button>
                 <button class="tab-btn" onclick="showLanguage('cpp')">C++</button>
                 <button class="tab-btn" onclick="showLanguage('java')">Java</button>
+                <button class="tab-btn" onclick="showLanguage('typescript')">TypeScript</button>
+                <button class="tab-btn" onclick="showLanguage('c')">C</button>
             </div>
 
             <div id="python" class="code-container active">
@@ -500,6 +502,42 @@ class Solution {
         memo.put(remaining, answer);
         return answer;
     }
+}</code></pre>
+            </div>
+
+            <div id="typescript" class="code-container">
+                <pre><code class="language-typescript">// 完全背包 DP：dp[a] = 湊出金額 a 的最少硬幣數
+// 時間複雜度: O(amount × n)，空間複雜度: O(amount)
+function coinChange(coins: number[], amount: number): number {
+    const dp = new Array(amount + 1).fill(Infinity);
+    dp[0] = 0;
+    for (let a = 1; a &lt;= amount; a++) {
+        for (const c of coins) {
+            if (c &lt;= a &amp;&amp; dp[a - c] + 1 &lt; dp[a]) dp[a] = dp[a - c] + 1;
+        }
+    }
+    return dp[amount] === Infinity ? -1 : dp[amount];
+}</code></pre>
+            </div>
+
+            <div id="c" class="code-container">
+                <pre><code class="language-c">// 完全背包 DP：dp[a] = 湊出金額 a 的最少硬幣數
+// 時間複雜度: O(amount × n)，空間複雜度: O(amount)
+int coinChange(int* coins, int coinsSize, int amount) {
+    int* dp = malloc(sizeof(int) * (amount + 1));
+    dp[0] = 0;
+    for (int a = 1; a &lt;= amount; a++) {
+        dp[a] = INT_MAX;
+        for (int i = 0; i &lt; coinsSize; i++) {
+            int c = coins[i];
+            if (c &lt;= a &amp;&amp; dp[a - c] != INT_MAX &amp;&amp; dp[a - c] + 1 &lt; dp[a]) {
+                dp[a] = dp[a - c] + 1;
+            }
+        }
+    }
+    int ans = dp[amount] == INT_MAX ? -1 : dp[amount];
+    free(dp);
+    return ans;
 }</code></pre>
             </div>
         </div>

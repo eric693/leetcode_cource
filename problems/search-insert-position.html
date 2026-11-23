@@ -250,6 +250,8 @@ left > right，循環結束
                 <button class="tab-btn active" onclick="showLanguage('python')">Python</button>
                 <button class="tab-btn" onclick="showLanguage('cpp')">C++</button>
                 <button class="tab-btn" onclick="showLanguage('java')">Java</button>
+                <button class="tab-btn" onclick="showLanguage('typescript')">TypeScript</button>
+                <button class="tab-btn" onclick="showLanguage('c')">C</button>
             </div>
 
             <div id="python" class="code-container active">
@@ -341,6 +343,34 @@ public:
         
         return left;
     }
+}</code></pre>
+            </div>
+
+            <div id="typescript" class="code-container">
+                <pre><code class="language-typescript">// 二分搜尋第一個 ≥ target 的位置（lower bound）
+// 時間複雜度: O(log n)，空間複雜度: O(1)
+function searchInsert(nums: number[], target: number): number {
+    let lo = 0, hi = nums.length;
+    while (lo &lt; hi) {
+        const mid = (lo + hi) &gt;&gt; 1;
+        if (nums[mid] &lt; target) lo = mid + 1;
+        else hi = mid;
+    }
+    return lo;
+}</code></pre>
+            </div>
+
+            <div id="c" class="code-container">
+                <pre><code class="language-c">// 二分搜尋第一個 ≥ target 的位置（lower bound）
+// 時間複雜度: O(log n)，空間複雜度: O(1)
+int searchInsert(int* nums, int numsSize, int target) {
+    int lo = 0, hi = numsSize;
+    while (lo &lt; hi) {
+        int mid = lo + (hi - lo) / 2;
+        if (nums[mid] &lt; target) lo = mid + 1;
+        else hi = mid;
+    }
+    return lo;
 }</code></pre>
             </div>
         </div>

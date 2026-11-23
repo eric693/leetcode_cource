@@ -174,6 +174,8 @@ lists[i].length 的總和不超過 10^4</code></pre>
                 <button class="tab-btn active" onclick="showLanguage('python')">Python</button>
                 <button class="tab-btn" onclick="showLanguage('cpp')">C++</button>
                 <button class="tab-btn" onclick="showLanguage('java')">Java</button>
+                <button class="tab-btn" onclick="showLanguage('typescript')">TypeScript</button>
+                <button class="tab-btn" onclick="showLanguage('c')">C</button>
             </div>
 
             <div id="python" class="code-container active">
@@ -355,6 +357,74 @@ class Solution {
         
         return dummy.next;
     }
+}</code></pre>
+            </div>
+
+            <div id="typescript" class="code-container">
+                <pre><code class="language-typescript">/**
+ * Definition for singly-linked list.
+ * class ListNode {
+ *     val: number
+ *     next: ListNode | null
+ * }
+ */
+// 分治：兩兩合併，像合併排序一樣往上合
+// 時間複雜度: O(N log k)，N 為總節點數；空間複雜度: O(log k)
+function mergeKLists(lists: Array&lt;ListNode | null&gt;): ListNode | null {
+    const mergeTwo = (a: ListNode | null, b: ListNode | null): ListNode | null =&gt; {
+        const dummy = new ListNode(0);
+        let tail = dummy;
+        while (a &amp;&amp; b) {
+            if (a.val &lt;= b.val) { tail.next = a; a = a.next; }
+            else { tail.next = b; b = b.next; }
+            tail = tail.next;
+        }
+        tail.next = a ?? b;
+        return dummy.next;
+    };
+
+    const solve = (lo: number, hi: number): ListNode | null =&gt; {
+        if (lo &gt; hi) return null;
+        if (lo === hi) return lists[lo];
+        const mid = (lo + hi) &gt;&gt; 1;
+        return mergeTwo(solve(lo, mid), solve(mid + 1, hi));
+    };
+
+    return solve(0, lists.length - 1);
+}</code></pre>
+            </div>
+
+            <div id="c" class="code-container">
+                <pre><code class="language-c">/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     struct ListNode *next;
+ * };
+ */
+// 分治：兩兩合併，像合併排序一樣往上合
+// 時間複雜度: O(N log k)，N 為總節點數；空間複雜度: O(log k)
+static struct ListNode* mergeTwo(struct ListNode* a, struct ListNode* b) {
+    struct ListNode dummy = {0, NULL};
+    struct ListNode* tail = &amp;dummy;
+    while (a &amp;&amp; b) {
+        if (a-&gt;val &lt;= b-&gt;val) { tail-&gt;next = a; a = a-&gt;next; }
+        else { tail-&gt;next = b; b = b-&gt;next; }
+        tail = tail-&gt;next;
+    }
+    tail-&gt;next = a ? a : b;
+    return dummy.next;
+}
+
+static struct ListNode* solve(struct ListNode** lists, int lo, int hi) {
+    if (lo &gt; hi) return NULL;
+    if (lo == hi) return lists[lo];
+    int mid = lo + (hi - lo) / 2;
+    return mergeTwo(solve(lists, lo, mid), solve(lists, mid + 1, hi));
+}
+
+struct ListNode* mergeKLists(struct ListNode** lists, int listsSize) {
+    return solve(lists, 0, listsSize - 1);
 }</code></pre>
             </div>
         </div>

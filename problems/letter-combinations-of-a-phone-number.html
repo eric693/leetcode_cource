@@ -21,7 +21,7 @@
         .section h2 { color: #1e293b; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 3px solid #ea580c; }
         .section h3 { color: #475569; margin: 25px 0 15px 0; font-size: 1.3em; }
         .code-block { background: #282c34; border-radius: 8px; overflow: hidden; margin: 15px 0; }
-        .lang-tabs { display: flex; background: #21252b; border-bottom: 1px solid #181a1f; }
+        .lang-tabs { display: flex; flex-wrap: wrap; background: #21252b; border-bottom: 1px solid #181a1f; }
         .lang-tab { padding: 12px 24px; cursor: pointer; color: #abb2bf; border: none; background: none; transition: all 0.3s; font-weight: 500; }
         .lang-tab.active { color: #61afef; background: #282c34; border-bottom: 2px solid #61afef; }
         .lang-tab:hover { color: #61afef; background: #2c313a; }
@@ -167,6 +167,8 @@ result = [""]
                     <button class="lang-tab active" onclick="switchLang(event, 'python')">Python</button>
                     <button class="lang-tab" onclick="switchLang(event, 'cpp')">C++</button>
                     <button class="lang-tab" onclick="switchLang(event, 'java')">Java</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'typescript')">TypeScript</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'c')">C</button>
                 </div>
 
                 <div id="python" class="code-content active">
@@ -296,6 +298,59 @@ class Solution {
             path.deleteCharAt(path.length() - 1);    // ③ 撤銷
         }
     }
+}</code></pre>
+                </div>
+
+                <div id="typescript" class="code-content">
+                    <pre><code class="language-typescript">// 回溯：每一位數字選一個對應字母
+// 時間複雜度: O(4^n · n)，空間複雜度: O(n)
+function letterCombinations(digits: string): string[] {
+    if (!digits) return [];
+    const map = ['', '', 'abc', 'def', 'ghi', 'jkl', 'mno', 'pqrs', 'tuv', 'wxyz'];
+    const result: string[] = [];
+
+    const backtrack = (index: number, path: string): void =&gt; {
+        if (index === digits.length) {
+            result.push(path);
+            return;
+        }
+        for (const ch of map[Number(digits[index])]) {
+            backtrack(index + 1, path + ch);
+        }
+    };
+
+    backtrack(0, '');
+    return result;
+}</code></pre>
+                </div>
+
+                <div id="c" class="code-content">
+                    <pre><code class="language-c">// 回溯：每一位數字選一個對應字母（最多 4^4 = 256 種組合）
+// 時間複雜度: O(4^n · n)，空間複雜度: O(n)
+static const char* MAP[10] = {"", "", "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"};
+static char** result;
+static int count;
+static char path[5];
+
+static void backtrack(char* digits, int index, int n) {
+    if (index == n) {
+        path[n] = '\0';
+        result[count++] = strdup(path);
+        return;
+    }
+    for (const char* p = MAP[digits[index] - '0']; *p; p++) {
+        path[index] = *p;
+        backtrack(digits, index + 1, n);
+    }
+}
+
+char** letterCombinations(char* digits, int* returnSize) {
+    int n = strlen(digits);
+    count = 0;
+    result = malloc(sizeof(char*) * 256);
+    if (n &gt; 0) backtrack(digits, 0, n);
+    *returnSize = count;
+    return result;
 }</code></pre>
                 </div>
             </div>

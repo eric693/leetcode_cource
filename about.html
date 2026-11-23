@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>關於本站 - LeetCode 學習平台</title>
+    <meta name="description" content="LeetCode 學習平台：150 題精選題目，依主題分類，每題附 Python、C++、Java、TypeScript、C 五種語言詳解、解題思路與複雜度分析。">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Noto Sans TC', sans-serif; background: #f8fafc; min-height: 100vh; color: #1e293b; line-height: 1.7; }
+        .container { max-width: 1100px; margin: 0 auto; }
+        header { background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%); color: white; padding: 56px 24px 60px; text-align: center; }
+        .back-btn { display: inline-block; color: white; text-decoration: none; background: rgba(255,255,255,0.18); padding: 8px 18px; border-radius: 8px; margin-bottom: 24px; font-size: 0.95em; transition: background 0.2s; }
+        .back-btn:hover { background: rgba(255,255,255,0.3); }
+        header h1 { font-size: 2.8em; font-weight: 800; letter-spacing: -1px; margin-bottom: 12px; line-height: 1.2; }
+        header p { font-size: 1.15em; opacity: 0.92; max-width: 640px; margin: 0 auto; }
+        .cta { display: inline-block; margin-top: 28px; background: white; color: #1e40af; font-weight: 700; padding: 12px 28px; border-radius: 10px; text-decoration: none; transition: transform 0.2s, box-shadow 0.2s; }
+        .cta:hover { transform: translateY(-2px); box-shadow: 0 8px 18px rgba(0,0,0,0.18); }
+
+        .stats-bar { background: white; padding: 22px 24px; display: flex; justify-content: center; gap: 48px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); flex-wrap: wrap; }
+        .stat-item { text-align: center; }
+        .stat-number { font-size: 2em; font-weight: 800; color: #1e40af; font-variant-numeric: tabular-nums; }
+        .stat-number.easy { color: #166534; } .stat-number.medium { color: #92400e; } .stat-number.hard { color: #991b1b; }
+        .stat-label { font-size: 0.9em; color: #64748b; }
+
+        main { padding: 48px 24px 0; }
+        section { margin-bottom: 56px; }
+        h2 { font-size: 1.6em; font-weight: 700; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 3px solid #1e40af; }
+        .lead { color: #475569; font-size: 1.05em; max-width: 760px; margin-bottom: 20px; }
+
+        .features { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 18px; }
+        .feature { background: white; border-radius: 12px; padding: 22px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+        .feature .icon { width: 40px; height: 40px; border-radius: 10px; background: #dbeafe; color: #1e40af; display: flex; align-items: center; justify-content: center; font-weight: 800; margin-bottom: 12px; }
+        .feature h3 { font-size: 1.1em; margin-bottom: 6px; }
+        .feature p { color: #64748b; font-size: 0.95em; }
+
+        .cat-table { width: 100%; background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.06); border-collapse: collapse; }
+        .cat-table th, .cat-table td { padding: 12px 16px; text-align: left; border-bottom: 1px solid #e2e8f0; }
+        .cat-table th { background: #f1f5f9; font-size: 0.85em; color: #475569; text-transform: uppercase; letter-spacing: 0.5px; }
+        .cat-table td.num { text-align: right; font-variant-numeric: tabular-nums; width: 70px; }
+        .cat-table th.num { text-align: right; }
+        .cat-table tr:last-child td { border-bottom: none; }
+        .cat-table .note { color: #64748b; font-size: 0.85em; margin-left: 6px; }
+        .bar { height: 8px; border-radius: 4px; display: flex; overflow: hidden; background: #e2e8f0; min-width: 120px; }
+        .bar span { display: block; height: 100%; }
+        .bar .e { background: #22c55e; } .bar .m { background: #f59e0b; } .bar .h { background: #ef4444; }
+        .legend { display: flex; gap: 18px; margin-top: 12px; font-size: 0.85em; color: #64748b; flex-wrap: wrap; }
+        .legend i { display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 6px; vertical-align: -1px; }
+        .table-wrap { overflow-x: auto; }
+
+        .steps { counter-reset: step; display: grid; gap: 14px; }
+        .step { background: white; border-radius: 12px; padding: 18px 20px 18px 68px; position: relative; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+        .step::before { counter-increment: step; content: counter(step); position: absolute; left: 20px; top: 18px; width: 32px; height: 32px; border-radius: 50%; background: #1e40af; color: white; font-weight: 700; display: flex; align-items: center; justify-content: center; }
+        .step h3 { font-size: 1.05em; margin-bottom: 4px; }
+        .step p { color: #64748b; font-size: 0.95em; }
+
+        .badge { padding: 2px 10px; border-radius: 6px; font-weight: 600; font-size: 0.85em; }
+        .badge.easy { background: #dcfce7; color: #166534; } .badge.medium { background: #fef3c7; color: #92400e; } .badge.hard { background: #fee2e2; color: #991b1b; }
+
+        footer { background: #1e293b; color: white; text-align: center; padding: 30px 24px; margin-top: 24px; }
+        footer a { color: #93c5fd; }
+
+        @media (max-width: 768px) {
+            header { padding: 40px 16px 44px; }
+            header h1 { font-size: 2em; }
+            main { padding: 36px 16px 0; }
+            .stats-bar { gap: 24px; padding: 18px 16px; }
+            .bar-col { display: none; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <a href="index.html" class="back-btn">← 回到題目列表</a>
+        <h1>LeetCode 學習平台</h1>
+        <p>150 題精選題目，依主題分類整理，每題附 Python、C++、Java、TypeScript、C 五種語言詳解。用最少的題目，掌握最常考的解題套路。</p>
+        <a href="index.html" class="cta">開始刷題 →</a>
+    </header>
+
+    <div class="stats-bar">
+        <div class="stat-item"><div class="stat-number">150</div><div class="stat-label">總題數</div></div>
+        <div class="stat-item"><div class="stat-number easy">55</div><div class="stat-label">Easy</div></div>
+        <div class="stat-item"><div class="stat-number medium">71</div><div class="stat-label">Medium</div></div>
+        <div class="stat-item"><div class="stat-number hard">24</div><div class="stat-label">Hard</div></div>
+        <div class="stat-item"><div class="stat-number">13</div><div class="stat-label">主題分類</div></div>
+        <div class="stat-item"><div class="stat-number">5</div><div class="stat-label">程式語言</div></div>
+    </div>
+
+    <main>
+        <section>
+            <h2>這個網站在做什麼</h2>
+            <p class="lead">刷題最難的不是寫程式，而是不知道該從哪裡開始、做完也不知道有沒有學到東西。這裡把 150 道經典題依照資料結構與演算法主題分好類，每一題都從「題目在問什麼」講到「為什麼這樣解」，再給出五種語言的完整程式碼，讓你一題一題把套路練熟。</p>
+        </section>
+
+        <section>
+            <h2>特色</h2>
+            <div class="features">
+                <div class="feature"><div class="icon">分</div><h3>依主題分類</h3><p>Array、String、Tree、DP、Graph 等 13 類，同一類題目一起練，最容易看出共通解法。</p></div>
+                <div class="feature"><div class="icon">5</div><h3>五語言詳解</h3><p>Python、C++、Java、TypeScript、C 完整實作，面試用哪種語言都能直接參考；C 版本特別適合準備韌體與嵌入式職缺。</p></div>
+                <div class="feature"><div class="icon">思</div><h3>解題思路</h3><p>每題都有題目說明與思路拆解，不只給答案，也說明怎麼想到。</p></div>
+                <div class="feature"><div class="icon">O</div><h3>複雜度分析</h3><p>標註時間與空間複雜度，面試時被追問也答得出來。</p></div>
+                <div class="feature"><div class="icon">篩</div><h3>難度篩選</h3><p>首頁可依 Easy / Medium / Hard 一鍵篩選，依自己的程度安排進度。</p></div>
+                <div class="feature"><div class="icon">韌</div><h3>韌體方向專區</h3><p>位元運算、設計題特別整理，適合準備韌體、嵌入式相關職缺。</p></div>
+            </div>
+        </section>
+
+        <section>
+            <h2>題目分類</h2>
+            <div class="table-wrap">
+            <table class="cat-table">
+                <thead><tr><th>主題</th><th class="num">題數</th><th class="num">Easy</th><th class="num">Medium</th><th class="num">Hard</th><th class="bar-col">難度分布</th></tr></thead>
+                <tbody id="cats"></tbody>
+            </table>
+            </div>
+            <div class="legend"><span><i style="background:#22c55e"></i>Easy</span><span><i style="background:#f59e0b"></i>Medium</span><span><i style="background:#ef4444"></i>Hard</span></div>
+        </section>
+
+        <section>
+            <h2>建議的使用方式</h2>
+            <div class="steps">
+                <div class="step"><h3>從 Easy 開始，一次練一個主題</h3><p>先挑 Array & Two Pointers 或 String 的 <span class="badge easy">Easy</span> 題，熟悉基本操作與雙指標、雜湊表等常用技巧。</p></div>
+                <div class="step"><h3>先自己想，再看思路</h3><p>每題先給自己 15–20 分鐘，卡住再看「解題思路」，最後才看程式碼。</p></div>
+                <div class="step"><h3>進階到 Medium，認識核心套路</h3><p>Tree、Linked List、Dynamic Programming、Backtracking 的 <span class="badge medium">Medium</span> 題是面試最常見的範圍。</p></div>
+                <div class="step"><h3>挑戰 Hard 並注意複雜度</h3><p>最後練 <span class="badge hard">Hard</span> 題，並試著說出自己解法的時間與空間複雜度。</p></div>
+                <div class="step"><h3>隔幾天再重寫一次</h3><p>不看答案重寫一遍，能順利寫出來才算真的學會。</p></div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>LeetCode 學習平台 · 150 題完整收錄 · 55 Easy + 71 Medium + 24 Hard</p>
+        <p style="margin-top: 10px; opacity: 0.8;"><a href="index.html">前往題目列表</a></p>
+    </footer>
+</div>
+<script>
+    const cats = [
+        ['Array & Two Pointers', 15, 17, 4],
+        ['String', 13, 8, 5],
+        ['Hash Table', 2, 2, 0],
+        ['Tree', 7, 6, 2],
+        ['Linked List', 6, 5, 3],
+        ['Dynamic Programming', 2, 12, 4],
+        ['Stack & Queue', 1, 4, 2],
+        ['DFS & BFS', 0, 1, 2],
+        ['Backtracking', 0, 6, 2],
+        ['Math', 3, 0, 0],
+        ['Bit Manipulation', 5, 4, 0, '位元運算 · 韌體必考'],
+        ['Design', 1, 2, 0, '設計題 · 系統與韌體'],
+        ['Graph', 0, 4, 0, '圖論 · 拓撲排序']
+    ];
+    const max = Math.max(...cats.map(c => c[1] + c[2] + c[3]));
+    document.getElementById('cats').innerHTML = cats.map(([n, e, m, h, note]) => {
+        const t = e + m + h, w = v => (v / max * 100) + '%';
+        return `<tr><td><strong>${n}</strong>${note ? `<span class="note">${note}</span>` : ''}</td>` +
+            `<td class="num"><strong>${t}</strong></td><td class="num">${e}</td><td class="num">${m}</td><td class="num">${h}</td>` +
+            `<td class="bar-col"><div class="bar"><span class="e" style="width:${w(e)}"></span><span class="m" style="width:${w(m)}"></span><span class="h" style="width:${w(h)}"></span></div></td></tr>`;
+    }).join('');
+</script>
+</body>
+</html>

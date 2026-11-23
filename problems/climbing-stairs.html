@@ -184,6 +184,8 @@ n = 5: 8 種方法 = dp[4] + dp[3] = 5 + 3
                 <button class="tab-btn active" onclick="showLanguage('python')">Python</button>
                 <button class="tab-btn" onclick="showLanguage('cpp')">C++</button>
                 <button class="tab-btn" onclick="showLanguage('java')">Java</button>
+                <button class="tab-btn" onclick="showLanguage('typescript')">TypeScript</button>
+                <button class="tab-btn" onclick="showLanguage('c')">C</button>
             </div>
 
             <div id="python" class="code-container active">
@@ -454,6 +456,36 @@ class Solution {
         
         return b;
     }
+}</code></pre>
+            </div>
+
+            <div id="typescript" class="code-container">
+                <pre><code class="language-typescript">// DP 滾動變數：f(n) = f(n-1) + f(n-2)
+// 時間複雜度: O(n)，空間複雜度: O(1)
+function climbStairs(n: number): number {
+    if (n &lt;= 2) return n;
+    let prev2 = 1, prev1 = 2;
+    for (let i = 3; i &lt;= n; i++) {
+        const cur = prev1 + prev2;
+        prev2 = prev1;
+        prev1 = cur;
+    }
+    return prev1;
+}</code></pre>
+            </div>
+
+            <div id="c" class="code-container">
+                <pre><code class="language-c">// DP 滾動變數：f(n) = f(n-1) + f(n-2)
+// 時間複雜度: O(n)，空間複雜度: O(1)
+int climbStairs(int n) {
+    if (n &lt;= 2) return n;
+    int prev2 = 1, prev1 = 2;
+    for (int i = 3; i &lt;= n; i++) {
+        int cur = prev1 + prev2;
+        prev2 = prev1;
+        prev1 = cur;
+    }
+    return prev1;
 }</code></pre>
             </div>
         </div>

@@ -157,6 +157,8 @@
                 <button class="tab-btn active" onclick="showLanguage('python')">Python</button>
                 <button class="tab-btn" onclick="showLanguage('cpp')">C++</button>
                 <button class="tab-btn" onclick="showLanguage('java')">Java</button>
+                <button class="tab-btn" onclick="showLanguage('typescript')">TypeScript</button>
+                <button class="tab-btn" onclick="showLanguage('c')">C</button>
             </div>
 
             <div id="python" class="code-container active">
@@ -284,6 +286,46 @@ public:
         
         return -1;
     }
+}</code></pre>
+            </div>
+
+            <div id="typescript" class="code-container">
+                <pre><code class="language-typescript">// 二分：每次至少有一半是有序的，判斷 target 是否落在有序的那一半
+// 時間複雜度: O(log n)，空間複雜度: O(1)
+function search(nums: number[], target: number): number {
+    let left = 0, right = nums.length - 1;
+    while (left &lt;= right) {
+        const mid = (left + right) &gt;&gt; 1;
+        if (nums[mid] === target) return mid;
+        if (nums[left] &lt;= nums[mid]) {                     // 左半有序
+            if (nums[left] &lt;= target &amp;&amp; target &lt; nums[mid]) right = mid - 1;
+            else left = mid + 1;
+        } else {                                           // 右半有序
+            if (nums[mid] &lt; target &amp;&amp; target &lt;= nums[right]) left = mid + 1;
+            else right = mid - 1;
+        }
+    }
+    return -1;
+}</code></pre>
+            </div>
+
+            <div id="c" class="code-container">
+                <pre><code class="language-c">// 二分：每次至少有一半是有序的，判斷 target 是否落在有序的那一半
+// 時間複雜度: O(log n)，空間複雜度: O(1)
+int search(int* nums, int numsSize, int target) {
+    int left = 0, right = numsSize - 1;
+    while (left &lt;= right) {
+        int mid = left + (right - left) / 2;
+        if (nums[mid] == target) return mid;
+        if (nums[left] &lt;= nums[mid]) {                     // 左半有序
+            if (nums[left] &lt;= target &amp;&amp; target &lt; nums[mid]) right = mid - 1;
+            else left = mid + 1;
+        } else {                                           // 右半有序
+            if (nums[mid] &lt; target &amp;&amp; target &lt;= nums[right]) left = mid + 1;
+            else right = mid - 1;
+        }
+    }
+    return -1;
 }</code></pre>
             </div>
         </div>

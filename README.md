@@ -1,11 +1,11 @@
 # LeetCode 學習平台
 
-完整的 LeetCode 題目學習網站,包含 Easy、Medium、Hard 三種難度,提供 Python、C++ 和 Java 詳解。
+完整的 LeetCode 題目學習網站,包含 Easy、Medium、Hard 三種難度,提供 Python、C++、Java、TypeScript 和 C 詳解。
 
 ## 特色功能
 
 - **分類整理**: 依照主題分類(Array, Stack, Binary Tree, DP等)
-- **三語言支援**: Python、C++ 和 Java 完整程式碼實現
+- **五語言支援**: Python、C++、Java、TypeScript 和 C 完整程式碼實現
 - **難度篩選**: 可按難度快速篩選題目
 - **詳細解說**: 每題包含題目描述、解題思路、複雜度分析
 - **現代化設計**: 簡潔專業的介面,舒適的閱讀體驗

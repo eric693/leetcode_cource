@@ -209,6 +209,8 @@ right = temp</code></pre>
                 <button class="tab-btn active" onclick="showLanguage('python')">Python</button>
                 <button class="tab-btn" onclick="showLanguage('cpp')">C++</button>
                 <button class="tab-btn" onclick="showLanguage('java')">Java</button>
+                <button class="tab-btn" onclick="showLanguage('typescript')">TypeScript</button>
+                <button class="tab-btn" onclick="showLanguage('c')">C</button>
             </div>
 
             <div id="python" class="code-container active">
@@ -325,6 +327,42 @@ public:
                 left++;
                 right--;
             }
+        }
+    }
+}</code></pre>
+            </div>
+
+            <div id="typescript" class="code-container">
+                <pre><code class="language-typescript">// 順時針 90° = 先轉置（沿主對角線翻轉），再左右翻轉每一列
+// 時間複雜度: O(n²)，空間複雜度: O(1)
+function rotate(matrix: number[][]): void {
+    const n = matrix.length;
+    for (let i = 0; i &lt; n; i++) {
+        for (let j = i + 1; j &lt; n; j++) {
+            [matrix[i][j], matrix[j][i]] = [matrix[j][i], matrix[i][j]];
+        }
+    }
+    for (const row of matrix) row.reverse();
+}</code></pre>
+            </div>
+
+            <div id="c" class="code-container">
+                <pre><code class="language-c">// 順時針 90° = 先轉置（沿主對角線翻轉），再左右翻轉每一列
+// 時間複雜度: O(n²)，空間複雜度: O(1)
+void rotate(int** matrix, int matrixSize, int* matrixColSize) {
+    int n = matrixSize;
+    for (int i = 0; i &lt; n; i++) {
+        for (int j = i + 1; j &lt; n; j++) {
+            int t = matrix[i][j];
+            matrix[i][j] = matrix[j][i];
+            matrix[j][i] = t;
+        }
+    }
+    for (int i = 0; i &lt; n; i++) {
+        for (int l = 0, r = n - 1; l &lt; r; l++, r--) {
+            int t = matrix[i][l];
+            matrix[i][l] = matrix[i][r];
+            matrix[i][r] = t;
         }
     }
 }</code></pre>

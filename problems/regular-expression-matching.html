@@ -231,6 +231,8 @@ p 只包含從 a-z 的小寫字母，以及字元 . 和 *
                 <button class="tab-btn active" onclick="showLanguage('python')">Python</button>
                 <button class="tab-btn" onclick="showLanguage('cpp')">C++</button>
                 <button class="tab-btn" onclick="showLanguage('java')">Java</button>
+                <button class="tab-btn" onclick="showLanguage('typescript')">TypeScript</button>
+                <button class="tab-btn" onclick="showLanguage('c')">C</button>
             </div>
 
             <div id="python" class="code-container active">
@@ -369,6 +371,57 @@ public:
         
         return dp[m][n];
     }
+}</code></pre>
+            </div>
+
+            <div id="typescript" class="code-container">
+                <pre><code class="language-typescript">// 2D DP：dp[i][j] = s 前 i 字是否能被 p 前 j 字匹配
+// 時間複雜度: O(m·n)，空間複雜度: O(m·n)
+function isMatch(s: string, p: string): boolean {
+    const m = s.length, n = p.length;
+    const dp: boolean[][] = Array.from({ length: m + 1 }, () =&gt; new Array(n + 1).fill(false));
+    dp[0][0] = true;
+    const match = (i: number, j: number) =&gt; p[j - 1] === '.' || s[i - 1] === p[j - 1];
+
+    for (let i = 0; i &lt;= m; i++) {
+        for (let j = 1; j &lt;= n; j++) {
+            if (p[j - 1] === '*') {
+                dp[i][j] = dp[i][j - 2]                              // x* 匹配 0 次
+                    || (i &gt; 0 &amp;&amp; match(i, j - 1) &amp;&amp; dp[i - 1][j]);   // x* 再多吃一個字元
+            } else {
+                dp[i][j] = i &gt; 0 &amp;&amp; match(i, j) &amp;&amp; dp[i - 1][j - 1];
+            }
+        }
+    }
+    return dp[m][n];
+}</code></pre>
+            </div>
+
+            <div id="c" class="code-container">
+                <pre><code class="language-c">// 2D DP：dp[i][j] = s 前 i 字是否能被 p 前 j 字匹配
+// 時間複雜度: O(m·n)，空間複雜度: O(m·n)
+bool isMatch(char* s, char* p) {
+    int m = strlen(s), n = strlen(p);
+    bool* dp = calloc((m + 1) * (n + 1), sizeof(bool));
+    #define DP(i, j) dp[(i) * (n + 1) + (j)]
+    #define MATCH(i, j) (p[(j) - 1] == '.' || s[(i) - 1] == p[(j) - 1])
+    DP(0, 0) = true;
+
+    for (int i = 0; i &lt;= m; i++) {
+        for (int j = 1; j &lt;= n; j++) {
+            if (p[j - 1] == '*') {
+                DP(i, j) = DP(i, j - 2)                              // x* 匹配 0 次
+                    || (i &gt; 0 &amp;&amp; MATCH(i, j - 1) &amp;&amp; DP(i - 1, j));   // x* 再多吃一個字元
+            } else {
+                DP(i, j) = i &gt; 0 &amp;&amp; MATCH(i, j) &amp;&amp; DP(i - 1, j - 1);
+            }
+        }
+    }
+    bool ans = DP(m, n);
+    #undef DP
+    #undef MATCH
+    free(dp);
+    return ans;
 }</code></pre>
             </div>
         </div>

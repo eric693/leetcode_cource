@@ -147,6 +147,8 @@
                 <button class="tab-btn active" onclick="showLanguage('python')">Python</button>
                 <button class="tab-btn" onclick="showLanguage('cpp')">C++</button>
                 <button class="tab-btn" onclick="showLanguage('java')">Java</button>
+                <button class="tab-btn" onclick="showLanguage('typescript')">TypeScript</button>
+                <button class="tab-btn" onclick="showLanguage('c')">C</button>
             </div>
 
             <div id="python" class="code-container active">
@@ -311,6 +313,50 @@ class Solution {
         
         return newHead;
     }
+}</code></pre>
+            </div>
+
+            <div id="typescript" class="code-container">
+                <pre><code class="language-typescript">/**
+ * Definition for singly-linked list.
+ * class ListNode {
+ *     val: number
+ *     next: ListNode | null
+ * }
+ */
+// 迭代：逐一把 next 指向前一個節點
+// 時間複雜度: O(n)，空間複雜度: O(1)
+function reverseList(head: ListNode | null): ListNode | null {
+    let prev: ListNode | null = null, cur = head;
+    while (cur) {
+        const next: ListNode | null = cur.next;
+        cur.next = prev;
+        prev = cur;
+        cur = next;
+    }
+    return prev;
+}</code></pre>
+            </div>
+
+            <div id="c" class="code-container">
+                <pre><code class="language-c">/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     struct ListNode *next;
+ * };
+ */
+// 迭代：逐一把 next 指向前一個節點
+// 時間複雜度: O(n)，空間複雜度: O(1)
+struct ListNode* reverseList(struct ListNode* head) {
+    struct ListNode *prev = NULL, *cur = head;
+    while (cur) {
+        struct ListNode* next = cur-&gt;next;
+        cur-&gt;next = prev;
+        prev = cur;
+        cur = next;
+    }
+    return prev;
 }</code></pre>
             </div>
         </div>

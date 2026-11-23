@@ -206,6 +206,8 @@
                 <button class="tab-btn active" onclick="showLanguage('python')">Python</button>
                 <button class="tab-btn" onclick="showLanguage('cpp')">C++</button>
                 <button class="tab-btn" onclick="showLanguage('java')">Java</button>
+                <button class="tab-btn" onclick="showLanguage('typescript')">TypeScript</button>
+                <button class="tab-btn" onclick="showLanguage('c')">C</button>
             </div>
 
             <div id="python" class="code-container active">
@@ -519,6 +521,50 @@ class Solution {
         
         return true;
     }
+}</code></pre>
+            </div>
+
+            <div id="typescript" class="code-container">
+                <pre><code class="language-typescript">/**
+ * Definition for a binary tree node.
+ * class TreeNode {
+ *     val: number
+ *     left: TreeNode | null
+ *     right: TreeNode | null
+ * }
+ */
+// 遞迴傳遞上下界：左子樹必須 &lt; 節點值，右子樹必須 &gt; 節點值
+// 時間複雜度: O(n)，空間複雜度: O(h)
+function isValidBST(root: TreeNode | null): boolean {
+    const valid = (node: TreeNode | null, lo: number, hi: number): boolean =&gt; {
+        if (!node) return true;
+        if (node.val &lt;= lo || node.val &gt;= hi) return false;
+        return valid(node.left, lo, node.val) &amp;&amp; valid(node.right, node.val, hi);
+    };
+    return valid(root, -Infinity, Infinity);
+}</code></pre>
+            </div>
+
+            <div id="c" class="code-container">
+                <pre><code class="language-c">/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     struct TreeNode *left;
+ *     struct TreeNode *right;
+ * };
+ */
+// 遞迴傳遞上下界：左子樹必須 &lt; 節點值，右子樹必須 &gt; 節點值
+// 用 long 當邊界，才能處理節點值剛好是 INT_MIN / INT_MAX 的情況
+// 時間複雜度: O(n)，空間複雜度: O(h)
+static bool valid(struct TreeNode* node, long lo, long hi) {
+    if (!node) return true;
+    if (node-&gt;val &lt;= lo || node-&gt;val &gt;= hi) return false;
+    return valid(node-&gt;left, lo, node-&gt;val) &amp;&amp; valid(node-&gt;right, node-&gt;val, hi);
+}
+
+bool isValidBST(struct TreeNode* root) {
+    return valid(root, LONG_MIN, LONG_MAX);
 }</code></pre>
             </div>
         </div>

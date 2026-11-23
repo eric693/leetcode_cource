@@ -233,6 +233,8 @@ result[2] = [15, 7]   (depth=2 訪問 15, 7)</code></pre>
                 <button class="tab-btn active" onclick="showLanguage('python')">Python</button>
                 <button class="tab-btn" onclick="showLanguage('cpp')">C++</button>
                 <button class="tab-btn" onclick="showLanguage('java')">Java</button>
+                <button class="tab-btn" onclick="showLanguage('typescript')">TypeScript</button>
+                <button class="tab-btn" onclick="showLanguage('c')">C</button>
             </div>
 
             <div id="python" class="code-container active">
@@ -484,6 +486,76 @@ class Solution {
         dfs(node.left, depth + 1, result);
         dfs(node.right, depth + 1, result);
     }
+}</code></pre>
+            </div>
+
+            <div id="typescript" class="code-container">
+                <pre><code class="language-typescript">/**
+ * Definition for a binary tree node.
+ * class TreeNode {
+ *     val: number
+ *     left: TreeNode | null
+ *     right: TreeNode | null
+ * }
+ */
+// BFS：每輪處理一整層
+// 時間複雜度: O(n)，空間複雜度: O(n)
+function levelOrder(root: TreeNode | null): number[][] {
+    const result: number[][] = [];
+    if (!root) return result;
+    let queue: TreeNode[] = [root];
+
+    while (queue.length) {
+        const level: number[] = [];
+        const next: TreeNode[] = [];
+        for (const node of queue) {
+            level.push(node.val);
+            if (node.left) next.push(node.left);
+            if (node.right) next.push(node.right);
+        }
+        result.push(level);
+        queue = next;
+    }
+    return result;
+}</code></pre>
+            </div>
+
+            <div id="c" class="code-container">
+                <pre><code class="language-c">/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     struct TreeNode *left;
+ *     struct TreeNode *right;
+ * };
+ */
+// BFS：用陣列當佇列，每輪處理一整層
+// 時間複雜度: O(n)，空間複雜度: O(n)
+#define MAXN 2000
+
+int** levelOrder(struct TreeNode* root, int* returnSize, int** returnColumnSizes) {
+    int** result = malloc(sizeof(int*) * MAXN);
+    *returnColumnSizes = malloc(sizeof(int) * MAXN);
+    *returnSize = 0;
+    if (!root) return result;
+
+    struct TreeNode* queue[MAXN];
+    int head = 0, tail = 0;
+    queue[tail++] = root;
+
+    while (head &lt; tail) {
+        int size = tail - head;                   // 這一層的節點數
+        int* level = malloc(sizeof(int) * size);
+        for (int i = 0; i &lt; size; i++) {
+            struct TreeNode* node = queue[head++];
+            level[i] = node-&gt;val;
+            if (node-&gt;left) queue[tail++] = node-&gt;left;
+            if (node-&gt;right) queue[tail++] = node-&gt;right;
+        }
+        (*returnColumnSizes)[*returnSize] = size;
+        result[(*returnSize)++] = level;
+    }
+    return result;
 }</code></pre>
             </div>
         </div>

@@ -221,6 +221,8 @@ x₄ = (2.843 + 8/2.843) / 2 = 2.828
                 <button class="tab-btn active" onclick="showLanguage('python')">Python</button>
                 <button class="tab-btn" onclick="showLanguage('cpp')">C++</button>
                 <button class="tab-btn" onclick="showLanguage('java')">Java</button>
+                <button class="tab-btn" onclick="showLanguage('typescript')">TypeScript</button>
+                <button class="tab-btn" onclick="showLanguage('c')">C</button>
             </div>
 
             <div id="python" class="code-container active">
@@ -380,6 +382,34 @@ public:
         
         return (int) r;
     }
+}</code></pre>
+            </div>
+
+            <div id="typescript" class="code-container">
+                <pre><code class="language-typescript">// 二分搜尋最大的 r，使 r² ≤ x
+// 時間複雜度: O(log x)，空間複雜度: O(1)
+function mySqrt(x: number): number {
+    let lo = 0, hi = x;
+    while (lo &lt; hi) {
+        const mid = Math.floor((lo + hi + 1) / 2);   // 向上取中點，避免死循環
+        if (mid * mid &lt;= x) lo = mid;
+        else hi = mid - 1;
+    }
+    return lo;
+}</code></pre>
+            </div>
+
+            <div id="c" class="code-container">
+                <pre><code class="language-c">// 二分搜尋最大的 r，使 r² ≤ x（用 long 避免 mid * mid 溢位）
+// 時間複雜度: O(log x)，空間複雜度: O(1)
+int mySqrt(int x) {
+    long lo = 0, hi = x;
+    while (lo &lt; hi) {
+        long mid = (lo + hi + 1) / 2;            // 向上取中點，避免死循環
+        if (mid * mid &lt;= x) lo = mid;
+        else hi = mid - 1;
+    }
+    return (int)lo;
 }</code></pre>
             </div>
         </div>

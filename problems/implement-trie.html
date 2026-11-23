@@ -21,7 +21,7 @@
         .section h2 { color: #1e293b; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 3px solid #ea580c; }
         .section h3 { color: #475569; margin: 25px 0 15px 0; font-size: 1.3em; }
         .code-block { background: #282c34; border-radius: 8px; overflow: hidden; margin: 15px 0; }
-        .lang-tabs { display: flex; background: #21252b; border-bottom: 1px solid #181a1f; }
+        .lang-tabs { display: flex; flex-wrap: wrap; background: #21252b; border-bottom: 1px solid #181a1f; }
         .lang-tab { padding: 12px 24px; cursor: pointer; color: #abb2bf; border: none; background: none; transition: all 0.3s; font-weight: 500; }
         .lang-tab.active { color: #61afef; background: #282c34; border-bottom: 2px solid #61afef; }
         .lang-tab:hover { color: #61afef; background: #2c313a; }
@@ -164,6 +164,8 @@ Trie 的最壞查詢是 O(L)，不像 HashSet 有雜湊碰撞的風險。
                     <button class="lang-tab active" onclick="switchLang(event, 'python')">Python</button>
                     <button class="lang-tab" onclick="switchLang(event, 'cpp')">C++</button>
                     <button class="lang-tab" onclick="switchLang(event, 'java')">Java</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'typescript')">TypeScript</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'c')">C</button>
                 </div>
 
                 <div id="python" class="code-content active">
@@ -284,6 +286,91 @@ public:
         }
         return node;
     }
+}</code></pre>
+                </div>
+
+                <div id="typescript" class="code-content">
+                    <pre><code class="language-typescript">// 字典樹：每個節點有 26 個子節點與結尾標記
+// insert / search / startsWith 皆為 O(L)，空間複雜度: O(總字元數 × 26)
+class TrieNode {
+    children: (TrieNode | null)[] = new Array(26).fill(null);
+    isEnd = false;
+}
+
+class Trie {
+    private root = new TrieNode();
+
+    insert(word: string): void {
+        let node = this.root;
+        for (const ch of word) {
+            const i = ch.charCodeAt(0) - 97;
+            if (!node.children[i]) node.children[i] = new TrieNode();
+            node = node.children[i]!;
+        }
+        node.isEnd = true;
+    }
+
+    search(word: string): boolean {
+        const node = this.find(word);
+        return node !== null &amp;&amp; node.isEnd;
+    }
+
+    startsWith(prefix: string): boolean {
+        return this.find(prefix) !== null;
+    }
+
+    private find(s: string): TrieNode | null {
+        let node: TrieNode | null = this.root;
+        for (const ch of s) {
+            node = node.children[ch.charCodeAt(0) - 97];
+            if (!node) return null;
+        }
+        return node;
+    }
+}</code></pre>
+                </div>
+
+                <div id="c" class="code-content">
+                    <pre><code class="language-c">// 字典樹：每個節點有 26 個子節點與結尾標記
+// insert / search / startsWith 皆為 O(L)，空間複雜度: O(總字元數 × 26)
+typedef struct Trie {
+    struct Trie* children[26];
+    bool isEnd;
+} Trie;
+
+Trie* trieCreate() {
+    return calloc(1, sizeof(Trie));          // calloc 會把子節點全設為 NULL
+}
+
+void trieInsert(Trie* obj, char* word) {
+    Trie* node = obj;
+    for (char* p = word; *p; p++) {
+        int i = *p - 'a';
+        if (!node-&gt;children[i]) node-&gt;children[i] = trieCreate();
+        node = node-&gt;children[i];
+    }
+    node-&gt;isEnd = true;
+}
+
+static Trie* find(Trie* obj, char* s) {
+    Trie* node = obj;
+    for (char* p = s; *p &amp;&amp; node; p++) node = node-&gt;children[*p - 'a'];
+    return node;
+}
+
+bool trieSearch(Trie* obj, char* word) {
+    Trie* node = find(obj, word);
+    return node &amp;&amp; node-&gt;isEnd;
+}
+
+bool trieStartsWith(Trie* obj, char* prefix) {
+    return find(obj, prefix) != NULL;
+}
+
+void trieFree(Trie* obj) {
+    if (!obj) return;
+    for (int i = 0; i &lt; 26; i++) trieFree(obj-&gt;children[i]);
+    free(obj);
 }</code></pre>
                 </div>
             </div>

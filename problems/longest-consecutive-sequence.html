@@ -101,6 +101,8 @@
             <div class="language-tabs">
                 <button class="tab-btn active" onclick="showLanguage('python')">Python</button>
                 <button class="tab-btn" onclick="showLanguage('java')">Java</button>
+                <button class="tab-btn" onclick="showLanguage('typescript')">TypeScript</button>
+                <button class="tab-btn" onclick="showLanguage('c')">C</button>
                 <button class="tab-btn" onclick="showLanguage('cpp')">C++</button>
             </div>
 
@@ -142,6 +144,44 @@
         }
         return longest;
     }
+}</code></pre>
+            </div>
+
+            <div id="typescript" class="code-container">
+                <pre><code class="language-typescript">// 雜湊集合：只從「序列起點」（x-1 不存在）開始往上數
+// 時間複雜度: O(n)，空間複雜度: O(n)
+function longestConsecutive(nums: number[]): number {
+    const set = new Set(nums);
+    let best = 0;
+    for (const x of set) {
+        if (set.has(x - 1)) continue;        // 不是起點，跳過
+        let len = 1;
+        while (set.has(x + len)) len++;
+        best = Math.max(best, len);
+    }
+    return best;
+}</code></pre>
+            </div>
+
+            <div id="c" class="code-container">
+                <pre><code class="language-c">// 排序後線性掃描（C 沒有內建雜湊集合，排序最簡潔）
+// 時間複雜度: O(n log n)，空間複雜度: O(log n)
+static int cmp(const void* a, const void* b) {
+    int x = *(const int*)a, y = *(const int*)b;
+    return (x &gt; y) - (x &lt; y);
+}
+
+int longestConsecutive(int* nums, int numsSize) {
+    if (numsSize == 0) return 0;
+    qsort(nums, numsSize, sizeof(int), cmp);
+    int best = 1, len = 1;
+    for (int i = 1; i &lt; numsSize; i++) {
+        if (nums[i] == nums[i - 1]) continue;              // 重複值不影響長度
+        if (nums[i] == nums[i - 1] + 1) len++;
+        else len = 1;
+        if (len &gt; best) best = len;
+    }
+    return best;
 }</code></pre>
             </div>
 

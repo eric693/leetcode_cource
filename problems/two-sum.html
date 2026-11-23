@@ -128,6 +128,8 @@
                 <button class="tab-btn active" onclick="showLanguage('python')">Python</button>
                 <button class="tab-btn" onclick="showLanguage('cpp')">C++</button>
                 <button class="tab-btn" onclick="showLanguage('java')">Java</button>
+                <button class="tab-btn" onclick="showLanguage('typescript')">TypeScript</button>
+                <button class="tab-btn" onclick="showLanguage('c')">C</button>
             </div>
 
             <div id="python" class="code-container active">
@@ -221,6 +223,55 @@ class Solution {
         
         return new int[] {};
     }
+}</code></pre>
+            </div>
+
+            <div id="typescript" class="code-container">
+                <pre><code class="language-typescript">// 雜湊表：邊遍歷邊查詢補數是否已經出現過
+// 時間複雜度: O(n)，空間複雜度: O(n)
+function twoSum(nums: number[], target: number): number[] {
+    const seen = new Map&lt;number, number&gt;();   // 數值 → 索引
+    for (let i = 0; i &lt; nums.length; i++) {
+        const j = seen.get(target - nums[i]);
+        if (j !== undefined) return [j, i];
+        seen.set(nums[i], i);
+    }
+    return [];
+}</code></pre>
+            </div>
+
+            <div id="c" class="code-container">
+                <pre><code class="language-c">// C 沒有內建雜湊表：把索引依數值排序後用雙指標
+// 時間複雜度: O(n log n)，空間複雜度: O(n)
+static int* g_nums;
+
+static int cmpIdx(const void* a, const void* b) {
+    int x = g_nums[*(const int*)a], y = g_nums[*(const int*)b];
+    return (x &gt; y) - (x &lt; y);
+}
+
+int* twoSum(int* nums, int numsSize, int target, int* returnSize) {
+    int* idx = malloc(sizeof(int) * numsSize);
+    for (int i = 0; i &lt; numsSize; i++) idx[i] = i;
+    g_nums = nums;
+    qsort(idx, numsSize, sizeof(int), cmpIdx);    // 排序索引，保留原始位置
+
+    int* ans = malloc(sizeof(int) * 2);
+    *returnSize = 0;
+    int left = 0, right = numsSize - 1;
+    while (left &lt; right) {
+        long sum = (long)nums[idx[left]] + nums[idx[right]];
+        if (sum == target) {
+            ans[0] = idx[left];
+            ans[1] = idx[right];
+            *returnSize = 2;
+            break;
+        }
+        if (sum &lt; target) left++;
+        else right--;
+    }
+    free(idx);
+    return ans;
 }</code></pre>
             </div>
         </div>

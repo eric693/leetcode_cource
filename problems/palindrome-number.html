@@ -168,6 +168,8 @@
                 <button class="tab-btn active" onclick="showLanguage('python')">Python</button>
                 <button class="tab-btn" onclick="showLanguage('cpp')">C++</button>
                 <button class="tab-btn" onclick="showLanguage('java')">Java</button>
+                <button class="tab-btn" onclick="showLanguage('typescript')">TypeScript</button>
+                <button class="tab-btn" onclick="showLanguage('c')">C</button>
             </div>
 
             <div id="python" class="code-container active">
@@ -257,6 +259,34 @@ public:
         // 奇數位：x == reversedHalf / 10
         return x == reversedHalf || x == reversedHalf / 10;
     }
+}</code></pre>
+            </div>
+
+            <div id="typescript" class="code-container">
+                <pre><code class="language-typescript">// 只反轉後半段數字，與前半段比較（不轉字串、不會溢位）
+// 時間複雜度: O(log n)，空間複雜度: O(1)
+function isPalindrome(x: number): boolean {
+    if (x &lt; 0 || (x % 10 === 0 &amp;&amp; x !== 0)) return false;
+    let half = 0;
+    while (x &gt; half) {
+        half = half * 10 + (x % 10);
+        x = Math.floor(x / 10);
+    }
+    return x === half || x === Math.floor(half / 10);   // 奇數位數時去掉中間位
+}</code></pre>
+            </div>
+
+            <div id="c" class="code-container">
+                <pre><code class="language-c">// 只反轉後半段數字，與前半段比較（不轉字串、不會溢位）
+// 時間複雜度: O(log n)，空間複雜度: O(1)
+bool isPalindrome(int x) {
+    if (x &lt; 0 || (x % 10 == 0 &amp;&amp; x != 0)) return false;
+    int half = 0;
+    while (x &gt; half) {
+        half = half * 10 + x % 10;
+        x /= 10;
+    }
+    return x == half || x == half / 10;        // 奇數位數時去掉中間位
 }</code></pre>
             </div>
         </div>

@@ -181,6 +181,8 @@ numbers 按升序排列
                 <button class="tab-btn active" onclick="showLanguage('python')">Python</button>
                 <button class="tab-btn" onclick="showLanguage('cpp')">C++</button>
                 <button class="tab-btn" onclick="showLanguage('java')">Java</button>
+                <button class="tab-btn" onclick="showLanguage('typescript')">TypeScript</button>
+                <button class="tab-btn" onclick="showLanguage('c')">C</button>
             </div>
 
             <div id="python" class="code-container active">
@@ -291,6 +293,43 @@ public:
         // 題目保證有解，不會到這裡
         return new int[]{};
     }
+}</code></pre>
+            </div>
+
+            <div id="typescript" class="code-container">
+                <pre><code class="language-typescript">// 有序陣列 + 雙指標：和太小左指標右移，太大右指標左移
+// 時間複雜度: O(n)，空間複雜度: O(1)
+function twoSum(numbers: number[], target: number): number[] {
+    let left = 0, right = numbers.length - 1;
+    while (left &lt; right) {
+        const sum = numbers[left] + numbers[right];
+        if (sum === target) return [left + 1, right + 1];   // 題目要求 1-indexed
+        if (sum &lt; target) left++;
+        else right--;
+    }
+    return [];
+}</code></pre>
+            </div>
+
+            <div id="c" class="code-container">
+                <pre><code class="language-c">// 有序陣列 + 雙指標：和太小左指標右移，太大右指標左移
+// 時間複雜度: O(n)，空間複雜度: O(1)
+int* twoSum(int* numbers, int numbersSize, int target, int* returnSize) {
+    int* ans = malloc(sizeof(int) * 2);
+    *returnSize = 2;
+    int left = 0, right = numbersSize - 1;
+    while (left &lt; right) {
+        int sum = numbers[left] + numbers[right];
+        if (sum == target) {
+            ans[0] = left + 1;                             // 題目要求 1-indexed
+            ans[1] = right + 1;
+            return ans;
+        }
+        if (sum &lt; target) left++;
+        else right--;
+    }
+    *returnSize = 0;
+    return ans;
 }</code></pre>
             </div>
         </div>

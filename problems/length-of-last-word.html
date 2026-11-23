@@ -101,6 +101,8 @@
             <div class="language-tabs">
                 <button class="tab-btn active" onclick="showLanguage('python')">Python</button>
                 <button class="tab-btn" onclick="showLanguage('java')">Java</button>
+                <button class="tab-btn" onclick="showLanguage('typescript')">TypeScript</button>
+                <button class="tab-btn" onclick="showLanguage('c')">C</button>
                 <button class="tab-btn" onclick="showLanguage('cpp')">C++</button>
             </div>
 
@@ -131,6 +133,34 @@
         }
         return length;
     }
+}</code></pre>
+            </div>
+
+            <div id="typescript" class="code-container">
+                <pre><code class="language-typescript">// 從尾端往前：先跳過空白，再數字元
+// 時間複雜度: O(n)，空間複雜度: O(1)
+function lengthOfLastWord(s: string): number {
+    let i = s.length - 1, len = 0;
+    while (i &gt;= 0 &amp;&amp; s[i] === ' ') i--;
+    while (i &gt;= 0 &amp;&amp; s[i] !== ' ') {
+        len++;
+        i--;
+    }
+    return len;
+}</code></pre>
+            </div>
+
+            <div id="c" class="code-container">
+                <pre><code class="language-c">// 從尾端往前：先跳過空白，再數字元
+// 時間複雜度: O(n)，空間複雜度: O(1)
+int lengthOfLastWord(char* s) {
+    int i = strlen(s) - 1, len = 0;
+    while (i &gt;= 0 &amp;&amp; s[i] == ' ') i--;
+    while (i &gt;= 0 &amp;&amp; s[i] != ' ') {
+        len++;
+        i--;
+    }
+    return len;
 }</code></pre>
             </div>
 

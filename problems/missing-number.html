@@ -220,6 +220,8 @@ result = 0 ⊕ 1 ⊕ 2 ⊕ 3 ⊕ 3 ⊕ 0 ⊕ 1
                 <button class="tab-btn active" onclick="showLanguage('python')">Python</button>
                 <button class="tab-btn" onclick="showLanguage('cpp')">C++</button>
                 <button class="tab-btn" onclick="showLanguage('java')">Java</button>
+                <button class="tab-btn" onclick="showLanguage('typescript')">TypeScript</button>
+                <button class="tab-btn" onclick="showLanguage('c')">C</button>
             </div>
 
             <div id="python" class="code-container active">
@@ -349,6 +351,26 @@ public:
         
         return result;
     }
+}</code></pre>
+            </div>
+
+            <div id="typescript" class="code-container">
+                <pre><code class="language-typescript">// XOR：0..n 與所有元素全部 XOR，成對的會抵銷，剩下缺少的數
+// 時間複雜度: O(n)，空間複雜度: O(1)
+function missingNumber(nums: number[]): number {
+    let x = nums.length;
+    for (let i = 0; i &lt; nums.length; i++) x ^= i ^ nums[i];
+    return x;
+}</code></pre>
+            </div>
+
+            <div id="c" class="code-container">
+                <pre><code class="language-c">// XOR：0..n 與所有元素全部 XOR，成對的會抵銷，剩下缺少的數
+// 時間複雜度: O(n)，空間複雜度: O(1)
+int missingNumber(int* nums, int numsSize) {
+    int x = numsSize;
+    for (int i = 0; i &lt; numsSize; i++) x ^= i ^ nums[i];
+    return x;
 }</code></pre>
             </div>
         </div>

@@ -117,6 +117,8 @@
                 <button class="tab-btn active" onclick="showLanguage('python')">Python</button>
                 <button class="tab-btn" onclick="showLanguage('cpp')">C++</button>
                 <button class="tab-btn" onclick="showLanguage('java')">Java</button>
+                <button class="tab-btn" onclick="showLanguage('typescript')">TypeScript</button>
+                <button class="tab-btn" onclick="showLanguage('c')">C</button>
             </div>
 
             <div id="python" class="code-container active">
@@ -208,6 +210,64 @@ class Solution {
         // 返回所有分組
         return new ArrayList&lt;&gt;(map.values());
     }
+}</code></pre>
+            </div>
+
+            <div id="typescript" class="code-container">
+                <pre><code class="language-typescript">// 雜湊表：排序後的字串當作 key
+// 時間複雜度: O(n · k log k)，空間複雜度: O(n · k)
+function groupAnagrams(strs: string[]): string[][] {
+    const groups = new Map&lt;string, string[]&gt;();
+    for (const s of strs) {
+        const key = s.split('').sort().join('');
+        if (!groups.has(key)) groups.set(key, []);
+        groups.get(key)!.push(s);
+    }
+    return [...groups.values()];
+}</code></pre>
+            </div>
+
+            <div id="c" class="code-container">
+                <pre><code class="language-c">// 為每個字串建立排序後的 key，再依 key 排序索引，相同 key 連續出現即為同一組
+// 時間複雜度: O(n · k log k + n log n · k)，空間複雜度: O(n · k)
+static char** keys;
+
+static int cmpChar(const void* a, const void* b) {
+    return *(const char*)a - *(const char*)b;
+}
+
+static int cmpIdx(const void* a, const void* b) {
+    return strcmp(keys[*(const int*)a], keys[*(const int*)b]);
+}
+
+char*** groupAnagrams(char** strs, int strsSize, int* returnSize, int** returnColumnSizes) {
+    keys = malloc(sizeof(char*) * strsSize);
+    int* order = malloc(sizeof(int) * strsSize);
+    for (int i = 0; i &lt; strsSize; i++) {
+        keys[i] = strdup(strs[i]);
+        qsort(keys[i], strlen(keys[i]), 1, cmpChar);
+        order[i] = i;
+    }
+    qsort(order, strsSize, sizeof(int), cmpIdx);
+
+    char*** result = malloc(sizeof(char**) * strsSize);
+    *returnColumnSizes = malloc(sizeof(int) * strsSize);
+    *returnSize = 0;
+
+    for (int i = 0; i &lt; strsSize; ) {
+        int j = i;
+        while (j &lt; strsSize &amp;&amp; strcmp(keys[order[i]], keys[order[j]]) == 0) j++;
+        char** group = malloc(sizeof(char*) * (j - i));
+        for (int t = i; t &lt; j; t++) group[t - i] = strs[order[t]];
+        (*returnColumnSizes)[*returnSize] = j - i;
+        result[(*returnSize)++] = group;
+        i = j;
+    }
+
+    for (int i = 0; i &lt; strsSize; i++) free(keys[i]);
+    free(keys);
+    free(order);
+    return result;
 }</code></pre>
             </div>
         </div>

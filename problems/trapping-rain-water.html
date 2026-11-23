@@ -193,6 +193,8 @@ i=11: min(3,1) - 1 = 0
                 <button class="tab-btn active" onclick="showLanguage('python')">Python</button>
                 <button class="tab-btn" onclick="showLanguage('cpp')">C++</button>
                 <button class="tab-btn" onclick="showLanguage('java')">Java</button>
+                <button class="tab-btn" onclick="showLanguage('typescript')">TypeScript</button>
+                <button class="tab-btn" onclick="showLanguage('c')">C</button>
             </div>
 
             <div id="python" class="code-container active">
@@ -404,6 +406,48 @@ public:
         
         return water;
     }
+}</code></pre>
+            </div>
+
+            <div id="typescript" class="code-container">
+                <pre><code class="language-typescript">// 雙指標：較矮的一側決定水位，從那一側往內移動
+// 時間複雜度: O(n)，空間複雜度: O(1)
+function trap(height: number[]): number {
+    let left = 0, right = height.length - 1;
+    let leftMax = 0, rightMax = 0, water = 0;
+    while (left &lt; right) {
+        if (height[left] &lt; height[right]) {
+            leftMax = Math.max(leftMax, height[left]);
+            water += leftMax - height[left];
+            left++;
+        } else {
+            rightMax = Math.max(rightMax, height[right]);
+            water += rightMax - height[right];
+            right--;
+        }
+    }
+    return water;
+}</code></pre>
+            </div>
+
+            <div id="c" class="code-container">
+                <pre><code class="language-c">// 雙指標：較矮的一側決定水位，從那一側往內移動
+// 時間複雜度: O(n)，空間複雜度: O(1)
+int trap(int* height, int heightSize) {
+    int left = 0, right = heightSize - 1;
+    int leftMax = 0, rightMax = 0, water = 0;
+    while (left &lt; right) {
+        if (height[left] &lt; height[right]) {
+            if (height[left] &gt; leftMax) leftMax = height[left];
+            water += leftMax - height[left];
+            left++;
+        } else {
+            if (height[right] &gt; rightMax) rightMax = height[right];
+            water += rightMax - height[right];
+            right--;
+        }
+    }
+    return water;
 }</code></pre>
             </div>
         </div>

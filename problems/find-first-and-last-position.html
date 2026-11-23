@@ -173,6 +173,8 @@ nums 是一個非遞減陣列
                 <button class="tab-btn active" onclick="showLanguage('python')">Python</button>
                 <button class="tab-btn" onclick="showLanguage('cpp')">C++</button>
                 <button class="tab-btn" onclick="showLanguage('java')">Java</button>
+                <button class="tab-btn" onclick="showLanguage('typescript')">TypeScript</button>
+                <button class="tab-btn" onclick="showLanguage('c')">C</button>
             </div>
 
             <div id="python" class="code-container active">
@@ -365,6 +367,54 @@ private:
         
         return result;
     }
+}</code></pre>
+            </div>
+
+            <div id="typescript" class="code-container">
+                <pre><code class="language-typescript">// 兩次二分：找第一個 ≥ target 與第一個 &gt; target 的位置
+// 時間複雜度: O(log n)，空間複雜度: O(1)
+function searchRange(nums: number[], target: number): number[] {
+    // 回傳第一個「&gt; x（strict）或 ≥ x」的索引
+    const lowerBound = (x: number, strict: boolean): number =&gt; {
+        let lo = 0, hi = nums.length;
+        while (lo &lt; hi) {
+            const mid = (lo + hi) &gt;&gt; 1;
+            if (nums[mid] &lt; x || (strict &amp;&amp; nums[mid] === x)) lo = mid + 1;
+            else hi = mid;
+        }
+        return lo;
+    };
+
+    const left = lowerBound(target, false);
+    if (left === nums.length || nums[left] !== target) return [-1, -1];
+    return [left, lowerBound(target, true) - 1];
+}</code></pre>
+            </div>
+
+            <div id="c" class="code-container">
+                <pre><code class="language-c">// 兩次二分：找第一個 ≥ target 與第一個 &gt; target 的位置
+// 時間複雜度: O(log n)，空間複雜度: O(1)
+static int lowerBound(int* nums, int n, int x, bool strict) {
+    int lo = 0, hi = n;
+    while (lo &lt; hi) {
+        int mid = lo + (hi - lo) / 2;
+        if (nums[mid] &lt; x || (strict &amp;&amp; nums[mid] == x)) lo = mid + 1;
+        else hi = mid;
+    }
+    return lo;
+}
+
+int* searchRange(int* nums, int numsSize, int target, int* returnSize) {
+    int* ans = malloc(sizeof(int) * 2);
+    *returnSize = 2;
+    int left = lowerBound(nums, numsSize, target, false);
+    if (left == numsSize || nums[left] != target) {
+        ans[0] = ans[1] = -1;
+    } else {
+        ans[0] = left;
+        ans[1] = lowerBound(nums, numsSize, target, true) - 1;
+    }
+    return ans;
 }</code></pre>
             </div>
         </div>

@@ -126,6 +126,8 @@
                 <button class="tab-btn active" onclick="showLanguage('python')">Python</button>
                 <button class="tab-btn" onclick="showLanguage('cpp')">C++</button>
                 <button class="tab-btn" onclick="showLanguage('java')">Java</button>
+                <button class="tab-btn" onclick="showLanguage('typescript')">TypeScript</button>
+                <button class="tab-btn" onclick="showLanguage('c')">C</button>
             </div>
 
             <div id="python" class="code-container active">
@@ -233,6 +235,39 @@ public:
         
         return true;
     }
+}</code></pre>
+            </div>
+
+            <div id="typescript" class="code-container">
+                <pre><code class="language-typescript">// 雙指標：跳過非英數字元，忽略大小寫比較
+// 時間複雜度: O(n)，空間複雜度: O(1)
+function isPalindrome(s: string): boolean {
+    const isAlnum = (c: string) =&gt; /[a-z0-9]/i.test(c);
+    let left = 0, right = s.length - 1;
+    while (left &lt; right) {
+        while (left &lt; right &amp;&amp; !isAlnum(s[left])) left++;
+        while (left &lt; right &amp;&amp; !isAlnum(s[right])) right--;
+        if (s[left].toLowerCase() !== s[right].toLowerCase()) return false;
+        left++;
+        right--;
+    }
+    return true;
+}</code></pre>
+            </div>
+
+            <div id="c" class="code-container">
+                <pre><code class="language-c">// 雙指標：跳過非英數字元，忽略大小寫比較
+// 時間複雜度: O(n)，空間複雜度: O(1)
+bool isPalindrome(char* s) {
+    int left = 0, right = strlen(s) - 1;
+    while (left &lt; right) {
+        while (left &lt; right &amp;&amp; !isalnum((unsigned char)s[left])) left++;
+        while (left &lt; right &amp;&amp; !isalnum((unsigned char)s[right])) right--;
+        if (tolower((unsigned char)s[left]) != tolower((unsigned char)s[right])) return false;
+        left++;
+        right--;
+    }
+    return true;
 }</code></pre>
             </div>
         </div>

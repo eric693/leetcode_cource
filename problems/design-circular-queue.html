@@ -21,7 +21,7 @@
         .section h2 { color: #1e293b; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 3px solid #ea580c; }
         .section h3 { color: #475569; margin: 25px 0 15px 0; font-size: 1.3em; }
         .code-block { background: #282c34; border-radius: 8px; overflow: hidden; margin: 15px 0; }
-        .lang-tabs { display: flex; background: #21252b; border-bottom: 1px solid #181a1f; }
+        .lang-tabs { display: flex; flex-wrap: wrap; background: #21252b; border-bottom: 1px solid #181a1f; }
         .lang-tab { padding: 12px 24px; cursor: pointer; color: #abb2bf; border: none; background: none; transition: all 0.3s; font-weight: 500; }
         .lang-tab.active { color: #61afef; background: #282c34; border-bottom: 2px solid #61afef; }
         .lang-tab:hover { color: #61afef; background: #2c313a; }
@@ -169,6 +169,8 @@ enQueue(4)[ _, 2, 3, 4 ]   head=1 tail=0  ← tail 繞回開頭！
                     <button class="lang-tab active" onclick="switchLang(event, 'python')">Python</button>
                     <button class="lang-tab" onclick="switchLang(event, 'cpp')">C++</button>
                     <button class="lang-tab" onclick="switchLang(event, 'java')">Java</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'typescript')">TypeScript</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'c')">C</button>
                 </div>
 
                 <div id="python" class="code-content active">
@@ -300,6 +302,106 @@ class MyCircularQueue {
     public boolean isEmpty() { return head == tail; }
 
     public boolean isFull()  { return (tail + 1) % cap == head; }
+}</code></pre>
+                </div>
+
+                <div id="typescript" class="code-content">
+                    <pre><code class="language-typescript">// 固定大小陣列 + head 指標 + 元素個數 count
+// 所有操作 O(1)，空間複雜度: O(k)
+class MyCircularQueue {
+    private buf: number[];
+    private head = 0;
+    private count = 0;
+
+    constructor(private capacity: number) {
+        this.buf = new Array(capacity);
+    }
+
+    enQueue(value: number): boolean {
+        if (this.isFull()) return false;
+        this.buf[(this.head + this.count) % this.capacity] = value;
+        this.count++;
+        return true;
+    }
+
+    deQueue(): boolean {
+        if (this.isEmpty()) return false;
+        this.head = (this.head + 1) % this.capacity;
+        this.count--;
+        return true;
+    }
+
+    Front(): number {
+        return this.isEmpty() ? -1 : this.buf[this.head];
+    }
+
+    Rear(): number {
+        return this.isEmpty() ? -1 : this.buf[(this.head + this.count - 1) % this.capacity];
+    }
+
+    isEmpty(): boolean {
+        return this.count === 0;
+    }
+
+    isFull(): boolean {
+        return this.count === this.capacity;
+    }
+}</code></pre>
+                </div>
+
+                <div id="c" class="code-content">
+                    <pre><code class="language-c">// 固定大小陣列 + head 指標 + 元素個數 count（韌體 ring buffer 的經典寫法）
+// 所有操作 O(1)，空間複雜度: O(k)
+typedef struct {
+    int* buf;
+    int capacity;
+    int head;
+    int count;
+} MyCircularQueue;
+
+MyCircularQueue* myCircularQueueCreate(int k) {
+    MyCircularQueue* q = malloc(sizeof(MyCircularQueue));
+    q-&gt;buf = malloc(sizeof(int) * k);
+    q-&gt;capacity = k;
+    q-&gt;head = 0;
+    q-&gt;count = 0;
+    return q;
+}
+
+bool myCircularQueueIsEmpty(MyCircularQueue* obj) {
+    return obj-&gt;count == 0;
+}
+
+bool myCircularQueueIsFull(MyCircularQueue* obj) {
+    return obj-&gt;count == obj-&gt;capacity;
+}
+
+bool myCircularQueueEnQueue(MyCircularQueue* obj, int value) {
+    if (myCircularQueueIsFull(obj)) return false;
+    obj-&gt;buf[(obj-&gt;head + obj-&gt;count) % obj-&gt;capacity] = value;
+    obj-&gt;count++;
+    return true;
+}
+
+bool myCircularQueueDeQueue(MyCircularQueue* obj) {
+    if (myCircularQueueIsEmpty(obj)) return false;
+    obj-&gt;head = (obj-&gt;head + 1) % obj-&gt;capacity;
+    obj-&gt;count--;
+    return true;
+}
+
+int myCircularQueueFront(MyCircularQueue* obj) {
+    return myCircularQueueIsEmpty(obj) ? -1 : obj-&gt;buf[obj-&gt;head];
+}
+
+int myCircularQueueRear(MyCircularQueue* obj) {
+    if (myCircularQueueIsEmpty(obj)) return -1;
+    return obj-&gt;buf[(obj-&gt;head + obj-&gt;count - 1) % obj-&gt;capacity];
+}
+
+void myCircularQueueFree(MyCircularQueue* obj) {
+    free(obj-&gt;buf);
+    free(obj);
 }</code></pre>
                 </div>
             </div>

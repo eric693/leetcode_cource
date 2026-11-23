@@ -21,7 +21,7 @@
         .section h2 { color: #1e293b; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 3px solid #ea580c; }
         .section h3 { color: #475569; margin: 25px 0 15px 0; font-size: 1.3em; }
         .code-block { background: #282c34; border-radius: 8px; overflow: hidden; margin: 15px 0; }
-        .lang-tabs { display: flex; background: #21252b; border-bottom: 1px solid #181a1f; }
+        .lang-tabs { display: flex; flex-wrap: wrap; background: #21252b; border-bottom: 1px solid #181a1f; }
         .lang-tab { padding: 12px 24px; cursor: pointer; color: #abb2bf; border: none; background: none; transition: all 0.3s; font-weight: 500; }
         .lang-tab.active { color: #61afef; background: #282c34; border-bottom: 2px solid #61afef; }
         .lang-tab:hover { color: #61afef; background: #2c313a; }
@@ -171,6 +171,8 @@ C(n):   1   2   5   14  42   132  429   1430
                     <button class="lang-tab active" onclick="switchLang(event, 'python')">Python</button>
                     <button class="lang-tab" onclick="switchLang(event, 'cpp')">C++</button>
                     <button class="lang-tab" onclick="switchLang(event, 'java')">Java</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'typescript')">TypeScript</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'c')">C</button>
                 </div>
 
                 <div id="python" class="code-content active">
@@ -284,6 +286,61 @@ class Solution {
             path.deleteCharAt(path.length() - 1);
         }
     }
+}</code></pre>
+                </div>
+
+                <div id="typescript" class="code-content">
+                    <pre><code class="language-typescript">// 回溯：左括號數 &lt; n 可放左括號，右括號數 &lt; 左括號數可放右括號
+// 時間複雜度: O(4^n / √n)，空間複雜度: O(n)
+function generateParenthesis(n: number): string[] {
+    const result: string[] = [];
+    const backtrack = (path: string, open: number, close: number): void =&gt; {
+        if (path.length === 2 * n) {
+            result.push(path);
+            return;
+        }
+        if (open &lt; n) backtrack(path + '(', open + 1, close);
+        if (close &lt; open) backtrack(path + ')', open, close + 1);
+    };
+    backtrack('', 0, 0);
+    return result;
+}</code></pre>
+                </div>
+
+                <div id="c" class="code-content">
+                    <pre><code class="language-c">// 回溯：左括號數 &lt; n 可放左括號，右括號數 &lt; 左括號數可放右括號
+// 時間複雜度: O(4^n / √n)，空間複雜度: O(n)
+static char** result;
+static int count, cap;
+static char path[17];                         // n ≤ 8
+
+static void backtrack(int n, int len, int open, int close) {
+    if (len == 2 * n) {
+        if (count == cap) {
+            cap *= 2;
+            result = realloc(result, sizeof(char*) * cap);
+        }
+        path[len] = '\0';
+        result[count++] = strdup(path);
+        return;
+    }
+    if (open &lt; n) {
+        path[len] = '(';
+        backtrack(n, len + 1, open + 1, close);
+    }
+    if (close &lt; open) {
+        path[len] = ')';
+        backtrack(n, len + 1, open, close + 1);
+    }
+}
+
+char** generateParenthesis(int n, int* returnSize) {
+    cap = 16;
+    count = 0;
+    result = malloc(sizeof(char*) * cap);
+    backtrack(n, 0, 0, 0);
+    *returnSize = count;
+    return result;
 }</code></pre>
                 </div>
             </div>

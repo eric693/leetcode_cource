@@ -191,6 +191,8 @@ dp[1..12] = ∞
                 <button class="tab-btn active" onclick="showLanguage('python')">Python</button>
                 <button class="tab-btn" onclick="showLanguage('cpp')">C++</button>
                 <button class="tab-btn" onclick="showLanguage('java')">Java</button>
+                <button class="tab-btn" onclick="showLanguage('typescript')">TypeScript</button>
+                <button class="tab-btn" onclick="showLanguage('c')">C</button>
             </div>
 
             <div id="python" class="code-container active">
@@ -418,6 +420,39 @@ class Solution {
         
         return 0;
     }
+}</code></pre>
+            </div>
+
+            <div id="typescript" class="code-container">
+                <pre><code class="language-typescript">// 完全背包 DP：dp[i] = 湊出 i 所需的最少完全平方數個數
+// 時間複雜度: O(n√n)，空間複雜度: O(n)
+function numSquares(n: number): number {
+    const dp = new Array(n + 1).fill(Infinity);
+    dp[0] = 0;
+    for (let i = 1; i &lt;= n; i++) {
+        for (let j = 1; j * j &lt;= i; j++) {
+            dp[i] = Math.min(dp[i], dp[i - j * j] + 1);
+        }
+    }
+    return dp[n];
+}</code></pre>
+            </div>
+
+            <div id="c" class="code-container">
+                <pre><code class="language-c">// 完全背包 DP：dp[i] = 湊出 i 所需的最少完全平方數個數
+// 時間複雜度: O(n√n)，空間複雜度: O(n)
+int numSquares(int n) {
+    int* dp = malloc(sizeof(int) * (n + 1));
+    dp[0] = 0;
+    for (int i = 1; i &lt;= n; i++) {
+        dp[i] = i;                                   // 最差情況：全部用 1
+        for (int j = 1; j * j &lt;= i; j++) {
+            if (dp[i - j * j] + 1 &lt; dp[i]) dp[i] = dp[i - j * j] + 1;
+        }
+    }
+    int ans = dp[n];
+    free(dp);
+    return ans;
 }</code></pre>
             </div>
         </div>

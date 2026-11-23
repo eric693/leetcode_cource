@@ -171,6 +171,8 @@ i=3: char='1', count=2
                 <button class="tab-btn active" onclick="showLanguage('python')">Python</button>
                 <button class="tab-btn" onclick="showLanguage('cpp')">C++</button>
                 <button class="tab-btn" onclick="showLanguage('java')">Java</button>
+                <button class="tab-btn" onclick="showLanguage('typescript')">TypeScript</button>
+                <button class="tab-btn" onclick="showLanguage('c')">C</button>
             </div>
 
             <div id="python" class="code-container active">
@@ -300,6 +302,51 @@ private:
         
         return result.toString();
     }
+}</code></pre>
+            </div>
+
+            <div id="typescript" class="code-container">
+                <pre><code class="language-typescript">// 逐輪描述：統計連續相同字元的個數
+// 時間複雜度: O(n × L)，L 為字串長度；空間複雜度: O(L)
+function countAndSay(n: number): string {
+    let s = '1';
+    for (let k = 1; k &lt; n; k++) {
+        let next = '';
+        for (let i = 0; i &lt; s.length; ) {
+            let j = i;
+            while (j &lt; s.length &amp;&amp; s[j] === s[i]) j++;
+            next += (j - i) + s[i];           // 個數 + 字元
+            i = j;
+        }
+        s = next;
+    }
+    return s;
+}</code></pre>
+            </div>
+
+            <div id="c" class="code-container">
+                <pre><code class="language-c">// 逐輪描述：統計連續相同字元的個數（n ≤ 30 時長度約 4500）
+// 時間複雜度: O(n × L)，空間複雜度: O(L)
+char* countAndSay(int n) {
+    int cap = 5000;
+    char* cur = malloc(cap);
+    char* next = malloc(cap);
+    strcpy(cur, "1");
+
+    for (int k = 1; k &lt; n; k++) {
+        int len = 0;
+        for (int i = 0; cur[i]; ) {
+            int j = i;
+            while (cur[j] == cur[i]) j++;
+            next[len++] = '0' + (j - i);     // 個數（最多 3，單一位數）
+            next[len++] = cur[i];
+            i = j;
+        }
+        next[len] = '\0';
+        char* tmp = cur; cur = next; next = tmp;
+    }
+    free(next);
+    return cur;
 }</code></pre>
             </div>
         </div>

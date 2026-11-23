@@ -188,6 +188,8 @@ i=7: dp[7]=4 (2→3→7→18 或 2→5→7→18)
                 <button class="tab-btn active" onclick="showLanguage('python')">Python</button>
                 <button class="tab-btn" onclick="showLanguage('cpp')">C++</button>
                 <button class="tab-btn" onclick="showLanguage('java')">Java</button>
+                <button class="tab-btn" onclick="showLanguage('typescript')">TypeScript</button>
+                <button class="tab-btn" onclick="showLanguage('c')">C</button>
             </div>
 
             <div id="python" class="code-container active">
@@ -405,6 +407,45 @@ class Solution {
         
         return left;
     }
+}</code></pre>
+            </div>
+
+            <div id="typescript" class="code-container">
+                <pre><code class="language-typescript">// 貪心 + 二分：tails[k] = 長度為 k+1 的遞增子序列的最小結尾
+// 時間複雜度: O(n log n)，空間複雜度: O(n)
+function lengthOfLIS(nums: number[]): number {
+    const tails: number[] = [];
+    for (const x of nums) {
+        let lo = 0, hi = tails.length;
+        while (lo &lt; hi) {                     // 找第一個 ≥ x 的位置
+            const mid = (lo + hi) &gt;&gt; 1;
+            if (tails[mid] &lt; x) lo = mid + 1;
+            else hi = mid;
+        }
+        tails[lo] = x;                        // lo === length 時等同 push
+    }
+    return tails.length;
+}</code></pre>
+            </div>
+
+            <div id="c" class="code-container">
+                <pre><code class="language-c">// 貪心 + 二分：tails[k] = 長度為 k+1 的遞增子序列的最小結尾
+// 時間複雜度: O(n log n)，空間複雜度: O(n)
+int lengthOfLIS(int* nums, int numsSize) {
+    int* tails = malloc(sizeof(int) * numsSize);
+    int len = 0;
+    for (int i = 0; i &lt; numsSize; i++) {
+        int lo = 0, hi = len;
+        while (lo &lt; hi) {                     // 找第一個 ≥ nums[i] 的位置
+            int mid = lo + (hi - lo) / 2;
+            if (tails[mid] &lt; nums[i]) lo = mid + 1;
+            else hi = mid;
+        }
+        tails[lo] = nums[i];
+        if (lo == len) len++;
+    }
+    free(tails);
+    return len;
 }</code></pre>
             </div>
         </div>

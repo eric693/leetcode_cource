@@ -185,6 +185,8 @@ i=4, nums[i]=1, target=-1
                 <button class="tab-btn active" onclick="showLanguage('python')">Python</button>
                 <button class="tab-btn" onclick="showLanguage('cpp')">C++</button>
                 <button class="tab-btn" onclick="showLanguage('java')">Java</button>
+                <button class="tab-btn" onclick="showLanguage('typescript')">TypeScript</button>
+                <button class="tab-btn" onclick="showLanguage('c')">C</button>
             </div>
 
             <div id="python" class="code-container active">
@@ -366,6 +368,85 @@ class Solution {
         
         return result;
     }
+}</code></pre>
+            </div>
+
+            <div id="typescript" class="code-container">
+                <pre><code class="language-typescript">// 排序 + 雙指標
+// 時間複雜度: O(n²)，空間複雜度: O(log n)（排序）
+function threeSum(nums: number[]): number[][] {
+    nums.sort((a, b) =&gt; a - b);
+    const result: number[][] = [];
+    const n = nums.length;
+
+    for (let i = 0; i &lt; n - 2; i++) {
+        if (nums[i] &gt; 0) break;                          // 最小值已大於 0，不可能湊出 0
+        if (i &gt; 0 &amp;&amp; nums[i] === nums[i - 1]) continue;  // 跳過重複的第一個數
+
+        let left = i + 1, right = n - 1;
+        while (left &lt; right) {
+            const sum = nums[i] + nums[left] + nums[right];
+            if (sum === 0) {
+                result.push([nums[i], nums[left], nums[right]]);
+                while (left &lt; right &amp;&amp; nums[left] === nums[left + 1]) left++;
+                while (left &lt; right &amp;&amp; nums[right] === nums[right - 1]) right--;
+                left++;
+                right--;
+            } else if (sum &lt; 0) {
+                left++;
+            } else {
+                right--;
+            }
+        }
+    }
+    return result;
+}</code></pre>
+            </div>
+
+            <div id="c" class="code-container">
+                <pre><code class="language-c">// 排序 + 雙指標
+// 時間複雜度: O(n²)，空間複雜度: O(log n)（不含輸出）
+static int cmp(const void* a, const void* b) {
+    int x = *(const int*)a, y = *(const int*)b;
+    return (x &gt; y) - (x &lt; y);
+}
+
+int** threeSum(int* nums, int numsSize, int* returnSize, int** returnColumnSizes) {
+    qsort(nums, numsSize, sizeof(int), cmp);
+    int cap = 64;
+    int** result = malloc(sizeof(int*) * cap);
+    *returnColumnSizes = malloc(sizeof(int) * cap);
+    *returnSize = 0;
+
+    for (int i = 0; i &lt; numsSize - 2; i++) {
+        if (nums[i] &gt; 0) break;
+        if (i &gt; 0 &amp;&amp; nums[i] == nums[i - 1]) continue;   // 跳過重複
+
+        int left = i + 1, right = numsSize - 1;
+        while (left &lt; right) {
+            int sum = nums[i] + nums[left] + nums[right];
+            if (sum == 0) {
+                if (*returnSize == cap) {                // 空間不足時擴容
+                    cap *= 2;
+                    result = realloc(result, sizeof(int*) * cap);
+                    *returnColumnSizes = realloc(*returnColumnSizes, sizeof(int) * cap);
+                }
+                int* triple = malloc(sizeof(int) * 3);
+                triple[0] = nums[i]; triple[1] = nums[left]; triple[2] = nums[right];
+                (*returnColumnSizes)[*returnSize] = 3;
+                result[(*returnSize)++] = triple;
+                while (left &lt; right &amp;&amp; nums[left] == nums[left + 1]) left++;
+                while (left &lt; right &amp;&amp; nums[right] == nums[right - 1]) right--;
+                left++;
+                right--;
+            } else if (sum &lt; 0) {
+                left++;
+            } else {
+                right--;
+            }
+        }
+    }
+    return result;
 }</code></pre>
             </div>
         </div>

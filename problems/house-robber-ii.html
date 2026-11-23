@@ -21,7 +21,7 @@
         .section h2 { color: #1e293b; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 3px solid #ea580c; }
         .section h3 { color: #475569; margin: 25px 0 15px 0; font-size: 1.3em; }
         .code-block { background: #282c34; border-radius: 8px; overflow: hidden; margin: 15px 0; }
-        .lang-tabs { display: flex; background: #21252b; border-bottom: 1px solid #181a1f; }
+        .lang-tabs { display: flex; flex-wrap: wrap; background: #21252b; border-bottom: 1px solid #181a1f; }
         .lang-tab { padding: 12px 24px; cursor: pointer; color: #abb2bf; border: none; background: none; transition: all 0.3s; font-weight: 500; }
         .lang-tab.active { color: #61afef; background: #282c34; border-bottom: 2px solid #61afef; }
         .lang-tab:hover { color: #61afef; background: #2c313a; }
@@ -170,6 +170,8 @@ int rob(vector<int>& nums, int start, int end) {
                     <button class="lang-tab active" onclick="switchLang(event, 'python')">Python</button>
                     <button class="lang-tab" onclick="switchLang(event, 'cpp')">C++</button>
                     <button class="lang-tab" onclick="switchLang(event, 'java')">Java</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'typescript')">TypeScript</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'c')">C</button>
                 </div>
 
                 <div id="python" class="code-content active">
@@ -242,6 +244,49 @@ public:
         }
         return prev1;
     }
+}</code></pre>
+                </div>
+
+                <div id="typescript" class="code-content">
+                    <pre><code class="language-typescript">// 環狀 → 拆成兩條直線：不偷最後一間 / 不偷第一間
+// 時間複雜度: O(n)，空間複雜度: O(1)
+function rob(nums: number[]): number {
+    const n = nums.length;
+    if (n === 1) return nums[0];
+
+    const robLine = (start: number, end: number): number =&gt; {
+        let prev2 = 0, prev1 = 0;
+        for (let i = start; i &lt;= end; i++) {
+            const cur = Math.max(prev1, prev2 + nums[i]);
+            prev2 = prev1;
+            prev1 = cur;
+        }
+        return prev1;
+    };
+
+    return Math.max(robLine(0, n - 2), robLine(1, n - 1));
+}</code></pre>
+                </div>
+
+                <div id="c" class="code-content">
+                    <pre><code class="language-c">// 環狀 → 拆成兩條直線：不偷最後一間 / 不偷第一間
+// 時間複雜度: O(n)，空間複雜度: O(1)
+static int robLine(int* nums, int start, int end) {
+    int prev2 = 0, prev1 = 0;
+    for (int i = start; i &lt;= end; i++) {
+        int take = prev2 + nums[i];
+        int cur = take &gt; prev1 ? take : prev1;
+        prev2 = prev1;
+        prev1 = cur;
+    }
+    return prev1;
+}
+
+int rob(int* nums, int numsSize) {
+    if (numsSize == 1) return nums[0];
+    int a = robLine(nums, 0, numsSize - 2);
+    int b = robLine(nums, 1, numsSize - 1);
+    return a &gt; b ? a : b;
 }</code></pre>
                 </div>
             </div>

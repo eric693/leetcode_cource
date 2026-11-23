@@ -21,7 +21,7 @@
         .section h2 { color: #1e293b; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 3px solid #dc2626; }
         .section h3 { color: #475569; margin: 25px 0 15px 0; font-size: 1.3em; }
         .code-block { background: #282c34; border-radius: 8px; overflow: hidden; margin: 15px 0; }
-        .lang-tabs { display: flex; background: #21252b; border-bottom: 1px solid #181a1f; }
+        .lang-tabs { display: flex; flex-wrap: wrap; background: #21252b; border-bottom: 1px solid #181a1f; }
         .lang-tab { padding: 12px 24px; cursor: pointer; color: #abb2bf; border: none; background: none; transition: all 0.3s; font-weight: 500; }
         .lang-tab.active { color: #61afef; background: #282c34; border-bottom: 2px solid #61afef; }
         .lang-tab:hover { color: #61afef; background: #2c313a; }
@@ -243,6 +243,8 @@ nums = [1, 3, 1, 5, 8, 1]
                     <button class="lang-tab active" onclick="switchLang(event, 'python')">Python</button>
                     <button class="lang-tab" onclick="switchLang(event, 'cpp')">C++</button>
                     <button class="lang-tab" onclick="switchLang(event, 'java')">Java</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'typescript')">TypeScript</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'c')">C</button>
                 </div>
 
                 <div id="python" class="code-content active">
@@ -427,6 +429,52 @@ public:
     }
 }
 </code></pre>
+                </div>
+
+                <div id="typescript" class="code-content">
+                    <pre><code class="language-typescript">// 區間 DP：dp[i][j] = 開區間 (i, j) 內氣球全戳破的最大分數，k 為最後戳破的氣球
+// 時間複雜度: O(n³)，空間複雜度: O(n²)
+function maxCoins(nums: number[]): number {
+    const vals = [1, ...nums, 1];                 // 兩端補 1
+    const n = vals.length;
+    const dp: number[][] = Array.from({ length: n }, () =&gt; new Array(n).fill(0));
+
+    for (let len = 2; len &lt; n; len++) {           // 區間長度
+        for (let i = 0; i + len &lt; n; i++) {
+            const j = i + len;
+            for (let k = i + 1; k &lt; j; k++) {
+                dp[i][j] = Math.max(dp[i][j], dp[i][k] + dp[k][j] + vals[i] * vals[k] * vals[j]);
+            }
+        }
+    }
+    return dp[0][n - 1];
+}</code></pre>
+                </div>
+
+                <div id="c" class="code-content">
+                    <pre><code class="language-c">// 區間 DP：dp[i][j] = 開區間 (i, j) 內氣球全戳破的最大分數，k 為最後戳破的氣球
+// 時間複雜度: O(n³)，空間複雜度: O(n²)
+int maxCoins(int* nums, int numsSize) {
+    int n = numsSize + 2;
+    int* vals = malloc(sizeof(int) * n);
+    vals[0] = vals[n - 1] = 1;                     // 兩端補 1
+    for (int i = 0; i &lt; numsSize; i++) vals[i + 1] = nums[i];
+
+    int* dp = calloc(n * n, sizeof(int));          // dp[i][j] = dp[i * n + j]
+    for (int len = 2; len &lt; n; len++) {
+        for (int i = 0; i + len &lt; n; i++) {
+            int j = i + len;
+            for (int k = i + 1; k &lt; j; k++) {
+                int v = dp[i * n + k] + dp[k * n + j] + vals[i] * vals[k] * vals[j];
+                if (v &gt; dp[i * n + j]) dp[i * n + j] = v;
+            }
+        }
+    }
+    int ans = dp[n - 1];
+    free(vals);
+    free(dp);
+    return ans;
+}</code></pre>
                 </div>
             </div>
         </div>

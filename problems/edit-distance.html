@@ -220,6 +220,8 @@ dp[3][1]: hor vs r
                 <button class="tab-btn active" onclick="showLanguage('python')">Python</button>
                 <button class="tab-btn" onclick="showLanguage('cpp')">C++</button>
                 <button class="tab-btn" onclick="showLanguage('java')">Java</button>
+                <button class="tab-btn" onclick="showLanguage('typescript')">TypeScript</button>
+                <button class="tab-btn" onclick="showLanguage('c')">C</button>
             </div>
 
             <div id="python" class="code-container active">
@@ -445,6 +447,61 @@ public:
         
         return dp[n];
     }
+}</code></pre>
+            </div>
+
+            <div id="typescript" class="code-container">
+                <pre><code class="language-typescript">// 2D DP：dp[i][j] = word1 前 i 字轉成 word2 前 j 字的最少操作數
+// 時間複雜度: O(m·n)，空間複雜度: O(m·n)
+function minDistance(word1: string, word2: string): number {
+    const m = word1.length, n = word2.length;
+    const dp: number[][] = Array.from({ length: m + 1 }, () =&gt; new Array(n + 1).fill(0));
+    for (let i = 0; i &lt;= m; i++) dp[i][0] = i;   // 全部刪除
+    for (let j = 0; j &lt;= n; j++) dp[0][j] = j;   // 全部插入
+
+    for (let i = 1; i &lt;= m; i++) {
+        for (let j = 1; j &lt;= n; j++) {
+            if (word1[i - 1] === word2[j - 1]) {
+                dp[i][j] = dp[i - 1][j - 1];
+            } else {
+                dp[i][j] = 1 + Math.min(
+                    dp[i - 1][j],      // 刪除
+                    dp[i][j - 1],      // 插入
+                    dp[i - 1][j - 1],  // 替換
+                );
+            }
+        }
+    }
+    return dp[m][n];
+}</code></pre>
+            </div>
+
+            <div id="c" class="code-container">
+                <pre><code class="language-c">// 1D DP（滾動陣列）：prev 保存左上角 dp[i-1][j-1]
+// 時間複雜度: O(m·n)，空間複雜度: O(n)
+static int min3(int a, int b, int c) {
+    int m = a &lt; b ? a : b;
+    return m &lt; c ? m : c;
+}
+
+int minDistance(char* word1, char* word2) {
+    int m = strlen(word1), n = strlen(word2);
+    int* dp = malloc(sizeof(int) * (n + 1));
+    for (int j = 0; j &lt;= n; j++) dp[j] = j;
+
+    for (int i = 1; i &lt;= m; i++) {
+        int prev = dp[0];          // dp[i-1][0]
+        dp[0] = i;
+        for (int j = 1; j &lt;= n; j++) {
+            int tmp = dp[j];       // dp[i-1][j]，下一輪的左上角
+            if (word1[i - 1] == word2[j - 1]) dp[j] = prev;
+            else dp[j] = 1 + min3(dp[j], dp[j - 1], prev);
+            prev = tmp;
+        }
+    }
+    int ans = dp[n];
+    free(dp);
+    return ans;
 }</code></pre>
             </div>
         </div>

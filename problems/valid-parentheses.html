@@ -147,6 +147,8 @@
                 <button class="tab-btn active" onclick="showLanguage('python')">Python</button>
                 <button class="tab-btn" onclick="showLanguage('cpp')">C++</button>
                 <button class="tab-btn" onclick="showLanguage('java')">Java</button>
+                <button class="tab-btn" onclick="showLanguage('typescript')">TypeScript</button>
+                <button class="tab-btn" onclick="showLanguage('c')">C</button>
             </div>
 
             <div id="python" class="code-container active">
@@ -274,6 +276,42 @@ class Solution {
         // 檢查堆疊是否為空
         return stack.isEmpty();
     }
+}</code></pre>
+            </div>
+
+            <div id="typescript" class="code-container">
+                <pre><code class="language-typescript">// 堆疊：遇到左括號就推入「對應的右括號」，遇到右括號就比對堆疊頂端
+// 時間複雜度: O(n)，空間複雜度: O(n)
+function isValid(s: string): boolean {
+    const pairs: Record&lt;string, string&gt; = { '(': ')', '[': ']', '{': '}' };
+    const stack: string[] = [];
+    for (const ch of s) {
+        if (ch in pairs) stack.push(pairs[ch]);
+        else if (stack.pop() !== ch) return false;
+    }
+    return stack.length === 0;
+}</code></pre>
+            </div>
+
+            <div id="c" class="code-container">
+                <pre><code class="language-c">// 堆疊：遇到左括號就推入「對應的右括號」，遇到右括號就比對堆疊頂端
+// 時間複雜度: O(n)，空間複雜度: O(n)
+bool isValid(char* s) {
+    int n = strlen(s);
+    if (n % 2) return false;                      // 奇數長度不可能配對
+    char* stack = malloc(n);
+    int top = 0;
+    bool ok = true;
+    for (int i = 0; i &lt; n &amp;&amp; ok; i++) {
+        char c = s[i];
+        if (c == '(') stack[top++] = ')';
+        else if (c == '[') stack[top++] = ']';
+        else if (c == '{') stack[top++] = '}';
+        else if (top == 0 || stack[--top] != c) ok = false;
+    }
+    ok = ok &amp;&amp; top == 0;
+    free(stack);
+    return ok;
 }</code></pre>
             </div>
         </div>

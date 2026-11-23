@@ -21,7 +21,7 @@
         .section h2 { color: #1e293b; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 3px solid #ea580c; }
         .section h3 { color: #475569; margin: 25px 0 15px 0; font-size: 1.3em; }
         .code-block { background: #282c34; border-radius: 8px; overflow: hidden; margin: 15px 0; }
-        .lang-tabs { display: flex; background: #21252b; border-bottom: 1px solid #181a1f; }
+        .lang-tabs { display: flex; flex-wrap: wrap; background: #21252b; border-bottom: 1px solid #181a1f; }
         .lang-tab { padding: 12px 24px; cursor: pointer; color: #abb2bf; border: none; background: none; transition: all 0.3s; font-weight: 500; }
         .lang-tab.active { color: #61afef; background: #282c34; border-bottom: 2px solid #61afef; }
         .lang-tab:hover { color: #61afef; background: #2c313a; }
@@ -178,6 +178,8 @@ dp[2][2] = dp[1][2] + dp[2][1] = 1 + 1 = 2 ✓
                     <button class="lang-tab active" onclick="switchLang(event, 'python')">Python</button>
                     <button class="lang-tab" onclick="switchLang(event, 'cpp')">C++</button>
                     <button class="lang-tab" onclick="switchLang(event, 'java')">Java</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'typescript')">TypeScript</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'c')">C</button>
                 </div>
 
                 <div id="python" class="code-content active">
@@ -299,6 +301,42 @@ class Solution {
         }
         return dp[n - 1];
     }
+}</code></pre>
+                </div>
+
+                <div id="typescript" class="code-content">
+                    <pre><code class="language-typescript">// 1D DP：障礙物格子路徑數為 0，其餘 = 上方 + 左方
+// 時間複雜度: O(m·n)，空間複雜度: O(n)
+function uniquePathsWithObstacles(obstacleGrid: number[][]): number {
+    const n = obstacleGrid[0].length;
+    const dp = new Array(n).fill(0);
+    dp[0] = 1;
+    for (const row of obstacleGrid) {
+        for (let j = 0; j &lt; n; j++) {
+            if (row[j] === 1) dp[j] = 0;
+            else if (j &gt; 0) dp[j] += dp[j - 1];
+        }
+    }
+    return dp[n - 1];
+}</code></pre>
+                </div>
+
+                <div id="c" class="code-content">
+                    <pre><code class="language-c">// 1D DP：障礙物格子路徑數為 0，其餘 = 上方 + 左方
+// 時間複雜度: O(m·n)，空間複雜度: O(n)
+int uniquePathsWithObstacles(int** obstacleGrid, int obstacleGridSize, int* obstacleGridColSize) {
+    int n = obstacleGridColSize[0];
+    int* dp = calloc(n, sizeof(int));
+    dp[0] = 1;
+    for (int i = 0; i &lt; obstacleGridSize; i++) {
+        for (int j = 0; j &lt; n; j++) {
+            if (obstacleGrid[i][j] == 1) dp[j] = 0;
+            else if (j &gt; 0) dp[j] += dp[j - 1];
+        }
+    }
+    int ans = dp[n - 1];
+    free(dp);
+    return ans;
 }</code></pre>
                 </div>
             </div>

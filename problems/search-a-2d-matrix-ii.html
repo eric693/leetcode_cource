@@ -216,6 +216,8 @@ n == matrix[i].length
                 <button class="tab-btn active" onclick="showLanguage('python')">Python</button>
                 <button class="tab-btn" onclick="showLanguage('cpp')">C++</button>
                 <button class="tab-btn" onclick="showLanguage('java')">Java</button>
+                <button class="tab-btn" onclick="showLanguage('typescript')">TypeScript</button>
+                <button class="tab-btn" onclick="showLanguage('c')">C</button>
             </div>
 
             <div id="python" class="code-container active">
@@ -415,6 +417,36 @@ public:
         
         return false;
     }
+}</code></pre>
+            </div>
+
+            <div id="typescript" class="code-container">
+                <pre><code class="language-typescript">// 從右上角出發：比目標大就往左，比目標小就往下
+// 時間複雜度: O(m + n)，空間複雜度: O(1)
+function searchMatrix(matrix: number[][], target: number): boolean {
+    let row = 0, col = matrix[0].length - 1;
+    while (row &lt; matrix.length &amp;&amp; col &gt;= 0) {
+        const v = matrix[row][col];
+        if (v === target) return true;
+        if (v &gt; target) col--;
+        else row++;
+    }
+    return false;
+}</code></pre>
+            </div>
+
+            <div id="c" class="code-container">
+                <pre><code class="language-c">// 從右上角出發：比目標大就往左，比目標小就往下
+// 時間複雜度: O(m + n)，空間複雜度: O(1)
+bool searchMatrix(int** matrix, int matrixSize, int* matrixColSize, int target) {
+    int row = 0, col = matrixColSize[0] - 1;
+    while (row &lt; matrixSize &amp;&amp; col &gt;= 0) {
+        int v = matrix[row][col];
+        if (v == target) return true;
+        if (v &gt; target) col--;
+        else row++;
+    }
+    return false;
 }</code></pre>
             </div>
         </div>

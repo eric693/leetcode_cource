@@ -21,7 +21,7 @@
         .section h2 { color: #1e293b; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 3px solid #ea580c; }
         .section h3 { color: #475569; margin: 25px 0 15px 0; font-size: 1.3em; }
         .code-block { background: #282c34; border-radius: 8px; overflow: hidden; margin: 15px 0; }
-        .lang-tabs { display: flex; background: #21252b; border-bottom: 1px solid #181a1f; }
+        .lang-tabs { display: flex; flex-wrap: wrap; background: #21252b; border-bottom: 1px solid #181a1f; }
         .lang-tab { padding: 12px 24px; cursor: pointer; color: #abb2bf; border: none; background: none; transition: all 0.3s; font-weight: 500; }
         .lang-tab.active { color: #61afef; background: #282c34; border-bottom: 2px solid #61afef; }
         .lang-tab:hover { color: #61afef; background: #2c313a; }
@@ -176,6 +176,8 @@ DFS 過程中：
                     <button class="lang-tab active" onclick="switchLang(event, 'python')">Python</button>
                     <button class="lang-tab" onclick="switchLang(event, 'cpp')">C++</button>
                     <button class="lang-tab" onclick="switchLang(event, 'java')">Java</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'typescript')">TypeScript</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'c')">C</button>
                 </div>
 
                 <div id="python" class="code-content active">
@@ -321,6 +323,67 @@ class Solution {
         }
         return count == numCourses;
     }
+}</code></pre>
+                </div>
+
+                <div id="typescript" class="code-content">
+                    <pre><code class="language-typescript">// Kahn 拓撲排序：能全部取出代表沒有環
+// 時間複雜度: O(V + E)，空間複雜度: O(V + E)
+function canFinish(numCourses: number, prerequisites: number[][]): boolean {
+    const graph: number[][] = Array.from({ length: numCourses }, () =&gt; []);
+    const indeg = new Array(numCourses).fill(0);
+    for (const [course, pre] of prerequisites) {
+        graph[pre].push(course);
+        indeg[course]++;
+    }
+
+    const queue: number[] = [];
+    for (let i = 0; i &lt; numCourses; i++) if (indeg[i] === 0) queue.push(i);
+
+    let taken = 0;
+    while (queue.length) {
+        const cur = queue.shift()!;
+        taken++;
+        for (const next of graph[cur]) {
+            if (--indeg[next] === 0) queue.push(next);
+        }
+    }
+    return taken === numCourses;
+}</code></pre>
+                </div>
+
+                <div id="c" class="code-content">
+                    <pre><code class="language-c">// Kahn 拓撲排序：能全部取出代表沒有環
+// 時間複雜度: O(V + E)，空間複雜度: O(V + E)
+bool canFinish(int numCourses, int** prerequisites, int prerequisitesSize,
+               int* prerequisitesColSize) {
+    // 用「前向星」存圖：head[u] 指向 u 的第一條邊
+    int* head = malloc(sizeof(int) * numCourses);
+    int* nxt = malloc(sizeof(int) * (prerequisitesSize + 1));
+    int* to = malloc(sizeof(int) * (prerequisitesSize + 1));
+    int* indeg = calloc(numCourses, sizeof(int));
+    for (int i = 0; i &lt; numCourses; i++) head[i] = -1;
+
+    for (int e = 0; e &lt; prerequisitesSize; e++) {
+        int course = prerequisites[e][0], pre = prerequisites[e][1];
+        to[e] = course;
+        nxt[e] = head[pre];
+        head[pre] = e;
+        indeg[course]++;
+    }
+
+    int* queue = malloc(sizeof(int) * numCourses);
+    int qh = 0, qt = 0;
+    for (int i = 0; i &lt; numCourses; i++) if (indeg[i] == 0) queue[qt++] = i;
+    while (qh &lt; qt) {
+        int cur = queue[qh++];
+        for (int e = head[cur]; e != -1; e = nxt[e]) {
+            if (--indeg[to[e]] == 0) queue[qt++] = to[e];
+        }
+    }
+
+    free(head); free(nxt); free(to); free(indeg); free(queue);
+    return qt == numCourses;
 }</code></pre>
                 </div>
             </div>

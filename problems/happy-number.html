@@ -95,6 +95,8 @@
             <div class="language-tabs">
                 <button class="tab-btn active" onclick="showLanguage('python')">Python</button>
                 <button class="tab-btn" onclick="showLanguage('java')">Java</button>
+                <button class="tab-btn" onclick="showLanguage('typescript')">TypeScript</button>
+                <button class="tab-btn" onclick="showLanguage('c')">C</button>
                 <button class="tab-btn" onclick="showLanguage('cpp')">C++</button>
             </div>
 
@@ -135,6 +137,52 @@
         }
         return fast == 1;
     }
+}</code></pre>
+            </div>
+
+            <div id="typescript" class="code-container">
+                <pre><code class="language-typescript">// 快慢指針判圈：最終不是到 1 就是進入循環
+// 時間複雜度: O(log n)，空間複雜度: O(1)
+function isHappy(n: number): boolean {
+    const next = (x: number): number =&gt; {
+        let sum = 0;
+        while (x &gt; 0) {
+            const d = x % 10;
+            sum += d * d;
+            x = Math.floor(x / 10);
+        }
+        return sum;
+    };
+
+    let slow = n, fast = next(n);
+    while (fast !== 1 &amp;&amp; slow !== fast) {
+        slow = next(slow);
+        fast = next(next(fast));
+    }
+    return fast === 1;
+}</code></pre>
+            </div>
+
+            <div id="c" class="code-container">
+                <pre><code class="language-c">// 快慢指針判圈：最終不是到 1 就是進入循環
+// 時間複雜度: O(log n)，空間複雜度: O(1)
+static int nextNum(int x) {
+    int sum = 0;
+    while (x &gt; 0) {
+        int d = x % 10;
+        sum += d * d;
+        x /= 10;
+    }
+    return sum;
+}
+
+bool isHappy(int n) {
+    int slow = n, fast = nextNum(n);
+    while (fast != 1 &amp;&amp; slow != fast) {
+        slow = nextNum(slow);
+        fast = nextNum(nextNum(fast));
+    }
+    return fast == 1;
 }</code></pre>
             </div>
 

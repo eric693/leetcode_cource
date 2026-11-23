@@ -182,6 +182,8 @@
                 <button class="tab-btn active" onclick="showLanguage('python')">Python</button>
                 <button class="tab-btn" onclick="showLanguage('cpp')">C++</button>
                 <button class="tab-btn" onclick="showLanguage('java')">Java</button>
+                <button class="tab-btn" onclick="showLanguage('typescript')">TypeScript</button>
+                <button class="tab-btn" onclick="showLanguage('c')">C</button>
             </div>
 
             <div id="python" class="code-container active">
@@ -369,6 +371,47 @@ class Solution {
         
         return true;
     }
+}</code></pre>
+            </div>
+
+            <div id="typescript" class="code-container">
+                <pre><code class="language-typescript">/**
+ * Definition for a binary tree node.
+ * class TreeNode {
+ *     val: number
+ *     left: TreeNode | null
+ *     right: TreeNode | null
+ * }
+ */
+// 遞迴比較兩棵子樹是否互為鏡像：外側對外側、內側對內側
+// 時間複雜度: O(n)，空間複雜度: O(h)
+function isSymmetric(root: TreeNode | null): boolean {
+    const mirror = (a: TreeNode | null, b: TreeNode | null): boolean =&gt; {
+        if (!a || !b) return a === b;
+        return a.val === b.val &amp;&amp; mirror(a.left, b.right) &amp;&amp; mirror(a.right, b.left);
+    };
+    return mirror(root?.left ?? null, root?.right ?? null);
+}</code></pre>
+            </div>
+
+            <div id="c" class="code-container">
+                <pre><code class="language-c">/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     struct TreeNode *left;
+ *     struct TreeNode *right;
+ * };
+ */
+// 遞迴比較兩棵子樹是否互為鏡像：外側對外側、內側對內側
+// 時間複雜度: O(n)，空間複雜度: O(h)
+static bool mirror(struct TreeNode* a, struct TreeNode* b) {
+    if (!a || !b) return a == b;
+    return a-&gt;val == b-&gt;val &amp;&amp; mirror(a-&gt;left, b-&gt;right) &amp;&amp; mirror(a-&gt;right, b-&gt;left);
+}
+
+bool isSymmetric(struct TreeNode* root) {
+    return !root || mirror(root-&gt;left, root-&gt;right);
 }</code></pre>
             </div>
         </div>

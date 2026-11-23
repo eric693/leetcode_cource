@@ -169,6 +169,8 @@ i=4, num=5:
                 <button class="tab-btn active" onclick="showLanguage('python')">Python</button>
                 <button class="tab-btn" onclick="showLanguage('cpp')">C++</button>
                 <button class="tab-btn" onclick="showLanguage('java')">Java</button>
+                <button class="tab-btn" onclick="showLanguage('typescript')">TypeScript</button>
+                <button class="tab-btn" onclick="showLanguage('c')">C</button>
             </div>
 
             <div id="python" class="code-container active">
@@ -288,6 +290,44 @@ class Solution {
         
         return result;
     }
+}</code></pre>
+            </div>
+
+            <div id="typescript" class="code-container">
+                <pre><code class="language-typescript">// 單調遞減雙端佇列：佇列存索引，隊頭永遠是視窗最大值
+// 時間複雜度: O(n)，空間複雜度: O(k)
+function maxSlidingWindow(nums: number[], k: number): number[] {
+    const dq: number[] = [];      // 用陣列 + head 指標模擬 deque，避免 shift() 的 O(n)
+    let head = 0;
+    const result: number[] = [];
+
+    for (let i = 0; i &lt; nums.length; i++) {
+        while (dq.length &gt; head &amp;&amp; nums[dq[dq.length - 1]] &lt;= nums[i]) dq.pop();  // 比自己小的永遠不會是答案
+        dq.push(i);
+        if (dq[head] &lt;= i - k) head++;                // 隊頭滑出視窗
+        if (i &gt;= k - 1) result.push(nums[dq[head]]);
+    }
+    return result;
+}</code></pre>
+            </div>
+
+            <div id="c" class="code-container">
+                <pre><code class="language-c">// 單調遞減雙端佇列：佇列存索引，隊頭永遠是視窗最大值
+// 時間複雜度: O(n)，空間複雜度: O(n)
+int* maxSlidingWindow(int* nums, int numsSize, int k, int* returnSize) {
+    int* dq = malloc(sizeof(int) * numsSize);
+    int head = 0, tail = 0;
+    int* result = malloc(sizeof(int) * (numsSize - k + 1));
+    *returnSize = 0;
+
+    for (int i = 0; i &lt; numsSize; i++) {
+        while (tail &gt; head &amp;&amp; nums[dq[tail - 1]] &lt;= nums[i]) tail--;   // 比自己小的永遠不會是答案
+        dq[tail++] = i;
+        if (dq[head] &lt;= i - k) head++;                                // 隊頭滑出視窗
+        if (i &gt;= k - 1) result[(*returnSize)++] = nums[dq[head]];
+    }
+    free(dq);
+    return result;
 }</code></pre>
             </div>
         </div>

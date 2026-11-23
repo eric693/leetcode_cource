@@ -234,6 +234,8 @@ index = 0
                 <button class="tab-btn active" onclick="showLanguage('python')">Python</button>
                 <button class="tab-btn" onclick="showLanguage('cpp')">C++</button>
                 <button class="tab-btn" onclick="showLanguage('java')">Java</button>
+                <button class="tab-btn" onclick="showLanguage('typescript')">TypeScript</button>
+                <button class="tab-btn" onclick="showLanguage('c')">C</button>
             </div>
 
             <div id="python" class="code-container active">
@@ -453,6 +455,102 @@ public class Codec {
 // Codec ser = new Codec();
 // Codec deser = new Codec();
 // TreeNode ans = deser.deserialize(ser.serialize(root));</code></pre>
+            </div>
+
+            <div id="typescript" class="code-container">
+                <pre><code class="language-typescript">/**
+ * Definition for a binary tree node.
+ * class TreeNode {
+ *     val: number
+ *     left: TreeNode | null
+ *     right: TreeNode | null
+ * }
+ */
+// 前序遍歷，空節點記為 "#"，以逗號分隔
+// 時間複雜度: O(n)，空間複雜度: O(n)
+function serialize(root: TreeNode | null): string {
+    const out: string[] = [];
+    const dfs = (node: TreeNode | null): void =&gt; {
+        if (!node) {
+            out.push('#');
+            return;
+        }
+        out.push(String(node.val));
+        dfs(node.left);
+        dfs(node.right);
+    };
+    dfs(root);
+    return out.join(',');
+}
+
+function deserialize(data: string): TreeNode | null {
+    const tokens = data.split(',');
+    let i = 0;
+    const build = (): TreeNode | null =&gt; {
+        const t = tokens[i++];
+        if (t === '#') return null;
+        const node = new TreeNode(Number(t));
+        node.left = build();
+        node.right = build();
+        return node;
+    };
+    return build();
+}</code></pre>
+            </div>
+
+            <div id="c" class="code-container">
+                <pre><code class="language-c">/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     struct TreeNode *left;
+ *     struct TreeNode *right;
+ * };
+ */
+// 前序遍歷，空節點記為 "#"，以逗號分隔
+// 時間複雜度: O(n)，空間複雜度: O(n)
+static int countNodes(struct TreeNode* node) {
+    return node ? 1 + countNodes(node-&gt;left) + countNodes(node-&gt;right) : 0;
+}
+
+static void ser(struct TreeNode* node, char* buf, int* pos) {
+    if (!node) {
+        *pos += sprintf(buf + *pos, "#,");
+        return;
+    }
+    *pos += sprintf(buf + *pos, "%d,", node-&gt;val);
+    ser(node-&gt;left, buf, pos);
+    ser(node-&gt;right, buf, pos);
+}
+
+/** Encodes a tree to a single string. */
+char* serialize(struct TreeNode* root) {
+    int n = countNodes(root);
+    char* buf = malloc(n * 7 + (n + 1) * 2 + 1);   // 每個值最多 "-1000," 6 字元
+    int pos = 0;
+    ser(root, buf, &amp;pos);
+    buf[pos] = '\0';
+    return buf;
+}
+
+static struct TreeNode* des(char** p) {
+    if (**p == '#') {
+        *p += 2;                                   // 跳過 "#,"
+        return NULL;
+    }
+    struct TreeNode* node = malloc(sizeof(struct TreeNode));
+    node-&gt;val = (int)strtol(*p, p, 10);            // strtol 會把 *p 移到數字之後
+    (*p)++;                                        // 跳過 ','
+    node-&gt;left = des(p);
+    node-&gt;right = des(p);
+    return node;
+}
+
+/** Decodes your encoded data to tree. */
+struct TreeNode* deserialize(char* data) {
+    char* p = data;
+    return des(&amp;p);
+}</code></pre>
             </div>
         </div>
 

@@ -21,7 +21,7 @@
         .section h2 { color: #1e293b; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 3px solid #ea580c; }
         .section h3 { color: #475569; margin: 25px 0 15px 0; font-size: 1.3em; }
         .code-block { background: #282c34; border-radius: 8px; overflow: hidden; margin: 15px 0; }
-        .lang-tabs { display: flex; background: #21252b; border-bottom: 1px solid #181a1f; }
+        .lang-tabs { display: flex; flex-wrap: wrap; background: #21252b; border-bottom: 1px solid #181a1f; }
         .lang-tab { padding: 12px 24px; cursor: pointer; color: #abb2bf; border: none; background: none; transition: all 0.3s; font-weight: 500; }
         .lang-tab.active { color: #61afef; background: #282c34; border-bottom: 2px solid #61afef; }
         .lang-tab:hover { color: #61afef; background: #2c313a; }
@@ -175,6 +175,8 @@ dfs(1)：建立 1'，登記 visited[1] = 1'
                     <button class="lang-tab active" onclick="switchLang(event, 'python')">Python</button>
                     <button class="lang-tab" onclick="switchLang(event, 'cpp')">C++</button>
                     <button class="lang-tab" onclick="switchLang(event, 'java')">Java</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'typescript')">TypeScript</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'c')">C</button>
                 </div>
 
                 <div id="python" class="code-content active">
@@ -308,6 +310,66 @@ class Solution {
         }
         return visited.get(node);
     }
+}</code></pre>
+                </div>
+
+                <div id="typescript" class="code-content">
+                    <pre><code class="language-typescript">/**
+ * Definition for _Node.
+ * class _Node {
+ *     val: number
+ *     neighbors: _Node[]
+ * }
+ */
+// DFS + 雜湊表記錄「原節點 → 複製節點」，避免重複複製與無限迴圈
+// 時間複雜度: O(V + E)，空間複雜度: O(V)
+function cloneGraph(node: _Node | null): _Node | null {
+    const visited = new Map&lt;_Node, _Node&gt;();
+
+    const clone = (n: _Node): _Node =&gt; {
+        if (visited.has(n)) return visited.get(n)!;
+        const copy = new _Node(n.val);
+        visited.set(n, copy);                   // 先登記再遞迴，處理環
+        for (const nb of n.neighbors) {
+            copy.neighbors.push(clone(nb));
+        }
+        return copy;
+    };
+
+    return node ? clone(node) : null;
+}</code></pre>
+                </div>
+
+                <div id="c" class="code-content">
+                    <pre><code class="language-c">/**
+ * Definition for a Node.
+ * struct Node {
+ *     int val;
+ *     int numNeighbors;
+ *     struct Node** neighbors;
+ * };
+ */
+// DFS + 以節點值（1~100）為索引記錄已複製的節點
+// 時間複雜度: O(V + E)，空間複雜度: O(V)
+static struct Node* clone(struct Node* n, struct Node** visited) {
+    if (visited[n-&gt;val]) return visited[n-&gt;val];
+
+    struct Node* copy = malloc(sizeof(struct Node));
+    copy-&gt;val = n-&gt;val;
+    copy-&gt;numNeighbors = n-&gt;numNeighbors;
+    copy-&gt;neighbors = malloc(sizeof(struct Node*) * (n-&gt;numNeighbors ? n-&gt;numNeighbors : 1));
+    visited[n-&gt;val] = copy;                     // 先登記再遞迴，處理環
+
+    for (int i = 0; i &lt; n-&gt;numNeighbors; i++) {
+        copy-&gt;neighbors[i] = clone(n-&gt;neighbors[i], visited);
+    }
+    return copy;
+}
+
+struct Node* cloneGraph(struct Node* s) {
+    if (!s) return NULL;
+    struct Node* visited[101] = {0};
+    return clone(s, visited);
 }</code></pre>
                 </div>
             </div>

@@ -211,6 +211,8 @@ dp[1] = 1 (s[0]='2' 可以解碼為 'B')
                 <button class="tab-btn active" onclick="showLanguage('python')">Python</button>
                 <button class="tab-btn" onclick="showLanguage('cpp')">C++</button>
                 <button class="tab-btn" onclick="showLanguage('java')">Java</button>
+                <button class="tab-btn" onclick="showLanguage('typescript')">TypeScript</button>
+                <button class="tab-btn" onclick="showLanguage('c')">C</button>
             </div>
 
             <div id="python" class="code-container active">
@@ -447,6 +449,45 @@ public:
         
         return prev1;
     }
+}</code></pre>
+            </div>
+
+            <div id="typescript" class="code-container">
+                <pre><code class="language-typescript">// DP 滾動變數：考慮最後一位單獨解碼、最後兩位合併解碼
+// 時間複雜度: O(n)，空間複雜度: O(1)
+function numDecodings(s: string): number {
+    let prev2 = 1;                              // dp[i-2]
+    let prev1 = s[0] === '0' ? 0 : 1;           // dp[i-1]
+
+    for (let i = 2; i &lt;= s.length; i++) {
+        let cur = 0;
+        if (s[i - 1] !== '0') cur += prev1;                     // 單一位數 1~9
+        const two = Number(s.slice(i - 2, i));
+        if (two &gt;= 10 &amp;&amp; two &lt;= 26) cur += prev2;               // 兩位數 10~26
+        prev2 = prev1;
+        prev1 = cur;
+    }
+    return prev1;
+}</code></pre>
+            </div>
+
+            <div id="c" class="code-container">
+                <pre><code class="language-c">// DP 滾動變數：考慮最後一位單獨解碼、最後兩位合併解碼
+// 時間複雜度: O(n)，空間複雜度: O(1)
+int numDecodings(char* s) {
+    int n = strlen(s);
+    int prev2 = 1;                              // dp[i-2]
+    int prev1 = s[0] == '0' ? 0 : 1;            // dp[i-1]
+
+    for (int i = 2; i &lt;= n; i++) {
+        int cur = 0;
+        if (s[i - 1] != '0') cur += prev1;                        // 單一位數 1~9
+        int two = (s[i - 2] - '0') * 10 + (s[i - 1] - '0');
+        if (two &gt;= 10 &amp;&amp; two &lt;= 26) cur += prev2;                 // 兩位數 10~26
+        prev2 = prev1;
+        prev1 = cur;
+    }
+    return prev1;
 }</code></pre>
             </div>
         </div>

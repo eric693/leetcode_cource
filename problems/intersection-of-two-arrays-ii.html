@@ -160,6 +160,8 @@
                 <button class="tab-btn active" onclick="showLanguage('python')">Python</button>
                 <button class="tab-btn" onclick="showLanguage('cpp')">C++</button>
                 <button class="tab-btn" onclick="showLanguage('java')">Java</button>
+                <button class="tab-btn" onclick="showLanguage('typescript')">TypeScript</button>
+                <button class="tab-btn" onclick="showLanguage('c')">C</button>
             </div>
 
             <div id="python" class="code-container active">
@@ -350,6 +352,44 @@ class Solution {
         
         return answer;
     }
+}</code></pre>
+            </div>
+
+            <div id="typescript" class="code-container">
+                <pre><code class="language-typescript">// 雜湊表計數：統計 nums1，再用 nums2 逐一扣除
+// 時間複雜度: O(m + n)，空間複雜度: O(min(m, n))
+function intersect(nums1: number[], nums2: number[]): number[] {
+    const count = new Map&lt;number, number&gt;();
+    for (const x of nums1) count.set(x, (count.get(x) ?? 0) + 1);
+
+    const result: number[] = [];
+    for (const x of nums2) {
+        const c = count.get(x) ?? 0;
+        if (c &gt; 0) {
+            result.push(x);
+            count.set(x, c - 1);
+        }
+    }
+    return result;
+}</code></pre>
+            </div>
+
+            <div id="c" class="code-container">
+                <pre><code class="language-c">// 值域 0~1000，用計數陣列代替雜湊表
+// 時間複雜度: O(m + n)，空間複雜度: O(1)（固定 1001 格）
+int* intersect(int* nums1, int nums1Size, int* nums2, int nums2Size, int* returnSize) {
+    int count[1001] = {0};
+    for (int i = 0; i &lt; nums1Size; i++) count[nums1[i]]++;
+
+    int* result = malloc(sizeof(int) * ((nums1Size &lt; nums2Size ? nums1Size : nums2Size) + 1));
+    *returnSize = 0;
+    for (int i = 0; i &lt; nums2Size; i++) {
+        if (count[nums2[i]] &gt; 0) {
+            count[nums2[i]]--;
+            result[(*returnSize)++] = nums2[i];
+        }
+    }
+    return result;
 }</code></pre>
             </div>
         </div>

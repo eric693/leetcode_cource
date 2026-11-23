@@ -238,6 +238,8 @@ fast: 每次都移動（讀取指標）
                 <button class="tab-btn active" onclick="showLanguage('python')">Python</button>
                 <button class="tab-btn" onclick="showLanguage('cpp')">C++</button>
                 <button class="tab-btn" onclick="showLanguage('java')">Java</button>
+                <button class="tab-btn" onclick="showLanguage('typescript')">TypeScript</button>
+                <button class="tab-btn" onclick="showLanguage('c')">C</button>
             </div>
 
             <div id="python" class="code-container active">
@@ -333,6 +335,32 @@ public:
         
         return slow;
     }
+}</code></pre>
+            </div>
+
+            <div id="typescript" class="code-container">
+                <pre><code class="language-typescript">// 快慢指針：slow 指向最後一個不重複元素
+// 時間複雜度: O(n)，空間複雜度: O(1)
+function removeDuplicates(nums: number[]): number {
+    if (nums.length === 0) return 0;
+    let slow = 0;
+    for (let fast = 1; fast &lt; nums.length; fast++) {
+        if (nums[fast] !== nums[slow]) nums[++slow] = nums[fast];
+    }
+    return slow + 1;
+}</code></pre>
+            </div>
+
+            <div id="c" class="code-container">
+                <pre><code class="language-c">// 快慢指針：slow 指向最後一個不重複元素
+// 時間複雜度: O(n)，空間複雜度: O(1)
+int removeDuplicates(int* nums, int numsSize) {
+    if (numsSize == 0) return 0;
+    int slow = 0;
+    for (int fast = 1; fast &lt; numsSize; fast++) {
+        if (nums[fast] != nums[slow]) nums[++slow] = nums[fast];
+    }
+    return slow + 1;
 }</code></pre>
             </div>
         </div>

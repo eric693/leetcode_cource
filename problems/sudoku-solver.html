@@ -21,7 +21,7 @@
         .section h2 { color: #1e293b; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 3px solid #dc2626; }
         .section h3 { color: #475569; margin: 25px 0 15px 0; font-size: 1.3em; }
         .code-block { background: #282c34; border-radius: 8px; overflow: hidden; margin: 15px 0; }
-        .lang-tabs { display: flex; background: #21252b; border-bottom: 1px solid #181a1f; }
+        .lang-tabs { display: flex; flex-wrap: wrap; background: #21252b; border-bottom: 1px solid #181a1f; }
         .lang-tab { padding: 12px 24px; cursor: pointer; color: #abb2bf; border: none; background: none; transition: all 0.3s; font-weight: 500; }
         .lang-tab.active { color: #61afef; background: #282c34; border-bottom: 2px solid #61afef; }
         .lang-tab:hover { color: #61afef; background: #2c313a; }
@@ -196,6 +196,8 @@ box_index = (row // 3) * 3 + (col // 3)
                     <button class="lang-tab active" onclick="switchLang(event, 'python')">Python</button>
                     <button class="lang-tab" onclick="switchLang(event, 'cpp')">C++</button>
                     <button class="lang-tab" onclick="switchLang(event, 'java')">Java</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'typescript')">TypeScript</button>
+                    <button class="lang-tab" onclick="switchLang(event, 'c')">C</button>
                 </div>
 
                 <div id="python" class="code-content active">
@@ -504,6 +506,86 @@ private:
     }
 }
 </code></pre>
+                </div>
+
+                <div id="typescript" class="code-content">
+                    <pre><code class="language-typescript">// 回溯 + 位元遮罩：rows / cols / boxes 各用 9 位元記錄已使用的數字
+// 時間複雜度: 最壞 O(9^空格數)，實際因剪枝很快；空間複雜度: O(1)
+function solveSudoku(board: string[][]): void {
+    const rows = new Array(9).fill(0), cols = new Array(9).fill(0), boxes = new Array(9).fill(0);
+    const empty: [number, number][] = [];
+    const box = (i: number, j: number) =&gt; Math.floor(i / 3) * 3 + Math.floor(j / 3);
+
+    for (let i = 0; i &lt; 9; i++) {
+        for (let j = 0; j &lt; 9; j++) {
+            if (board[i][j] === '.') {
+                empty.push([i, j]);
+            } else {
+                const bit = 1 &lt;&lt; (Number(board[i][j]) - 1);
+                rows[i] |= bit; cols[j] |= bit; boxes[box(i, j)] |= bit;
+            }
+        }
+    }
+
+    const solve = (k: number): boolean =&gt; {
+        if (k === empty.length) return true;
+        const [i, j] = empty[k], b = box(i, j);
+        for (let d = 0; d &lt; 9; d++) {
+            const bit = 1 &lt;&lt; d;
+            if ((rows[i] | cols[j] | boxes[b]) &amp; bit) continue;   // 這個數字已被使用
+            rows[i] |= bit; cols[j] |= bit; boxes[b] |= bit;
+            board[i][j] = String(d + 1);
+            if (solve(k + 1)) return true;
+            rows[i] ^= bit; cols[j] ^= bit; boxes[b] ^= bit;      // 還原
+        }
+        board[i][j] = '.';
+        return false;
+    };
+
+    solve(0);
+}</code></pre>
+                </div>
+
+                <div id="c" class="code-content">
+                    <pre><code class="language-c">// 回溯 + 位元遮罩：rows / cols / boxes 各用 9 位元記錄已使用的數字
+// 時間複雜度: 最壞 O(9^空格數)，實際因剪枝很快；空間複雜度: O(1)
+static int rows[9], cols[9], boxes[9];
+static int empty[81][2], emptyCount;
+
+static bool solve(char** board, int k) {
+    if (k == emptyCount) return true;
+    int i = empty[k][0], j = empty[k][1], b = (i / 3) * 3 + j / 3;
+    for (int d = 0; d &lt; 9; d++) {
+        int bit = 1 &lt;&lt; d;
+        if ((rows[i] | cols[j] | boxes[b]) &amp; bit) continue;   // 這個數字已被使用
+        rows[i] |= bit; cols[j] |= bit; boxes[b] |= bit;
+        board[i][j] = '1' + d;
+        if (solve(board, k + 1)) return true;
+        rows[i] ^= bit; cols[j] ^= bit; boxes[b] ^= bit;      // 還原
+    }
+    board[i][j] = '.';
+    return false;
+}
+
+void solveSudoku(char** board, int boardSize, int* boardColSize) {
+    memset(rows, 0, sizeof(rows));
+    memset(cols, 0, sizeof(cols));
+    memset(boxes, 0, sizeof(boxes));
+    emptyCount = 0;
+    for (int i = 0; i &lt; 9; i++) {
+        for (int j = 0; j &lt; 9; j++) {
+            if (board[i][j] == '.') {
+                empty[emptyCount][0] = i;
+                empty[emptyCount][1] = j;
+                emptyCount++;
+            } else {
+                int bit = 1 &lt;&lt; (board[i][j] - '1');
+                rows[i] |= bit; cols[j] |= bit; boxes[(i / 3) * 3 + j / 3] |= bit;
+            }
+        }
+    }
+    solve(board, 0);
+}</code></pre>
                 </div>
             </div>
         </div>

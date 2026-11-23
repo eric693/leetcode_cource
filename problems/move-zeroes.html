@@ -166,6 +166,8 @@ fast=4: nums[4]=12≠0，移動到 slow
                 <button class="tab-btn active" onclick="showLanguage('python')">Python</button>
                 <button class="tab-btn" onclick="showLanguage('cpp')">C++</button>
                 <button class="tab-btn" onclick="showLanguage('java')">Java</button>
+                <button class="tab-btn" onclick="showLanguage('typescript')">TypeScript</button>
+                <button class="tab-btn" onclick="showLanguage('c')">C</button>
             </div>
 
             <div id="python" class="code-container active">
@@ -293,6 +295,32 @@ public:
             }
         }
     }
+}</code></pre>
+            </div>
+
+            <div id="typescript" class="code-container">
+                <pre><code class="language-typescript">// 雙指標：slow 指向下一個非零元素該放的位置
+// 時間複雜度: O(n)，空間複雜度: O(1)
+function moveZeroes(nums: number[]): void {
+    let slow = 0;
+    for (let fast = 0; fast &lt; nums.length; fast++) {
+        if (nums[fast] !== 0) {
+            [nums[slow], nums[fast]] = [nums[fast], nums[slow]];
+            slow++;
+        }
+    }
+}</code></pre>
+            </div>
+
+            <div id="c" class="code-container">
+                <pre><code class="language-c">// 雙指標：slow 指向下一個非零元素該放的位置
+// 時間複雜度: O(n)，空間複雜度: O(1)
+void moveZeroes(int* nums, int numsSize) {
+    int slow = 0;
+    for (int fast = 0; fast &lt; numsSize; fast++) {
+        if (nums[fast] != 0) nums[slow++] = nums[fast];
+    }
+    while (slow &lt; numsSize) nums[slow++] = 0;    // 剩下的位置補 0
 }</code></pre>
             </div>
         </div>

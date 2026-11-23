@@ -195,6 +195,8 @@ j=3: row[3] = prevRow[2] + prevRow[3] = 3 + 1 = 4
                 <button class="tab-btn active" onclick="showLanguage('python')">Python</button>
                 <button class="tab-btn" onclick="showLanguage('cpp')">C++</button>
                 <button class="tab-btn" onclick="showLanguage('java')">Java</button>
+                <button class="tab-btn" onclick="showLanguage('typescript')">TypeScript</button>
+                <button class="tab-btn" onclick="showLanguage('c')">C</button>
             </div>
 
             <div id="python" class="code-container active">
@@ -298,6 +300,37 @@ class Solution {
         
         return result;
     }
+}</code></pre>
+            </div>
+
+            <div id="typescript" class="code-container">
+                <pre><code class="language-typescript">// 每一列頭尾是 1，中間等於上一列相鄰兩數之和
+// 時間複雜度: O(n²)，空間複雜度: O(1)（不含輸出）
+function generate(numRows: number): number[][] {
+    const result: number[][] = [];
+    for (let i = 0; i &lt; numRows; i++) {
+        const row = new Array(i + 1).fill(1);
+        for (let j = 1; j &lt; i; j++) row[j] = result[i - 1][j - 1] + result[i - 1][j];
+        result.push(row);
+    }
+    return result;
+}</code></pre>
+            </div>
+
+            <div id="c" class="code-container">
+                <pre><code class="language-c">// 每一列頭尾是 1，中間等於上一列相鄰兩數之和
+// 時間複雜度: O(n²)，空間複雜度: O(1)（不含輸出）
+int** generate(int numRows, int* returnSize, int** returnColumnSizes) {
+    int** result = malloc(sizeof(int*) * numRows);
+    *returnColumnSizes = malloc(sizeof(int) * numRows);
+    for (int i = 0; i &lt; numRows; i++) {
+        result[i] = malloc(sizeof(int) * (i + 1));
+        (*returnColumnSizes)[i] = i + 1;
+        result[i][0] = result[i][i] = 1;
+        for (int j = 1; j &lt; i; j++) result[i][j] = result[i - 1][j - 1] + result[i - 1][j];
+    }
+    *returnSize = numRows;
+    return result;
 }</code></pre>
             </div>
         </div>
