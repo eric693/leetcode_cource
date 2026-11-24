@@ -39,6 +39,7 @@
       <button class="tb-icon" id="btnNext" title="下一題">
         <svg viewBox="0 0 20 20" width="16" height="16" aria-hidden="true"><path d="m8 5 5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </button>
+      <div class="crumb" id="crumb"><i class="crumb-dot" id="crumbDot"></i><span id="crumbTitle"></span></div>
     </div>
 
     <div class="tb-center">
@@ -53,6 +54,10 @@
     </div>
 
     <div class="tb-right">
+      <div class="prog" title="已解決的題數（只存在這台裝置）">
+        <span class="prog-text"><b id="progText">0</b> / <span id="progTotal">150</span></span>
+        <span class="prog-track"><i id="progBar"></i></span>
+      </div>
       <span class="kbd-hint"><kbd>Ctrl</kbd><kbd>↵</kbd> 執行</span>
       <button class="tb-icon" id="btnTheme" title="切換深色／淺色">
         <svg class="i-sun" viewBox="0 0 20 20" width="16" height="16" aria-hidden="true"><circle cx="10" cy="10" r="3.4" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M10 2.5v2M10 15.5v2M2.5 10h2M15.5 10h2M4.7 4.7l1.4 1.4M13.9 13.9l1.4 1.4M4.7 15.3l1.4-1.4M13.9 6.1l1.4-1.4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
@@ -71,9 +76,9 @@
     <!-- 左：題目／題解／提交紀錄 -->
     <section class="pane pane-left" id="paneLeft">
       <div class="pane-tabs" role="tablist">
-        <button class="ptab active" data-left="desc">描述</button>
-        <button class="ptab" data-left="solution">題解</button>
-        <button class="ptab" data-left="history">提交紀錄</button>
+        <button class="ptab active" data-left="desc"><svg class="ti" viewBox="0 0 20 20" width="14" height="14" aria-hidden="true"><path d="M6 3h6l3 3v11H6z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M8.5 9h4M8.5 12h4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>描述</button>
+        <button class="ptab" data-left="solution"><svg class="ti" viewBox="0 0 20 20" width="14" height="14" aria-hidden="true"><path d="M10 3a5 5 0 0 0-3 9c.6.5 1 1.2 1 2h4c0-.8.4-1.5 1-2a5 5 0 0 0-3-9z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M8.5 16.5h3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>題解</button>
+        <button class="ptab" data-left="history"><svg class="ti" viewBox="0 0 20 20" width="14" height="14" aria-hidden="true"><circle cx="10" cy="10" r="6.5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M10 6.5V10l2.5 1.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>提交紀錄</button>
       </div>
       <div class="pane-body scroll" id="leftBody">
         <div class="left-view active" data-left-view="desc" id="viewDesc"><div class="skeleton-lines"><i></i><i></i><i></i><i></i></div></div>
@@ -88,6 +93,8 @@
       <!-- 右上：編輯器 -->
       <div class="pane pane-editor" id="paneEditor">
         <div class="pane-tabs editor-bar">
+          <span class="pane-title"><svg class="ti" viewBox="0 0 20 20" width="14" height="14" aria-hidden="true"><path d="m7 6-4 4 4 4m6-8 4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>程式碼</span>
+          <span class="bar-sep"></span>
           <div class="lang-picker">
             <select id="langSelect" aria-label="程式語言">
               <option value="python">Python 3</option>
@@ -117,8 +124,8 @@
       <!-- 右下：測試案例／結果 -->
       <div class="pane pane-console" id="paneConsole">
         <div class="pane-tabs">
-          <button class="ptab active" data-console="cases">測試案例</button>
-          <button class="ptab" data-console="result">測試結果</button>
+          <button class="ptab active" data-console="cases"><svg class="ti" viewBox="0 0 20 20" width="14" height="14" aria-hidden="true"><rect x="3.5" y="4" width="13" height="12" rx="2" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="m6.5 10 2 2 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>測試案例</button>
+          <button class="ptab" data-console="result"><svg class="ti" viewBox="0 0 20 20" width="14" height="14" aria-hidden="true"><rect x="3" y="4" width="14" height="12" rx="2" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="m6.5 8.5 2 1.5-2 1.5M10.5 12h3" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>測試結果</button>
           <span class="flex"></span>
           <button class="tb-icon small" id="btnToggleConsole" title="收合／展開">
             <svg viewBox="0 0 20 20" width="14" height="14" aria-hidden="true"><path d="m5.5 8 4.5 4.5L14.5 8" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>

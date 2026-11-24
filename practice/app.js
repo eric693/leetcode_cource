@@ -420,6 +420,9 @@
     S.cases = (saved && saved.length && saved[0].length === p.params.length) ? saved : exampleCases(p);
 
     document.title = p.id + '. ' + p.title + ' - 線上練習';
+    $('#crumbTitle').textContent = p.id + '. ' + p.title;
+    $('#crumbDot').className = 'crumb-dot ' + p.difficulty;
+    $('#crumbDot').title = p.difficulty;
     var url = '?p=' + slug;
     if (push) history.pushState({ slug: slug }, '', url);
     else history.replaceState({ slug: slug }, '', url);
@@ -465,24 +468,29 @@
     var p = S.p;
     var solved = status(p.slug) === 'solved';
     var html = '<article class="desc">';
-    html += '<h1><span class="num">' + p.id + '.</span>' + esc(p.title) + '</h1>';
-    html += '<div class="meta"><span class="diff ' + p.difficulty + '">' + p.difficulty + '</span>';
+    html += '<header class="desc-head"><div class="desc-kicker"><span class="num">#' + p.id + '</span>';
+    if (solved) html += '<span class="solved-flag"><svg viewBox="0 0 16 16" width="12" height="12" aria-hidden="true"><path d="m3.5 8.5 3 3 6-7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>已解決</span>';
+    html += '</div><h1>' + esc(p.title) + '</h1>';
+    html += '<div class="meta"><span class="diff ' + p.difficulty + '"><i></i>' + p.difficulty + '</span>';
     p.tags.forEach(function (t) { html += '<span class="tag">' + esc(t) + '</span>'; });
-    if (solved) html += '<span class="solved-flag"><svg viewBox="0 0 16 16" width="13" height="13" aria-hidden="true"><path d="m3.5 8.5 3 3 6-7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>已解決</span>';
-    html += '</div>';
+    html += '</div></header>';
     html += '<div class="prose">' + p.desc + '</div>';
     p.examples.forEach(function (e, i) {
-      html += '<div class="ex"><div class="ex-label">範例 ' + (i + 1) + '</div><div class="ex-body">';
-      html += '<b>輸入</b>' + (p.design ? '\n' : '') + esc(paramLine(p, e.args)) + '\n';
-      html += '<b>輸出</b>' + esc(JSON.stringify(e.out));
-      if (e.explain) html += '\n<span class="exp"><b>解釋</b>' + esc(e.explain) + '</span>';
-      html += '</div></div>';
+      html += '<section class="ex-card"><div class="ex-head">範例 ' + (i + 1) + '</div><dl class="ex-rows">';
+      html += '<dt>輸入</dt><dd class="mono">' + esc(paramLine(p, e.args)) + '</dd>';
+      html += '<dt>輸出</dt><dd class="mono">' + esc(JSON.stringify(e.out)) + '</dd>';
+      if (e.explain) html += '<dt>解釋</dt><dd>' + esc(e.explain) + '</dd>';
+      html += '</dl></section>';
     });
-    html += '<div class="block-title">限制條件</div><ul class="constraints">';
-    p.constraints.forEach(function (c) { html += '<li><code>' + esc(c) + '</code></li>'; });
-    html += '</ul>';
-    if (p.followUp) html += '<p class="followup"><b>進階：</b>' + esc(p.followUp) + '</p>';
-    html += '<div class="desc-foot muted">想看圖解與完整說明？<a href="../problems/' + p.slug + '.html">打開這題的題解頁</a></div>';
+    if (p.constraints && p.constraints.length) {
+      html += '<section class="cons"><div class="cons-title">限制條件</div><ul>';
+      p.constraints.forEach(function (c) { html += '<li>' + esc(c) + '</li>'; });
+      html += '</ul></section>';
+    }
+    if (p.followUp) {
+      html += '<div class="callout"><svg viewBox="0 0 20 20" width="16" height="16" aria-hidden="true"><path d="M10 3.5 12 8l4.8.4-3.7 3.1 1.2 4.7L10 13.7l-4.3 2.5 1.2-4.7L3.2 8.4 8 8z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg><div><b>進階挑戰</b>' + esc(p.followUp) + '</div></div>';
+    }
+    html += '<a class="desc-foot" href="../problems/' + p.slug + '.html"><span><b>圖解與完整說明</b><span class="muted">解題思路、複雜度分析、五種語言程式碼</span></span><svg viewBox="0 0 20 20" width="16" height="16" aria-hidden="true"><path d="m8 5 5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></a>';
     html += '</article>';
     $('#viewDesc').innerHTML = html;
   }
@@ -651,7 +659,26 @@
 
   // ---------- 下方：結果 ----------
   function renderResultEmpty() {
-    $('#viewResult').innerHTML = '<p class="muted empty">按「執行」或 <kbd>' + (isMac ? '⌘' : 'Ctrl') + '</kbd> + <kbd>Enter</kbd>，用測試案例執行你的程式碼。</p>';
+    var k = isMac ? '⌘' : 'Ctrl';
+    $('#viewResult').innerHTML = '<div class="empty-state"><svg viewBox="0 0 20 20" width="22" height="22" aria-hidden="true"><rect x="3" y="4" width="14" height="12" rx="2" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="m6.5 8.5 2 1.5-2 1.5M10.5 12h3" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>' +
+      '<p>還沒有執行結果</p><span><kbd>' + k + '</kbd> <kbd>Enter</kbd> 執行測試案例　·　<kbd>' + k + '</kbd> <kbd>Shift</kbd> <kbd>Enter</kbd> 提交</span></div>';
+  }
+  var V_ICON = {
+    ok: '<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="currentColor" opacity=".14"/><path class="draw" d="m7.5 12.5 3 3 6-7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+    bad: '<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="currentColor" opacity=".14"/><path d="m8.5 8.5 7 7m0-7-7 7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>',
+    warn: '<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="currentColor" opacity=".14"/><path d="M12 7.5V12l3 2" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+  };
+  function verdict(cls, title, sub) {
+    return '<div class="verdict ' + cls + '"><span class="v-icon">' + V_ICON[cls] + '</span><div class="v-text"><h2>' + title + '</h2>' +
+      (sub ? '<span class="sub">' + sub + '</span>' : '') + '</div></div>';
+  }
+  function stats(items) {
+    return '<div class="stats">' + items.map(function (it) {
+      return '<div class="stat"><span>' + it[0] + '</span><b>' + it[1] + '</b></div>';
+    }).join('') + '</div>';
+  }
+  function compareBoxes(got, expected, bad) {
+    return '<div class="cmp-grid">' + valbox('你的輸出', got, bad) + valbox('預期結果', expected) + '</div>';
   }
   function renderRunning(text, progress) {
     var html = '<div class="running"><span class="spin"></span><span>' + esc(text) + '</span></div>';
@@ -672,15 +699,15 @@
     var R = S.last, v = $('#viewResult');
     var html = '<div class="result">';
     if (R.compileError) {
-      html += '<div class="verdict bad"><h2>' + (R.kind === 'syntax' ? '語法錯誤' : '編譯錯誤') + '</h2></div>';
+      html += verdict('bad', R.kind === 'syntax' ? '語法錯誤' : '編譯錯誤', '程式碼還沒開始執行就出錯了');
       html += '<pre class="errbox">' + esc(R.compileError) + '</pre>';
       if (R.stdout) html += valbox('標準輸出', R.stdout);
       v.innerHTML = html + '</div>';
       return;
     }
     if (R.timeout) {
-      html += '<div class="verdict warn"><h2>超出時間限制</h2><span class="sub">' + (R.perCase ? '單一案例' : '') + '執行超過 ' + (R.limit / 1000) + ' 秒' +
-        (R.timeoutIdx >= 0 ? '，卡在案例 ' + (R.timeoutIdx + 1) : '') + '。檢查是否有無窮迴圈。</span></div>';
+      html += verdict('warn', '超出時間限制', (R.perCase ? '單一案例' : '') + '執行超過 ' + (R.limit / 1000) + ' 秒' +
+        (R.timeoutIdx >= 0 ? '，卡在案例 ' + (R.timeoutIdx + 1) : '') + '。檢查是否有無窮迴圈。');
       if (R.timeoutIdx >= 0) html += inputFields(R.cases[R.timeoutIdx]);
       v.innerHTML = html + '</div>';
       return;
@@ -689,13 +716,15 @@
     var firstErr = res.find(function (r) { return !r.ok; });
     var allPass = res.length === R.cases.length && res.every(function (r, i) { return r.ok && r.pass; });
     var totalMs = res.reduce(function (a, r) { return a + (r.ms || 0); }, 0);
+    var passN = res.filter(function (r) { return r.pass; }).length;
     if (firstErr) {
-      html += '<div class="verdict bad"><h2>執行錯誤</h2></div>';
+      html += verdict('bad', '執行錯誤', '有案例在執行時拋出錯誤');
     } else if (allPass) {
-      html += '<div class="verdict ok"><h2>通過</h2><span class="sub">執行時間 ' + fmtMs(totalMs) + '</span></div>';
+      html += verdict('ok', '通過', '所有測試案例都通過了，可以試著提交');
     } else {
-      html += '<div class="verdict bad"><h2>答案錯誤</h2><span class="sub">' + res.filter(function (r) { return r.pass; }).length + ' / ' + res.length + ' 個案例通過</span></div>';
+      html += verdict('bad', '答案錯誤', passN + ' / ' + res.length + ' 個案例通過');
     }
+    if (!firstErr) html += stats([['通過案例', passN + ' / ' + res.length], ['執行時間', fmtMs(totalMs)], ['語言', LANGS[S.lang].label]]);
     html += '<div class="chips">';
     R.cases.forEach(function (c, i) {
       var r = res[i];
@@ -710,9 +739,10 @@
       if (!r.ok) html += '<pre class="errbox">' + esc(r.error) + '</pre>';
       html += inputFields(args);
       if (r.stdout) html += valbox('標準輸出', r.stdout);
-      if (r.ok) html += valbox('輸出', fmtVal(r.out), !r.pass);
-      html += valbox('預期結果', R.expected[S.resultIdx] === undefined ? '（無法計算）' : fmtVal(R.expected[S.resultIdx]));
-      if (ANY_NOTE[S.p.cmp]) html += '<p class="muted small">' + ANY_NOTE[S.p.cmp] + '</p>';
+      var expTxt = R.expected[S.resultIdx] === undefined ? '（無法計算）' : fmtVal(R.expected[S.resultIdx]);
+      if (r.ok) html += compareBoxes(fmtVal(r.out), expTxt, !r.pass);
+      else html += valbox('預期結果', expTxt);
+      if (ANY_NOTE[S.p.cmp]) html += '<p class="note">' + ANY_NOTE[S.p.cmp] + '</p>';
     }
     v.innerHTML = html + '</div>';
     $$('[data-rcase]', v).forEach(function (b) {
@@ -723,28 +753,27 @@
   function renderSubmitResult() {
     var R = S.last, v = $('#viewResult');
     var html = '<div class="result">';
-    var head = function (cls, title, sub) {
-      return '<div class="verdict ' + cls + '"><h2>' + title + '</h2>' + (sub ? '<span class="sub">' + sub + '</span>' : '') + '</div>';
-    };
+    var head = verdict;
     var passedSub = '通過 ' + R.passed + ' / ' + R.total + ' 個測試案例';
     if (R.compileError) {
-      html += head('bad', /SyntaxError|IndentationError|TabError|Expression expected|expected\./.test(R.compileError) || R.kind === 'syntax' ? '語法錯誤' : '編譯錯誤') + '<pre class="errbox">' + esc(R.compileError) + '</pre>';
+      html += head('bad', /SyntaxError|IndentationError|TabError|Expression expected|expected\./.test(R.compileError) || R.kind === 'syntax' ? '語法錯誤' : '編譯錯誤', '程式碼還沒開始執行就出錯了') + '<pre class="errbox">' + esc(R.compileError) + '</pre>';
     } else if (R.verdict === 'AC') {
-      html += head('ok', '通過', R.total + ' / ' + R.total + ' 個測試案例全部通過 · 總執行時間 ' + fmtMs(R.ms));
-      html += '<p class="muted small">已記錄到「提交紀錄」。想挑戰更好的寫法，可以到「題解」看看別的思路。</p>';
+      html += head('ok', '通過', R.total + ' / ' + R.total + ' 個測試案例全部通過');
+      html += stats([['測試案例', R.total + ' / ' + R.total], ['總執行時間', fmtMs(R.ms)], ['語言', LANGS[S.lang].label]]);
+      html += '<p class="note">已存到「提交紀錄」。想看看別的思路，可以打開「題解」。</p>';
     } else {
       var title = { WA: '答案錯誤', RE: '執行錯誤', TLE: '超出時間限制' }[R.verdict];
       html += head(R.verdict === 'TLE' ? 'warn' : 'bad', title, passedSub);
+      html += '<div class="pass-bar" title="' + passedSub + '"><i style="width:' + (R.total ? Math.round(R.passed / R.total * 100) : 0) + '%"></i></div>';
       if (R.verdict === 'RE') html += '<pre class="errbox">' + esc(R.error) + '</pre>';
-      if (R.verdict === 'TLE') html += '<p class="muted small">' + (R.perCase ? '單一測試案例' : '整體') + '執行超過 ' + (R.limit / 1000) + ' 秒。可能是無窮迴圈，或時間複雜度太高。</p>';
+      if (R.verdict === 'TLE') html += '<p class="note">' + (R.perCase ? '單一測試案例' : '整體') + '執行超過 ' + (R.limit / 1000) + ' 秒。可能是無窮迴圈，或時間複雜度太高。</p>';
       if (R.failArgs) {
-        html += '<div class="block-title" style="margin-top:4px">' + (R.verdict === 'TLE' ? '最後執行的輸入' : '未通過的案例') + '</div>';
+        html += '<div class="sub-title">' + (R.verdict === 'TLE' ? '最後執行的輸入' : '未通過的案例') + '</div>';
         html += inputFields(R.failArgs);
         if (R.stdout) html += valbox('標準輸出', R.stdout);
         if (R.verdict === 'WA') {
-          html += valbox('輸出', fmtVal(R.got), true);
-          html += valbox('預期結果', fmtVal(R.expected));
-          if (ANY_NOTE[S.p.cmp]) html += '<p class="muted small">' + ANY_NOTE[S.p.cmp] + '</p>';
+          html += compareBoxes(fmtVal(R.got), fmtVal(R.expected), true);
+          if (ANY_NOTE[S.p.cmp]) html += '<p class="note">' + ANY_NOTE[S.p.cmp] + '</p>';
         }
       }
     }
@@ -969,6 +998,9 @@
     });
     $('#plist').innerHTML = html || '<li class="muted empty">找不到符合的題目</li>';
     $('#drawerStats').textContent = '已解決 ' + solved + ' / ' + S.index.length + ' 題（進度只存在這台裝置的瀏覽器）';
+    $('#progText').textContent = solved;
+    $('#progTotal').textContent = S.index.length;
+    $('#progBar').style.width = (S.index.length ? solved / S.index.length * 100 : 0) + '%';
     $$('#plist a').forEach(function (a) {
       a.onclick = function (e) {
         if (e.metaKey || e.ctrlKey) return;
