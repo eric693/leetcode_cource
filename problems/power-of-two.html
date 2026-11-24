@@ -110,7 +110,7 @@
 
             <h3>方法一：n &amp; (n - 1) == 0（最經典）</h3>
             <div class="visual-box">
-                <div class="visual-title">🎯 一行解法</div>
+                <div class="visual-title">一行解法</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 n     = 1000  (8)
 n - 1 = 0111  (7)
@@ -127,7 +127,7 @@ n & (n-1) = 0100 ≠ 0  → 不是 ✗
 
             <h3>方法二：n &amp; (-n) == n</h3>
             <div class="visual-box">
-                <div class="visual-title">🎯 lowbit 等於自己</div>
+                <div class="visual-title">lowbit 等於自己</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 -n 是二補數 = ~n + 1
 n & (-n) 會取出最右邊的 1（lowbit）
@@ -308,7 +308,7 @@ bool isPowerOfTwo(int n) {
             <h2>補充說明</h2>
             <h3>延伸：Power of Four（#342）</h3>
             <div class="visual-box">
-                <div class="visual-title">🎯 多一個遮罩判斷</div>
+                <div class="visual-title">多一個遮罩判斷</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 4 的冪 = 是 2 的冪，而且那個 1 落在偶數位（第 0, 2, 4... 位）
 

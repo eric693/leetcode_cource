@@ -111,7 +111,7 @@ i=3: (n >> 3) & 1 = 1  ✓
 
             <h3>方法二：Brian Kernighan 演算法（最重要！）</h3>
             <div class="visual-box">
-                <div class="visual-title">🎯 n &amp; (n - 1) 會消掉最右邊的一個 1</div>
+                <div class="visual-title">n &amp; (n - 1) 會消掉最右邊的一個 1</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 原理：n-1 會把最右邊的 1 變成 0，其右邊的 0 全變成 1
      再和 n 做 AND，就正好消掉最右邊的那個 1

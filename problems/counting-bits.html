@@ -93,7 +93,7 @@
 
             <h3>遞推式一：dp[i] = dp[i &gt;&gt; 1] + (i &amp; 1)（最好記）</h3>
             <div class="visual-box">
-                <div class="visual-title">🎯 右移一位 = 去掉最低位</div>
+                <div class="visual-title">右移一位 = 去掉最低位</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 i 的 1 的個數 = (i 去掉最低位後的 1 的個數) + (最低位是不是 1)
 
@@ -116,7 +116,7 @@ dp[7] = dp[3] + 1 = 3          111
 
             <h3>遞推式二：dp[i] = dp[i &amp; (i-1)] + 1</h3>
             <div class="visual-box">
-                <div class="visual-title">🎯 消掉一個 1，個數就少 1</div>
+                <div class="visual-title">消掉一個 1，個數就少 1</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 i & (i-1) 會消掉最右邊的 1，且結果一定小於 i（已算過）
 
@@ -128,7 +128,7 @@ dp[6] = dp[4] + 1 = 1 + 1 = 2 ✓
 
             <h3>遞推式三：最高有效位法</h3>
             <div class="visual-box">
-                <div class="visual-title">🎯 dp[i] = dp[i - highBit] + 1</div>
+                <div class="visual-title">dp[i] = dp[i - highBit] + 1</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 當 i 是 2 的冪時更新 highBit = i
 dp[i] = dp[i - highBit] + 1

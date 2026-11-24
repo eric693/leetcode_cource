@@ -117,7 +117,7 @@ dp[i][j] = 以 (i, j) 為【右下角】的最大正方形的邊長
 
             <h3>轉移方程（本題的精髓）</h3>
             <div class="visual-box">
-                <div class="visual-title">🎯 dp[i][j] = min(左, 上, 左上) + 1</div>
+                <div class="visual-title">dp[i][j] = min(左, 上, 左上) + 1</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 若 matrix[i][j] == '0'：dp[i][j] = 0
 若 matrix[i][j] == '1'：

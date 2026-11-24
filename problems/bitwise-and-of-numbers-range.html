@@ -110,7 +110,7 @@ right = 7 = 1 1 1
 
             <h3>方法一：同時右移找共同前綴</h3>
             <div class="visual-box">
-                <div class="visual-title">🎯 移到相等為止，再移回來</div>
+                <div class="visual-title">移到相等為止，再移回來</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 left = 5 (101), right = 7 (111)
 
@@ -125,7 +125,7 @@ shift = 0
 
             <h3>方法二：Brian Kernighan（更快）</h3>
             <div class="visual-box">
-                <div class="visual-title">🎯 不斷消掉 right 最右邊的 1</div>
+                <div class="visual-title">不斷消掉 right 最右邊的 1</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 持續執行 right &= right - 1，直到 right <= left。
 剩下的 right 就是共同前綴。
