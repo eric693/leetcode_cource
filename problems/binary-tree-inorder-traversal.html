@@ -103,7 +103,7 @@
         <div class="section">
             <h2>解題思路</h2>
             <div class="visual-box">
-                <div class="visual-title">💡 三種遍歷的差別只在「處理根節點的時機」</div>
+                <div class="visual-title">三種遍歷的差別只在「處理根節點的時機」</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
         1
        / \
@@ -159,7 +159,7 @@ cur = 1, stack = []
 
             <h3>Morris 遍歷：O(1) 空間的黑魔法</h3>
             <div class="visual-box">
-                <div class="visual-title">🪄 用「線索」暫時改造樹的結構</div>
+                <div class="visual-title">用「線索」暫時改造樹的結構</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 核心想法：把每個節點的「中序前驅」的右指標，
           暫時指向該節點，走完再還原。
@@ -456,22 +456,22 @@ int* inorderTraversal(struct TreeNode* root, int* returnSize) {
         <div class="section">
             <h2>重點提示</h2>
             <div class="key-point">
-                <strong>💡 關鍵技巧 1：BST 的中序遍歷是遞增序列</strong>
+                <strong>關鍵技巧 1：BST 的中序遍歷是遞增序列</strong>
                 <p>這是二元搜尋樹最重要的性質！<strong>#98 驗證 BST</strong>、<strong>#230 第 k 小元素</strong>、<strong>#530 最小絕對差</strong>、<strong>#173 BST 迭代器</strong>全都建立在這個性質上。看到 BST 就先想中序遍歷。</p>
             </div>
 
             <div class="key-point">
-                <strong>💡 關鍵技巧 2：迭代版的兩層迴圈</strong>
+                <strong>關鍵技巧 2：迭代版的兩層迴圈</strong>
                 <p>外層 <code>while (cur || !stack.empty())</code>、內層 <code>while (cur)</code> 一路向左。這個雙層結構是中序迭代的標準模板，寫熟了前序、後序也能舉一反三。</p>
             </div>
 
             <div class="key-point">
-                <strong>💡 面試回答策略</strong>
+                <strong>面試回答策略</strong>
                 <p>先寫遞迴（30 秒），主動說「但如果樹很深會 stack overflow，我改寫迭代版」，再寫堆疊版。若還有時間可以提 Morris 遍歷達到 O(1) 空間。這個層層遞進的回答方式非常加分。</p>
             </div>
 
             <div class="note">
-                <strong>⚠️ 常見錯誤：</strong>
+                <strong>常見錯誤：</strong>
                 <ul>
                     <li>迭代版忘記在彈出後轉向 <code>cur = cur.right</code>，導致無限迴圈</li>
                     <li>外層迴圈條件只寫 <code>!stack.empty()</code>，一開始堆疊是空的會直接跳出</li>
@@ -496,7 +496,7 @@ int* inorderTraversal(struct TreeNode* root, int* returnSize) {
             <h2>補充說明</h2>
             <h3>三種遍歷的迭代寫法對照</h3>
             <div class="visual-box">
-                <div class="visual-title">📝 前序最簡單，後序最麻煩</div>
+                <div class="visual-title">前序最簡單，後序最麻煩</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 【前序 - 最簡單】根 → 左 → 右
   push(root)

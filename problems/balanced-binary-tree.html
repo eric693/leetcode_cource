@@ -114,7 +114,7 @@
         <div class="section">
             <h2>解題思路</h2>
             <div class="visual-box">
-                <div class="visual-title">💡 方法一：自頂向下（直覺但慢，O(n²)）</div>
+                <div class="visual-title">方法一：自頂向下（直覺但慢，O(n²)）</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 對每個節點：
   1. 算左子樹高度、右子樹高度，檢查差是否 <= 1
@@ -163,7 +163,7 @@ int height(node) {
 
             <h3>追蹤範例 2</h3>
             <div class="visual-box">
-                <div class="visual-title">🔄 -1 如何一路傳上去</div>
+                <div class="visual-title">-1 如何一路傳上去</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
           1
          / \
@@ -357,17 +357,17 @@ bool isBalanced(struct TreeNode* root) {
         <div class="section">
             <h2>重點提示</h2>
             <div class="key-point">
-                <strong>💡 關鍵技巧：用特殊值當「錯誤訊號」</strong>
+                <strong>關鍵技巧：用特殊值當「錯誤訊號」</strong>
                 <p>高度不可能是負數，所以用 <code>-1</code> 代表「不平衡」是安全的。這種「用不可能出現的值當旗標」的技巧能省下額外的參數或全域變數，在遞迴題中很常用。</p>
             </div>
 
             <div class="key-point">
-                <strong>💡 自頂向下 vs 自底向上</strong>
+                <strong>自頂向下 vs 自底向上</strong>
                 <p>凡是「上層需要下層資訊」的樹題，都應該優先考慮<strong>自底向上（後序）</strong>，一趟遍歷把資訊帶上來，避免重複計算。這是把 O(n²) 優化成 O(n) 的通用手法。</p>
             </div>
 
             <div class="note">
-                <strong>⚠️ 常見錯誤：</strong>
+                <strong>常見錯誤：</strong>
                 <ul>
                     <li>只檢查根節點的左右子樹高度差，忘了<strong>每個節點</strong>都要滿足</li>
                     <li>發現 -1 後沒有立刻返回，繼續用 -1 參與計算導致答案錯誤</li>
@@ -390,7 +390,7 @@ bool isBalanced(struct TreeNode* root) {
             <h2>補充說明</h2>
             <h3>為什麼「平衡」這麼重要？</h3>
             <div class="visual-box">
-                <div class="visual-title">📊 平衡決定了效能</div>
+                <div class="visual-title">平衡決定了效能</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 BST 的查詢複雜度是 O(h)，h 是樹高。
 

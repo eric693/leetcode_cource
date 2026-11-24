@@ -113,12 +113,12 @@
         <div class="section">
             <h2>解題思路</h2>
             <div class="visual-box">
-                <div class="visual-title">💡 核心：多源 BFS（Multi-source BFS）</div>
+                <div class="visual-title">核心：多源 BFS（Multi-source BFS）</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 關鍵觀察：腐爛是【同時】從所有爛橘子向外擴散的，
           這正是 BFS「逐層擴散」的模型。
 
-⭐ 多源 BFS 的做法：
+★ 多源 BFS 的做法：
    把【所有】初始的爛橘子一次全部放進佇列，
    然後正常做 BFS，每一「層」就是一分鐘。
 
@@ -151,7 +151,7 @@ while (!queue.empty() && fresh > 0) {
     minutes++;                     // 處理完一整層 = 過了一分鐘
 }
 
-⚠️ 必須先把 size 存下來，
+必須先把 size 存下來，
    因為迴圈中會不斷往 queue 加新元素，
    直接用 queue.size() 當條件會把新一層也算進來。
                 </pre>
@@ -159,7 +159,7 @@ while (!queue.empty() && fresh > 0) {
 
             <h3>兩個關鍵細節</h3>
             <div class="visual-box">
-                <div class="visual-title">🔍 容易出錯的地方</div>
+                <div class="visual-title">容易出錯的地方</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 【細節 1】要先統計新鮮橘子的數量 fresh
   結束時若 fresh > 0，代表有橘子永遠爛不到 → 返回 -1
@@ -417,22 +417,22 @@ int orangesRotting(int** grid, int gridSize, int* gridColSize) {
         <div class="section">
             <h2>重點提示</h2>
             <div class="key-point">
-                <strong>💡 關鍵技巧 1：多源 BFS</strong>
+                <strong>關鍵技巧 1：多源 BFS</strong>
                 <p>「多個起點同時擴散」就把所有起點一次放進初始佇列。這比對每個起點各跑一次 BFS 快非常多，是解一整類「擴散/傳染/最近距離」問題的標準手法。</p>
             </div>
 
             <div class="key-point">
-                <strong>💡 關鍵技巧 2：用原地修改取代 visited 陣列</strong>
+                <strong>關鍵技巧 2：用原地修改取代 visited 陣列</strong>
                 <p>把 1 改成 2 既表示「腐爛了」也表示「已訪問」，一舉兩得，省下 O(mn) 空間。若題目不允許修改輸入，才需要額外的 visited。</p>
             </div>
 
             <div class="key-point">
-                <strong>💡 關鍵技巧 3：迴圈條件加 <code>fresh &gt; 0</code></strong>
+                <strong>關鍵技巧 3：迴圈條件加 <code>fresh &gt; 0</code></strong>
                 <p>這是本題最容易踩的坑。少了它，最後一層擴散完後還會多算一分鐘，導致答案大 1。</p>
             </div>
 
             <div class="note">
-                <strong>⚠️ 常見錯誤：</strong>
+                <strong>常見錯誤：</strong>
                 <ul>
                     <li>多算一分鐘（沒加 <code>fresh &gt; 0</code> 條件）</li>
                     <li>沒處理「一開始就沒有新鮮橘子」→ 應返回 0 而非 -1</li>
@@ -457,7 +457,7 @@ int orangesRotting(int** grid, int gridSize, int* gridColSize) {
             <h2>補充說明</h2>
             <h3>網格 BFS/DFS 的通用模板</h3>
             <div class="visual-box">
-                <div class="visual-title">📝 寫熟這個模板，一半的網格題都會了</div>
+                <div class="visual-title">寫熟這個模板，一半的網格題都會了</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 int dirs[4][2] = {{-1,0},{1,0},{0,-1},{0,1}};   // 上下左右
 // 八方向：再加 {-1,-1},{-1,1},{1,-1},{1,1}
@@ -469,7 +469,7 @@ for (auto&amp; d : dirs) {
     // 處理 (nx, ny)
 }
 
-⭐ 邊界檢查一定要寫在存取 grid[nx][ny] 【之前】，
+★ 邊界檢查一定要寫在存取 grid[nx][ny] 【之前】，
    否則會越界崩潰（短路求值 &amp;&amp; 的順序很重要）。
                 </pre>
             </div>
@@ -492,7 +492,7 @@ for (auto&amp; d : dirs) {
             <pre style="background: #f1f5f9; padding: 15px; border-radius: 8px; margin-top: 10px;">
 求每個格子到最近的 0 的距離。
 
-❌ 錯誤思路：對每個 1 做一次 BFS → O((mn)²) 超時
+錯誤思路：對每個 1 做一次 BFS → O((mn)²) 超時
 ✓ 正確思路：把【所有 0】一次放進佇列做多源 BFS，
             向外擴散時記錄距離 → O(mn)
 

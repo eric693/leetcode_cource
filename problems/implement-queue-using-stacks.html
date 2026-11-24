@@ -92,7 +92,7 @@ q.empty();      // 返回 false
         <div class="section">
             <h2>解題思路</h2>
             <div class="visual-box">
-                <div class="visual-title">💡 核心：兩個堆疊「倒一次」就變成 FIFO</div>
+                <div class="visual-title">核心：兩個堆疊「倒一次」就變成 FIFO</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 堆疊是 LIFO（後進先出），佇列是 FIFO（先進先出）
 把一個堆疊的元素倒進另一個堆疊，順序剛好會反過來 → 變成 FIFO
@@ -121,7 +121,7 @@ pop() → out 不空，直接彈出 2 ✓
             <div class="visual-box">
                 <div class="visual-title">只有在 out 為空時才搬運</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
-❌ 錯誤做法：每次 pop 都把 in 倒到 out、pop 完再倒回 in
+錯誤做法：每次 pop 都把 in 倒到 out、pop 完再倒回 in
    → 每次操作 O(n)
 
 ✓ 正確做法：out 空了才一次倒完，out 沒空就直接用
@@ -353,17 +353,17 @@ void myQueueFree(MyQueue* obj) {
         <div class="section">
             <h2>重點提示</h2>
             <div class="key-point">
-                <strong>💡 關鍵技巧：out 空了才搬</strong>
+                <strong>關鍵技巧：out 空了才搬</strong>
                 <p>這是本題唯一的重點。每次都搬來搬去會退化成 O(n)，「只有必要時才搬」才能達到攤銷 O(1)。</p>
             </div>
 
             <div class="key-point">
-                <strong>💡 什麼是攤銷複雜度？</strong>
+                <strong>什麼是攤銷複雜度？</strong>
                 <p>單次操作可能很貴，但把總成本平均到所有操作上仍是常數。<strong>動態陣列（vector）擴容</strong>、<strong>Union-Find 路徑壓縮</strong>都是攤銷分析的經典例子。面試被問到時，記得說明「每個元素只會被搬運一次」這個論證。</p>
             </div>
 
             <div class="note">
-                <strong>⚠️ 常見錯誤：</strong>
+                <strong>常見錯誤：</strong>
                 <ul>
                     <li>pop 完之後又把元素倒回 in 堆疊（完全沒必要，還破壞攤銷複雜度）</li>
                     <li>out 不為空時又去搬 in，會破壞元素順序</li>
@@ -387,7 +387,7 @@ void myQueueFree(MyQueue* obj) {
             <h2>補充說明</h2>
             <h3>對照：#225 用佇列實作堆疊</h3>
             <div class="visual-box">
-                <div class="visual-title">🔄 只需要一個佇列</div>
+                <div class="visual-title">只需要一個佇列</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 push 時，把新元素加入後，
 把它前面的所有元素依序出隊再入隊，讓新元素轉到最前面。

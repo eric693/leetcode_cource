@@ -86,7 +86,7 @@
         <div class="section">
             <h2>解題思路</h2>
             <div class="visual-box">
-                <div class="visual-title">💡 方法一：逐位搬移</div>
+                <div class="visual-title">方法一：逐位搬移</div>
                 <p>把 n 的最低位一個一個取出，塞進 result 的最低位，同時 result 左移。</p>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 n = 1011（只看 4 位示範）
@@ -124,7 +124,7 @@ result = 0000
 
             <h3>方法三：查表 + 快取（回答「呼叫很多次」的進階題）</h3>
             <div class="visual-box">
-                <div class="visual-title">⚡ 拆成 4 個 byte 查表</div>
+                <div class="visual-title">拆成 4 個 byte 查表</div>
                 <p>建立 256 大小的 byte 反轉表，把 32 位元拆成 4 個 byte，各自查表後再反序組回去。若輸入有重複，還可以用 HashMap 做記憶化快取。</p>
             </div>
         </div>
@@ -314,17 +314,17 @@ uint32_t reverseBits(uint32_t n) {
         <div class="section">
             <h2>重點提示</h2>
             <div class="key-point">
-                <strong>💡 關鍵技巧 1：分治遮罩要記熟</strong>
+                <strong>關鍵技巧 1：分治遮罩要記熟</strong>
                 <p>0xAAAAAAAA / 0x55555555（奇偶位）、0xCCCCCCCC / 0x33333333（每 2 位）、0xF0F0F0F0 / 0x0F0F0F0F（每 4 位），這組遮罩在 popcount、bit reverse、byte swap 都會用到。</p>
             </div>
 
             <div class="key-point">
-                <strong>💡 關鍵技巧 2：進階題的標準答案</strong>
+                <strong>關鍵技巧 2：進階題的標準答案</strong>
                 <p>面試官問「呼叫很多次怎麼優化」時，答案就是：<strong>拆 byte 查表 + 快取</strong>。這題就是在考這個。</p>
             </div>
 
             <div class="note">
-                <strong>⚠️ 常見錯誤：</strong>
+                <strong>常見錯誤：</strong>
                 <ul>
                     <li><strong>Java 一定要用 <code>&gt;&gt;&gt;</code></strong>，用 <code>&gt;&gt;</code> 對負數會補 1 造成錯誤</li>
                     <li>Python 整數沒有位寬限制，左移後要記得 &amp; 0xFFFFFFFF（本題因為固定 32 輪所以安全）</li>
@@ -346,7 +346,7 @@ uint32_t reverseBits(uint32_t n) {
             <h2>補充說明</h2>
             <h3>韌體實務：Byte Swap（大小端轉換）</h3>
             <div class="visual-box">
-                <div class="visual-title">🔧 endianness 轉換是同一個技巧</div>
+                <div class="visual-title">endianness 轉換是同一個技巧</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 // 32 位元 big-endian ↔ little-endian
 uint32_t bswap32(uint32_t x) {

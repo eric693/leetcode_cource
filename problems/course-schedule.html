@@ -91,7 +91,7 @@
         <div class="section">
             <h2>解題思路</h2>
             <div class="visual-box">
-                <div class="visual-title">💡 建模：把課程依賴變成有向圖</div>
+                <div class="visual-title">建模：把課程依賴變成有向圖</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 prerequisites[i] = [a, b] 表示「學 a 之前要先學 b」
 
@@ -146,7 +146,7 @@ count = 0 != 2 → false ✓
 
             <h3>方法二：DFS 三色標記法</h3>
             <div class="visual-box">
-                <div class="visual-title">🎨 用三種狀態偵測環</div>
+                <div class="visual-title">用三種狀態偵測環</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 0 = 白色（未訪問）
 1 = 灰色（正在遞迴堆疊中，還沒走完）
@@ -156,7 +156,7 @@ DFS 過程中：
   遇到【灰色】節點 → 找到環！返回 false
   遇到【黑色】節點 → 已驗證過，直接跳過
 
-⚠️ 為什麼需要三種顏色而不是兩種？
+為什麼需要三種顏色而不是兩種？
   只用「訪問過/沒訪問過」無法區分：
     - 這個節點在【當前路徑】上（=環）
     - 這個節點在【之前的路徑】上（不是環，只是共用節點）
@@ -412,17 +412,17 @@ bool canFinish(int numCourses, int** prerequisites, int prerequisitesSize,
         <div class="section">
             <h2>重點提示</h2>
             <div class="key-point">
-                <strong>💡 關鍵技巧 1：建圖方向不要弄反</strong>
+                <strong>關鍵技巧 1：建圖方向不要弄反</strong>
                 <p><code>[a, b]</code> 表示「學 a 前要先學 b」，所以邊是 <strong>b → a</strong>，且 <strong>a 的入度 +1</strong>。方向弄反答案就完全錯了，這是本題最常見的失分點。</p>
             </div>
 
             <div class="key-point">
-                <strong>💡 關鍵技巧 2：BFS 版用「計數」判斷有環</strong>
+                <strong>關鍵技巧 2：BFS 版用「計數」判斷有環</strong>
                 <p>如果最後修完的課程數 &lt; numCourses，代表有些課程的入度永遠降不到 0 —— 它們互相依賴形成環。這個判斷法非常簡潔，不需要額外的環偵測邏輯。</p>
             </div>
 
             <div class="key-point">
-                <strong>💡 BFS vs DFS 怎麼選？</strong>
+                <strong>BFS vs DFS 怎麼選？</strong>
                 <ul>
                     <li><strong>BFS（Kahn）</strong>：不會 stack overflow，還能順便輸出拓撲序（#210），推薦首選</li>
                     <li><strong>DFS 三色</strong>：程式碼較短，但深度大時有堆疊風險；輸出拓撲序時需要把完成順序反轉</li>
@@ -430,7 +430,7 @@ bool canFinish(int numCourses, int** prerequisites, int prerequisitesSize,
             </div>
 
             <div class="note">
-                <strong>⚠️ 常見錯誤：</strong>
+                <strong>常見錯誤：</strong>
                 <ul>
                     <li>建圖方向反了</li>
                     <li>DFS 只用兩種狀態（訪問/未訪問），把「共用節點」誤判成環</li>
@@ -454,7 +454,7 @@ bool canFinish(int numCourses, int** prerequisites, int prerequisitesSize,
             <h2>補充說明</h2>
             <h3>拓撲排序的應用場景</h3>
             <div class="visual-box">
-                <div class="visual-title">🔧 實務中無處不在</div>
+                <div class="visual-title">實務中無處不在</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 • 建置系統：make / bazel 決定編譯順序（.c → .o → 可執行檔）
 • 套件管理：npm / pip / apt 解析依賴，偵測循環依賴
@@ -481,7 +481,7 @@ bool canFinish(int numCourses, int** prerequisites, int prerequisitesSize,
   方法 2：Union-Find，若一條邊的兩端已在同一集合 → 有環
   方法 3：若 邊數 &gt;= 節點數，必定有環（連通圖）
 
-⚠️ 無向圖不能直接用「遇到已訪問就是環」，
+無向圖不能直接用「遇到已訪問就是環」，
    因為 A→B 走過後，從 B 看回 A 會誤判。
             </pre>
 

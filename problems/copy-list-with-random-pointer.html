@@ -86,13 +86,13 @@
         <div class="section">
             <h2>解題思路</h2>
             <div class="note">
-                <strong>⚠️ 難點在哪？</strong>
+                <strong>難點在哪？</strong>
                 <p>複製 next 很簡單（順序走一遍就好），但 random 可能指向<strong>還沒被建立的節點</strong>。所以核心問題是：<strong>如何把「原節點」對應到「新節點」？</strong></p>
             </div>
 
             <h3>方法一：HashMap 建立對應關係（好懂，面試首選）</h3>
             <div class="visual-box">
-                <div class="visual-title">💡 兩趟掃描</div>
+                <div class="visual-title">兩趟掃描</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 第一趟：只複製節點的值，建立 map[原節點] = 新節點
 第二趟：利用 map 把 next 和 random 接起來
@@ -408,17 +408,17 @@ struct Node* copyRandomList(struct Node* head) {
         <div class="section">
             <h2>重點提示</h2>
             <div class="key-point">
-                <strong>💡 關鍵技巧 1：先建節點，再接指標</strong>
+                <strong>關鍵技巧 1：先建節點，再接指標</strong>
                 <p>「指標指向尚未建立的物件」是深拷貝的通病。解法一律是<strong>兩階段</strong>：先把所有物件都建出來，第二趟再連線。這在複製圖（#133 Clone Graph）、序列化反序列化中都是同樣套路。</p>
             </div>
 
             <div class="key-point">
-                <strong>💡 關鍵技巧 2：交錯編織 = 隱形的對照表</strong>
+                <strong>關鍵技巧 2：交錯編織 = 隱形的對照表</strong>
                 <p><code>cur.next</code> 就是 cur 的複製品，這個位置關係取代了 HashMap。想到這一層就能把空間降到 O(1)，是本題最漂亮的地方。</p>
             </div>
 
             <div class="note">
-                <strong>⚠️ 常見錯誤：</strong>
+                <strong>常見錯誤：</strong>
                 <ul>
                     <li>random 為 null 時沒判斷，直接 <code>cur.random.next</code> 造成崩潰</li>
                     <li>方法二<strong>忘記還原原串列</strong>（題目要求原串列不能被破壞）</li>
@@ -441,7 +441,7 @@ struct Node* copyRandomList(struct Node* head) {
             <h2>補充說明</h2>
             <h3>延伸：深拷貝 vs 淺拷貝</h3>
             <div class="visual-box">
-                <div class="visual-title">🔍 兩者的差別</div>
+                <div class="visual-title">兩者的差別</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 淺拷貝（shallow copy）：
   只複製物件本身，內部的指標/參考仍指向原物件

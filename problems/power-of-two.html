@@ -95,7 +95,7 @@
         <div class="section">
             <h2>解題思路</h2>
             <div class="visual-box">
-                <div class="visual-title">💡 核心觀察：2 的冪次方在二進位中只有一個 1</div>
+                <div class="visual-title">核心觀察：2 的冪次方在二進位中只有一個 1</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 1  = 0001    ✓ 只有一個 1
 2  = 0010    ✓
@@ -120,7 +120,7 @@ n     = 0110  (6)
 n - 1 = 0101  (5)
 n & (n-1) = 0100 ≠ 0  → 不是 ✗
 
-⚠️ 必須先判斷 n > 0
+必須先判斷 n > 0
    n = 0 時：0 & -1 = 0 會誤判為 true
                 </pre>
             </div>
@@ -141,7 +141,7 @@ n = 0110 (6),  n & -n = 0010 ≠ n ✗
 
             <h3>方法三：數學法（不用迴圈也不用遞迴）</h3>
             <div class="visual-box">
-                <div class="visual-title">🧮 用最大的 2 的冪來整除</div>
+                <div class="visual-title">用最大的 2 的冪來整除</div>
                 <p>32 位元 int 中最大的 2 的冪是 2<sup>30</sup> = 1073741824。如果 n 是 2 的冪，它必定能整除 2<sup>30</sup>。</p>
             </div>
         </div>
@@ -276,17 +276,17 @@ bool isPowerOfTwo(int n) {
         <div class="section">
             <h2>重點提示</h2>
             <div class="key-point">
-                <strong>💡 關鍵技巧：n &gt; 0 的判斷不能少</strong>
+                <strong>關鍵技巧：n &gt; 0 的判斷不能少</strong>
                 <p>n = 0 時 <code>0 &amp; -1 = 0</code> 會誤判為 true；負數也會出錯。這是本題最常見的扣分點。</p>
             </div>
 
             <div class="key-point">
-                <strong>💡 韌體應用：對齊與遮罩</strong>
+                <strong>韌體應用：對齊與遮罩</strong>
                 <p>只有當 size 是 2 的冪時，<code>x % size</code> 才能用 <code>x &amp; (size-1)</code> 取代。這就是為什麼記憶體分頁、cache line、ring buffer 大小都設計成 2 的冪。</p>
             </div>
 
             <div class="note">
-                <strong>⚠️ 常見錯誤：</strong>
+                <strong>常見錯誤：</strong>
                 <ul>
                     <li>忘記處理 n &lt;= 0</li>
                     <li>C++ 中對 <code>INT_MIN</code> 取負號會溢位（UB），要轉成 long long</li>

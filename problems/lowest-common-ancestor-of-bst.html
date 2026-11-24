@@ -98,7 +98,7 @@
         <div class="section">
             <h2>解題思路</h2>
             <div class="visual-box">
-                <div class="visual-title">💡 核心：LCA 就是「值的分岔點」</div>
+                <div class="visual-title">核心：LCA 就是「值的分岔點」</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 BST 性質：左子樹全部 < 根 < 右子樹全部
 
@@ -119,7 +119,7 @@ BST 性質：左子樹全部 < 根 < 右子樹全部
 
             <h3>完整追蹤：p = 2, q = 8</h3>
             <div class="visual-box">
-                <div class="visual-title">🔄 一路往下直到分岔</div>
+                <div class="visual-title">一路往下直到分岔</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
         6
        / \
@@ -140,7 +140,7 @@ root = 2：
 
             <h3>與 #236 的效能差異</h3>
             <div class="visual-box">
-                <div class="visual-title">📊 為什麼 BST 版本更快</div>
+                <div class="visual-title">為什麼 BST 版本更快</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
               #236 普通二元樹      #235 BST
 -------------------------------------------------
@@ -313,17 +313,17 @@ struct TreeNode* lowestCommonAncestor(struct TreeNode* root, struct TreeNode* p,
         <div class="section">
             <h2>重點提示</h2>
             <div class="key-point">
-                <strong>💡 關鍵技巧：看到 BST 就先想「能不能利用大小關係」</strong>
+                <strong>關鍵技巧：看到 BST 就先想「能不能利用大小關係」</strong>
                 <p>BST 題目的通用心法：把「搜尋」問題變成「往左還是往右」的判斷。這能把 O(n) 的走訪降到 O(h)。#98 驗證 BST、#230 第 k 小、#700 搜尋、#701 插入都是同樣的思路。</p>
             </div>
 
             <div class="key-point">
-                <strong>💡 為什麼「分岔點」一定是 LCA？</strong>
+                <strong>為什麼「分岔點」一定是 LCA？</strong>
                 <p>假設 <code>p.val &lt;= root.val &lt;= q.val</code>。若再往左走，新的節點值會小於 root，q 就不可能在它的子樹裡；往右走則 p 被排除。所以 root 是<strong>最後一個能同時包含兩者的節點</strong>，正是最近公共祖先。</p>
             </div>
 
             <div class="note">
-                <strong>⚠️ 常見錯誤：</strong>
+                <strong>常見錯誤：</strong>
                 <ul>
                     <li>沒有處理「p 或 q 就是當前節點」的情況（本解法的 else 分支自動涵蓋了）</li>
                     <li>條件寫成 <code>&lt;=</code>，會在 p == root 時繼續往下走而錯過答案</li>
@@ -346,7 +346,7 @@ struct TreeNode* lowestCommonAncestor(struct TreeNode* root, struct TreeNode* p,
             <h2>補充說明</h2>
             <h3>BST 的核心性質總整理</h3>
             <div class="visual-box">
-                <div class="visual-title">📝 五個必記的性質</div>
+                <div class="visual-title">五個必記的性質</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 1【中序遍歷 = 遞增序列】
    → #98 驗證、#230 第 k 小、#530 最小絕對差、#173 迭代器
@@ -367,7 +367,7 @@ struct TreeNode* lowestCommonAncestor(struct TreeNode* root, struct TreeNode* p,
 
             <h3>#98 驗證 BST 的常見陷阱</h3>
             <pre style="background: #f1f5f9; padding: 15px; border-radius: 8px; margin-top: 10px;">
-❌ 錯誤：只比較父子關係
+錯誤：只比較父子關係
     if (node-&gt;left &amp;&amp; node-&gt;left-&gt;val &gt;= node-&gt;val) return false;
 
   反例：      5

@@ -113,7 +113,7 @@ matrix = [
             <h2>解題思路</h2>
             
             <div class="visual-box">
-                <div class="visual-title">💡 核心概念：轉化為柱狀圖問題</div>
+                <div class="visual-title">核心概念：轉化為柱狀圖問題</div>
                 <p><strong>關鍵洞察：</strong>將每一行視為柱狀圖的底部，利用 #84 Largest Rectangle in Histogram 的解法。</p>
                 <ol style="margin-top: 10px;">
                     <li>對每一行，計算以該行為底的柱狀圖高度</li>
@@ -124,7 +124,7 @@ matrix = [
 
             <h3>轉化過程詳解</h3>
             <div class="visual-box">
-                <div class="visual-title">🔄 矩陣 → 柱狀圖轉換</div>
+                <div class="visual-title">矩陣 → 柱狀圖轉換</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 原始矩陣:
 1 0 1 0 0
@@ -162,7 +162,7 @@ matrix = [
 
             <h3>高度計算規則</h3>
             <div class="visual-box">
-                <div class="visual-title">📊 動態規劃更新高度</div>
+                <div class="visual-title">動態規劃更新高度</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 對於位置 (i, j):
 - 如果 matrix[i][j] == '1':
@@ -544,22 +544,22 @@ int maximalRectangle(char** matrix, int matrixSize, int* matrixColSize) {
             <h2>重點提示</h2>
             
             <div class="key-point">
-                <strong>💡 關鍵技巧 1：問題轉化</strong>
+                <strong>關鍵技巧 1：問題轉化</strong>
                 <p>將 2D 問題轉化為多個 1D 柱狀圖問題，複用 #84 的解法。</p>
             </div>
 
             <div class="key-point">
-                <strong>💡 關鍵技巧 2：高度更新</strong>
+                <strong>關鍵技巧 2：高度更新</strong>
                 <p>遇到 '1' 累加高度，遇到 '0' 重置為 0。</p>
             </div>
 
             <div class="key-point">
-                <strong>💡 關鍵技巧 3：單調棧優化</strong>
+                <strong>關鍵技巧 3：單調棧優化</strong>
                 <p>使用單調棧可以在 O(n) 時間內求出柱狀圖的最大矩形。</p>
             </div>
 
             <div class="note">
-                <strong>⚠️ 常見錯誤：</strong>
+                <strong>常見錯誤：</strong>
                 <ul>
                     <li>忘記在遇到 '0' 時重置高度為 0</li>
                     <li>沒有正確處理空矩陣的情況</li>

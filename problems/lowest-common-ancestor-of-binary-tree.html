@@ -99,7 +99,7 @@
         <div class="section">
             <h2>解題思路</h2>
             <div class="visual-box">
-                <div class="visual-title">💡 核心：後序遍歷 + 「往上回報」</div>
+                <div class="visual-title">核心：後序遍歷 + 「往上回報」</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 遞迴函數的語意定義（這是最關鍵的一步）：
 
@@ -125,7 +125,7 @@
 
             <h3>完整推導：p = 5, q = 4</h3>
             <div class="visual-box">
-                <div class="visual-title">🔄 從葉子往上回報</div>
+                <div class="visual-title">從葉子往上回報</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
         3
        / \
@@ -154,7 +154,7 @@ lca(3)：left = 5, right = null
 
             <h3>為什麼「遇到 p 就直接回傳」是對的？</h3>
             <div class="visual-box">
-                <div class="visual-title">🔍 兩種情況都正確</div>
+                <div class="visual-title">兩種情況都正確</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 假設在節點 x 遇到了 p，直接回傳 x：
 
@@ -338,22 +338,22 @@ struct TreeNode* lowestCommonAncestor(struct TreeNode* root, struct TreeNode* p,
         <div class="section">
             <h2>重點提示</h2>
             <div class="key-point">
-                <strong>💡 關鍵技巧 1：先定義好遞迴函數的「語意」</strong>
+                <strong>關鍵技巧 1：先定義好遞迴函數的「語意」</strong>
                 <p>本題的精髓在於清楚定義「這個函數回傳什麼」。定義好之後，三種情況的處理自然就浮現了。這是解所有樹遞迴題的通用方法：<strong>先想清楚回傳值代表什麼意思</strong>。</p>
             </div>
 
             <div class="key-point">
-                <strong>💡 關鍵技巧 2：後序遍歷的「資訊上傳」模式</strong>
+                <strong>關鍵技巧 2：後序遍歷的「資訊上傳」模式</strong>
                 <p>需要「先知道子樹的結果，才能決定當前節點」的題目，都是後序遍歷。例如 <strong>#543 樹的直徑</strong>、<strong>#110 平衡二元樹</strong>、<strong>#124 最大路徑和</strong>，模式完全相同。</p>
             </div>
 
             <div class="key-point">
-                <strong>💡 對比 #235（BST 版本）</strong>
+                <strong>對比 #235（BST 版本）</strong>
                 <p>如果是 BST，可以利用大小關係直接往下走：都比 root 小就往左、都比 root 大就往右、一大一小（或等於）就是 LCA。時間 O(h)，不需要走訪整棵樹，比本題更快。</p>
             </div>
 
             <div class="note">
-                <strong>⚠️ 常見錯誤：</strong>
+                <strong>常見錯誤：</strong>
                 <ul>
                     <li>比較節點時用 <code>val</code> 而非<strong>參考</strong>（若題目允許重複值就會出錯）</li>
                     <li>誤以為需要先確認 p、q 都存在（本題保證存在；若不保證，需額外用旗標記錄是否真的找到兩者）</li>
@@ -393,7 +393,7 @@ TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
 
             <h3>#1650：有 parent 指標的版本</h3>
             <div class="visual-box">
-                <div class="visual-title">🔗 轉化成鏈結串列找交點</div>
+                <div class="visual-title">轉化成鏈結串列找交點</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 若每個節點都有 parent 指標，
 從 p 往上走和從 q 往上走，就是兩條「鏈結串列」，
@@ -414,7 +414,7 @@ O(h) 時間，O(1) 空間，非常漂亮。
 
             <h3>進階：多次查詢的 LCA</h3>
             <div class="visual-box">
-                <div class="visual-title">⚡ 倍增法（Binary Lifting）</div>
+                <div class="visual-title">倍增法（Binary Lifting）</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 如果要對同一棵樹做「大量 LCA 查詢」，
 每次 O(n) 太慢，可以預處理：

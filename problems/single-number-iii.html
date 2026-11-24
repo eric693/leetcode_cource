@@ -91,7 +91,7 @@
         <div class="section">
             <h2>解題思路</h2>
             <div class="visual-box">
-                <div class="visual-title">💡 第一步：全部 XOR，得到 a ^ b</div>
+                <div class="visual-title">第一步：全部 XOR，得到 a ^ b</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 XOR 性質：x ^ x = 0，x ^ 0 = x，且滿足交換律
 
@@ -128,7 +128,7 @@ xor = a ^ b = 110
 
             <h3>為什麼是 x &amp; (-x)？</h3>
             <div class="visual-box">
-                <div class="visual-title">🔍 二補數取 lowbit</div>
+                <div class="visual-title">二補數取 lowbit</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 -x = ~x + 1（二補數）
 
@@ -290,17 +290,17 @@ int* singleNumber(int* nums, int numsSize, int* returnSize) {
         <div class="section">
             <h2>重點提示</h2>
             <div class="key-point">
-                <strong>💡 關鍵技巧 1：lowbit = x &amp; (-x)</strong>
+                <strong>關鍵技巧 1：lowbit = x &amp; (-x)</strong>
                 <p>取出最低位的 1，是位元題的核心工具，也是樹狀陣列（Fenwick Tree）的基礎。</p>
             </div>
 
             <div class="key-point">
-                <strong>💡 關鍵技巧 2：「分組」的思維</strong>
+                <strong>關鍵技巧 2：「分組」的思維</strong>
                 <p>當一個技巧（XOR）只能處理「一個特殊元素」時，就想辦法把問題<strong>切成兩個子問題</strong>，各自套用同一個技巧。這是很通用的解題思路。</p>
             </div>
 
             <div class="note">
-                <strong>⚠️ 常見錯誤：</strong>
+                <strong>常見錯誤：</strong>
                 <ul>
                     <li>C++ 直接對 <code>INT_MIN</code> 取負號是 UB，建議用 <code>long long</code> 中轉</li>
                     <li>分組條件要寫 <code>(num &amp; lowbit) != 0</code>，寫成 <code>== 1</code> 是錯的（lowbit 不一定是 1）</li>
@@ -323,7 +323,7 @@ int* singleNumber(int* nums, int numsSize, int* returnSize) {
             <h2>補充說明</h2>
             <h3>XOR 性質總整理（面試必背）</h3>
             <div class="visual-box">
-                <div class="visual-title">📝 XOR 的六大性質</div>
+                <div class="visual-title">XOR 的六大性質</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 1. x ^ 0 = x            （0 是單位元素）
 2. x ^ x = 0            （自反性 → 消除重複）

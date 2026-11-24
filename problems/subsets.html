@@ -88,7 +88,7 @@
         <div class="section">
             <h2>解題思路</h2>
             <div class="visual-box">
-                <div class="visual-title">💡 方法一：回溯（每個節點都是答案）</div>
+                <div class="visual-title">方法一：回溯（每個節點都是答案）</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 與排列不同：子集問題中，決策樹的【每一個節點】都是一個答案，
 不只有葉子節點。
@@ -105,7 +105,7 @@ nums = [1,2,3]
 
 共 8 個節點 = 8 個子集 ✓
 
-⭐ 用 start 參數控制：每層只能選 start 之後的元素，
+★ 用 start 參數控制：每層只能選 start 之後的元素，
    避免產生 [1,2] 和 [2,1] 這種重複的組合。
                 </pre>
             </div>
@@ -141,7 +141,7 @@ for (int mask = 0; mask < (1 << n); mask++) {
 
             <h3>方法三：迭代擴展（最直覺）</h3>
             <div class="visual-box">
-                <div class="visual-title">🔄 每加入一個元素，答案數量翻倍</div>
+                <div class="visual-title">每加入一個元素，答案數量翻倍</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 result = [[]]
 
@@ -360,22 +360,22 @@ int** subsets(int* nums, int numsSize, int* returnSize, int** returnColumnSizes)
         <div class="section">
             <h2>重點提示</h2>
             <div class="key-point">
-                <strong>💡 關鍵技巧 1：子集題「每個節點都收集答案」</strong>
+                <strong>關鍵技巧 1：子集題「每個節點都收集答案」</strong>
                 <p>和排列/組合不同，子集不需要等到葉子節點。<code>result.add(path)</code> 放在函數<strong>開頭</strong>而不是終止條件裡，這是本題與 #46 最大的結構差異。</p>
             </div>
 
             <div class="key-point">
-                <strong>💡 關鍵技巧 2：start 參數保證不重複</strong>
+                <strong>關鍵技巧 2：start 參數保證不重複</strong>
                 <p>下一層從 <code>i + 1</code> 開始，確保每個元素最多被選一次且順序固定，自然就不會產生 [1,2] 和 [2,1] 這種重複。若允許重複選同一個元素（#39），則傳 <code>i</code> 而非 <code>i + 1</code>。</p>
             </div>
 
             <div class="key-point">
-                <strong>💡 位元遮罩的實務價值</strong>
+                <strong>位元遮罩的實務價值</strong>
                 <p>當 n &le; 20 左右時，「列舉所有子集」是狀態壓縮 DP 的基礎。位元遮罩表示集合的技巧在旅行商問題（TSP）、集合覆蓋等問題中極為重要。</p>
             </div>
 
             <div class="note">
-                <strong>⚠️ 常見錯誤：</strong>
+                <strong>常見錯誤：</strong>
                 <ul>
                     <li>記錄結果時沒有複製 path（同 #46 的經典錯誤）</li>
                     <li>把 <code>result.add(path)</code> 放在終止條件裡，只會得到完整集合</li>
@@ -411,7 +411,7 @@ for (int i = start; i &lt; nums.size(); i++) {
     ...
 }
 
-⚠️ 條件是 i &gt; start 而不是 i &gt; 0，差別在於：
+條件是 i &gt; start 而不是 i &gt; 0，差別在於：
    i &gt; start  → 只跳過【同一層】中重複的分支
    i &gt; 0      → 會誤跳掉【不同層】的合法選擇（如 [2,2]）
 

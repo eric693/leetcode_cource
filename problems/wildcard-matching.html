@@ -124,7 +124,7 @@
             <h2>解題思路</h2>
             
             <div class="visual-box">
-                <div class="visual-title">💡 核心概念：動態規劃 vs 貪心 + 回溯</div>
+                <div class="visual-title">核心概念：動態規劃 vs 貪心 + 回溯</div>
                 這題有兩種主要解法：
                 <ol style="margin-top: 10px;">
                     <li><strong>動態規劃</strong>：O(m×n) 時間，O(m×n) 空間（可優化到 O(n)）</li>
@@ -134,7 +134,7 @@
 
             <h3>方法一：動態規劃（DP）</h3>
             <div class="visual-box">
-                <div class="visual-title">📊 DP 狀態定義</div>
+                <div class="visual-title">DP 狀態定義</div>
                 <p><strong>dp[i][j]</strong>：s 的前 i 個字符是否能被 p 的前 j 個字符匹配</p>
                 <p style="margin-top: 10px;"><strong>狀態轉移：</strong></p>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
@@ -597,22 +597,22 @@ bool isMatch(char* s, char* p) {
             <h2>重點提示</h2>
             
             <div class="key-point">
-                <strong>💡 關鍵技巧 1：理解 '*' 的貪心策略</strong>
+                <strong>關鍵技巧 1：理解 '*' 的貪心策略</strong>
                 <p>遇到 '*' 先假設匹配空序列，失敗時再回溯讓它多匹配字符。</p>
             </div>
 
             <div class="key-point">
-                <strong>💡 關鍵技巧 2：DP 狀態轉移</strong>
+                <strong>關鍵技巧 2：DP 狀態轉移</strong>
                 <p>p[j] == '*' 時，dp[i][j] = dp[i][j-1] || dp[i-1][j]</p>
             </div>
 
             <div class="key-point">
-                <strong>💡 關鍵技巧 3：初始化處理</strong>
+                <strong>關鍵技巧 3：初始化處理</strong>
                 <p>需要正確處理前導 '*' 的情況，它們可以匹配空字串。</p>
             </div>
 
             <div class="note">
-                <strong>⚠️ 常見錯誤：</strong>
+                <strong>常見錯誤：</strong>
                 <ul>
                     <li>忘記處理 p 末尾的連續 '*'</li>
                     <li>DP 初始化錯誤，特別是前導 '*' 的情況</li>

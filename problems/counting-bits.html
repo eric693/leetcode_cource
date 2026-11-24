@@ -87,7 +87,7 @@
         <div class="section">
             <h2>解題思路</h2>
             <div class="visual-box">
-                <div class="visual-title">💡 核心：用 DP 重複利用已算過的結果</div>
+                <div class="visual-title">核心：用 DP 重複利用已算過的結果</div>
                 <p>如果對每個數都跑一次 popcount，是 O(n log n)。但相鄰的數字之間有遞推關係，可以做到 O(n)。</p>
             </div>
 
@@ -295,17 +295,17 @@ int* countBits(int n, int* returnSize) {
         <div class="section">
             <h2>重點提示</h2>
             <div class="key-point">
-                <strong>💡 關鍵技巧：位元題也能用 DP</strong>
+                <strong>關鍵技巧：位元題也能用 DP</strong>
                 <p>看到「對 0~n 每個數都要算」就要想到能不能用小的結果推大的結果，而不是每個都重算。</p>
             </div>
 
             <div class="key-point">
-                <strong>💡 三個遞推式選哪個？</strong>
+                <strong>三個遞推式選哪個？</strong>
                 <p>面試建議用 <code>dp[i] = dp[i&gt;&gt;1] + (i&amp;1)</code>，因為推導過程最直覺（右移就是去掉最低位），也最不容易寫錯。</p>
             </div>
 
             <div class="note">
-                <strong>⚠️ 常見錯誤：</strong>
+                <strong>常見錯誤：</strong>
                 <ul>
                     <li>陣列大小要開 n + 1，不是 n</li>
                     <li>C++/Java 中 <code>i &amp; (i-1) == 0</code> 因運算優先級要加括號寫成 <code>(i &amp; (i-1)) == 0</code></li>
@@ -327,7 +327,7 @@ int* countBits(int n, int* returnSize) {
             <h2>補充說明</h2>
             <h3>為什麼 dp[i &gt;&gt; 1] 一定已經算過？</h3>
             <div class="visual-box">
-                <div class="visual-title">🔍 DP 的無後效性</div>
+                <div class="visual-title">DP 的無後效性</div>
                 <p>對 i &gt;= 1，<code>i &gt;&gt; 1 &lt; i</code> 恆成立；同理 <code>i &amp; (i-1) &lt; i</code>。所以由小到大遍歷時，需要的子問題必定已經計算完成。這就是 DP 遞推順序正確性的來源。</p>
             </div>
 

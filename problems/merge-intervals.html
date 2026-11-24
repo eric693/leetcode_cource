@@ -87,7 +87,7 @@
         <div class="section">
             <h2>解題思路</h2>
             <div class="visual-box">
-                <div class="visual-title">💡 核心：先按起點排序，再貪心合併</div>
+                <div class="visual-title">核心：先按起點排序，再貪心合併</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 排序後，只需要和「結果中的最後一個區間」比較即可，
 因為起點已經遞增，不可能和更早的區間重疊。
@@ -126,7 +126,7 @@ result = [[1,6],[8,10],[15,18]] ✓
                   cur        [5, 8]
                   各自保留
 
-💡 情況一就是為什麼一定要寫 max(last.end, cur.end)，
+情況一就是為什麼一定要寫 max(last.end, cur.end)，
    直接寫 cur.end 會把 [1,10] 錯誤縮成 [1,5]。
                 </pre>
             </div>
@@ -279,17 +279,17 @@ int** merge(int** intervals, int intervalsSize, int* intervalsColSize,
         <div class="section">
             <h2>重點提示</h2>
             <div class="key-point">
-                <strong>💡 關鍵技巧 1：一定要用 max 更新結尾</strong>
+                <strong>關鍵技巧 1：一定要用 max 更新結尾</strong>
                 <p>[[1,10],[2,3]] 排序後若直接寫 <code>result[-1][1] = end</code>，會把 [1,10] 縮成 [1,3]，答案就錯了。這是本題最常見的 bug。</p>
             </div>
 
             <div class="key-point">
-                <strong>💡 關鍵技巧 2：端點接觸算不算重疊？</strong>
+                <strong>關鍵技巧 2：端點接觸算不算重疊？</strong>
                 <p>本題 [1,4] 和 [4,5] 要合併，所以條件是 <code>start &gt; last.end</code> 才算不重疊。但有些題目（如會議室安排）端點接觸<strong>不算</strong>衝突，要用 <code>start &gt;= last.end</code>。務必先問清楚題目定義。</p>
             </div>
 
             <div class="note">
-                <strong>⚠️ 常見錯誤：</strong>
+                <strong>常見錯誤：</strong>
                 <ul>
                     <li>忘記先排序</li>
                     <li>更新結尾時沒取 max</li>
@@ -313,7 +313,7 @@ int** merge(int** intervals, int intervalsSize, int* intervalsColSize,
             <h2>補充說明</h2>
             <h3>區間題型四大套路</h3>
             <div class="visual-box">
-                <div class="visual-title">📝 看到區間題先想這四招</div>
+                <div class="visual-title">看到區間題先想這四招</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 1【按起點排序 + 貪心合併】→ #56 合併區間
    排序後只需比較最後一個

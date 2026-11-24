@@ -93,7 +93,7 @@
         <div class="section">
             <h2>解題思路</h2>
             <div class="visual-box">
-                <div class="visual-title">💡 核心：和「最右邊的元素」比較</div>
+                <div class="visual-title">核心：和「最右邊的元素」比較</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 旋轉後的陣列長這樣（兩段遞增）：
 
@@ -121,7 +121,7 @@
 
             <h3>為什麼比 right 而不是比 left？</h3>
             <div class="visual-box">
-                <div class="visual-title">🔍 比 left 會有二義性</div>
+                <div class="visual-title">比 left 會有二義性</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 考慮 nums[mid] > nums[left] 的情況：
 
@@ -134,13 +134,13 @@
 [3,4,5,1,2]  mid=5 > right=2 → 一定在右邊 ✓
 [1,2,3,4,5]  mid=3 < right=5 → 一定在左邊（含 mid）✓
 
-💡 這是旋轉陣列二分搜尋的通用心法：與右端點比較。
+這是旋轉陣列二分搜尋的通用心法：與右端點比較。
                 </pre>
             </div>
 
             <h3>完整追蹤：nums = [4,5,6,7,0,1,2]</h3>
             <div class="visual-box">
-                <div class="visual-title">🔄 逐步收斂</div>
+                <div class="visual-title">逐步收斂</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 left=0, right=6
   mid=3, nums[3]=7 > nums[6]=2 → left = 4
@@ -302,22 +302,22 @@ int findMin(int* nums, int numsSize) {
         <div class="section">
             <h2>重點提示</h2>
             <div class="key-point">
-                <strong>💡 關鍵技巧 1：迴圈條件用 <code>left &lt; right</code></strong>
+                <strong>關鍵技巧 1：迴圈條件用 <code>left &lt; right</code></strong>
                 <p>因為答案一定存在於區間內，收斂到 <code>left == right</code> 時就是答案。若寫 <code>&lt;=</code> 配上 <code>right = mid</code> 會無限迴圈。</p>
             </div>
 
             <div class="key-point">
-                <strong>💡 關鍵技巧 2：<code>right = mid</code> 不能寫 <code>mid - 1</code></strong>
+                <strong>關鍵技巧 2：<code>right = mid</code> 不能寫 <code>mid - 1</code></strong>
                 <p>因為 mid 本身可能就是最小值，減 1 會直接跳過正確答案。這與「找目標值」的二分不同，要特別注意。</p>
             </div>
 
             <div class="key-point">
-                <strong>💡 關鍵技巧 3：<code>mid = left + (right-left)/2</code></strong>
+                <strong>關鍵技巧 3：<code>mid = left + (right-left)/2</code></strong>
                 <p>避免 <code>(left+right)/2</code> 在大陣列時整數溢位。這是 Java 官方 binarySearch 曾經存在近十年的著名 bug。</p>
             </div>
 
             <div class="note">
-                <strong>⚠️ 常見錯誤：</strong>
+                <strong>常見錯誤：</strong>
                 <ul>
                     <li>拿 nums[mid] 和 nums[left] 比較（會有二義性，無法判斷）</li>
                     <li><code>right = mid - 1</code> 漏掉答案</li>

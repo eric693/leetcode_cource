@@ -99,7 +99,7 @@
             <h2>解題思路</h2>
             
             <div class="visual-box">
-                <div class="visual-title">💡 核心概念：狀態機 DP</div>
+                <div class="visual-title">核心概念：狀態機 DP</div>
                 <p><strong>關鍵洞察：</strong>維護每次交易後的最大利潤狀態。</p>
                 <ol style="margin-top: 10px;">
                     <li>定義狀態：第 i 天完成 j 次交易後的最大利潤</li>
@@ -111,7 +111,7 @@
 
             <h3>DP 狀態定義</h3>
             <div class="visual-box">
-                <div class="visual-title">📊 三維 DP</div>
+                <div class="visual-title">三維 DP</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 <strong>定義：</strong>
 buy[i][j]  = 第 i 天，完成 j 次交易，當前持有股票的最大利潤
@@ -131,7 +131,7 @@ sell[i][j] = 第 i 天，完成 j 次交易，當前不持有股票的最大利�
 
             <h3>狀態轉移方程</h3>
             <div class="visual-box">
-                <div class="visual-title">🔄 轉移邏輯</div>
+                <div class="visual-title">轉移邏輯</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 <strong>buy[i][j] 的轉移：</strong>
 第 i 天持有股票，有兩種來源：
@@ -157,7 +157,7 @@ sell[0][0] = 0          (第一天不操作)
 
             <h3>優化：k 很大的情況</h3>
             <div class="visual-box">
-                <div class="visual-title">🚀 特殊優化</div>
+                <div class="visual-title">特殊優化</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 <strong>觀察：</strong>
 如果 k >= n/2（n 是天數）
@@ -176,7 +176,7 @@ if k >= len(prices) // 2:
 
             <h3>詳細範例演示</h3>
             <div class="visual-box">
-                <div class="visual-title">🔍 DP 表格：k=2, prices=[3,2,6,5,0,3]</div>
+                <div class="visual-title">DP 表格：k=2, prices=[3,2,6,5,0,3]</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 prices = [3, 2, 6, 5, 0, 3]
 天數 i:    0  1  2  3  4  5
@@ -516,22 +516,22 @@ int maxProfit(int k, int* prices, int pricesSize) {
             <h2>重點提示</h2>
             
             <div class="key-point">
-                <strong>💡 關鍵技巧 1：k 的優化</strong>
+                <strong>關鍵技巧 1：k 的優化</strong>
                 <p>當 k ≥ n/2 時，退化為無限次交易問題。</p>
             </div>
 
             <div class="key-point">
-                <strong>💡 關鍵技巧 2：從後往前更新</strong>
+                <strong>關鍵技巧 2：從後往前更新</strong>
                 <p>避免同一天的狀態互相覆蓋。</p>
             </div>
 
             <div class="key-point">
-                <strong>💡 關鍵技巧 3：賣出時計數</strong>
+                <strong>關鍵技巧 3：賣出時計數</strong>
                 <p>交易在賣出時才算完成，這樣狀態轉移更清晰。</p>
             </div>
 
             <div class="note">
-                <strong>⚠️ 常見錯誤：</strong>
+                <strong>常見錯誤：</strong>
                 <ul>
                     <li>沒有處理 k 很大的情況（會 TLE 或 MLE）</li>
                     <li>從前往後更新導致狀態覆蓋</li>

@@ -100,7 +100,7 @@
         <div class="section">
             <h2>解題思路</h2>
             <div class="visual-box">
-                <div class="visual-title">💡 什麼是逆波蘭表示法？</div>
+                <div class="visual-title">什麼是逆波蘭表示法？</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 中綴（我們習慣的寫法）： (2 + 1) * 3
 後綴（逆波蘭）：          2 1 + 3 *
@@ -131,7 +131,7 @@ for (token : tokens) {
 }
 return stack.top();
 
-⚠️ 順序極重要：
+順序極重要：
    對於加法和乘法沒差，
    但減法和除法會完全不同！
    "5 3 -" 應該是 5 - 3 = 2，不是 3 - 5 = -2
@@ -140,7 +140,7 @@ return stack.top();
 
             <h3>完整追蹤：["4","13","5","/","+"]</h3>
             <div class="visual-box">
-                <div class="visual-title">🔄 堆疊的變化</div>
+                <div class="visual-title">堆疊的變化</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 token = "4"  → 數字，推入      stack = [4]
 token = "13" → 數字，推入      stack = [4, 13]
@@ -162,7 +162,7 @@ token = "+"  → 運算子
 
             <h3>陷阱：除法的截斷方向</h3>
             <div class="visual-box">
-                <div class="visual-title">⚠️ 「向零截斷」vs「向下取整」</div>
+                <div class="visual-title">「向零截斷」vs「向下取整」</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 題目要求【向零截斷】（truncate toward zero）：
   7 / 2  = 3      -7 / 2  = -3   （不是 -4！）
@@ -365,22 +365,22 @@ int evalRPN(char** tokens, int tokensSize) {
         <div class="section">
             <h2>重點提示</h2>
             <div class="key-point">
-                <strong>💡 關鍵技巧 1：彈出順序不能反</strong>
+                <strong>關鍵技巧 1：彈出順序不能反</strong>
                 <p><strong>先彈出的是右運算元</strong>，因為堆疊是後進先出。減法和除法對順序敏感，寫反了 <code>["5","3","-"]</code> 會得到 -2 而不是 2。這是本題最常見的錯誤。</p>
             </div>
 
             <div class="key-point">
-                <strong>💡 關鍵技巧 2：判斷數字不能只看第一個字元</strong>
+                <strong>關鍵技巧 2：判斷數字不能只看第一個字元</strong>
                 <p>token 可能是 <code>"-11"</code>（負數）。用「第一個字元是不是數字」來判斷會把負數誤判成減法運算子。<strong>正確做法是先檢查是不是那四個運算子</strong>，其餘一律當數字。</p>
             </div>
 
             <div class="key-point">
-                <strong>💡 Python 特別注意除法</strong>
+                <strong>Python 特別注意除法</strong>
                 <p><code>-7 // 2 = -4</code>（向下取整）但題目要 <code>-3</code>（向零截斷）。必須用 <code>int(a / b)</code>。這個差異在很多題目中都會踩到，值得記住。</p>
             </div>
 
             <div class="note">
-                <strong>⚠️ 常見錯誤：</strong>
+                <strong>常見錯誤：</strong>
                 <ul>
                     <li>運算元順序顛倒</li>
                     <li>用 <code>isdigit()</code> 判斷導致負數被當成運算子</li>
@@ -405,7 +405,7 @@ int evalRPN(char** tokens, int tokensSize) {
             <h2>補充說明</h2>
             <h3>三種表達式表示法</h3>
             <div class="visual-box">
-                <div class="visual-title">📝 前綴、中綴、後綴</div>
+                <div class="visual-title">前綴、中綴、後綴</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
                     運算子位置    範例（(2+1)*3）  求值方式
 ------------------------------------------------------------------
@@ -415,7 +415,7 @@ int evalRPN(char** tokens, int tokensSize) {
 後綴（postfix）     在後面        2 1 + 3 *        從左往右掃 + 堆疊
                     = 逆波蘭 ★                     最容易實作
 
-⭐ 前綴和後綴都不需要括號，
+★ 前綴和後綴都不需要括號，
    因為運算順序已經由結構唯一決定了。
 
 樹的觀點：這三種其實就是【表達式樹】的三種遍歷！
@@ -457,7 +457,7 @@ for (token : 中綴表達式) {
 
             <h3>實務應用：堆疊機（Stack Machine）</h3>
             <div class="visual-box">
-                <div class="visual-title">🔧 虛擬機的運作原理</div>
+                <div class="visual-title">虛擬機的運作原理</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 JVM、Python VM、WebAssembly 都是【堆疊式虛擬機】，
 它們的位元組碼本質上就是逆波蘭表示法。

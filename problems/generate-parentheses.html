@@ -88,9 +88,9 @@
         <div class="section">
             <h2>解題思路</h2>
             <div class="visual-box">
-                <div class="visual-title">💡 核心：邊生成邊剪枝，只走合法的路</div>
+                <div class="visual-title">核心：邊生成邊剪枝，只走合法的路</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
-❌ 笨方法：生成所有 2^(2n) 種字串，再逐一檢查是否合法
+笨方法：生成所有 2^(2n) 種字串，再逐一檢查是否合法
 ✓ 好方法：在生成過程中就保證合法，永遠不走無效分支
 
 【兩個規則】維護已使用的左括號數 open、右括號數 close
@@ -108,7 +108,7 @@
 
             <h3>決策樹：n = 2</h3>
             <div class="visual-box">
-                <div class="visual-title">🌲 灰色分支被剪掉</div>
+                <div class="visual-title">灰色分支被剪掉</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
                     ""  (open=0, close=0)
                    /  \
@@ -132,7 +132,7 @@
 
             <h3>為什麼「close &lt; open」就能保證合法？</h3>
             <div class="visual-box">
-                <div class="visual-title">🔍 合法括號序列的充要條件</div>
+                <div class="visual-title">合法括號序列的充要條件</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 一個括號序列合法 ⟺ 同時滿足：
   1. 左右括號總數相等
@@ -370,22 +370,22 @@ char** generateParenthesis(int n, int* returnSize) {
         <div class="section">
             <h2>重點提示</h2>
             <div class="key-point">
-                <strong>💡 關鍵技巧 1：「生成時剪枝」勝過「生成後過濾」</strong>
+                <strong>關鍵技巧 1：「生成時剪枝」勝過「生成後過濾」</strong>
                 <p>先生成 2^(2n) 種再驗證是 O(2^(2n) × n)，而邊生成邊剪枝只有 O(4ⁿ/√n)。<strong>把約束條件融入搜尋過程</strong>是回溯優化的核心思想，在 N-Queens、數獨等題目中都是同樣的道理。</p>
             </div>
 
             <div class="key-point">
-                <strong>💡 關鍵技巧 2：這題沒有 for 迴圈</strong>
+                <strong>關鍵技巧 2：這題沒有 for 迴圈</strong>
                 <p>與大多數回溯題不同，本題每層只有兩個固定選擇（放 '(' 或放 ')'），所以直接寫兩個 if 而不是 for 迴圈。這是「二元決策樹」型回溯的典型寫法。</p>
             </div>
 
             <div class="key-point">
-                <strong>💡 面試延伸：驗證括號合法性</strong>
+                <strong>面試延伸：驗證括號合法性</strong>
                 <p>用一個計數器：遇 '(' 加 1、遇 ')' 減 1，過程中<strong>不能為負</strong>，結束時<strong>必須為 0</strong>。若有多種括號（<code>[]{}</code>）則要用堆疊（#20）。</p>
             </div>
 
             <div class="note">
-                <strong>⚠️ 常見錯誤：</strong>
+                <strong>常見錯誤：</strong>
                 <ul>
                     <li>剪枝條件寫成 <code>close &lt;= open</code>，會產生 "()）" 這類非法字串</li>
                     <li>忘記撤銷選擇（Java 的 <code>deleteCharAt</code>）</li>
@@ -410,7 +410,7 @@ char** generateParenthesis(int n, int* returnSize) {
             <h2>補充說明</h2>
             <h3>卡塔蘭數的其他化身</h3>
             <div class="visual-box">
-                <div class="visual-title">🔢 同一個數列，多種問題</div>
+                <div class="visual-title">同一個數列，多種問題</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 第 n 個卡塔蘭數 C(n) 同時是以下問題的答案：
 

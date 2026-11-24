@@ -94,7 +94,7 @@
         <div class="section">
             <h2>解題思路</h2>
             <div class="visual-box">
-                <div class="visual-title">💡 核心：回溯 + 「可重複選」的關鍵一行</div>
+                <div class="visual-title">核心：回溯 + 「可重複選」的關鍵一行</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 和一般組合題唯一的差別：
 
@@ -109,7 +109,7 @@
 
             <h3>決策樹：candidates = [2,3,6,7], target = 7</h3>
             <div class="visual-box">
-                <div class="visual-title">🌲 剩餘量遞減的搜尋樹</div>
+                <div class="visual-title">剩餘量遞減的搜尋樹</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 每個節點標示「還差多少」
 
@@ -133,7 +133,7 @@ rem=1 rem=0 ✓ [2,2,3]
 
             <h3>優化：排序後可以提早跳出</h3>
             <div class="visual-box">
-                <div class="visual-title">⚡ 從 continue 升級成 break</div>
+                <div class="visual-title">從 continue 升級成 break</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 先把 candidates 排序（升序），
 迴圈中一旦發現 candidates[i] > remain，
@@ -347,7 +347,7 @@ int** combinationSum(int* candidates, int candidatesSize, int target,
         <div class="section">
             <h2>重點提示</h2>
             <div class="key-point">
-                <strong>💡 關鍵技巧 1：傳 i 還是 i+1？</strong>
+                <strong>關鍵技巧 1：傳 i 還是 i+1？</strong>
                 <p>這一個字的差別決定了題目類型：</p>
                 <ul>
                     <li><code>backtrack(i)</code> → 元素<strong>可重複</strong>使用（本題 #39）</li>
@@ -357,17 +357,17 @@ int** combinationSum(int* candidates, int candidatesSize, int target,
             </div>
 
             <div class="key-point">
-                <strong>💡 關鍵技巧 2：用「剩餘量」而非「累積和」</strong>
+                <strong>關鍵技巧 2：用「剩餘量」而非「累積和」</strong>
                 <p>傳 <code>remain = target - 已選總和</code> 比傳 <code>currentSum</code> 更簡潔：終止條件變成 <code>remain == 0</code>，剪枝變成 <code>remain &lt; 0</code>，也不需要額外傳 target。</p>
             </div>
 
             <div class="key-point">
-                <strong>💡 延伸 #40：候選數含重複且每個只能用一次</strong>
+                <strong>延伸 #40：候選數含重複且每個只能用一次</strong>
                 <p>需要<strong>兩個</strong>改動：① 遞迴傳 <code>i + 1</code>；② 加上同層去重 <code>if (i &gt; start &amp;&amp; c[i] == c[i-1]) continue;</code>。這兩題常一起出現，務必分清楚。</p>
             </div>
 
             <div class="note">
-                <strong>⚠️ 常見錯誤：</strong>
+                <strong>常見錯誤：</strong>
                 <ul>
                     <li>傳 <code>i + 1</code>（變成每個元素只能用一次，答案會漏掉 [2,2,3]）</li>
                     <li>從 0 開始遞迴（產生 [2,3] 和 [3,2] 等重複組合）</li>
@@ -392,7 +392,7 @@ int** combinationSum(int* candidates, int candidatesSize, int target,
             <h2>補充說明</h2>
             <h3>Combination Sum 四題比較</h3>
             <div class="visual-box">
-                <div class="visual-title">📊 四胞胎的差異</div>
+                <div class="visual-title">四胞胎的差異</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 題號   候選數     每個能用幾次   求什麼        解法
 --------------------------------------------------------------
@@ -401,7 +401,7 @@ int** combinationSum(int* candidates, int candidatesSize, int target,
 #216   1~9        一次           所有組合      回溯，限制長度為 k
 #377   無重複     無限次         排列的【數量】 DP！不是回溯
 
-⚠️ #377 特別要注意：它問的是「有幾種排列」，
+#377 特別要注意：它問的是「有幾種排列」，
    [1,2] 和 [2,1] 算兩種。數量可能極大，
    不可能列舉出來，必須用 DP：
      dp[i] = Σ dp[i - num] for num in nums

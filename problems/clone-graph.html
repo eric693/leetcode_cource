@@ -111,17 +111,17 @@ class Node {
         <div class="section">
             <h2>解題思路</h2>
             <div class="note">
-                <strong>⚠️ 難點：圖有環，會無限遞迴！</strong>
+                <strong>難點：圖有環，會無限遞迴！</strong>
                 <p>1 → 2 → 1 → 2 → ... 如果單純遞迴複製鄰居，會永遠停不下來。解法是用 <strong>HashMap 記錄「已複製過的節點」</strong>，遇到已複製的就直接回傳，不再往下遞迴。</p>
             </div>
 
             <h3>核心：visited 對照表既防重複也防無限迴圈</h3>
             <div class="visual-box">
-                <div class="visual-title">💡 一石二鳥</div>
+                <div class="visual-title">一石二鳥</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 visited[原節點] = 對應的新節點
 
-⭐ 關鍵順序：【先建節點並登記，再遞迴處理鄰居】
+★ 關鍵順序：【先建節點並登記，再遞迴處理鄰居】
 
 dfs(node):
     if node in visited:
@@ -149,7 +149,7 @@ dfs(1)：建立 1'，登記 visited[1] = 1'
 
             <h3>DFS vs BFS</h3>
             <div class="visual-box">
-                <div class="visual-title">🔄 兩種寫法都要會</div>
+                <div class="visual-title">兩種寫法都要會</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 【DFS】遞迴，程式碼短
   優點：直覺、好寫
@@ -398,17 +398,17 @@ struct Node* cloneGraph(struct Node* s) {
         <div class="section">
             <h2>重點提示</h2>
             <div class="key-point">
-                <strong>💡 關鍵技巧 1：先登記，再遞迴</strong>
+                <strong>關鍵技巧 1：先登記，再遞迴</strong>
                 <p><code>visited[cur] = copy</code> 必須寫在遞迴呼叫<strong>之前</strong>。這一行的位置決定了程式會不會無限迴圈，是本題唯一但最關鍵的細節。</p>
             </div>
 
             <div class="key-point">
-                <strong>💡 關鍵技巧 2：這是「圖走訪 + 記憶化」的通用模式</strong>
+                <strong>關鍵技巧 2：這是「圖走訪 + 記憶化」的通用模式</strong>
                 <p>凡是在有環的結構上做遞迴（複製、序列化、計算），都需要一個 visited 集合來打破循環。#138 複製隨機指標串列、#297 序列化二元樹（含環的變形）都是同一個模式。</p>
             </div>
 
             <div class="note">
-                <strong>⚠️ 常見錯誤：</strong>
+                <strong>常見錯誤：</strong>
                 <ul>
                     <li>登記寫在遞迴之後 → 無限遞迴 stack overflow</li>
                     <li>沒有處理 <code>node == null</code>（空圖）</li>
@@ -432,7 +432,7 @@ struct Node* cloneGraph(struct Node* s) {
             <h2>補充說明</h2>
             <h3>圖的兩種表示法</h3>
             <div class="visual-box">
-                <div class="visual-title">📊 鄰接表 vs 鄰接矩陣</div>
+                <div class="visual-title">鄰接表 vs 鄰接矩陣</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
                 鄰接表                鄰接矩陣
                 vector&lt;vector&lt;int&gt;&gt;   bool[V][V]
@@ -469,7 +469,7 @@ void bfs(int start) {
     }
 }
 
-⭐ 重點：BFS 要在【入隊時】標記 visited，
+★ 重點：BFS 要在【入隊時】標記 visited，
    不是出隊時 —— 否則同一個節點會被重複入隊。
             </pre>
 

@@ -88,7 +88,7 @@
         <div class="section">
             <h2>解題思路</h2>
             <div class="visual-box">
-                <div class="visual-title">💡 核心：把區間分成三段處理</div>
+                <div class="visual-title">核心：把區間分成三段處理</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 因為輸入已經有序且不重疊，可以一趟掃描分成三個階段：
 
@@ -109,7 +109,7 @@
 
             <h3>完整追蹤：[[1,2],[3,5],[6,7],[8,10],[12,16]], new = [4,8]</h3>
             <div class="visual-box">
-                <div class="visual-title">🔄 三階段掃描</div>
+                <div class="visual-title">三階段掃描</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 new = [4, 8]
 
@@ -131,7 +131,7 @@ new = [4, 8]
 
             <h3>與 #56 Merge Intervals 的差別</h3>
             <div class="visual-box">
-                <div class="visual-title">📊 為什麼這題能 O(n)？</div>
+                <div class="visual-title">為什麼這題能 O(n)？</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 #56：輸入無序、可能互相重疊 → 必須先排序 → O(n log n)
 #57：輸入已排序且無重疊     → 直接掃描   → O(n) ★
@@ -323,17 +323,17 @@ int** insert(int** intervals, int intervalsSize, int* intervalsColSize,
         <div class="section">
             <h2>重點提示</h2>
             <div class="key-point">
-                <strong>💡 關鍵技巧 1：善用「輸入已排序」的條件</strong>
+                <strong>關鍵技巧 1：善用「輸入已排序」的條件</strong>
                 <p>題目給的條件都是有用的。看到「已排序、無重疊」就要意識到可以省掉排序，直接線性掃描。</p>
             </div>
 
             <div class="key-point">
-                <strong>💡 關鍵技巧 2：合併時 start 也要取 min</strong>
+                <strong>關鍵技巧 2：合併時 start 也要取 min</strong>
                 <p>雖然大多數情況下新區間的 start 較大，但像 <code>intervals=[[3,5]], new=[4,8]</code> 這種，合併後 start 應該是 3。習慣性寫 min/max 兩邊都取，不會出錯。</p>
             </div>
 
             <div class="note">
-                <strong>⚠️ 常見錯誤：</strong>
+                <strong>常見錯誤：</strong>
                 <ul>
                     <li>階段 1 的條件寫成 <code>end &lt;= start</code>，會把「端點接觸」的區間錯誤地當成不重疊（本題端點接觸算重疊）</li>
                     <li>忘記把合併後的新區間加入結果</li>
@@ -357,7 +357,7 @@ int** insert(int** intervals, int intervalsSize, int* intervalsColSize,
             <h2>補充說明</h2>
             <h3>另一種寫法：直接複用 #56</h3>
             <div class="visual-box">
-                <div class="visual-title">⚖️ 簡潔 vs 效率的取捨</div>
+                <div class="visual-title">簡潔 vs 效率的取捨</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 intervals.push_back(newInterval);
 sort(intervals.begin(), intervals.end());

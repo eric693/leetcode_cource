@@ -94,12 +94,12 @@
         <div class="section">
             <h2>解題思路</h2>
             <div class="visual-box">
-                <div class="visual-title">💡 狀態定義（DP 最重要的一步）</div>
+                <div class="visual-title">狀態定義（DP 最重要的一步）</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 dp[i][j] = text1 的【前 i 個字元】與 text2 的【前 j 個字元】
            的最長公共子序列長度
 
-⭐ 用「前 i 個」而不是「以 i 結尾」，
+★ 用「前 i 個」而不是「以 i 結尾」，
    好處是 dp[0][*] 和 dp[*][0] 天然代表空字串，邊界為 0，
    不需要特別初始化第一行第一列。
    （代價是 dp 的索引 i 對應字串的 i-1 位置，要小心）
@@ -129,7 +129,7 @@ dp[i][j] = text1 的【前 i 個字元】與 text2 的【前 j 個字元】
 
             <h3>完整 DP 表格：text1 = "abcde", text2 = "ace"</h3>
             <div class="visual-box">
-                <div class="visual-title">📊 手推一次就懂了</div>
+                <div class="visual-title">手推一次就懂了</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
         ""   a    c    e
    ""   0    0    0    0
@@ -152,7 +152,7 @@ dp[5][3]: 'e' == 'e' → dp[4][2] + 1 = 2 + 1 = 3 ✓
 
             <h3>空間優化：滾動陣列</h3>
             <div class="visual-box">
-                <div class="visual-title">⚡ O(mn) → O(min(m,n))</div>
+                <div class="visual-title">O(mn) → O(min(m,n))</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 觀察轉移方程，dp[i][j] 只依賴：
   dp[i-1][j-1]（左上）
@@ -348,12 +348,12 @@ int longestCommonSubsequence(char* text1, char* text2) {
         <div class="section">
             <h2>重點提示</h2>
             <div class="key-point">
-                <strong>💡 關鍵技巧 1：「前 i 個」的狀態定義</strong>
+                <strong>關鍵技巧 1：「前 i 個」的狀態定義</strong>
                 <p>用 <code>dp[i][j] = 前 i 個 vs 前 j 個</code>（而非「以 i 結尾」），可以讓 dp[0][j] = dp[i][0] = 0 自然成立，省去繁瑣的邊界初始化。代價是索引要記得 <code>text1[i-1]</code>，這是最容易寫錯的地方。</p>
             </div>
 
             <div class="key-point">
-                <strong>💡 關鍵技巧 2：子序列 vs 子串的 DP 差異</strong>
+                <strong>關鍵技巧 2：子序列 vs 子串的 DP 差異</strong>
                 <ul>
                     <li><strong>子序列</strong>（本題，可不連續）：不匹配時 <code>dp[i][j] = max(dp[i-1][j], dp[i][j-1])</code>，資訊可以「繼承」</li>
                     <li><strong>子串</strong>（#718，必須連續）：不匹配時 <code>dp[i][j] = 0</code>，必須「歸零重來」，答案要在過程中取最大值</li>
@@ -362,12 +362,12 @@ int longestCommonSubsequence(char* text1, char* text2) {
             </div>
 
             <div class="key-point">
-                <strong>💡 如何印出 LCS 本身而不只是長度？</strong>
+                <strong>如何印出 LCS 本身而不只是長度？</strong>
                 <p>從 <code>dp[m][n]</code> 往回走：若字元相同就把它加入結果並往左上；否則往「值較大」的那一邊走。最後把結果反轉。這叫 <strong>DP 路徑回溯</strong>，是很常見的追問。</p>
             </div>
 
             <div class="note">
-                <strong>⚠️ 常見錯誤：</strong>
+                <strong>常見錯誤：</strong>
                 <ul>
                     <li>索引寫成 <code>text1[i]</code> 而非 <code>text1[i-1]</code>（差一錯誤）</li>
                     <li>陣列大小開成 <code>[m][n]</code> 而非 <code>[m+1][n+1]</code></li>
@@ -392,7 +392,7 @@ int longestCommonSubsequence(char* text1, char* text2) {
             <h2>補充說明</h2>
             <h3>二維字串 DP 家族</h3>
             <div class="visual-box">
-                <div class="visual-title">📝 同一個框架，不同的轉移</div>
+                <div class="visual-title">同一個框架，不同的轉移</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 題目           dp 定義                 相同時          不同時
 ------------------------------------------------------------------------
@@ -403,7 +403,7 @@ int longestCommonSubsequence(char* text1, char* text2) {
 #115 不同子序列 前 j 在前 i 中出現次數   dp[i-1][j-1]+dp[i-1][j]  dp[i-1][j]
 #10 正規表達式 是否匹配                 依 pattern 決定  依 * 展開
 
-⭐ 掌握 #1143 和 #72 這兩題，
+★ 掌握 #1143 和 #72 這兩題，
    整個二維字串 DP 家族就通了。
                 </pre>
             </div>
@@ -432,7 +432,7 @@ string getLCS(string&amp; s1, string&amp; s2, vector&lt;vector&lt;int&gt;&gt;&am
 
             <h3>實務應用：diff 工具</h3>
             <div class="visual-box">
-                <div class="visual-title">🔧 git diff 的核心演算法</div>
+                <div class="visual-title">git diff 的核心演算法</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 把「每一行」當成一個字元，對兩個檔案求 LCS：
   - 在 LCS 中的行 = 沒有變動（context）

@@ -92,7 +92,7 @@
         <div class="section">
             <h2>解題思路</h2>
             <div class="visual-box">
-                <div class="visual-title">💡 核心：快慢指標保持 n 的間距</div>
+                <div class="visual-title">核心：快慢指標保持 n 的間距</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 讓 fast 先走 n + 1 步，然後 fast 和 slow 一起走。
 當 fast 走到 null 時，slow 剛好停在「要刪除節點的前一個」。
@@ -134,7 +134,7 @@ list = [1], n = 1 → 要刪的正是頭節點
 最後永遠 return dummy.next（不是 return head，
 因為 head 可能已被刪掉）
 
-💡 通用原則：任何「可能刪除或修改頭節點」的鏈結串列題，
+通用原則：任何「可能刪除或修改頭節點」的鏈結串列題，
    第一件事就是建 dummy 節點。
                 </pre>
             </div>
@@ -335,17 +335,17 @@ struct ListNode* removeNthFromEnd(struct ListNode* head, int n) {
         <div class="section">
             <h2>重點提示</h2>
             <div class="key-point">
-                <strong>💡 關鍵技巧 1：dummy 節點</strong>
+                <strong>關鍵技巧 1：dummy 節點</strong>
                 <p>鏈結串列題目只要「頭節點可能被刪除或改變」，就建一個 dummy，可以消除大量邊界判斷。最後 return <code>dummy.next</code>。</p>
             </div>
 
             <div class="key-point">
-                <strong>💡 關鍵技巧 2：固定間距的雙指標</strong>
+                <strong>關鍵技巧 2：固定間距的雙指標</strong>
                 <p>「倒數第 k 個」類型的問題，都可以用「讓一個指標先走 k 步」把倒數轉成正數，一趟掃描搞定。</p>
             </div>
 
             <div class="note">
-                <strong>⚠️ 常見錯誤：</strong>
+                <strong>常見錯誤：</strong>
                 <ul>
                     <li>fast 走 n 步而不是 n + 1 步，導致 slow 停在待刪節點本身</li>
                     <li>沒用 dummy，忘記處理「刪除頭節點」的情況</li>
@@ -369,7 +369,7 @@ struct ListNode* removeNthFromEnd(struct ListNode* head, int n) {
             <h2>補充說明</h2>
             <h3>鏈結串列雙指標模板總整理</h3>
             <div class="visual-box">
-                <div class="visual-title">📝 四種常見的快慢指標配置</div>
+                <div class="visual-title">四種常見的快慢指標配置</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 【固定間距 k】倒數第 k 個節點
   fast 先走 k 步，再一起走

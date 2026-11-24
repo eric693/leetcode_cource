@@ -91,7 +91,7 @@
         <div class="section">
             <h2>解題思路</h2>
             <div class="visual-box">
-                <div class="visual-title">💡 核心：把加法拆成「無進位和」+「進位」</div>
+                <div class="visual-title">核心：把加法拆成「無進位和」+「進位」</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 十進位的直式加法：
    759
@@ -114,7 +114,7 @@
 
             <h3>完整推導：a = 5, b = 3</h3>
             <div class="visual-box">
-                <div class="visual-title">🔄 迭代到進位為 0</div>
+                <div class="visual-title">迭代到進位為 0</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 a = 0101 (5), b = 0011 (3)
 
@@ -141,7 +141,7 @@ a = 0101 (5), b = 0011 (3)
             </div>
 
             <div class="note">
-                <strong>⚠️ 負數怎麼辦？</strong>
+                <strong>負數怎麼辦？</strong>
                 <p>因為電腦用<strong>二補數</strong>表示負數，上面的公式對負數<strong>完全不用改</strong>就正確。這正是二補數設計的精妙之處：加法器不需要知道數字是正是負。</p>
             </div>
         </div>
@@ -288,17 +288,17 @@ int getSum(int a, int b) {
         <div class="section">
             <h2>重點提示</h2>
             <div class="key-point">
-                <strong>💡 關鍵技巧 1：XOR = 無進位加法，AND &lt;&lt; 1 = 進位</strong>
+                <strong>關鍵技巧 1：XOR = 無進位加法，AND &lt;&lt; 1 = 進位</strong>
                 <p>這就是硬體全加器的邏輯：<code>Sum = A ⊕ B ⊕ Cin</code>、<code>Cout = (A·B) + (Cin·(A⊕B))</code>。位元運算版本是它的並行推廣。</p>
             </div>
 
             <div class="key-point">
-                <strong>💡 關鍵技巧 2：二補數讓正負號自動正確</strong>
+                <strong>關鍵技巧 2：二補數讓正負號自動正確</strong>
                 <p>面試官很愛追問「負數為什麼也對？」答案是：二補數把減法變成加法，同一組硬體電路即可處理，不需要額外判斷符號。</p>
             </div>
 
             <div class="note">
-                <strong>⚠️ 常見錯誤：</strong>
+                <strong>常見錯誤：</strong>
                 <ul>
                     <li><strong>Python 陷阱最大</strong>：整數無限位寬，一定要 &amp; 0xFFFFFFFF，最後還要把大於 MAX_INT 的值轉回負數</li>
                     <li>C++ 對有號數左移溢位是 UB，要轉 <code>unsigned int</code></li>
@@ -321,7 +321,7 @@ int getSum(int a, int b) {
             <h2>補充說明</h2>
             <h3>數位邏輯對照：全加器</h3>
             <div class="visual-box">
-                <div class="visual-title">🔧 Full Adder 真值表</div>
+                <div class="visual-title">Full Adder 真值表</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 A  B  Cin | Sum  Cout
 0  0   0  |  0     0

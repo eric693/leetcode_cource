@@ -93,13 +93,13 @@ B: 5 → 6 → 1 ↗
         <div class="section">
             <h2>解題思路</h2>
             <div class="note">
-                <strong>⚠️ 重要觀念：「相交」指的是節點<strong>位址相同</strong>，不是值相同！</strong>
+                <strong>重要觀念：「相交」指的是節點<strong>位址相同</strong>，不是值相同！</strong>
                 <p>一旦兩條串列相交，從交點之後就完全共用同一段節點，所以尾巴一定一樣長。</p>
             </div>
 
             <h3>方法一：雙指標「走完自己走對方」（最優雅）</h3>
             <div class="visual-box">
-                <div class="visual-title">💡 消除長度差的神技</div>
+                <div class="visual-title">消除長度差的神技</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 設 A 獨有長度 a、B 獨有長度 b、共同部分長度 c
 
@@ -308,17 +308,17 @@ struct ListNode* getIntersectionNode(struct ListNode* headA, struct ListNode* he
         <div class="section">
             <h2>重點提示</h2>
             <div class="key-point">
-                <strong>💡 關鍵技巧：用「換軌」消除長度差</strong>
+                <strong>關鍵技巧：用「換軌」消除長度差</strong>
                 <p><code>pA = pA ? pA-&gt;next : headB</code> 這一行是本題精華。注意判斷的是<strong>指標本身</strong>是否為 null，不是 <code>pA-&gt;next</code>，否則會少走一步而錯過交點。</p>
             </div>
 
             <div class="key-point">
-                <strong>💡 不相交的情況自動處理</strong>
+                <strong>不相交的情況自動處理</strong>
                 <p>若不相交，兩指標會在第二輪同時變成 null，<code>null == null</code> 使迴圈結束並返回 null，完全不需要特判。這是這個寫法最漂亮的地方。</p>
             </div>
 
             <div class="note">
-                <strong>⚠️ 常見錯誤：</strong>
+                <strong>常見錯誤：</strong>
                 <ul>
                     <li>比較節點的<strong>值</strong>而不是<strong>參考</strong>（值可能重複，一定要比位址）</li>
                     <li>寫成 <code>pA = pA-&gt;next ? pA-&gt;next : headB</code>，少走一步導致不相交時無限迴圈</li>
@@ -340,7 +340,7 @@ struct ListNode* getIntersectionNode(struct ListNode* headA, struct ListNode* he
             <h2>補充說明</h2>
             <h3>為什麼相交後不會再分開？</h3>
             <div class="visual-box">
-                <div class="visual-title">🔍 單向串列的結構限制</div>
+                <div class="visual-title">單向串列的結構限制</div>
                 <p>每個節點只有<strong>一個</strong> next 指標，所以一旦兩條路徑進入同一個節點，之後的路徑必然完全相同。這代表相交部分一定是「Y 字形」，不可能是「X 字形」。理解這點，長度差的解法就很自然了。</p>
             </div>
 

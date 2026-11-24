@@ -93,7 +93,7 @@
         <div class="section">
             <h2>解題思路</h2>
             <div class="visual-box">
-                <div class="visual-title">💡 為什麼一定是合併排序（Merge Sort）？</div>
+                <div class="visual-title">為什麼一定是合併排序（Merge Sort）？</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 排序法        陣列       鏈結串列      原因
 ------------------------------------------------------------
@@ -127,14 +127,14 @@
       ↓ merge
 [1, 2, 3, 4] ✓
 
-⚠️ 切斷是關鍵：找到中點後必須 mid.next = None，
+切斷是關鍵：找到中點後必須 mid.next = None，
    否則左半段會一直延伸到結尾，造成無限遞迴。
                 </pre>
             </div>
 
             <h3>方法二：自底向上（迭代，真正的 O(1) 空間）</h3>
             <div class="visual-box">
-                <div class="visual-title">⚡ 從小區塊開始兩兩合併</div>
+                <div class="visual-title">從小區塊開始兩兩合併</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 不用遞迴，改用「步長」由小到大合併：
 
@@ -413,22 +413,22 @@ struct ListNode* sortList(struct ListNode* head) {
         <div class="section">
             <h2>重點提示</h2>
             <div class="key-point">
-                <strong>💡 關鍵技巧 1：找中點後一定要切斷</strong>
+                <strong>關鍵技巧 1：找中點後一定要切斷</strong>
                 <p><code>slow.next = null</code> 少了這行就會無限遞迴 stack overflow。這是本題最常見的 bug。</p>
             </div>
 
             <div class="key-point">
-                <strong>💡 關鍵技巧 2：fast 從 head.next 起跑</strong>
+                <strong>關鍵技巧 2：fast 從 head.next 起跑</strong>
                 <p>兩個節點時（[4,2]），若 fast 從 head 起跑，slow 會停在第二個，切出來的左半段是整條串列 → 無限遞迴。從 <code>head.next</code> 起跑可讓 slow 停在<strong>前半段最後一個</strong>，保證兩邊都非空。</p>
             </div>
 
             <div class="key-point">
-                <strong>💡 面試回答重點</strong>
+                <strong>面試回答重點</strong>
                 <p>被問「為什麼不用快排？」時，答：快排需要隨機存取才能有效率地做 partition，而且鏈結串列上很難挑好的 pivot，最壞會退化成 O(n²)。合併排序在串列上反而<strong>比在陣列上更好</strong>，因為省掉了 O(n) 的暫存空間。</p>
             </div>
 
             <div class="note">
-                <strong>⚠️ 常見錯誤：</strong>
+                <strong>常見錯誤：</strong>
                 <ul>
                     <li>忘記切斷造成無限遞迴</li>
                     <li>fast 起始位置寫錯，導致兩個節點的情況無法收斂</li>
@@ -452,7 +452,7 @@ struct ListNode* sortList(struct ListNode* head) {
             <h2>補充說明</h2>
             <h3>排序演算法比較表（面試必備）</h3>
             <div class="visual-box">
-                <div class="visual-title">📊 常見排序法</div>
+                <div class="visual-title">常見排序法</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 演算法      平均        最壞        空間      穩定  適用
 ------------------------------------------------------------------

@@ -91,7 +91,7 @@
         <div class="section">
             <h2>解題思路</h2>
             <div class="visual-box">
-                <div class="visual-title">💡 三種解法的取捨</div>
+                <div class="visual-title">三種解法的取捨</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 方法          時間           空間    適用情境
 -----------------------------------------------------------------
@@ -128,7 +128,7 @@ return heap.top();
   push 4 → [4,5,6] pop 4 → [5,6]
   堆頂 = 5 ✓
 
-⭐ 為什麼是最小堆而不是最大堆？
+★ 為什麼是最小堆而不是最大堆？
    因為我們要不斷「淘汰最小的」，
    最小堆才能 O(1) 取得並 O(log k) 移除最小值。
                 </pre>
@@ -136,7 +136,7 @@ return heap.top();
 
             <h3>方法二：快速選擇（Quickselect，本題正解）</h3>
             <div class="visual-box">
-                <div class="visual-title">⚡ 快速排序的「單邊」版本</div>
+                <div class="visual-title">快速排序的「單邊」版本</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 第 k 大 = 升序排序後索引為 (n - k) 的元素
 
@@ -161,7 +161,7 @@ return heap.top();
 
             <h3>Partition 的實作（Lomuto 分割）</h3>
             <div class="visual-box">
-                <div class="visual-title">🔧 把小於 pivot 的都搬到左邊</div>
+                <div class="visual-title">把小於 pivot 的都搬到左邊</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 int partition(vector<int>& nums, int left, int right) {
     // 隨機選 pivot 並換到最右邊（避免最壞情況）
@@ -433,17 +433,17 @@ int findKthLargest(int* nums, int numsSize, int k) {
         <div class="section">
             <h2>重點提示</h2>
             <div class="key-point">
-                <strong>💡 關鍵技巧 1：第 k 大 = 升序索引 n - k</strong>
+                <strong>關鍵技巧 1：第 k 大 = 升序索引 n - k</strong>
                 <p>轉換公式要背熟。也可以在 partition 時用降序排列，這樣目標索引就是 k-1。兩種寫法都可以，但務必在紙上驗證一次避免差一錯誤。</p>
             </div>
 
             <div class="key-point">
-                <strong>💡 關鍵技巧 2：隨機化 pivot 是必須的</strong>
+                <strong>關鍵技巧 2：隨機化 pivot 是必須的</strong>
                 <p>LeetCode 的測試資料<strong>包含已排序的大陣列</strong>，如果固定選第一個或最後一個當 pivot，會退化成 O(n²) 而超時。加上隨機化只要一行，卻是能否通過的關鍵。</p>
             </div>
 
             <div class="key-point">
-                <strong>💡 關鍵技巧 3：Top-K 問題用「反向堆積」</strong>
+                <strong>關鍵技巧 3：Top-K 問題用「反向堆積」</strong>
                 <ul>
                     <li>求<strong>最大</strong>的 k 個 → 用<strong>最小</strong>堆（淘汰最小的）</li>
                     <li>求<strong>最小</strong>的 k 個 → 用<strong>最大</strong>堆（淘汰最大的）</li>
@@ -452,7 +452,7 @@ int findKthLargest(int* nums, int numsSize, int k) {
             </div>
 
             <div class="note">
-                <strong>⚠️ 常見錯誤：</strong>
+                <strong>常見錯誤：</strong>
                 <ul>
                     <li>索引轉換寫錯（n-k 還是 k-1）</li>
                     <li>沒有隨機化 pivot，遇到已排序資料超時</li>
@@ -478,7 +478,7 @@ int findKthLargest(int* nums, int numsSize, int k) {
             <h2>補充說明</h2>
             <h3>Top-K 問題的四種解法</h3>
             <div class="visual-box">
-                <div class="visual-title">📊 依情境選擇</div>
+                <div class="visual-title">依情境選擇</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 解法            時間          空間   適用情境
 --------------------------------------------------------------------

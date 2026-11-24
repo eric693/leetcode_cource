@@ -111,7 +111,7 @@
         <div class="section">
             <h2>解題思路</h2>
             <div class="visual-box">
-                <div class="visual-title">💡 四個階段循序處理</div>
+                <div class="visual-title">四個階段循序處理</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 輸入 "   -42abc"
 
@@ -339,22 +339,22 @@ int myAtoi(char* s) {
         <div class="section">
             <h2>重點提示</h2>
             <div class="key-point">
-                <strong>💡 關鍵技巧 1：溢位要「事前預判」而非「事後檢查」</strong>
+                <strong>關鍵技巧 1：溢位要「事前預判」而非「事後檢查」</strong>
                 <p>在 C/C++ 中，有號整數溢位是<strong>未定義行為（UB）</strong>，編譯器可以假設它不會發生並做出激進優化，所以 <code>if (result * 10 &lt; result)</code> 這種事後檢查完全不可靠。必須在運算前用除法預判。</p>
             </div>
 
             <div class="key-point">
-                <strong>💡 關鍵技巧 2：INT_MIN 的絕對值無法用 int 表示</strong>
+                <strong>關鍵技巧 2：INT_MIN 的絕對值無法用 int 表示</strong>
                 <p><code>|-2147483648| = 2147483648 &gt; INT_MAX</code>，所以 <code>-INT_MIN</code> 會溢位。這是 32 位元二補數的經典陷阱，很多實務 bug 都源自於此。</p>
             </div>
 
             <div class="key-point">
-                <strong>💡 面試回答框架</strong>
+                <strong>面試回答框架</strong>
                 <p>這題的重點是<strong>把規格逐條翻譯成程式碼</strong>。建議先把所有邊界情況列出來（空字串、只有空格、只有符號、雙重符號、前置零、超長數字、中途出現字母），再逐一實作。展現「先釐清規格再寫程式」的習慣，比寫得快更重要。</p>
             </div>
 
             <div class="note">
-                <strong>⚠️ 邊界情況檢查清單：</strong>
+                <strong>邊界情況檢查清單：</strong>
                 <ul>
                     <li><code>""</code> 空字串 → 0</li>
                     <li><code>"   "</code> 只有空格 → 0</li>
@@ -383,7 +383,7 @@ int myAtoi(char* s) {
             <h2>補充說明</h2>
             <h3>溢位檢查的通用模板</h3>
             <div class="visual-box">
-                <div class="visual-title">🛡️ 三種安全的檢查方式</div>
+                <div class="visual-title">三種安全的檢查方式</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 【方式一】除法預判（最通用，本題使用）
   if (result &gt; INT_MAX / 10) 溢位;

@@ -87,7 +87,7 @@
         <div class="section">
             <h2>解題思路</h2>
             <div class="visual-box">
-                <div class="visual-title">💡 方法一：縱向掃描（推薦，最直覺）</div>
+                <div class="visual-title">方法一：縱向掃描（推薦，最直覺）</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 一列一列（一個字元位置一個字元位置）往下比：
 
@@ -126,7 +126,7 @@ prefix = LCP("flow", "flight")   = "fl"
 
             <h3>方法三：排序取頭尾（面試小技巧）</h3>
             <div class="visual-box">
-                <div class="visual-title">⚡ 只需要比較兩個字串</div>
+                <div class="visual-title">只需要比較兩個字串</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 字典序排序後，只要比較【第一個】和【最後一個】字串即可！
 
@@ -326,17 +326,17 @@ char* longestCommonPrefix(char** strs, int strsSize) {
         <div class="section">
             <h2>重點提示</h2>
             <div class="key-point">
-                <strong>💡 關鍵技巧：邊界檢查要完整</strong>
+                <strong>關鍵技巧：邊界檢查要完整</strong>
                 <p>必須同時檢查「索引是否超出其他字串長度」和「字元是否相同」。只檢查字元會在 <code>["ab", "a"]</code> 這種輸入上越界崩潰。</p>
             </div>
 
             <div class="key-point">
-                <strong>💡 面試延伸：如果要支援大量查詢怎麼辦？</strong>
+                <strong>面試延伸：如果要支援大量查詢怎麼辦？</strong>
                 <p>建一棵 <strong>Trie</strong>，從根節點往下走，只要節點<strong>只有一個子節點且不是單字結尾</strong>就繼續，否則停止。走過的路徑就是最長公共前綴。建樹 O(S)，之後每次查詢 O(L)。</p>
             </div>
 
             <div class="note">
-                <strong>⚠️ 常見錯誤：</strong>
+                <strong>常見錯誤：</strong>
                 <ul>
                     <li>忘記處理空陣列或包含空字串的情況</li>
                     <li>索引越界（沒檢查其他字串的長度）</li>
@@ -358,7 +358,7 @@ char* longestCommonPrefix(char** strs, int strsSize) {
             <h2>補充說明</h2>
             <h3>方法四：分治法</h3>
             <div class="visual-box">
-                <div class="visual-title">🔀 把陣列切半各自求解再合併</div>
+                <div class="visual-title">把陣列切半各自求解再合併</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 LCP(strs[0..n-1]) = LCP( LCP(strs[0..mid]), LCP(strs[mid+1..n-1]) )
 

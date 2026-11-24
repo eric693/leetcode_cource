@@ -105,13 +105,13 @@
         <div class="section">
             <h2>解題思路</h2>
             <div class="visual-box">
-                <div class="visual-title">💡 狀態定義</div>
+                <div class="visual-title">狀態定義</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 dp[i][j] = 以 (i, j) 為【右下角】的最大正方形的邊長
 
 答案 = max(dp[i][j])² （所有格子中最大邊長的平方）
 
-⭐ 「以某格為右下角」是矩形/正方形類 DP 的標準定義方式。
+★ 「以某格為右下角」是矩形/正方形類 DP 的標準定義方式。
 </pre>
             </div>
 
@@ -152,7 +152,7 @@ dp[i][j] = 以 (i, j) 為【右下角】的最大正方形的邊長
 
             <h3>完整推導</h3>
             <div class="visual-box">
-                <div class="visual-title">📊 手推 DP 表格</div>
+                <div class="visual-title">手推 DP 表格</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 matrix:              dp:
 1 0 1 0 0            1 0 1 0 0
@@ -395,22 +395,22 @@ int maximalSquare(char** matrix, int matrixSize, int* matrixColSize) {
         <div class="section">
             <h2>重點提示</h2>
             <div class="key-point">
-                <strong>💡 關鍵技巧 1：為什麼是 min 不是 max</strong>
+                <strong>關鍵技巧 1：為什麼是 min 不是 max</strong>
                 <p>正方形要求<strong>四邊等長</strong>，三個方向中最短的那個限制了整體大小 —— 這就是木桶效應。面試官很愛問這個「為什麼」，能講清楚就代表你真的理解了，而不是背答案。</p>
             </div>
 
             <div class="key-point">
-                <strong>💡 關鍵技巧 2：「以 (i,j) 為右下角」的狀態設計</strong>
+                <strong>關鍵技巧 2：「以 (i,j) 為右下角」的狀態設計</strong>
                 <p>矩形/正方形類問題，把狀態定義成「以某個格子為右下角（或右端點）」，能讓子問題自然重疊。這個技巧在 #85 最大矩形、#1277 統計正方形數量中都會用到。</p>
             </div>
 
             <div class="key-point">
-                <strong>💡 對比 #85 Maximal Rectangle</strong>
+                <strong>對比 #85 Maximal Rectangle</strong>
                 <p>如果求的是最大<strong>矩形</strong>（長寬可以不等），這個 min 技巧就<strong>不成立</strong>了。#85 的正解是：把每一行當成「柱狀圖的底」，對每一行套用 #84 的<strong>單調堆疊</strong>解法。正方形能用簡單 DP、矩形不行，這是兩題最大的分野。</p>
             </div>
 
             <div class="note">
-                <strong>⚠️ 常見錯誤：</strong>
+                <strong>常見錯誤：</strong>
                 <ul>
                     <li>返回邊長而不是<strong>面積</strong>（要記得平方）</li>
                     <li>用 max 而非 min</li>
@@ -436,7 +436,7 @@ int maximalSquare(char** matrix, int matrixSize, int* matrixColSize) {
             <h2>補充說明</h2>
             <h3>#1277：統計所有正方形的數量</h3>
             <div class="visual-box">
-                <div class="visual-title">🎁 同一份 dp，答案改成求和</div>
+                <div class="visual-title">同一份 dp，答案改成求和</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 關鍵洞察：dp[i][j] = k 代表以 (i,j) 為右下角，
           存在邊長為 1, 2, ..., k 的正方形，共 k 個！

@@ -96,7 +96,7 @@
         <div class="section">
             <h2>解題思路</h2>
             <div class="visual-box">
-                <div class="visual-title">💡 方法一：逐位檢查（最直覺）</div>
+                <div class="visual-title">方法一：逐位檢查（最直覺）</div>
                 <p>檢查每一位是否為 1，共檢查 32 次。</p>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 n = 1011
@@ -132,7 +132,7 @@ n == 0，結束 → 答案 3
 
             <h3>方法三：查表法（韌體常用）</h3>
             <div class="visual-box">
-                <div class="visual-title">⚡ 空間換時間</div>
+                <div class="visual-title">空間換時間</div>
                 <p>預先建好 0~255 的 popcount 表，一個 32 位元數只要查 4 次表。這是嵌入式系統在沒有硬體 popcount 指令時的標準做法。</p>
             </div>
         </div>
@@ -304,17 +304,17 @@ int hammingWeight(int n) {
         <div class="section">
             <h2>重點提示</h2>
             <div class="key-point">
-                <strong>💡 關鍵技巧 1：n &amp; (n-1) 消最右邊的 1</strong>
+                <strong>關鍵技巧 1：n &amp; (n-1) 消最右邊的 1</strong>
                 <p>這是位元運算的萬用技巧，也可用來判斷 2 的冪次方（n &amp; (n-1) == 0）。務必背起來。</p>
             </div>
 
             <div class="key-point">
-                <strong>💡 關鍵技巧 2：n &amp; (-n) 取出最右邊的 1</strong>
+                <strong>關鍵技巧 2：n &amp; (-n) 取出最右邊的 1</strong>
                 <p>負數是二補數，-n = ~n + 1，所以 n &amp; -n 剛好保留最低位的 1（lowbit），是樹狀陣列的核心。</p>
             </div>
 
             <div class="note">
-                <strong>⚠️ 常見錯誤：</strong>
+                <strong>常見錯誤：</strong>
                 <ul>
                     <li><strong>Java 沒有 unsigned</strong>：用 <code>n != 0</code> 判斷，不要用 <code>n &gt; 0</code>，否則負數會直接跳出</li>
                     <li>Java 右移要用無號右移 <code>&gt;&gt;&gt;</code>，用 <code>&gt;&gt;</code> 會補符號位造成無限迴圈</li>
@@ -337,7 +337,7 @@ int hammingWeight(int n) {
             <h2>補充說明</h2>
             <h3>位元運算速查表（面試必背）</h3>
             <div class="visual-box">
-                <div class="visual-title">📝 常用位元技巧</div>
+                <div class="visual-title">常用位元技巧</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 取得第 i 位          (n >> i) & 1
 設定第 i 位為 1      n |= (1 << i)

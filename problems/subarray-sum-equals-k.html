@@ -95,13 +95,13 @@
         <div class="section">
             <h2>解題思路</h2>
             <div class="note">
-                <strong>⚠️ 為什麼不能用滑動視窗？</strong>
+                <strong>為什麼不能用滑動視窗？</strong>
                 <p>滑動視窗要求「擴大視窗時和單調遞增」，才能靠移動左右邊界收斂。但本題<strong>有負數</strong>，加入元素可能讓和變小，視窗無法單調收縮 —— 這是本題最重要的觀念。</p>
             </div>
 
             <h3>核心：前綴和 + HashMap</h3>
             <div class="visual-box">
-                <div class="visual-title">💡 把「找子陣列」轉成「找兩個前綴和的差」</div>
+                <div class="visual-title">把「找子陣列」轉成「找兩個前綴和的差」</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 定義 prefix[i] = nums[0] + nums[1] + ... + nums[i-1]
 
@@ -122,7 +122,7 @@
 
             <h3>完整追蹤：nums = [1,2,3], k = 3</h3>
             <div class="visual-box">
-                <div class="visual-title">🔄 逐步計算</div>
+                <div class="visual-title">逐步計算</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 初始 count = {0: 1}   ← 關鍵！代表「空前綴和 0」出現一次
 prefixSum = 0, result = 0
@@ -325,22 +325,22 @@ int subarraySum(int* nums, int numsSize, int k) {
         <div class="section">
             <h2>重點提示</h2>
             <div class="key-point">
-                <strong>💡 關鍵技巧 1：count[0] = 1 的初始化</strong>
+                <strong>關鍵技巧 1：count[0] = 1 的初始化</strong>
                 <p>沒有這行，所有「從索引 0 開始」的子陣列都會被漏算。這是本題唯一但最致命的陷阱。</p>
             </div>
 
             <div class="key-point">
-                <strong>💡 關鍵技巧 2：先查詢，再更新</strong>
+                <strong>關鍵技巧 2：先查詢，再更新</strong>
                 <p>必須先 <code>result += count[prefixSum - k]</code>，之後才 <code>count[prefixSum]++</code>。順序寫反的話，當 k = 0 時會把「自己」算進去，答案偏大。</p>
             </div>
 
             <div class="key-point">
-                <strong>💡 關鍵技巧 3：有負數 → 排除滑動視窗</strong>
+                <strong>關鍵技巧 3：有負數 → 排除滑動視窗</strong>
                 <p>面試時主動說明「因為有負數，視窗和不單調，所以滑動視窗不適用，改用前綴和 + 雜湊」，是展現思考深度的好機會。</p>
             </div>
 
             <div class="note">
-                <strong>⚠️ 常見錯誤：</strong>
+                <strong>常見錯誤：</strong>
                 <ul>
                     <li>忘記 count[0] = 1</li>
                     <li>查詢與更新的順序顛倒</li>
@@ -365,7 +365,7 @@ int subarraySum(int* nums, int numsSize, int k) {
             <h2>補充說明</h2>
             <h3>前綴和 + HashMap 的四種變形</h3>
             <div class="visual-box">
-                <div class="visual-title">📝 記住這張表就能解一整類題</div>
+                <div class="visual-title">記住這張表就能解一整類題</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 題型                   HashMap 存什麼        查詢什麼
 --------------------------------------------------------------

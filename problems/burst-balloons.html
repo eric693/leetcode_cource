@@ -104,7 +104,7 @@ coins = 3×1×5    + 3×5×8    + 1×3×8   + 1×8×1
             <h2>解題思路</h2>
             
             <div class="visual-box">
-                <div class="visual-title">💡 核心概念：反向思考 + 區間 DP</div>
+                <div class="visual-title">核心概念：反向思考 + 區間 DP</div>
                 <p><strong>關鍵洞察：</strong>不要想「先戳哪個」，而要想「最後戳哪個」！</p>
                 <ol style="margin-top: 10px;">
                     <li>假設最後戳破的是第 k 個氣球</li>
@@ -116,7 +116,7 @@ coins = 3×1×5    + 3×5×8    + 1×3×8   + 1×8×1
 
             <h3>為什麼正向思考很難？</h3>
             <div class="visual-box">
-                <div class="visual-title">❌ 正向思考的困境</div>
+                <div class="visual-title">正向思考的困境</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 <strong>問題：</strong>戳破一個氣球後，陣列會改變
 
@@ -134,7 +134,7 @@ nums = [3, 1, 5, 8]
 
             <h3>反向思考的妙處</h3>
             <div class="visual-box">
-                <div class="visual-title">✅ 反向思考 = 最後戳破</div>
+                <div class="visual-title">反向思考 = 最後戳破</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 <strong>思路轉換：</strong>
 不考慮「第一個戳哪個」
@@ -155,7 +155,7 @@ nums = [3, 1, 5, 8]
 
             <h3>DP 狀態定義</h3>
             <div class="visual-box">
-                <div class="visual-title">📊 狀態轉移方程</div>
+                <div class="visual-title">狀態轉移方程</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 <strong>狀態定義：</strong>
 dp[i][j] = 戳破開區間 (i, j) 內所有氣球的最大硬幣數
@@ -182,7 +182,7 @@ dp[i][j] = max(
 
             <h3>詳細範例演示</h3>
             <div class="visual-box">
-                <div class="visual-title">🔄 完整 DP 過程：nums = [3,1,5,8]</div>
+                <div class="visual-title">完整 DP 過程：nums = [3,1,5,8]</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 <strong>添加虛擬邊界：</strong>
 nums = [1, 3, 1, 5, 8, 1]
@@ -503,22 +503,22 @@ int maxCoins(int* nums, int numsSize) {
             <h2>重點提示</h2>
             
             <div class="key-point">
-                <strong>💡 關鍵技巧 1：反向思考</strong>
+                <strong>關鍵技巧 1：反向思考</strong>
                 <p>不想「先戳哪個」，而想「最後戳哪個」，化難為易！</p>
             </div>
 
             <div class="key-point">
-                <strong>💡 關鍵技巧 2：虛擬邊界</strong>
+                <strong>關鍵技巧 2：虛擬邊界</strong>
                 <p>添加 [1, ..., 1] 簡化邊界處理，統一計算公式。</p>
             </div>
 
             <div class="key-point">
-                <strong>💡 關鍵技巧 3：開區間定義</strong>
+                <strong>關鍵技巧 3：開區間定義</strong>
                 <p>dp[i][j] 是開區間 (i, j)，不包括 i 和 j 本身。</p>
             </div>
 
             <div class="note">
-                <strong>⚠️ 常見錯誤：</strong>
+                <strong>常見錯誤：</strong>
                 <ul>
                     <li>忘記添加虛擬邊界，導致邊界判斷複雜</li>
                     <li>循環順序錯誤（必須先小區間再大區間）</li>

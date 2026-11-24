@@ -96,7 +96,7 @@
         <div class="section">
             <h2>解題思路</h2>
             <div class="visual-box">
-                <div class="visual-title">💡 核心：前序給「根」，中序給「左右分界」</div>
+                <div class="visual-title">核心：前序給「根」，中序給「左右分界」</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 前序 = [根][左子樹的前序][右子樹的前序]
 中序 = [左子樹的中序][根][右子樹的中序]
@@ -140,14 +140,14 @@ preorder = [3 | 9 | 20, 15, 7]
   preorder: [preLeft + leftSize + 1, preRight]
   inorder:  [rootIdx + 1, inRight]
 
-⭐ 記憶要訣：所有切割點都由 leftSize 推導，
+★ 記憶要訣：所有切割點都由 leftSize 推導，
    把 leftSize 算對，其餘索引就水到渠成。
                 </pre>
             </div>
 
             <h3>優化：用 HashMap 加速查找</h3>
             <div class="visual-box">
-                <div class="visual-title">⚡ 從 O(n²) 降到 O(n)</div>
+                <div class="visual-title">從 O(n²) 降到 O(n)</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 每次都線性搜尋中序找根的位置 → O(n) × n 次 = O(n²)
 
@@ -353,12 +353,12 @@ struct TreeNode* buildTree(int* preorder, int preorderSize, int* inorder, int in
         <div class="section">
             <h2>重點提示</h2>
             <div class="key-point">
-                <strong>💡 關鍵技巧 1：先算 leftSize</strong>
+                <strong>關鍵技巧 1：先算 leftSize</strong>
                 <p>四個索引邊界全部由 <code>leftSize = rootIdx - inLeft</code> 推導出來。與其硬背索引公式，不如每次現場用一個小例子推導一遍，更不容易出錯。</p>
             </div>
 
             <div class="key-point">
-                <strong>💡 關鍵技巧 2：哪些遍歷組合能唯一還原樹？</strong>
+                <strong>關鍵技巧 2：哪些遍歷組合能唯一還原樹？</strong>
                 <ul>
                     <li>前序 + 中序 → ✓ 可以（本題）</li>
                     <li>後序 + 中序 → ✓ 可以（#106）</li>
@@ -369,7 +369,7 @@ struct TreeNode* buildTree(int* preorder, int preorderSize, int* inorder, int in
             </div>
 
             <div class="note">
-                <strong>⚠️ 常見錯誤：</strong>
+                <strong>常見錯誤：</strong>
                 <ul>
                     <li>索引邊界算錯（尤其是右子樹前序的起點 <code>preLeft + leftSize + 1</code>）</li>
                     <li>沒有用 HashMap，導致 O(n²) 超時</li>
@@ -393,7 +393,7 @@ struct TreeNode* buildTree(int* preorder, int preorderSize, int* inorder, int in
             <h2>補充說明</h2>
             <h3>#106：後序 + 中序</h3>
             <div class="visual-box">
-                <div class="visual-title">🔄 從後往前取根</div>
+                <div class="visual-title">從後往前取根</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 後序 = [左子樹][右子樹][根]
        → 根在【最後一個】

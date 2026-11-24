@@ -93,7 +93,7 @@
         <div class="section">
             <h2>解題思路</h2>
             <div class="visual-box">
-                <div class="visual-title">💡 O(1) 空間解法三部曲</div>
+                <div class="visual-title">O(1) 空間解法三部曲</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 單向串列不能往回走，所以要「把後半段反轉」再比對。
 
@@ -140,7 +140,7 @@ return prev                  # prev 是新的頭
 
             <h3>其他解法比較</h3>
             <div class="visual-box">
-                <div class="visual-title">📊 三種做法</div>
+                <div class="visual-title">三種做法</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 方法          時間    空間    優點
 --------------------------------------------------
@@ -393,22 +393,22 @@ bool isPalindrome(struct ListNode* head) {
         <div class="section">
             <h2>重點提示</h2>
             <div class="key-point">
-                <strong>💡 關鍵技巧 1：找中點的迴圈條件</strong>
+                <strong>關鍵技巧 1：找中點的迴圈條件</strong>
                 <p>用 <code>fast.next &amp;&amp; fast.next.next</code>（而不是 <code>fast &amp;&amp; fast.next</code>），可以讓 slow 停在<strong>前半段的最後一個</strong>，方便用 <code>slow.next</code> 切開，奇偶長度都正確。</p>
             </div>
 
             <div class="key-point">
-                <strong>💡 關鍵技巧 2：比對以後半段為準</strong>
+                <strong>關鍵技巧 2：比對以後半段為準</strong>
                 <p>奇數長度時前半段會多一個（中間節點），所以 <code>while (p2)</code> 才正確。用 p1 當條件會多比一次而出錯。</p>
             </div>
 
             <div class="key-point">
-                <strong>💡 面試加分：記得還原串列</strong>
+                <strong>面試加分：記得還原串列</strong>
                 <p>修改了輸入資料結構卻不還原，在多執行緒或串列被其他地方參考時是嚴重的副作用。面試時主動提到「我會把串列還原」通常會被加分。</p>
             </div>
 
             <div class="note">
-                <strong>⚠️ 常見錯誤：</strong>
+                <strong>常見錯誤：</strong>
                 <ul>
                     <li>反轉時忘記先存 <code>next</code>，指標一改就找不到後續節點</li>
                     <li>找中點的邊界條件寫錯，導致奇偶長度其中一種出錯</li>
@@ -431,7 +431,7 @@ bool isPalindrome(struct ListNode* head) {
             <h2>補充說明</h2>
             <h3>遞迴解法（優雅但費空間）</h3>
             <div class="visual-box">
-                <div class="visual-title">🔄 利用遞迴回溯模擬「從後往前」</div>
+                <div class="visual-title">利用遞迴回溯模擬「從後往前」</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 class Solution {
     ListNode* front;

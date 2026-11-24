@@ -116,7 +116,7 @@
             <h2>解題思路</h2>
             
             <div class="visual-box">
-                <div class="visual-title">💡 核心概念：分組翻轉 + 連接</div>
+                <div class="visual-title">核心概念：分組翻轉 + 連接</div>
                 這題是 #206 Reverse Linked List 的進階版，需要：
                 <ol style="margin-top: 10px;">
                     <li><strong>檢查長度</strong>：確保有 k 個節點才翻轉</li>
@@ -128,7 +128,7 @@
 
             <h3>方法一：遞迴解法（最優雅）</h3>
             <div class="visual-box">
-                <div class="visual-title">🔄 遞迴步驟詳解</div>
+                <div class="visual-title">遞迴步驟詳解</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 1️⃣ 檢查是否有 k 個節點
    head → 1 → 2 → 3 → 4 → 5
@@ -514,22 +514,22 @@ struct ListNode* reverseKGroup(struct ListNode* head, int k) {
             <h2>重點提示</h2>
             
             <div class="key-point">
-                <strong>💡 關鍵技巧 1：檢查長度</strong>
+                <strong>關鍵技巧 1：檢查長度</strong>
                 <p>必須先檢查是否有 k 個節點，避免不完整的翻轉。</p>
             </div>
 
             <div class="key-point">
-                <strong>💡 關鍵技巧 2：保存指標</strong>
+                <strong>關鍵技巧 2：保存指標</strong>
                 <p>翻轉時要保存 prevGroup、groupEnd、nextGroup 等關鍵指標。</p>
             </div>
 
             <div class="key-point">
-                <strong>💡 關鍵技巧 3：Dummy Node</strong>
+                <strong>關鍵技巧 3：Dummy Node</strong>
                 <p>使用 dummy node 可以統一處理頭節點的情況。</p>
             </div>
 
             <div class="note">
-                <strong>⚠️ 常見錯誤：</strong>
+                <strong>常見錯誤：</strong>
                 <ul>
                     <li>忘記檢查剩餘節點數量，導致不完整翻轉</li>
                     <li>指標連接順序錯誤，導致鏈表斷裂</li>

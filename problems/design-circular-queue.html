@@ -100,7 +100,7 @@ q.Rear();       // 返回 4
         <div class="section">
             <h2>解題思路</h2>
             <div class="visual-box">
-                <div class="visual-title">💡 核心：用取模讓索引「繞回來」</div>
+                <div class="visual-title">核心：用取模讓索引「繞回來」</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 用固定大小的陣列 + 兩個索引：
   head：指向隊首元素
@@ -146,7 +146,7 @@ enQueue(4)[ _, 2, 3, 4 ]   head=1 tail=0  ← tail 繞回開頭！
 
             <h3>效能重點：用 &amp; 取代 %</h3>
             <div class="visual-box">
-                <div class="visual-title">⚡ 容量設成 2 的冪</div>
+                <div class="visual-title">容量設成 2 的冪</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 取模 % 在 MCU 上是很慢的除法運算。
 若 capacity 是 2 的冪，可以改寫成：
@@ -430,12 +430,12 @@ void myCircularQueueFree(MyCircularQueue* obj) {
         <div class="section">
             <h2>重點提示</h2>
             <div class="key-point">
-                <strong>💡 關鍵技巧 1：Rear 索引要處理負數</strong>
+                <strong>關鍵技巧 1：Rear 索引要處理負數</strong>
                 <p><code>(tail - 1 + cap) % cap</code>，當 tail == 0 時 tail - 1 會變成 -1，加上 cap 才正確。這是本題最常見的錯誤。</p>
             </div>
 
             <div class="key-point">
-                <strong>💡 關鍵技巧 2：ring buffer 為什麼適合嵌入式</strong>
+                <strong>關鍵技巧 2：ring buffer 為什麼適合嵌入式</strong>
                 <ul>
                     <li><strong>不需動態記憶體</strong>：靜態配置，無 malloc/free，無記憶體碎片</li>
                     <li><strong>O(1) 且時間可預測</strong>：符合即時系統（RTOS）的確定性要求</li>
@@ -444,7 +444,7 @@ void myCircularQueueFree(MyCircularQueue* obj) {
             </div>
 
             <div class="key-point">
-                <strong>💡 面試常見追問</strong>
+                <strong>面試常見追問</strong>
                 <ul>
                     <li>「怎麼區分空和滿？」→ 多留一格 或 額外 count</li>
                     <li>「取模很慢怎麼辦？」→ 容量設 2 的冪，用 &amp; (size-1)</li>
@@ -454,7 +454,7 @@ void myCircularQueueFree(MyCircularQueue* obj) {
             </div>
 
             <div class="note">
-                <strong>⚠️ 常見錯誤：</strong>
+                <strong>常見錯誤：</strong>
                 <ul>
                     <li>忘記多開一格，導致空與滿無法區分</li>
                     <li>Rear() 沒有處理 tail = 0 的負索引</li>
@@ -478,7 +478,7 @@ void myCircularQueueFree(MyCircularQueue* obj) {
             <h2>補充說明</h2>
             <h3>韌體實務：UART 接收緩衝</h3>
             <div class="visual-box">
-                <div class="visual-title">🔧 典型的 ISR + main loop 架構</div>
+                <div class="visual-title">典型的 ISR + main loop 架構</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 // 中斷服務常式：收到一個 byte 就丟進 ring buffer
 void USART1_IRQHandler(void) {

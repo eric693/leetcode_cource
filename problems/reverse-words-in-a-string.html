@@ -95,7 +95,7 @@
         <div class="section">
             <h2>解題思路</h2>
             <div class="visual-box">
-                <div class="visual-title">💡 方法一：分割 + 反轉 + 拼接（最簡潔）</div>
+                <div class="visual-title">方法一：分割 + 反轉 + 拼接（最簡潔）</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 s = "  the   sky is blue  "
 
@@ -135,7 +135,7 @@ Python 一行：' '.join(s.split()[::-1])
 
             <h3>方法三：就地處理（C 風格，最完整）</h3>
             <div class="visual-box">
-                <div class="visual-title">🔧 三步驟，真正的 O(1) 空間</div>
+                <div class="visual-title">三步驟，真正的 O(1) 空間</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 【步驟 1】清理空格（雙指標就地壓縮）
   "  the   sky  " → "the sky"
@@ -331,17 +331,17 @@ char* reverseWords(char* s) {
         <div class="section">
             <h2>重點提示</h2>
             <div class="key-point">
-                <strong>💡 關鍵技巧：反轉兩次</strong>
+                <strong>關鍵技巧：反轉兩次</strong>
                 <p>「整體反轉 + 局部反轉」是字串與陣列題的萬用技巧。看到「順序顛倒但要保持某種局部結構」就要想到它。#189 Rotate Array 用的是完全一樣的思路。</p>
             </div>
 
             <div class="key-point">
-                <strong>💡 面試注意：不要只寫一行</strong>
+                <strong>面試注意：不要只寫一行</strong>
                 <p>用 <code>' '.join(s.split()[::-1])</code> 一行過關，面試官通常會追問「不用內建函數怎麼寫」。準備好手寫雙指標版本，並主動說明如何處理多餘空格。</p>
             </div>
 
             <div class="note">
-                <strong>⚠️ 常見錯誤：</strong>
+                <strong>常見錯誤：</strong>
                 <ul>
                     <li>用 <code>split(" ")</code>（帶參數）會產生空字串元素，必須用 <code>split()</code>（Python）或 <code>split("\\s+")</code> + <code>trim()</code>（Java）</li>
                     <li>忘記 trim，導致開頭的空白產生一個空元素</li>
@@ -365,7 +365,7 @@ char* reverseWords(char* s) {
             <h2>補充說明</h2>
             <h3>「反轉技巧」的三大應用</h3>
             <div class="visual-box">
-                <div class="visual-title">🔄 一招通吃</div>
+                <div class="visual-title">一招通吃</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 【#151 反轉單詞順序】
   整體反轉 → 逐詞反轉
@@ -378,7 +378,7 @@ char* reverseWords(char* s) {
   3. 反轉後 n-k 個： [5,6,7,1,2,3,4] ✓
 
   O(n) 時間，O(1) 空間，比用額外陣列漂亮得多。
-  ⚠️ 記得先做 k %= n，否則 k > n 時會出錯。
+  記得先做 k %= n，否則 k > n 時會出錯。
 
 【#557 只反轉每個單詞】
   "Let's take LeetCode" → "s'teL ekat edoCteeL"

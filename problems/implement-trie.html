@@ -94,7 +94,7 @@ trie.search("app");       // 返回 true（現在 app 也是完整單字了）
         <div class="section">
             <h2>解題思路</h2>
             <div class="visual-box">
-                <div class="visual-title">💡 核心：把共同前綴合併成同一條路徑</div>
+                <div class="visual-title">核心：把共同前綴合併成同一條路徑</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 插入 "apple", "app", "apt", "bat" 後的樹：
 
@@ -141,7 +141,7 @@ startsWith(prefix)：
 
             <h3>為什麼不用 HashSet 就好？</h3>
             <div class="visual-box">
-                <div class="visual-title">🔍 Trie 的價值在「前綴查詢」</div>
+                <div class="visual-title">Trie 的價值在「前綴查詢」</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 操作            HashSet          Trie
 --------------------------------------------------
@@ -402,22 +402,22 @@ void trieFree(Trie* obj) {
         <div class="section">
             <h2>重點提示</h2>
             <div class="key-point">
-                <strong>💡 關鍵技巧 1：isEnd 標記不可省</strong>
+                <strong>關鍵技巧 1：isEnd 標記不可省</strong>
                 <p>沒有 isEnd 就無法區分 <code>search("app")</code> 和 <code>startsWith("app")</code>。這是本題的核心設計，也是最常被漏掉的地方。</p>
             </div>
 
             <div class="key-point">
-                <strong>💡 關鍵技巧 2：陣列 vs HashMap</strong>
+                <strong>關鍵技巧 2：陣列 vs HashMap</strong>
                 <p>字元集小且固定（如 a-z）用<strong>陣列</strong>，查詢快；字元集大或稀疏（Unicode、單字很少）用 <strong>HashMap</strong>，省空間。面試時可以主動比較這兩種選擇。</p>
             </div>
 
             <div class="key-point">
-                <strong>💡 面試延伸：如何實作 delete？</strong>
+                <strong>面試延伸：如何實作 delete？</strong>
                 <p>先走到結尾把 isEnd 設為 false；再從下往上，若某節點沒有子節點且 isEnd 為 false，就可以刪除它。要小心不能刪掉其他單字還在用的節點。</p>
             </div>
 
             <div class="note">
-                <strong>⚠️ 常見錯誤：</strong>
+                <strong>常見錯誤：</strong>
                 <ul>
                     <li>search 忘記檢查 isEnd，變成和 startsWith 一樣</li>
                     <li>C++ 忘記在建構子把 children 初始化為 nullptr（未初始化指標是災難）</li>
@@ -441,7 +441,7 @@ void trieFree(Trie* obj) {
             <h2>補充說明</h2>
             <h3>延伸一：二進位 Trie（0/1 Trie）</h3>
             <div class="visual-box">
-                <div class="visual-title">🔢 把數字當成 32 位元字串</div>
+                <div class="visual-title">把數字當成 32 位元字串</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 每個節點只有 2 個子節點（0 和 1），從最高位往下插入。
 

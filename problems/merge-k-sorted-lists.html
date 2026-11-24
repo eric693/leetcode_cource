@@ -103,7 +103,7 @@ lists[i].length 的總和不超過 10^4</code></pre>
             <h2 class="section-title">解題思路</h2>
             
             <div class="approach-box">
-                <div class="approach-title">方法一：最小堆積 / 優先佇列（推薦）⭐</div>
+                <div class="approach-title">方法一：最小堆積 / 優先佇列（推薦）★</div>
                 <p>使用最小堆積（Min Heap）維護 k 個鏈表的當前最小節點，每次取出最小值加入結果鏈表。</p>
                 
                 <p style="margin-top: 15px;"><strong>核心思想：</strong></p>
@@ -471,7 +471,7 @@ struct ListNode* mergeKLists(struct ListNode** lists, int listsSize) {
                     <li><strong>對比暴力法：</strong>
                         <ul style="margin-top: 8px;">
                             <li>暴力：每次線性掃描 k 個鏈表找最小值 → O(Nk)</li>
-                            <li>堆積：每次 O(log k) 找最小值 → O(N log k) ⭐</li>
+                            <li>堆積：每次 O(log k) 找最小值 → O(N log k) ★</li>
                         </ul>
                     </li>
                     <li><strong>兩種方法對比：</strong>

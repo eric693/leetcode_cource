@@ -92,7 +92,7 @@
         <div class="section">
             <h2>解題思路</h2>
             <div class="visual-box">
-                <div class="visual-title">💡 核心：XOR 後數 1 的個數</div>
+                <div class="visual-title">核心：XOR 後數 1 的個數</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 XOR 的特性：相同得 0，不同得 1
 所以 x ^ y 的每個 1，就代表一個「不同的位置」
@@ -272,17 +272,17 @@ int hammingDistance(int x, int y) {
         <div class="section">
             <h2>重點提示</h2>
             <div class="key-point">
-                <strong>💡 關鍵技巧：先轉化問題再解</strong>
+                <strong>關鍵技巧：先轉化問題再解</strong>
                 <p>「有幾個位不同」→ XOR → 「有幾個 1」。學會把陌生題目轉成已知題目，比記住解法更重要。</p>
             </div>
 
             <div class="key-point">
-                <strong>💡 面試延伸：Total Hamming Distance（#477）</strong>
+                <strong>面試延伸：Total Hamming Distance（#477）</strong>
                 <p>要算陣列中<strong>所有配對</strong>的漢明距離總和。暴力是 O(n²)，正解是<strong>逐位統計</strong>：某一位有 c 個 1、n-c 個 0，該位貢獻 c × (n-c)，總複雜度 O(32n)。</p>
             </div>
 
             <div class="note">
-                <strong>⚠️ 常見錯誤：</strong>
+                <strong>常見錯誤：</strong>
                 <ul>
                     <li>方法二的迴圈條件要寫 <code>x || y</code>，只寫 <code>x</code> 會漏掉 y 剩餘的高位</li>
                     <li>Java 對負數要用 <code>&gt;&gt;&gt;</code>（本題保證非負所以還好）</li>

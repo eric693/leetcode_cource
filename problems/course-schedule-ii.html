@@ -95,7 +95,7 @@
         <div class="section">
             <h2>解題思路</h2>
             <div class="visual-box">
-                <div class="visual-title">💡 BFS 拓撲排序（Kahn 演算法）</div>
+                <div class="visual-title">BFS 拓撲排序（Kahn 演算法）</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 和 #207 完全一樣，只是把「出隊的節點」依序記錄下來。
 
@@ -131,7 +131,7 @@ numCourses = 4, prerequisites = [[1,0],[2,0],[3,1],[3,2]]
 
             <h3>方法二：DFS 後序 + 反轉</h3>
             <div class="visual-box">
-                <div class="visual-title">🔄 「完成時間」的逆序就是拓撲序</div>
+                <div class="visual-title">「完成時間」的逆序就是拓撲序</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 DFS 的核心洞察：
   一個節點「完成」（所有後繼都走完）時，
@@ -381,22 +381,22 @@ int* findOrder(int numCourses, int** prerequisites, int prerequisitesSize,
         <div class="section">
             <h2>重點提示</h2>
             <div class="key-point">
-                <strong>💡 關鍵技巧 1：Kahn 演算法只比 #207 多一行</strong>
+                <strong>關鍵技巧 1：Kahn 演算法只比 #207 多一行</strong>
                 <p><code>order.push_back(cur)</code>。所以這兩題應該一起準備，掌握一個就等於掌握兩個。</p>
             </div>
 
             <div class="key-point">
-                <strong>💡 關鍵技巧 2：DFS 版要記得反轉</strong>
+                <strong>關鍵技巧 2：DFS 版要記得反轉</strong>
                 <p>DFS 記錄的是「完成順序」，而拓撲序是完成順序的<strong>逆序</strong>。忘記反轉是最常見的錯誤。</p>
             </div>
 
             <div class="key-point">
-                <strong>💡 面試延伸：字典序最小的拓撲序</strong>
+                <strong>面試延伸：字典序最小的拓撲序</strong>
                 <p>把 Kahn 演算法中的普通佇列換成<strong>最小堆積</strong>，每次都優先取出編號最小的可用節點。這是很常見的追問，答案非常簡單但要想得到。</p>
             </div>
 
             <div class="note">
-                <strong>⚠️ 常見錯誤：</strong>
+                <strong>常見錯誤：</strong>
                 <ul>
                     <li>建圖方向反了（<code>[a,b]</code> 是 b → a）</li>
                     <li>忘記檢查結果長度，有環時仍返回不完整的順序</li>
@@ -420,7 +420,7 @@ int* findOrder(int numCourses, int** prerequisites, int prerequisitesSize,
             <h2>補充說明</h2>
             <h3>拓撲排序的三個必記結論</h3>
             <div class="visual-box">
-                <div class="visual-title">📝 面試觀念題</div>
+                <div class="visual-title">面試觀念題</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 1【存在性】一個有向圖存在拓撲序 ⟺ 它是 DAG（無環有向圖）
 

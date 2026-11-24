@@ -93,7 +93,7 @@
         <div class="section">
             <h2>解題思路</h2>
             <div class="visual-box">
-                <div class="visual-title">💡 核心：優化過的直式乘法</div>
+                <div class="visual-title">核心：優化過的直式乘法</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 【關鍵觀察】
 num1[i] × num2[j] 的結果，
@@ -117,7 +117,7 @@ num1[i] × num2[j] 的結果，
 
             <h3>完整推導：123 × 456</h3>
             <div class="visual-box">
-                <div class="visual-title">🔢 兩階段：先全部累加，再統一進位</div>
+                <div class="visual-title">兩階段：先全部累加，再統一進位</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 result = [0, 0, 0, 0, 0]  （長度 3+3 = 5）
 
@@ -331,22 +331,22 @@ char* multiply(char* num1, char* num2) {
         <div class="section">
             <h2>重點提示</h2>
             <div class="key-point">
-                <strong>💡 關鍵技巧 1：i + j 定位法</strong>
+                <strong>關鍵技巧 1：i + j 定位法</strong>
                 <p><code>num1[i] × num2[j]</code> 落在 <code>result[i+j]</code> 和 <code>result[i+j+1]</code>。記住這個定位公式，本題就解決了一大半。</p>
             </div>
 
             <div class="key-point">
-                <strong>💡 關鍵技巧 2：先全部累加，最後統一進位</strong>
+                <strong>關鍵技巧 2：先全部累加，最後統一進位</strong>
                 <p>不需要每一步都處理進位（那樣程式碼會很亂）。因為單一位置最大只到約 16200，int 完全裝得下，最後統一處理反而更簡潔、更不容易出錯。</p>
             </div>
 
             <div class="key-point">
-                <strong>💡 關鍵技巧 3：長度必為 m + n 或 m + n - 1</strong>
+                <strong>關鍵技巧 3：長度必為 m + n 或 m + n - 1</strong>
                 <p>99 × 99 = 9801（4 位 = 2+2），9 × 9 = 81（2 位 = 1+1），1 × 1 = 1（1 位 = 1+1-1）。所以開 m+n 的陣列一定夠，最多只會有一個前置零。</p>
             </div>
 
             <div class="note">
-                <strong>⚠️ 常見錯誤：</strong>
+                <strong>常見錯誤：</strong>
                 <ul>
                     <li>忘記處理任一數為 "0" 的情況，會輸出 "0000..."</li>
                     <li>去除前置零時把結果 "0" 也刪光了（要保留至少一位）</li>
@@ -385,13 +385,13 @@ string addStrings(string num1, string num2) {
     return result;
 }
 
-⭐ 迴圈條件 `i &gt;= 0 || j &gt;= 0 || carry` 一次處理三種情況：
+★ 迴圈條件 `i &gt;= 0 || j &gt;= 0 || carry` 一次處理三種情況：
    長度不同、最後還有進位，非常值得記住的模板。
             </pre>
 
             <h3>更快的乘法演算法</h3>
             <div class="visual-box">
-                <div class="visual-title">⚡ 從 O(n²) 到 O(n log n)</div>
+                <div class="visual-title">從 O(n²) 到 O(n log n)</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 演算法              複雜度          說明
 ----------------------------------------------------------

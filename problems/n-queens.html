@@ -110,7 +110,7 @@
             <h2>解題思路</h2>
             
             <div class="visual-box">
-                <div class="visual-title">💡 核心概念：回溯法（Backtracking）</div>
+                <div class="visual-title">核心概念：回溯法（Backtracking）</div>
                 <p><strong>策略：</strong>逐行放置皇后，每次檢查是否合法，不合法就回溯。</p>
                 <ol style="margin-top: 10px;">
                     <li>從第 0 行開始，依次嘗試在每一列放置皇后</li>
@@ -144,7 +144,7 @@
 
             <h3>回溯過程詳解（n=4）</h3>
             <div class="visual-box">
-                <div class="visual-title">🔄 完整搜尋樹</div>
+                <div class="visual-title">完整搜尋樹</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 第 0 行：嘗試列 0, 1, 2, 3
 │
@@ -540,22 +540,22 @@ char*** solveNQueens(int n, int* returnSize, int** returnColumnSizes) {
             <h2>重點提示</h2>
             
             <div class="key-point">
-                <strong>💡 關鍵技巧 1：對角線公式</strong>
+                <strong>關鍵技巧 1：對角線公式</strong>
                 <p>正斜線 row-col 相同，反斜線 row+col 相同，記住這個規律！</p>
             </div>
 
             <div class="key-point">
-                <strong>💡 關鍵技巧 2：逐行放置</strong>
+                <strong>關鍵技巧 2：逐行放置</strong>
                 <p>每行只放一個皇后，可以避免行衝突，簡化問題。</p>
             </div>
 
             <div class="key-point">
-                <strong>💡 關鍵技巧 3：集合優化</strong>
+                <strong>關鍵技巧 3：集合優化</strong>
                 <p>使用集合代替陣列檢查衝突，從 O(N) 優化到 O(1)。</p>
             </div>
 
             <div class="note">
-                <strong>⚠️ 常見錯誤：</strong>
+                <strong>常見錯誤：</strong>
                 <ul>
                     <li>對角線公式記錯（row-col 和 row+col）</li>
                     <li>回溯時忘記移除集合中的元素</li>
@@ -593,7 +593,7 @@ n = 8 → 92 個解（經典的 8 皇后問題）
             
             <h3>回溯法模板</h3>
             <div class="visual-box">
-                <div class="visual-title">📝 通用回溯模板</div>
+                <div class="visual-title">通用回溯模板</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 def backtrack(路徑, 選擇列表):
     if 滿足結束條件:

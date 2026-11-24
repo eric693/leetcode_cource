@@ -100,7 +100,7 @@
 5
 
 輸出：[1,3,4,5]
-⚠️ 注意第 3 層看到的是 4（右子樹在該層沒有節點），
+注意第 3 層看到的是 4（右子樹在該層沒有節點），
    這說明「右側視圖」不等於「一直往右走」！
                 </pre>
             </div>
@@ -115,13 +115,13 @@
         <div class="section">
             <h2>解題思路</h2>
             <div class="note">
-                <strong>⚠️ 第一個陷阱：不能只是「一直往右走」</strong>
+                <strong>第一個陷阱：不能只是「一直往右走」</strong>
                 <p>如範例 2，若某一層的右子樹是空的，那一層看到的就是左子樹的節點。所以必須<strong>逐層</strong>處理，而不是沿著 right 指標往下。</p>
             </div>
 
             <h3>方法一：BFS 層序遍歷（最直覺）</h3>
             <div class="visual-box">
-                <div class="visual-title">💡 每層取最後一個節點</div>
+                <div class="visual-title">每層取最後一個節點</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 標準的層序遍歷，每一層記錄【最後一個】出隊的節點。
 
@@ -173,7 +173,7 @@ dfs(1, 0)：result.size()=0 == depth=0 → 記錄 1，result=[1]
       dfs(null, 3) 跳過
       dfs(5, 3)：size=3 == 3 → 記錄 5，result=[1,3,4,5] ✓
 
-⭐ 條件 `depth == result.size()` 非常精妙：
+★ 條件 `depth == result.size()` 非常精妙：
    它表示「這是第一次到達這個深度」。
                 </pre>
             </div>
@@ -417,22 +417,22 @@ int* rightSideView(struct TreeNode* root, int* returnSize) {
         <div class="section">
             <h2>重點提示</h2>
             <div class="key-point">
-                <strong>💡 關鍵技巧 1：「右側視圖」≠「一直往右走」</strong>
+                <strong>關鍵技巧 1：「右側視圖」≠「一直往右走」</strong>
                 <p>當右子樹在某一層沒有節點時，該層看到的是左子樹的節點。必須逐層判斷，這是本題最重要的觀念，也是面試官設下的第一個陷阱。</p>
             </div>
 
             <div class="key-point">
-                <strong>💡 關鍵技巧 2：<code>depth == result.size()</code> 的妙用</strong>
+                <strong>關鍵技巧 2：<code>depth == result.size()</code> 的妙用</strong>
                 <p>這個條件優雅地表達了「第一次到達這個深度」，不需要額外的 visited 或 maxDepth 變數。同樣的技巧可以用在「每層第一個/最後一個節點」的各種變形題。</p>
             </div>
 
             <div class="key-point">
-                <strong>💡 BFS 分層的標準寫法</strong>
+                <strong>BFS 分層的標準寫法</strong>
                 <p><code>int size = queue.size()</code> 先固定住這一層的數量，再用 for 迴圈處理。這是所有「層序遍歷」題目的核心模板（#102、#103、#107、#515、#637 全都用它）。</p>
             </div>
 
             <div class="note">
-                <strong>⚠️ 常見錯誤：</strong>
+                <strong>常見錯誤：</strong>
                 <ul>
                     <li>直接沿著 <code>node.right</code> 往下走（範例 2 會錯）</li>
                     <li>DFS 版本寫成「先左後右」（會變成左側視圖）</li>
@@ -457,7 +457,7 @@ int* rightSideView(struct TreeNode* root, int* returnSize) {
             <h2>補充說明</h2>
             <h3>層序遍歷題型全家福</h3>
             <div class="visual-box">
-                <div class="visual-title">📝 同一個模板，改一行就是新題</div>
+                <div class="visual-title">同一個模板，改一行就是新題</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 while (!q.empty()) {
     int size = q.size();

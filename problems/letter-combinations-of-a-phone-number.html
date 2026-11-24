@@ -99,7 +99,7 @@
         <div class="section">
             <h2>解題思路</h2>
             <div class="visual-box">
-                <div class="visual-title">💡 核心：多集合的笛卡爾積 = 多層回溯</div>
+                <div class="visual-title">核心：多集合的笛卡爾積 = 多層回溯</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 digits = "23"
   第 1 層：從 {a, b, c} 選一個
@@ -114,7 +114,7 @@ digits = "23"
 深度 = digits 的長度
 每層的分支數 = 該數字對應的字母數（3 或 4）
 
-⭐ 與其他回溯題的差別：
+★ 與其他回溯題的差別：
    每一層的「選擇列表」是不同的（由該位數字決定），
    而不是共用同一個候選集合。
                 </pre>
@@ -144,7 +144,7 @@ void backtrack(int index) {
 
             <h3>方法二：BFS 迭代（不用遞迴）</h3>
             <div class="visual-box">
-                <div class="visual-title">🔄 逐位擴展佇列</div>
+                <div class="visual-title">逐位擴展佇列</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 result = [""]
 
@@ -381,22 +381,22 @@ char** letterCombinations(char* digits, int* returnSize) {
         <div class="section">
             <h2>重點提示</h2>
             <div class="key-point">
-                <strong>💡 關鍵技巧 1：空輸入要回傳 []，不是 [""]</strong>
+                <strong>關鍵技巧 1：空輸入要回傳 []，不是 [""]</strong>
                 <p>這是本題最常見的失分點。如果不特判空字串，回溯會直接觸發終止條件而把空字串加入結果，得到 <code>[""]</code>，與題目要求不符。</p>
             </div>
 
             <div class="key-point">
-                <strong>💡 關鍵技巧 2：每層的選擇列表不同</strong>
+                <strong>關鍵技巧 2：每層的選擇列表不同</strong>
                 <p>本題與 #46、#78 的結構差異在於：選擇列表<strong>由當前層決定</strong>（<code>phone[digits[index]]</code>），而不是固定的 nums。理解這點，就能處理各種「多維笛卡爾積」型的題目。</p>
             </div>
 
             <div class="key-point">
-                <strong>💡 用陣列取代 HashMap</strong>
+                <strong>用陣列取代 HashMap</strong>
                 <p>因為 key 是 '2'~'9'，直接用長度 10 的字串陣列、以 <code>digits[i] - '0'</code> 當索引，比 HashMap 更快也更簡潔。這是「key 是小範圍整數時用陣列」的通用優化。</p>
             </div>
 
             <div class="note">
-                <strong>⚠️ 常見錯誤：</strong>
+                <strong>常見錯誤：</strong>
                 <ul>
                     <li>沒有特判空字串，回傳 <code>[""]</code></li>
                     <li>忘記 7 和 9 有 4 個字母（pqrs、wxyz），只寫 3 個</li>
@@ -421,7 +421,7 @@ char** letterCombinations(char* digits, int* returnSize) {
             <h2>補充說明</h2>
             <h3>回溯題型的三大結構</h3>
             <div class="visual-box">
-                <div class="visual-title">📝 認出結構就知道怎麼寫</div>
+                <div class="visual-title">認出結構就知道怎麼寫</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 【型 A：從同一個集合中選】
   for (i = start 或 0; i &lt; n; i++)

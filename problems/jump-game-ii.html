@@ -98,7 +98,7 @@
             <h2>解題思路</h2>
             
             <div class="visual-box">
-                <div class="visual-title">💡 核心概念：貪心算法（Greedy）</div>
+                <div class="visual-title">核心概念：貪心算法（Greedy）</div>
                 <p><strong>關鍵洞察：</strong>用最少的跳躍，每次跳盡可能遠。</p>
                 <ol style="margin-top: 10px;">
                     <li>維護當前跳躍能到達的最遠位置</li>
@@ -110,7 +110,7 @@
 
             <h3>詳細範例演示</h3>
             <div class="visual-box">
-                <div class="visual-title">🔄 完整跳躍過程：nums = [2,3,1,1,4]</div>
+                <div class="visual-title">完整跳躍過程：nums = [2,3,1,1,4]</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 索引:  0   1   2   3   4
 數值: [2,  3,  1,  1,  4]
@@ -174,7 +174,7 @@
 
             <h3>視覺化範例</h3>
             <div class="visual-box">
-                <div class="visual-title">📊 跳躍範圍圖解</div>
+                <div class="visual-title">跳躍範圍圖解</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 nums = [2, 3, 1, 1, 4]
 
@@ -495,22 +495,22 @@ int jump(int* nums, int numsSize) {
             <h2>重點提示</h2>
             
             <div class="key-point">
-                <strong>💡 關鍵技巧 1：不遍歷最後一個元素</strong>
+                <strong>關鍵技巧 1：不遍歷最後一個元素</strong>
                 <p>range(n-1) 而非 range(n)，因為到達終點前已知答案。</p>
             </div>
 
             <div class="key-point">
-                <strong>💡 關鍵技巧 2：邊界更新時機</strong>
+                <strong>關鍵技巧 2：邊界更新時機</strong>
                 <p>當 i == current_end 時才跳躍，確保最少次數。</p>
             </div>
 
             <div class="key-point">
-                <strong>💡 關鍵技巧 3：提前退出優化</strong>
+                <strong>關鍵技巧 3：提前退出優化</strong>
                 <p>如果 current_end >= n-1，可以提前結束。</p>
             </div>
 
             <div class="note">
-                <strong>⚠️ 常見錯誤：</strong>
+                <strong>常見錯誤：</strong>
                 <ul>
                     <li>遍歷到最後一個元素（會多算一次跳躍）</li>
                     <li>忘記更新 farthest（導致貪心策略失效）</li>
@@ -551,7 +551,7 @@ int jump(int* nums, int numsSize) {
             
             <h3>BFS vs 貪心</h3>
             <div class="visual-box">
-                <div class="visual-title">🔍 兩種思路對比</div>
+                <div class="visual-title">兩種思路對比</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 <strong>BFS 思路：</strong>
 把每次跳躍看作 BFS 的一層

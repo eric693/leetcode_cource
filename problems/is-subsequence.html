@@ -87,7 +87,7 @@
         <div class="section">
             <h2>解題思路</h2>
             <div class="visual-box">
-                <div class="visual-title">💡 方法一：雙指標貪心（O(n)）</div>
+                <div class="visual-title">方法一：雙指標貪心（O(n)）</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 i 指向 s，j 指向 t。
 j 一路往前掃，只要遇到 s[i] 就讓 i 前進。
@@ -142,7 +142,7 @@ t = "ahbgdc"
 
             <h3>方法三：DP 狀態機（更快的查詢）</h3>
             <div class="visual-box">
-                <div class="visual-title">⚡ 每次查詢降到 O(|s|)</div>
+                <div class="visual-title">每次查詢降到 O(|s|)</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 預處理一張表：
   nxt[i][c] = 從 t 的位置 i 開始，字元 c 第一次出現的位置
@@ -333,17 +333,17 @@ bool isSubsequence(char* s, char* t) {
         <div class="section">
             <h2>重點提示</h2>
             <div class="key-point">
-                <strong>💡 關鍵技巧 1：子序列 vs 子字串</strong>
+                <strong>關鍵技巧 1：子序列 vs 子字串</strong>
                 <p><strong>子序列</strong>可以不連續但要保持順序（本題）；<strong>子字串</strong>必須連續。看題目時務必分清楚，兩者的解法完全不同。</p>
             </div>
 
             <div class="key-point">
-                <strong>💡 關鍵技巧 2：進階題才是重點</strong>
+                <strong>關鍵技巧 2：進階題才是重點</strong>
                 <p>單看主題目非常簡單，面試官真正想考的是<strong>進階問題</strong>：「大量查詢怎麼優化？」答案是「<strong>預處理 t 建索引</strong>」。這體現了一個重要的系統設計思維：<strong>當查詢遠多於更新時，就用空間換時間做預處理</strong>（就像資料庫建索引）。</p>
             </div>
 
             <div class="note">
-                <strong>⚠️ 常見錯誤：</strong>
+                <strong>常見錯誤：</strong>
                 <ul>
                     <li>雙指標時忘記檢查 <code>i &lt; len(s)</code> 而越界</li>
                     <li>把子序列誤解成子字串</li>
@@ -366,7 +366,7 @@ bool isSubsequence(char* s, char* t) {
             <h2>補充說明</h2>
             <h3>DP 解法（雖然不需要，但理解它有助於解相關題）</h3>
             <div class="visual-box">
-                <div class="visual-title">📐 dp[i][j] = s 前 i 個字元是否為 t 前 j 個的子序列</div>
+                <div class="visual-title">dp[i][j] = s 前 i 個字元是否為 t 前 j 個的子序列</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 狀態轉移：
   若 s[i-1] == t[j-1]：dp[i][j] = dp[i-1][j-1]

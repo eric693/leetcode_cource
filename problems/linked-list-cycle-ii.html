@@ -93,7 +93,7 @@
         <div class="section">
             <h2>解題思路</h2>
             <div class="visual-box">
-                <div class="visual-title">💡 Floyd 判圈演算法（龜兔賽跑）</div>
+                <div class="visual-title">Floyd 判圈演算法（龜兔賽跑）</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 第一階段：slow 走 1 步、fast 走 2 步，若相遇則有環
 第二階段：把其中一個指標移回 head，兩者都改成每次走 1 步，
@@ -105,7 +105,7 @@
 
             <h3>數學證明（面試必問）</h3>
             <div class="visual-box">
-                <div class="visual-title">🧮 為什麼移回 head 就會在入口相遇？</div>
+                <div class="visual-title">為什麼移回 head 就會在入口相遇？</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 定義：
   a = head 到「環入口」的距離
@@ -343,17 +343,17 @@ struct ListNode* detectCycle(struct ListNode* head) {
         <div class="section">
             <h2>重點提示</h2>
             <div class="key-point">
-                <strong>💡 關鍵技巧：記住結論 a = c（模環長）</strong>
+                <strong>關鍵技巧：記住結論 a = c（模環長）</strong>
                 <p>「head 到入口的距離」等於「相遇點到入口的距離」（可能多繞幾圈）。這個結論是本題唯一需要記的東西，但<strong>面試官幾乎一定會要你推導</strong>，務必練習寫出證明過程。</p>
             </div>
 
             <div class="key-point">
-                <strong>💡 延伸：如何求環的長度？</strong>
+                <strong>延伸：如何求環的長度？</strong>
                 <p>從相遇點出發，讓一個指標繞一圈回到相遇點，計數即為環長。配合入口位置，就能完整描述整個環的結構。</p>
             </div>
 
             <div class="note">
-                <strong>⚠️ 常見錯誤：</strong>
+                <strong>常見錯誤：</strong>
                 <ul>
                     <li>迴圈條件必須是 <code>fast &amp;&amp; fast-&gt;next</code>，少一個判斷就會對無環串列 null pointer 崩潰</li>
                     <li>第二階段誤用 fast 而不是相遇點（其實用 slow 或 fast 都可以，因為它們此刻在同一位置）</li>
@@ -377,7 +377,7 @@ struct ListNode* detectCycle(struct ListNode* head) {
             <h2>補充說明</h2>
             <h3>Floyd 判圈的通用性</h3>
             <div class="visual-box">
-                <div class="visual-title">🔄 只要是「函數迭代」就能用</div>
+                <div class="visual-title">只要是「函數迭代」就能用</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 任何形如 x → f(x) 的迭代序列，只要狀態空間有限，
 最終必定進入循環（ρ 形結構），都可以用 Floyd 找出：

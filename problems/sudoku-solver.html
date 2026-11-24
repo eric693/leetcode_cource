@@ -120,7 +120,7 @@ board = [
             <h2>解題思路</h2>
             
             <div class="visual-box">
-                <div class="visual-title">💡 核心概念：回溯法 + 剪枝</div>
+                <div class="visual-title">核心概念：回溯法 + 剪枝</div>
                 <p><strong>策略：</strong>逐個填入數字，遇到衝突就回溯。</p>
                 <ol style="margin-top: 10px;">
                     <li>找到下一個空格（'.'）</li>
@@ -133,7 +133,7 @@ board = [
 
             <h3>優化技巧</h3>
             <div class="visual-box">
-                <div class="visual-title">🚀 三種優化策略</div>
+                <div class="visual-title">三種優化策略</div>
                 <ol style="margin-top: 10px;">
                     <li><strong>使用集合記錄：</strong>為每行、每列、每個宮格維護一個集合，O(1) 檢查衝突</li>
                     <li><strong>位運算優化：</strong>使用位掩碼表示可用數字</li>
@@ -143,7 +143,7 @@ board = [
 
             <h3>3×3 宮格索引計算</h3>
             <div class="visual-box">
-                <div class="visual-title">📊 宮格編號規則</div>
+                <div class="visual-title">宮格編號規則</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 數獨 9×9 劃分為 9 個 3×3 宮格：
 
@@ -169,7 +169,7 @@ box_index = (row // 3) * 3 + (col // 3)
 
             <h3>回溯過程示意</h3>
             <div class="visual-box">
-                <div class="visual-title">🔄 回溯搜尋樹</div>
+                <div class="visual-title">回溯搜尋樹</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 找到第一個空格 (0,2)
 │
@@ -615,22 +615,22 @@ void solveSudoku(char** board, int boardSize, int* boardColSize) {
             <h2>重點提示</h2>
             
             <div class="key-point">
-                <strong>💡 關鍵技巧 1：宮格索引公式</strong>
+                <strong>關鍵技巧 1：宮格索引公式</strong>
                 <p>box_index = (row // 3) * 3 + (col // 3)，必須記住！</p>
             </div>
 
             <div class="key-point">
-                <strong>💡 關鍵技巧 2：集合優化</strong>
+                <strong>關鍵技巧 2：集合優化</strong>
                 <p>使用集合記錄已用數字，檢查從 O(9) 優化到 O(1)。</p>
             </div>
 
             <div class="key-point">
-                <strong>💡 關鍵技巧 3：預處理</strong>
+                <strong>關鍵技巧 3：預處理</strong>
                 <p>開始前先將已有數字加入集合，避免重複檢查。</p>
             </div>
 
             <div class="note">
-                <strong>⚠️ 常見錯誤：</strong>
+                <strong>常見錯誤：</strong>
                 <ul>
                     <li>宮格索引計算錯誤</li>
                     <li>回溯時忘記從集合中移除數字</li>

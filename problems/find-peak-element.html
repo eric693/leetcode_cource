@@ -89,13 +89,13 @@
         <div class="section">
             <h2>解題思路</h2>
             <div class="note">
-                <strong>🤔 陣列無序，為什麼還能二分？</strong>
+                <strong>陣列無序，為什麼還能二分？</strong>
                 <p>因為題目只要求找出<strong>任意一個</strong>峰值。這讓我們可以每次都往「一定存在峰值」的那半邊走，而不需要全域有序。</p>
             </div>
 
             <h3>核心：往上坡的方向走</h3>
             <div class="visual-box">
-                <div class="visual-title">💡 只比較 nums[mid] 和 nums[mid+1]</div>
+                <div class="visual-title">只比較 nums[mid] 和 nums[mid+1]</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 情況 A：nums[mid] < nums[mid+1]（正在上坡）
 
@@ -127,7 +127,7 @@
 
             <h3>完整追蹤：nums = [1,2,1,3,5,6,4]</h3>
             <div class="visual-box">
-                <div class="visual-title">🔄 逐步收斂</div>
+                <div class="visual-title">逐步收斂</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 索引:  0  1  2  3  4  5  6
 值:    1  2  1  3  5  6  4
@@ -287,17 +287,17 @@ int findPeakElement(int* nums, int numsSize) {
         <div class="section">
             <h2>重點提示</h2>
             <div class="key-point">
-                <strong>💡 關鍵技巧：二分不一定需要「全域有序」</strong>
+                <strong>關鍵技巧：二分不一定需要「全域有序」</strong>
                 <p>只要能證明「某一半邊<strong>必定</strong>存在答案」，就能二分。這題是理解二分本質最好的例子，面試很愛考這個觀念。</p>
             </div>
 
             <div class="key-point">
-                <strong>💡 題目條件的重要性</strong>
+                <strong>題目條件的重要性</strong>
                 <p>「相鄰元素不相等」這個條件是二分成立的前提。如果允許相等（如 [1,1,1,1]），就無法判斷該往哪邊走，只能退化成 O(n) 線性掃描。面試時主動指出這點會加分。</p>
             </div>
 
             <div class="note">
-                <strong>⚠️ 常見錯誤：</strong>
+                <strong>常見錯誤：</strong>
                 <ul>
                     <li>迴圈條件寫 <code>left &lt;= right</code>，配上 <code>right = mid</code> 會無限迴圈</li>
                     <li>寫成 <code>right = mid - 1</code> 會漏掉答案</li>
@@ -320,7 +320,7 @@ int findPeakElement(int* nums, int numsSize) {
             <h2>補充說明</h2>
             <h3>延伸：二維峰值（#1901）</h3>
             <div class="visual-box">
-                <div class="visual-title">🔲 對「列」做二分</div>
+                <div class="visual-title">對「列」做二分</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 二維峰值定義：比上下左右四個鄰居都大
 

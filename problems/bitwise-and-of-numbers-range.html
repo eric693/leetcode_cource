@@ -91,7 +91,7 @@
         <div class="section">
             <h2>解題思路</h2>
             <div class="visual-box">
-                <div class="visual-title">💡 核心洞察：答案就是 left 和 right 的「共同前綴」</div>
+                <div class="visual-title">核心洞察：答案就是 left 和 right 的「共同前綴」</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 只要區間內有任何一個數的第 i 位是 0，AND 後該位就是 0。
 所以只有「從最高位開始，left 和 right 一路相同的那段」會保留。
@@ -267,17 +267,17 @@ int rangeBitwiseAnd(int left, int right) {
         <div class="section">
             <h2>重點提示</h2>
             <div class="key-point">
-                <strong>💡 關鍵技巧：把區間問題轉成「共同前綴」問題</strong>
+                <strong>關鍵技巧：把區間問題轉成「共同前綴」問題</strong>
                 <p>暴力做法是 O(right - left)，會超時。看到「大範圍區間的位元運算」就要想：哪些位一定是 0？答案往往只跟端點有關。</p>
             </div>
 
             <div class="key-point">
-                <strong>💡 網路應用：這就是子網路遮罩</strong>
+                <strong>網路應用：這就是子網路遮罩</strong>
                 <p>IP 位址的網段前綴（如 192.168.1.0/24）本質就是一段位址範圍的共同前綴，這題的技巧在網路韌體中天天用到。</p>
             </div>
 
             <div class="note">
-                <strong>⚠️ 常見錯誤：</strong>
+                <strong>常見錯誤：</strong>
                 <ul>
                     <li>暴力迴圈逐一 AND，範圍到 2³¹ 會直接 TLE</li>
                     <li>方法一最後忘記把結果左移回去</li>
@@ -299,7 +299,7 @@ int rangeBitwiseAnd(int left, int right) {
             <h2>補充說明</h2>
             <h3>網路實務：CIDR 與子網路遮罩</h3>
             <div class="visual-box">
-                <div class="visual-title">🌐 共同前綴 = 網段</div>
+                <div class="visual-title">共同前綴 = 網段</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 192.168.1.0/24 表示前 24 位是網段前綴
 

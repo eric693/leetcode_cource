@@ -98,7 +98,7 @@
         <div class="section">
             <h2>解題思路</h2>
             <div class="visual-box">
-                <div class="visual-title">💡 核心：對每個節點，算「經過它」的最長路徑</div>
+                <div class="visual-title">核心：對每個節點，算「經過它」的最長路徑</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 對任意節點 node，經過它的最長路徑 =
     左子樹的最大深度 + 右子樹的最大深度
@@ -132,7 +132,7 @@
   【副作用】順便更新全域答案
           answer = max(answer, 左深 + 右深)
 
-⚠️ 為什麼回傳的不是「左深 + 右深」？
+為什麼回傳的不是「左深 + 右深」？
 
 因為路徑不能「分岔後又往上」！
 若父節點要用這條路徑，只能從 node 選【一邊】往下走。
@@ -321,17 +321,17 @@ int diameterOfBinaryTree(struct TreeNode* root) {
         <div class="section">
             <h2>重點提示</h2>
             <div class="key-point">
-                <strong>💡 關鍵技巧：「回傳值」與「答案」分離</strong>
+                <strong>關鍵技巧：「回傳值」與「答案」分離</strong>
                 <p>這是樹型 DP 最重要的心法。遞迴函數<strong>回傳給父節點的資訊</strong>，和<strong>全域答案</strong>往往是不同的東西。想清楚這兩者的差別，一大類 Hard 樹題就解開了。</p>
             </div>
 
             <div class="key-point">
-                <strong>💡 同款題型：#124 二元樹最大路徑和</strong>
+                <strong>同款題型：#124 二元樹最大路徑和</strong>
                 <p>結構完全相同，只是把「深度」換成「路徑和」，並且要處理負數（子樹貢獻為負時就取 0，等於不選）。掌握本題後，#124 幾乎是照抄。</p>
             </div>
 
             <div class="note">
-                <strong>⚠️ 常見錯誤：</strong>
+                <strong>常見錯誤：</strong>
                 <ul>
                     <li><strong>回傳 <code>left + right</code></strong>（最經典的錯誤）—— 路徑不能分岔後往上延伸</li>
                     <li>把「邊數」誤算成「節點數」（差 1）</li>
@@ -355,7 +355,7 @@ int diameterOfBinaryTree(struct TreeNode* root) {
             <h2>補充說明</h2>
             <h3>樹型 DP 的通用模板</h3>
             <div class="visual-box">
-                <div class="visual-title">📝 一個框架解一整類題</div>
+                <div class="visual-title">一個框架解一整類題</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 Result dfs(node) {
     if (!node) return 基準值;

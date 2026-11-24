@@ -92,7 +92,7 @@
         <div class="section">
             <h2>解題思路</h2>
             <div class="visual-box">
-                <div class="visual-title">💡 核心：決策樹 + 回溯</div>
+                <div class="visual-title">核心：決策樹 + 回溯</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 每一層決定「這個位置放哪個數字」，
 已經用過的數字不能再用（用 used 陣列標記）。
@@ -134,7 +134,7 @@ void backtrack(path, used) {
     }
 }
 
-⭐ 「撤銷選擇」是回溯的靈魂。
+★ 「撤銷選擇」是回溯的靈魂。
    因為 path 和 used 是共用的狀態，
    探索完一條分支後必須還原，才能正確探索下一條分支。
                 </pre>
@@ -142,7 +142,7 @@ void backtrack(path, used) {
 
             <h3>執行過程追蹤（部分）</h3>
             <div class="visual-box">
-                <div class="visual-title">🔄 看 path 如何伸縮</div>
+                <div class="visual-title">看 path 如何伸縮</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 path=[]        選 1 → path=[1]
 path=[1]       選 2 → path=[1,2]
@@ -163,7 +163,7 @@ path=[]        選 2 → ...（同理繼續）
 
             <h3>兩種實作：used 陣列 vs 原地交換</h3>
             <div class="visual-box">
-                <div class="visual-title">⚖️ 各有優缺點</div>
+                <div class="visual-title">各有優缺點</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 【方法 A】used 布林陣列（推薦，最好理解）
   額外 O(n) 空間，但邏輯清晰，且容易擴充到有重複元素的 #47
@@ -411,12 +411,12 @@ int** permute(int* nums, int numsSize, int* returnSize, int** returnColumnSizes)
         <div class="section">
             <h2>重點提示</h2>
             <div class="key-point">
-                <strong>💡 關鍵技巧 1：記錄答案時一定要「複製」</strong>
+                <strong>關鍵技巧 1：記錄答案時一定要「複製」</strong>
                 <p><code>result.append(path[:])</code>（Python）、<code>new ArrayList&lt;&gt;(path)</code>（Java）。直接放入 path 的話，所有結果都會指向同一個物件，最後全部變成空陣列。這是回溯題<strong>最經典的 bug</strong>。</p>
             </div>
 
             <div class="key-point">
-                <strong>💡 關鍵技巧 2：排列 vs 組合的差別</strong>
+                <strong>關鍵技巧 2：排列 vs 組合的差別</strong>
                 <ul>
                     <li><strong>排列</strong>（本題）：順序有關，每層從 <code>i = 0</code> 開始，用 used 排除已選的</li>
                     <li><strong>組合</strong>（#77、#78）：順序無關，每層從 <code>i = start</code> 開始，靠 start 避免重複</li>
@@ -425,12 +425,12 @@ int** permute(int* nums, int numsSize, int* returnSize, int** returnColumnSizes)
             </div>
 
             <div class="key-point">
-                <strong>💡 延伸 #47：有重複數字的排列</strong>
+                <strong>延伸 #47：有重複數字的排列</strong>
                 <p>先<strong>排序</strong>，然後加上剪枝條件：<code>if (i &gt; 0 &amp;&amp; nums[i] == nums[i-1] &amp;&amp; !used[i-1]) continue;</code>。意思是「同一層中，相同的數字只在第一個未使用時取用」，避免產生重複的排列。</p>
             </div>
 
             <div class="note">
-                <strong>⚠️ 常見錯誤：</strong>
+                <strong>常見錯誤：</strong>
                 <ul>
                     <li>記錄結果時沒有複製，導致所有答案相同或為空</li>
                     <li>忘記撤銷選擇（<code>path.pop()</code> 和 <code>used[i] = false</code>），狀態污染後續分支</li>
@@ -455,7 +455,7 @@ int** permute(int* nums, int numsSize, int* returnSize, int** returnColumnSizes)
             <h2>補充說明</h2>
             <h3>回溯演算法通用模板（務必背熟）</h3>
             <div class="visual-box">
-                <div class="visual-title">📝 一個框架解所有回溯題</div>
+                <div class="visual-title">一個框架解所有回溯題</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 void backtrack(路徑, 選擇列表) {
     if (滿足結束條件) {

@@ -125,7 +125,7 @@ matrix = [
             <h2>解題思路</h2>
             
             <div class="visual-box">
-                <div class="visual-title">💡 核心概念：DFS + 記憶化搜尋</div>
+                <div class="visual-title">核心概念：DFS + 記憶化搜尋</div>
                 <p><strong>策略：</strong>從每個點出發 DFS 搜索，用記憶化避免重複計算。</p>
                 <ol style="margin-top: 10px;">
                     <li>對每個格子進行 DFS</li>
@@ -138,7 +138,7 @@ matrix = [
 
             <h3>為什麼需要記憶化？</h3>
             <div class="visual-box">
-                <div class="visual-title">🔍 避免重複計算</div>
+                <div class="visual-title">避免重複計算</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 <strong>問題：</strong>
 同一個格子可能被多次訪問
@@ -160,7 +160,7 @@ matrix = [
 
             <h3>DFS 遞迴關係</h3>
             <div class="visual-box">
-                <div class="visual-title">📊 狀態定義</div>
+                <div class="visual-title">狀態定義</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 <strong>定義：</strong>
 dfs(i, j) = 從位置 (i,j) 出發的最長遞增路徑長度
@@ -181,7 +181,7 @@ dfs(i, j) = 1 + max(
 
             <h3>詳細範例演示</h3>
             <div class="visual-box">
-                <div class="visual-title">🔄 完整 DFS 過程</div>
+                <div class="visual-title">完整 DFS 過程</div>
                 <pre style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
 matrix = [
   [9, 9, 4],
@@ -583,22 +583,22 @@ int longestIncreasingPath(int** matrix, int matrixSize, int* matrixColSize) {
             <h2>重點提示</h2>
             
             <div class="key-point">
-                <strong>💡 關鍵技巧 1：記憶化必須</strong>
+                <strong>關鍵技巧 1：記憶化必須</strong>
                 <p>不加記憶化會超時（Time Limit Exceeded）。</p>
             </div>
 
             <div class="key-point">
-                <strong>💡 關鍵技巧 2：遞增條件</strong>
+                <strong>關鍵技巧 2：遞增條件</strong>
                 <p>只能走到嚴格大於當前值的格子，這保證了無環。</p>
             </div>
 
             <div class="key-point">
-                <strong>💡 關鍵技巧 3：從每個點出發</strong>
+                <strong>關鍵技巧 3：從每個點出發</strong>
                 <p>不知道起點在哪，所以要嘗試所有格子。</p>
             </div>
 
             <div class="note">
-                <strong>⚠️ 常見錯誤：</strong>
+                <strong>常見錯誤：</strong>
                 <ul>
                     <li>忘記記憶化，導致 TLE</li>
                     <li>遞增條件寫錯（應該是嚴格大於 >，不是 ≥）</li>
