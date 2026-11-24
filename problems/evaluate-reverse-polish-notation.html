@@ -318,14 +318,14 @@ function evalRPN(tokens: string[]): number {
                     <pre><code class="language-c">// 堆疊：遇到數字入棧，遇到運算子彈出兩個運算
 // 時間複雜度: O(n)，空間複雜度: O(n)
 int evalRPN(char** tokens, int tokensSize) {
-    long* stack = malloc(sizeof(long) * tokensSize);
+    long long* stack = malloc(sizeof(long long) * tokensSize);
     int top = 0;
     for (int i = 0; i &lt; tokensSize; i++) {
         char* t = tokens[i];
         // 運算子是長度為 1 的非數字字元（"-3" 是負數不是運算子）
         if (t[1] == '\0' &amp;&amp; (t[0] == '+' || t[0] == '-' || t[0] == '*' || t[0] == '/')) {
-            long b = stack[--top];
-            long a = stack[--top];
+            long long b = stack[--top];
+            long long a = stack[--top];
             switch (t[0]) {
                 case '+': stack[top++] = a + b; break;
                 case '-': stack[top++] = a - b; break;

@@ -123,3 +123,14 @@ leetcode-learning/
 ---
 
 **持續更新中,敬請期待更多題目!**
+
+## 線上練習（practice/）
+
+`practice/` 是瀏覽器內的線上練習與判題：Python（Pyodide）、TypeScript、JavaScript、C、C++ 都在使用者的瀏覽器執行，不經過伺服器。
+
+C/C++ 編譯器（YoWASP Clang 22，約 120MB）沒有放進 git，部署時放在 `practice/vendor/clang-22.0.0-git20542-10/`：
+
+1. `npm pack @yowasp/clang@22.0.0-git20542-10`，把 `gen/` 裡的 `bundle.js`、`llvm*.wasm`、`llvm-resources.tar` 複製到上述資料夾。
+2. 用同一版 Clang 產生預編譯標頭 `lc_cpp.h.pch`（參數需與 `practice/cc-worker.js` 完全一致）。
+3. 對每個檔案執行 `gzip -9 -k`，nginx 以 `gzip_static` 送出。
+

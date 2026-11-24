@@ -302,11 +302,11 @@ public:
     int mySqrt(int x) {
         if (x == 0) return 0;
         
-        long left = 1, right = x;
+        long long left = 1, right = x;
         
         while (left <= right) {
-            long mid = left + (right - left) / 2;
-            long square = mid * mid;
+            long long mid = left + (right - left) / 2;
+            long long square = mid * mid;
             
             if (square == x) {
                 return mid;
@@ -328,7 +328,7 @@ public:
     int mySqrt_newton(int x) {
         if (x == 0) return 0;
         
-        long r = x;
+        long long r = x;
         
         while (r > x / r) {
             r = (r + x / r) / 2;
@@ -401,12 +401,12 @@ function mySqrt(x: number): number {
             </div>
 
             <div id="c" class="code-container">
-                <pre><code class="language-c">// 二分搜尋最大的 r，使 r² ≤ x（用 long 避免 mid * mid 溢位）
+                <pre><code class="language-c">// 二分搜尋最大的 r，使 r² ≤ x（用 long long 避免 mid * mid 溢位）
 // 時間複雜度: O(log x)，空間複雜度: O(1)
 int mySqrt(int x) {
-    long lo = 0, hi = x;
+    long long lo = 0, hi = x;
     while (lo &lt; hi) {
-        long mid = (lo + hi + 1) / 2;            // 向上取中點，避免死循環
+        long long mid = (lo + hi + 1) / 2;            // 向上取中點，避免死循環
         if (mid * mid &lt;= x) lo = mid;
         else hi = mid - 1;
     }

@@ -336,7 +336,7 @@ public:
         int count = 0;
         
         for (int r = 0; r < rows; r++) {
-            for (c = 0; c < cols; c++) {
+            for (int c = 0; c < cols; c++) {
                 if (grid[r][c] == '1') {
                     count++;
                     bfs(grid, r, c);

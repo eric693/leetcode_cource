@@ -556,16 +556,16 @@ function isValidBST(root: TreeNode | null): boolean {
  * };
  */
 // 遞迴傳遞上下界：左子樹必須 &lt; 節點值，右子樹必須 &gt; 節點值
-// 用 long 當邊界，才能處理節點值剛好是 INT_MIN / INT_MAX 的情況
+// 用 long long 當邊界，才能處理節點值剛好是 INT_MIN / INT_MAX 的情況
 // 時間複雜度: O(n)，空間複雜度: O(h)
-static bool valid(struct TreeNode* node, long lo, long hi) {
+static bool valid(struct TreeNode* node, long long lo, long long hi) {
     if (!node) return true;
     if (node-&gt;val &lt;= lo || node-&gt;val &gt;= hi) return false;
     return valid(node-&gt;left, lo, node-&gt;val) &amp;&amp; valid(node-&gt;right, node-&gt;val, hi);
 }
 
 bool isValidBST(struct TreeNode* root) {
-    return valid(root, LONG_MIN, LONG_MAX);
+    return valid(root, LLONG_MIN, LLONG_MAX);
 }</code></pre>
             </div>
         </div>

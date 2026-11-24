@@ -7,12 +7,15 @@
     python: { label: 'Python 3', monaco: 'python', file: 'solution.py' },
     typescript: { label: 'TypeScript', monaco: 'typescript', file: 'solution.ts' },
     javascript: { label: 'JavaScript', monaco: 'javascript', file: 'solution.js' },
+    cpp: { label: 'C++', monaco: 'cpp', file: 'solution.cpp' },
+    c: { label: 'C', monaco: 'c', file: 'solution.c' },
   };
   var LIMIT = { // 毫秒：整體上限
-    run: { python: 10000, typescript: 6000, javascript: 6000 },
-    submit: { python: 20000, typescript: 10000, javascript: 10000 },
+    run: { python: 10000, typescript: 6000, javascript: 6000, c: 6000, cpp: 6000 },
+    submit: { python: 20000, typescript: 10000, javascript: 10000, c: 10000, cpp: 10000 },
   };
-  var CASE_LIMIT = { python: 5000, typescript: 3000, javascript: 3000 }; // 單一案例上限
+  var CASE_LIMIT = { python: 5000, typescript: 3000, javascript: 3000, c: 3000, cpp: 3000 };
+  var COMPILE_LIMIT = 90000; // C/C++ 編譯（含第一次下載編譯器）不計入執行時間 // 單一案例上限
   var ANY_NOTE = {
     sorted: '答案的順序不拘，判題時會先排序再比對。',
     outer: '答案的順序不拘，判題時會先排序再比對。',
@@ -88,7 +91,11 @@
 
   // ---------- 程式碼執行器（Web Worker） ----------
   // JS 與 Python 各用一個 Worker：Python 環境載入時會占住 Worker，不能讓 JS 排隊等它
-  function makeRunner() { return {
+  function makeRunner(kind) { return {
+    kind: kind,
+    cc: 'idle',
+    ccProgress: 0,
+    ccWaiters: [],
     seq: 0,
     pending: null,
     py: 'idle',      // idle | loading | ready | error
@@ -96,7 +103,7 @@
     pyWaiters: [],
     spawn: function () {
       var self = this;
-      this.w = new Worker('runner.js');
+      this.w = kind === 'cc' ? new Worker('cc-worker.js', { type: 'module' }) : new Worker('runner.js');
       this.w.onmessage = function (e) { self.onMessage(e.data); };
       this.w.onerror = function (e) {
         if (self.pending) {
@@ -114,6 +121,22 @@
         this.py = 'error';
         this.pyWaiters.splice(0).forEach(function (w) { w.reject(new Error(m.error)); });
         updateEnv();
+      } else if (m.type === 'cc-progress') {
+        this.ccProgress = m.total ? m.done / m.total : 0;
+        updateEnv();
+        if (this.onProgress) this.onProgress(this.ccProgress);
+      } else if (m.type === 'cc-ready') {
+        this.cc = 'ready';
+        this.ccWaiters.splice(0).forEach(function (w) { w.resolve(); });
+        updateEnv();
+      } else if (m.type === 'cc-failed') {
+        this.cc = 'error';
+        this.ccWaiters.splice(0).forEach(function (w) { w.reject(new Error(m.error)); });
+        updateEnv();
+      } else if (m.type === 'cc-phase') {
+        // 編譯完成才開始計算執行時限
+        if (this.pending && this.pending.id === m.id && m.phase === 'run' && this.pending.startRun) this.pending.startRun();
+        if (this.pending && this.pending.id === m.id && this.pending.onPhase) this.pending.onPhase(m.phase);
       } else if (m.type === 'case') {
         if (this.pending && this.pending.id === m.id) {
           this.pending.lastIdx = m.idx;
@@ -139,11 +162,23 @@
         }
       });
     },
-    exec: function (req, timeout, onCase, caseLimit) {
+    ensureCC: function () {
+      var self = this;
+      if (this.cc === 'ready') return Promise.resolve();
+      return new Promise(function (resolve, reject) {
+        self.ccWaiters.push({ resolve: resolve, reject: reject });
+        if (self.cc !== 'loading') {
+          self.cc = 'loading';
+          updateEnv();
+          self.w.postMessage({ type: 'preload' });
+        }
+      });
+    },
+    exec: function (req, timeout, onCase, caseLimit, onPhase) {
       var self = this;
       return new Promise(function (resolve) {
         var id = ++self.seq;
-        var p = { id: id, resolve: resolve, onCase: onCase, lastIdx: -1 };
+        var p = { id: id, resolve: resolve, onCase: onCase, onPhase: onPhase, lastIdx: -1 };
         var kill = function (reason) {
           if (self.pending !== p) return;
           self.pending = null;
@@ -152,7 +187,15 @@
           self.restart();
           resolve({ timeout: true, idx: p.lastIdx, reason: reason });
         };
-        p.timer = setTimeout(function () { kill('total'); }, timeout);
+        if (self.kind === 'cc') {
+          p.timer = setTimeout(function () { kill('compile'); }, COMPILE_LIMIT);
+          p.startRun = function () {
+            clearTimeout(p.timer);
+            p.timer = setTimeout(function () { kill('total'); }, timeout);
+          };
+        } else {
+          p.timer = setTimeout(function () { kill('total'); }, timeout);
+        }
         if (caseLimit) {
           p.onCaseStart = function () {
             clearTimeout(p.caseTimer);
@@ -167,21 +210,29 @@
     },
     restart: function () {
       var hadPy = this.py === 'ready' || this.py === 'loading';
+      var hadCC = this.cc === 'ready' || this.cc === 'loading';
       this.w.terminate();
       this.py = 'idle';
+      this.cc = 'idle';
       this.spawn();
       if (hadPy) this.ensurePython().catch(function () {});
+      if (hadCC) this.ensureCC().catch(function () {});
     },
   }; }
-  var pyRunner = makeRunner(), jsRunner = makeRunner();
+  var pyRunner = makeRunner('py'), jsRunner = makeRunner('js'), ccRunner = makeRunner('cc');
   pyRunner.spawn();
   jsRunner.spawn();
+  ccRunner.spawn();
   var runner = {
     get py() { return pyRunner.py; },
     get pyVersion() { return pyRunner.pyVersion; },
+    get cc() { return ccRunner.cc; },
+    get ccProgress() { return ccRunner.ccProgress; },
     ensurePython: function () { return pyRunner.ensurePython(); },
-    exec: function (req, timeout, onCase, caseLimit) {
-      return (req.lang === 'python' ? pyRunner : jsRunner).exec(req, timeout, onCase, caseLimit);
+    ensureCC: function () { return ccRunner.ensureCC(); },
+    exec: function (req, timeout, onCase, caseLimit, onPhase) {
+      var r = req.lang === 'python' ? pyRunner : (req.lang === 'c' || req.lang === 'cpp') ? ccRunner : jsRunner;
+      return r.exec(req, timeout, onCase, caseLimit, onPhase);
     },
   };
 
@@ -196,6 +247,12 @@
     } else if (S.lang === 'typescript') {
       if (editor.monaco) text = 'TypeScript（在瀏覽器轉譯並執行）';
       else { cls = 'loading'; text = 'TypeScript 編譯器載入中'; }
+    } else if (S.lang === 'c' || S.lang === 'cpp') {
+      var nm = S.lang === 'c' ? 'C（C11）' : 'C++（C++17）';
+      if (runner.cc === 'ready') text = nm + '：Clang 22 → WebAssembly，在瀏覽器執行。注意 long 是 32 位元，64 位元請用 long long';
+      else if (runner.cc === 'loading') { cls = 'loading'; text = '下載 C/C++ 編譯器中 ' + Math.round(runner.ccProgress * 100) + '%（第一次約 36MB，之後會快取）'; }
+      else if (runner.cc === 'error') { cls = 'error'; text = 'C/C++ 編譯器載入失敗，請檢查網路後重新整理'; }
+      else { cls = ''; text = nm + '編譯器尚未載入'; }
     } else {
       text = 'JavaScript（在瀏覽器執行）';
     }
@@ -820,6 +877,15 @@
       if (runner.py !== 'ready') renderRunning('正在載入 Python 環境（第一次約需 5–15 秒）…');
       try { await runner.ensurePython(); } catch (e) { return { error: 'Python 環境載入失敗：' + e.message }; }
     }
+    if (lang === 'c' || lang === 'cpp') {
+      if (runner.cc !== 'ready') {
+        var show = function (f) { renderRunning('下載 C/C++ 編譯器中…（第一次約 36MB，之後會快取）', f); };
+        show(runner.ccProgress);
+        ccRunner.onProgress = show;
+      }
+      try { await runner.ensureCC(); } catch (e) { return { error: 'C/C++ 編譯器載入失敗：' + e.message }; } finally { ccRunner.onProgress = null; }
+      return { code: code, runLang: lang, source: code, driver: lang === 'c' ? S.p.cDriver : S.p.cppDriver, define: S.p.cDefine };
+    }
     return { code: code, runLang: lang, source: code };
   }
 
@@ -858,11 +924,15 @@
       var ref = await runner.exec(refReq, 8000);
       var expected = (ref.results || []).map(function (r) { return r.ok ? r.out : undefined; });
 
-      var req = Object.assign(baseReq(p), { lang: prep.runLang, code: prep.code, cases: cases, stopOnError: false });
+      var req = Object.assign(baseReq(p), { lang: prep.runLang, code: prep.code, cases: cases, stopOnError: false, driver: prep.driver, define: prep.define });
       var limit = LIMIT.run[lang];
-      var res = await runner.exec(req, limit, null, CASE_LIMIT[lang]);
+      var res = await runner.exec(req, limit, null, CASE_LIMIT[lang], function (ph) {
+        renderRunning(ph === 'compile' ? '編譯中…' : '執行中…');
+      });
       S.resultIdx = 0;
-      if (res.timeout) {
+      if (res.timeout && res.reason === 'compile') {
+        S.last = { compileError: '編譯超過 ' + (COMPILE_LIMIT / 1000) + ' 秒仍未完成，請重新整理頁面後再試一次。' };
+      } else if (res.timeout) {
         S.last = { timeout: true, limit: res.reason === 'case' ? CASE_LIMIT[lang] : limit, perCase: res.reason === 'case', timeoutIdx: res.idx, cases: cases };
       } else if (res.fatal) {
         S.last = { compileError: res.fatal };
@@ -902,12 +972,17 @@
         var all = p.examples.map(function (e) { return { args: e.args, out: e.out }; }).concat(p.tests);
         var cases = all.map(function (t) { return t.args; });
         var limit = LIMIT.submit[lang];
-        var req = Object.assign(baseReq(p), { lang: prep.runLang, code: prep.code, cases: cases, stopOnError: true });
+        var req = Object.assign(baseReq(p), { lang: prep.runLang, code: prep.code, cases: cases, stopOnError: true, driver: prep.driver, define: prep.define });
         var res = await runner.exec(req, limit, function (i) {
           if (i % 3 === 0) renderRunning('判題中… ' + i + ' / ' + all.length, i / all.length);
-        }, CASE_LIMIT[lang]);
+        }, CASE_LIMIT[lang], function (ph) {
+          if (ph === 'compile') renderRunning('編譯中…');
+        });
         R = { total: all.length, passed: 0, limit: limit };
-        if (res.timeout) {
+        if (res.timeout && res.reason === 'compile') {
+          R.verdict = 'CE';
+          R.compileError = '編譯超過 ' + (COMPILE_LIMIT / 1000) + ' 秒仍未完成，請重新整理頁面後再試一次。';
+        } else if (res.timeout) {
           R.verdict = 'TLE';
           if (res.reason === 'case') { R.limit = CASE_LIMIT[lang]; R.perCase = true; }
           R.passed = Math.max(0, res.idx);
@@ -973,6 +1048,7 @@
     $('#langSelect').value = l;
     editor.showLang(l);
     if (l === 'python') runner.ensurePython().catch(function () {});
+    if (l === 'c' || l === 'cpp') runner.ensureCC().catch(function () {});
     updateEnv();
   }
 
@@ -1147,6 +1223,7 @@
     $('#langSelect').value = S.lang;
     updateEnv();
     if (S.lang === 'python') runner.ensurePython().catch(function () {});
+    if (S.lang === 'c' || S.lang === 'cpp') runner.ensureCC().catch(function () {});
     initMonaco();
     try {
       await loadIndex();

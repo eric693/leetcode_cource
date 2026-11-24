@@ -308,7 +308,7 @@ function titleToNumber(columnTitle: string): number {
                 <pre><code class="language-c">// 26 進位轉換（A=1 ... Z=26）
 // 時間複雜度: O(n)，空間複雜度: O(1)
 int titleToNumber(char* columnTitle) {
-    long result = 0;
+    long long result = 0;
     for (char* p = columnTitle; *p; p++) {
         result = result * 26 + (*p - 'A' + 1);
     }

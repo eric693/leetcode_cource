@@ -173,12 +173,12 @@ public:
      */
     std::vector&lt;int&gt; twoSum(std::vector&lt;int&gt;& nums, int target) {
         // 建立雜湊表，鍵為數字，值為索引
-        std::unordered_map&lt;int, int&gt; hashMap;
+        std::unordered_map&lt;long long, int&gt; hashMap;  // 用 long long：target - nums[i] 可能超出 int 範圍
         
         // 遍歷陣列
         for (int i = 0; i < nums.size(); i++) {
             // 計算補數
-            int complement = target - nums[i];
+            long long complement = (long long)target - nums[i];
             
             // 如果補數在雜湊表中，找到答案
             if (hashMap.find(complement) != hashMap.end()) {
@@ -261,7 +261,7 @@ int* twoSum(int* nums, int numsSize, int target, int* returnSize) {
     *returnSize = 0;
     int left = 0, right = numsSize - 1;
     while (left &lt; right) {
-        long sum = (long)nums[idx[left]] + nums[idx[right]];
+        long long sum = (long long)nums[idx[left]] + nums[idx[right]];
         if (sum == target) {
             ans[0] = idx[left];
             ans[1] = idx[right];
