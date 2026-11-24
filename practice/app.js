@@ -13,6 +13,18 @@
     submit: { python: 20000, typescript: 10000, javascript: 10000 },
   };
   var CASE_LIMIT = { python: 5000, typescript: 3000, javascript: 3000 }; // 單一案例上限
+  var ANY_NOTE = {
+    sorted: '答案的順序不拘，判題時會先排序再比對。',
+    outer: '答案的順序不拘，判題時會先排序再比對。',
+    groups: '答案（以及每一組內部）的順序不拘，判題時會先排序再比對。',
+    'kprefix-sorted': '前 k 個元素的順序不拘。',
+    peak: '答案不唯一，回傳任何一個峰值的索引都算對；預期結果只是其中一個。',
+    topo: '答案不唯一，任何合法的修課順序都算對；預期結果只是其中一個。',
+    palin: '長度相同的最長回文有多個時，回傳任何一個都算對。',
+    window: '長度相同的最小視窗有多個時，回傳任何一個都算對。',
+    sudoku: '只要填出合法的數獨，並保留題目原本的數字，就算對。',
+    float: '與預期結果的誤差在 10⁻⁵ 以內就算對。',
+  };
   var SOL_LANGS = [['python', 'Python', 'python'], ['cpp', 'C++', 'cpp'], ['java', 'Java', 'java'], ['typescript', 'TypeScript', 'typescript'], ['c', 'C', 'c']];
 
   // ---------- 小工具 ----------
@@ -75,7 +87,8 @@
   if (!LANGS[S.lang]) S.lang = 'python';
 
   // ---------- 程式碼執行器（Web Worker） ----------
-  var runner = {
+  // JS 與 Python 各用一個 Worker：Python 環境載入時會占住 Worker，不能讓 JS 排隊等它
+  function makeRunner() { return {
     seq: 0,
     pending: null,
     py: 'idle',      // idle | loading | ready | error
@@ -159,8 +172,18 @@
       this.spawn();
       if (hadPy) this.ensurePython().catch(function () {});
     },
+  }; }
+  var pyRunner = makeRunner(), jsRunner = makeRunner();
+  pyRunner.spawn();
+  jsRunner.spawn();
+  var runner = {
+    get py() { return pyRunner.py; },
+    get pyVersion() { return pyRunner.pyVersion; },
+    ensurePython: function () { return pyRunner.ensurePython(); },
+    exec: function (req, timeout, onCase, caseLimit) {
+      return (req.lang === 'python' ? pyRunner : jsRunner).exec(req, timeout, onCase, caseLimit);
+    },
   };
-  runner.spawn();
 
   function updateEnv() {
     var el = $('#envState');
@@ -689,6 +712,7 @@
       if (r.stdout) html += valbox('標準輸出', r.stdout);
       if (r.ok) html += valbox('輸出', fmtVal(r.out), !r.pass);
       html += valbox('預期結果', R.expected[S.resultIdx] === undefined ? '（無法計算）' : fmtVal(R.expected[S.resultIdx]));
+      if (ANY_NOTE[S.p.cmp]) html += '<p class="muted small">' + ANY_NOTE[S.p.cmp] + '</p>';
     }
     v.innerHTML = html + '</div>';
     $$('[data-rcase]', v).forEach(function (b) {
@@ -720,6 +744,7 @@
         if (R.verdict === 'WA') {
           html += valbox('輸出', fmtVal(R.got), true);
           html += valbox('預期結果', fmtVal(R.expected));
+          if (ANY_NOTE[S.p.cmp]) html += '<p class="muted small">' + ANY_NOTE[S.p.cmp] + '</p>';
         }
       }
     }
@@ -770,7 +795,10 @@
   }
 
   function baseReq(p) {
-    return { fn: p.fn, design: p.design, types: p.params.map(function (x) { return x[1]; }), ret: p.ret };
+    return {
+      fn: p.fn, design: p.design, codec: p.codec, adapter: p.adapter, inplace: p.inplace, kprefix: p.kprefix,
+      types: p.types || p.params.map(function (x) { return x[1]; }), ret: p.ret,
+    };
   }
 
   async function runCode() {
@@ -813,7 +841,7 @@
         S.last = { compileError: res.compileError, stdout: res.stdout, kind: /SyntaxError|IndentationError|TabError/.test(res.compileError) ? 'syntax' : '' };
       } else {
         res.results.forEach(function (r, i) {
-          r.pass = r.ok && expected[i] !== undefined && LC.equal(p.cmp, r.out, expected[i]);
+          r.pass = r.ok && expected[i] !== undefined && LC.check(p.cmp, r.out, expected[i], cases[i]);
         });
         var firstBad = res.results.findIndex(function (r) { return !r.pass; });
         S.resultIdx = firstBad >= 0 ? firstBad : 0;
@@ -868,7 +896,7 @@
               R.verdict = 'RE'; R.error = r.error; R.failArgs = all[i].args; R.stdout = r.stdout;
               break;
             }
-            if (!LC.equal(p.cmp, r.out, all[i].out)) {
+            if (!LC.check(p.cmp, r.out, all[i].out, all[i].args)) {
               R.verdict = 'WA'; R.got = r.out; R.expected = all[i].out; R.failArgs = all[i].args; R.stdout = r.stdout;
               break;
             }
@@ -920,13 +948,15 @@
   }
 
   // ---------- 題目列表抽屜 ----------
+  var drawerFilter = 'all';
   function renderDrawer() {
     var q = ($('#drawerSearch').value || '').trim().toLowerCase();
     var html = '', solved = 0;
     S.index.forEach(function (x) {
       var st = status(x.slug);
       if (st === 'solved') solved++;
-      if (q && (x.id + '. ' + x.title).toLowerCase().indexOf(q) < 0) return;
+      if (q && (x.id + '. ' + x.title + ' ' + (x.tags || []).join(' ')).toLowerCase().indexOf(q) < 0) return;
+      if (drawerFilter === 'todo' ? st === 'solved' : drawerFilter !== 'all' && x.difficulty !== drawerFilter) return;
       var icon = st === 'solved'
         ? '<svg viewBox="0 0 16 16" width="14" height="14"><path d="m3.5 8.5 3 3 6-7" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg>'
         : st === 'tried'
@@ -952,7 +982,9 @@
     $('#drawer').hidden = false;
     $('#drawerMask').hidden = false;
     renderDrawer();
-    setTimeout(function () { $('#drawerSearch').focus(); }, 30);
+    var cur = $('#plist a.current');
+    if (cur) cur.scrollIntoView({ block: 'center' });
+    if (!window.matchMedia('(max-width: 900px)').matches) setTimeout(function () { $('#drawerSearch').focus(); }, 30);
   }
   function closeDrawer() {
     $('#drawer').hidden = true;
@@ -1032,6 +1064,13 @@
     $('#btnCloseDrawer').onclick = closeDrawer;
     $('#drawerMask').onclick = closeDrawer;
     $('#drawerSearch').oninput = renderDrawer;
+    $$('#drawerFilters button').forEach(function (b) {
+      b.onclick = function () {
+        drawerFilter = b.dataset.f;
+        $$('#drawerFilters button').forEach(function (x) { x.classList.toggle('active', x === b); });
+        renderDrawer();
+      };
+    });
     $('#btnPrev').onclick = function () { go(-1); };
     $('#btnNext').onclick = function () { go(1); };
     $('#btnTheme').onclick = function () {

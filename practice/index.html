@@ -140,14 +140,21 @@
     <div class="drawer-head">
       <div>
         <div class="drawer-title">線上練習</div>
-        <div class="muted small">試行版，目前開放 10 題</div>
+        <div class="muted small" id="drawerSub">全部題目都能線上寫程式與判題</div>
       </div>
       <button class="tb-icon" id="btnCloseDrawer" title="關閉">
         <svg viewBox="0 0 20 20" width="16" height="16" aria-hidden="true"><path d="m5.5 5.5 9 9m0-9-9 9" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
       </button>
     </div>
     <div class="drawer-search">
-      <input id="drawerSearch" type="search" placeholder="搜尋題號或名稱" autocomplete="off">
+      <input id="drawerSearch" type="search" placeholder="搜尋題號、名稱或標籤" autocomplete="off">
+      <div class="drawer-filters" id="drawerFilters">
+        <button data-f="all" class="active">全部</button>
+        <button data-f="Easy">Easy</button>
+        <button data-f="Medium">Medium</button>
+        <button data-f="Hard">Hard</button>
+        <button data-f="todo">未解決</button>
+      </div>
     </div>
     <ol class="plist" id="plist"></ol>
     <div class="drawer-foot muted small" id="drawerStats"></div>
